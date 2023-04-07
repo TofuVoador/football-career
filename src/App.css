@@ -9,3 +9,44 @@ header {
   color: var(--color-main);
   padding: 2rem;
 }
+
+.decision {
+  margin-bottom: 1rem;
+}
+
+.stats-year {
+  display: flex;
+  gap: 2rem;
+}
+
+a {
+  color: var(--color-interactable);
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+}
+
+a:hover {
+  background-color: var(--color-main);
+}
+
+.titles {
+  display: flex;
+  margin-bottom: 1rem;
+}
+
+.titles h1 {
+  margin-right: 1rem;
+}
+
+.titles-list {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 1rem;
+}
+
+.stats {
+  margin-top: 1rem;
+  padding: 1rem;
+  color: var(--color-secondary);
+}

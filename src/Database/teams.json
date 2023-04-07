@@ -1,502 +1,420 @@
-{
-    "Premier League": [
-    {
-      "name": "Burnley FC",
-      "code": "BUR",
-      "ranking": 50
-    },
-    {
-      "name": "Manchester United FC",
-      "code": "MUN",
-      "ranking": 10
-    },
-    {
-      "name": "Manchester City FC",
-      "code": "MCI",
-      "ranking": 1
-    },
-    {
-      "name": "Aston Villa FC",
-      "code": "AVL",
-      "ranking": 25
-    },
-    {
-      "name": "Fulham FC",
-      "code": "FUL",
-      "ranking": 40
-    },
-    {
-      "name": "Arsenal FC",
-      "code": "ARS",
-      "ranking": 15
-    },
-    {
-      "name": "Crystal Palace FC",
-      "code": "CRY",
-      "ranking": 35
-    },
-    {
-      "name": "Southampton FC",
-      "code": "SOU",
-      "ranking": 30
-    },
-    {
-      "name": "Liverpool FC",
-      "code": "LIV",
-      "ranking": 5
-    },
-    {
-      "name": "Leeds United FC",
-      "code": "LEE",
-      "ranking": 20
-    },
-    {
-      "name": "West Ham United FC",
-      "code": "WHU",
-      "ranking": 12
-    },
-    {
-      "name": "Newcastle United FC",
-      "code": "NEW",
-      "ranking": 45
-    },
-    {
-      "name": "West Bromwich Albion FC",
-      "code": "WBA",
-      "ranking": 60
-    },
-    {
-      "name": "Leicester City FC",
-      "code": "LEI",
-      "ranking": 4
-    },
-    {
-      "name": "Tottenham Hotspur FC",
-      "code": "TOT",
-      "ranking": 9
-    },
-    {
-      "name": "Everton FC",
-      "code": "EVE",
-      "ranking": 14
-    },
-    {
-      "name": "Sheffield United FC",
-      "code": "SHU",
-      "ranking": 55
-    },
-    {
-      "name": "Wolverhampton Wanderers FC",
-      "code": "WOL",
-      "ranking": 28
-    },
-    {
-      "name": "Brighton & Hove Albion FC",
-      "code": "BHA",
-      "ranking": 32
-    },
-    {
-      "name": "Chelsea FC",
-      "code": "CHE",
-      "ranking": 6
-    }
-  ],
-  "La Liga": [
-    {
-      "name": "SD Eibar",
-      "code": "EIB",
-      "ranking": 48
-    },
-    {
-      "name": "RC Celta Vigo",
-      "code": "CEL",
-      "ranking": 51
-    },
-    {
-      "name": "Granada CF",
-      "code": "GRA",
-      "ranking": 62
-    },
-    {
-      "name": "Athletic Club Bilbao",
-      "code": "ATH",
-      "ranking": 59
-    },
-    {
-      "name": "Cádiz CF",
-      "code": "CAD",
-      "ranking": 42
-    },
-    {
-      "name": "CA Osasuna",
-      "code": "OSA",
-      "ranking": 55
-    },
-    {
-      "name": "FC Barcelona",
-      "code": "BAR",
-      "ranking": 3
-    },
-    {
-      "name": "Elche CF",
-      "code": "ELC",
-      "ranking": 44
-    },
-    {
-      "name": "Real Madrid",
-      "code": "RMD",
-      "ranking": 1
-    },
-    {
-      "name": "Getafe CF",
-      "code": "GET",
-      "ranking": 46
-    },
-    {
-      "name": "Deportivo Alavés",
-      "code": "ALA",
-      "ranking": 40
-    },
-    {
-      "name": "Real Betis",
-      "code": "BET",
-      "ranking": 39
-    },
-    {
-      "name": "Real Valladolid CF",
-      "code": "VLL",
-      "ranking": 56
-    },
-    {
-      "name": "Real Sociedad",
-      "code": "RSO",
-      "ranking": 6
-    },
-    {
-      "name": "Villarreal CF",
-      "code": "VIL",
-      "ranking": 11
-    },
-    {
-      "name": "SD Huesca",
-      "code": "HUE",
-      "ranking": 54
-    },
-    {
-      "name": "Valencia CF",
-      "code": "VAL",
-      "ranking": 13
-    },
-    {
-      "name": "Levante UD",
-      "code": "LEV",
-      "ranking": 43
-    },
-    {
-      "name": "Atlético Madrid",
-      "code": "ATM",
-      "ranking": 4
-    },
-    {
-      "name": "Sevilla FC",
-      "code": "SEV",
-      "ranking": 7
-    }
-  ],
-  "Ligue 1": [
-    {
-      "name": "Girondins de Bordeaux",
-      "code": "FCGB",
-      "country": "France"
-    },
-    {
-      "name": "FC Nantes",
-      "code": "FCN",
-      "country": "France"
-    },
-    {
-      "name": "Dijon FCO",
-      "code": "DFCO",
-      "country": "France"
-    },
-    {
-      "name": "Angers SCO",
-      "code": "SCO",
-      "country": "France"
-    },
-    {
-      "name": "Lille OSC",
-      "code": "LOSC",
-      "country": "France"
-    },
-    {
-      "name": "Stade Rennais FC",
-      "code": "SRFC",
-      "country": "France"
-    },
-    {
-      "name": "AS Monaco",
-      "code": "ASM",
-      "country": "Monaco"
-    },
-    {
-      "name": "Stade de Reims",
-      "code": "SDR",
-      "country": "France"
-    },
-    {
-      "name": "FC Lorient",
-      "code": "FCL",
-      "country": "France"
-    },
-    {
-      "name": "RC Strasbourg",
-      "code": null,
-      "country": "France"
-    },
-    {
-      "name": "Nîmes Olympique",
-      "code": "NIMES",
-      "country": "France"
-    },
-    {
-      "name": "Stade Brestois 29",
-      "code": "SB29",
-      "country": "France"
-    },
-    {
-      "name": "OGC Nice",
-      "code": "OGCN",
-      "country": "France"
-    },
-    {
-      "name": "RC Lens",
-      "code": "RCL",
-      "country": "France"
-    },
-    {
-      "name": "Olympique Lyonnais",
-      "code": "OL",
-      "country": "France"
-    },
-    {
-      "name": "Montpellier HSC",
-      "code": "MHSC",
-      "country": "France"
-    },
-    {
-      "name": "FC Metz",
-      "code": "FCM",
-      "country": "France"
-    },
-    {
-      "name": "AS Saint-Étienne",
-      "code": "ASSE",
-      "country": "France"
-    },
-    {
-      "name": "Olympique de Marseille",
-      "code": "OM",
-      "country": "France"
-    },
-    {
-      "name": "Paris Saint-Germain",
-      "code": "PSG",
-      "country": "France"
-    }
-  ],
-  "Serie A": [
-    {
-      "name": "ACF Fiorentina",
-      "code": "FIO",
-      "ranking": 35
-    },
-    {
-      "name": "Torino FC",
-      "code": "TOR",
-      "ranking": 40
-    },
-    {
-      "name": "Hellas Verona",
-      "code": "HEL",
-      "ranking": 48
-    },
-    {
-      "name": "AS Roma",
-      "code": "ROM",
-      "ranking": 20
-    },
-    {
-      "name": "Parma",
-      "code": "PAR",
-      "ranking": 65
-    },
-    {
-      "name": "SSC Napoli",
-      "code": "NAP",
-      "ranking": 10
-    },
-    {
-      "name": "Genoa CFC",
-      "code": "GEN",
-      "ranking": 55
-    },
-    {
-      "name": "FC Crotone",
-      "code": "CRO",
-      "ranking": 70
-    },
-    {
-      "name": "US Sassuolo Calcio",
-      "code": "SAS",
-      "ranking": 25
-    },
-    {
-      "name": "Cagliari Calcio",
-      "code": "CAG",
-      "ranking": 50
-    },
-    {
-      "name": "Juventus",
-      "code": "JUV",
-      "ranking": 5
-    },
-    {
-      "name": "UC Sampdoria",
-      "code": "SAM",
-      "ranking": 60
-    },
-    {
-      "name": "AC Milan",
-      "code": "MIL",
-      "ranking": 15
-    },
-    {
-      "name": "Bologna FC",
-      "code": "BOL",
-      "ranking": 45
-    },
-    {
-      "name": "Atalanta Bergamo",
-      "code": "ATA",
-      "ranking": 12
-    },
-    {
-      "name": "SS Lazio",
-      "code": "LAZ",
-      "ranking": 18
-    },
-    {
-      "name": "Benevento",
-      "code": "BEN",
-      "ranking": 75
-    },
-    {
-      "name": "FC Internazionale Milano",
-      "code": "INT",
-      "ranking": 3
-    },
-    {
-      "name": "Spezia",
-      "code": "SPZ",
-      "ranking": 58
-    },
-    {
-      "name": "Udinese Calcio",
-      "code": "UDI",
-      "ranking": 42
-    }
-  ],
-  "Bundesliga": [
-    {
-      "name": "Bayern München",
-      "code": "FCB",
-      "ranking": 1
-    },
-    {
-      "name": "FC Schalke 04",
-      "code": "S04",
-      "ranking": 62
-    },
-    {
-      "name": "Eintracht Frankfurt",
-      "code": "FFM",
-      "ranking": 25
-    },
-    {
-      "name": "Arminia Bielefeld",
-      "code": "DSC",
-      "ranking": 70
-    },
-    {
-      "name": "1. FC Union Berlin",
-      "code": "FCU",
-      "ranking": 22
-    },
-    {
-      "name": "FC Augsburg",
-      "code": "FCA",
-      "ranking": 33
-    },
-    {
-      "name": "1. FC Köln",
-      "code": "KOE",
-      "ranking": 50
-    },
-    {
-      "name": "TSG 1899 Hoffenheim",
-      "code": "HOF",
-      "ranking": 42
-    },
-    {
-      "name": "Werder Bremen",
-      "code": "BRE",
-      "ranking": 37
-    },
-    {
-      "name": "Hertha BSC",
-      "code": "BSC",
-      "ranking": 47
-    },
-    {
-      "name": "VfB Stuttgart",
-      "code": "VFB",
-      "ranking": 16
-    },
-    {
-      "name": "SC Freiburg",
-      "code": "SCF",
-      "ranking": 63
-    },
-    {
-      "name": "Borussia Dortmund",
-      "code": "BVB",
-      "ranking": 9
-    },
-    {
-      "name": "Bor. Mönchengladbach",
-      "code": "BMG",
-      "ranking": 29
-    },
-    {
-      "name": "RB Leipzig",
-      "code": "RBL",
-      "ranking": 7
-    },
-    {
-      "name": "1. FSV Mainz 05",
-      "code": "M05",
-      "ranking": 58
-    },
-    {
-      "name": "VfL Wolfsburg",
-      "code": "WOB",
-      "ranking": 13
-    },
-    {
-      "name": "Bayer 04 Leverkusen",
-      "code": "B04",
-      "ranking": 19
-    }
-  ]
-}
+[
+  {
+    "name": "Premier League",
+    "teams": [
+      {
+        "name": "Manchester City FC",
+        "code": "MCI",
+        "ranking": 1
+      },{
+        "name": "Liverpool FC",
+        "code": "LIV",
+        "ranking": 2
+      },{
+        "name": "Arsenal FC",
+        "code": "ARS",
+        "ranking": 3
+      },{
+        "name": "Manchester United FC",
+        "code": "MUN",
+        "ranking": 4
+      },{
+        "name": "Chelsea FC",
+        "code": "CHE",
+        "ranking": 5
+      },{
+        "name": "Tottenham Hotspur FC",
+        "code": "TOT",
+        "ranking": 6
+      },{
+        "name": "Everton FC",
+        "code": "EVE",
+        "ranking": 7
+      },{
+        "name": "West Ham United FC",
+        "code": "WHU",
+        "ranking": 8
+      },{
+        "name": "Aston Villa FC",
+        "code": "AVL",
+        "ranking": 9
+      },{
+        "name": "Newcastle United FC",
+        "code": "NEW",
+        "ranking": 10
+      },{
+        "name": "Crystal Palace FC",
+        "code": "CRY",
+        "ranking": 11
+      },{
+        "name": "Leicester City FC",
+        "code": "LEI",
+        "ranking": 12
+      },{
+        "name": "Leeds United FC",
+        "code": "LEE",
+        "ranking": 13
+      },{
+        "name": "Wolverhampton Wanderers FC",
+        "code": "WOL",
+        "ranking": 14
+      },{
+        "name": "Fulham FC",
+        "code": "FUL",
+        "ranking": 15
+      },{
+        "name": "Southampton FC",
+        "code": "SOU",
+        "ranking": 16
+      },{
+        "name": "Burnley FC",
+        "code": "BUR",
+        "ranking": 17
+      },{
+        "name": "West Bromwich Albion FC",
+        "code": "WBA",
+        "ranking": 18
+      },{
+        "name": "Sheffield United FC",
+        "code": "SHU",
+        "ranking": 19
+      },{
+        "name": "Brighton & Hove Albion FC",
+        "code": "BHA",
+        "ranking": 20
+      }
+    ]
+  },{
+    "name": "La Liga",
+    "teams": [
+      {
+        "name": "Real Madrid",
+        "code": "RMD",
+        "ranking": 1
+      },{
+        "name": "FC Barcelona",
+        "code": "BAR",
+        "ranking": 2
+      },{
+        "name": "Atlético Madrid",
+        "code": "ATM",
+        "ranking": 3
+      },{
+        "name": "Villarreal CF",
+        "code": "VIL",
+        "ranking": 4
+      },{
+        "name": "Sevilla FC",
+        "code": "SEV",
+        "ranking": 5
+      },{
+        "name": "Real Betis",
+        "code": "BET",
+        "ranking": 6
+      },      {
+        "name": "Athletic Club Bilbao",
+        "code": "ATH",
+        "ranking": 7
+      },{
+        "name": "Valencia CF",
+        "code": "VAL",
+        "ranking": 8
+      },{
+        "name": "Real Sociedad",
+        "code": "RSO",
+        "ranking": 9
+      },{
+        "name": "RC Celta Vigo",
+        "code": "CEL",
+        "ranking": 10
+      },{
+        "name": "Getafe CF",
+        "code": "GET",
+        "ranking": 11
+      },{
+        "name": "CA Osasuna",
+        "code": "OSA",
+        "ranking": 12
+      },{
+        "name": "Cádiz CF",
+        "code": "CAD",
+        "ranking": 13
+      },{
+        "name": "Real Valladolid CF",
+        "code": "VLL",
+        "ranking": 14
+      },{
+        "name": "Granada CF",
+        "code": "GRA",
+        "ranking": 15
+      },{
+        "name": "Elche CF",
+        "code": "ELC",
+        "ranking": 16
+      },{
+        "name": "SD Eibar",
+        "code": "EIB",
+        "ranking": 17
+      },{
+        "name": "Deportivo Alavés",
+        "code": "ALA",
+        "ranking": 18
+      },{
+        "name": "Levante UD",
+        "code": "LEV",
+        "ranking": 19
+      },{
+        "name": "SD Huesca",
+        "code": "HUE",
+        "ranking": 20
+      }
+    ]
+  },{
+    "name": "Ligue 1",
+    "teams": [
+      {
+        "name": "Paris Saint-Germain",
+        "code": "PSG",
+        "ranking": 1
+      },{
+        "name": "Olympique de Marseille",
+        "code": "OM",
+        "ranking": 2
+      },{
+        "name": "AS Monaco",
+        "code": "ASM",
+        "ranking": 3
+      },{
+        "name": "Stade Rennais FC",
+        "code": "SRFC",
+        "ranking": 4
+      },{
+        "name": "OGC Nice",
+        "code": "OGCN",
+        "ranking": 5
+      },{
+        "name": "Lille OSC",
+        "code": "LOSC",
+        "ranking": 6
+      },{
+        "name": "RC Lens",
+        "code": "RCL",
+        "ranking": 7
+      },{
+        "name": "Olympique Lyonnais",
+        "code": "OL",
+        "ranking": 8
+      },{
+        "name": "Stade de Reims",
+        "code": "SDR",
+        "ranking": 9
+      },{
+        "name": "FC Nantes",
+        "code": "FCN",
+        "ranking": 10
+      },{
+        "name": "Angers SCO",
+        "code": "SCO",
+        "ranking": 11
+      },{
+        "name": "Montpellier HSC",
+        "code": "MHSC",
+        "ranking": 12
+      },{
+        "name": "Girondins de Bordeaux",
+        "code": "FCGB",
+        "ranking": 13
+      },{
+        "name": "FC Lorient",
+        "code": "FCL",
+        "ranking": 14
+      },{
+        "name": "Stade Brestois 29",
+        "code": "SB29",
+        "ranking": 15
+      },{
+        "name": "RC Strasbourg",
+        "code": "RCS",
+        "ranking": 16
+      },{
+        "name": "AS Saint-Étienne",
+        "code": "ASSE",
+        "ranking": 17
+      },{
+        "name": "FC Metz",
+        "code": "FCM",
+        "ranking": 18
+      },{
+        "name": "Dijon FCO",
+        "code": "DFCO",
+        "ranking": 19
+      },{
+        "name": "Nîmes Olympique",
+        "code": "NIMES",
+        "ranking": 20
+      }
+    ]
+  },{
+    "name": "Serie A",
+    "teams": [
+      {
+        "name": "SSC Napoli",
+        "code": "NAP",
+        "ranking": 1
+      },{
+        "name": "AC Milan",
+        "code": "MIL",
+        "ranking": 2
+      },{
+        "name": "FC Internazionale Milano",
+        "code": "INT",
+        "ranking": 3
+      },{
+        "name": "AS Roma",
+        "code": "ROM",
+        "ranking": 4
+      },{
+        "name": "SS Lazio",
+        "code": "LAZ",
+        "ranking": 5
+      },{
+        "name": "Juventus",
+        "code": "JUV",
+        "ranking": 6
+      },{
+        "name": "ACF Fiorentina",
+        "code": "FIO",
+        "ranking": 7
+      },{
+        "name": "Atalanta Bergamo",
+        "code": "ATA",
+        "ranking": 8
+      },{
+        "name": "Bologna FC",
+        "code": "BOL",
+        "ranking": 9
+      },{
+        "name": "Torino FC",
+        "code": "TOR",
+        "ranking": 10
+      },{
+        "name": "US Sassuolo Calcio",
+        "code": "SAS",
+        "ranking": 11
+      },{
+        "name": "Cagliari Calcio",
+        "code": "CAG",
+        "ranking": 12
+      },{
+        "name": "Hellas Verona",
+        "code": "HEL",
+        "ranking": 13
+      },{
+        "name": "Genoa CFC",
+        "code": "GEN",
+        "ranking": 14
+      },{
+        "name": "Spezia",
+        "code": "SPZ",
+        "ranking": 15
+      },{
+        "name": "UC Sampdoria",
+        "code": "SAM",
+        "ranking": 16
+      },{
+        "name": "Udinese Calcio",
+        "code": "UDI",
+        "ranking": 17
+      },{
+        "name": "Parma",
+        "code": "PAR",
+        "ranking": 18
+      },{
+        "name": "FC Crotone",
+        "code": "CRO",
+        "ranking": 19
+      },{
+        "name": "Benevento",
+        "code": "BEN",
+        "ranking": 20
+      }
+    ]
+  },{
+    "name": "Bundesliga",
+    "teams": [
+      {
+        "name": "Bayern München",
+        "code": "FCB",
+        "ranking": 1
+      },{
+        "name": "Borussia Dortmund",
+        "code": "BVB",
+        "ranking": 2
+      },{
+        "name": "RB Leipzig",
+        "code": "RBL",
+        "ranking": 3
+      },{
+        "name": "1. FC Union Berlin",
+        "code": "FCU",
+        "ranking": 4
+      },{
+        "name": "SC Freiburg",
+        "code": "SCF",
+        "ranking": 5
+      },{
+        "name": "Eintracht Frankfurt",
+        "code": "FFM",
+        "ranking": 6
+      },{
+        "name": "Bayer 04 Leverkusen",
+        "code": "B04",
+        "ranking": 7
+      },{
+        "name": "VfL Wolfsburg",
+        "code": "WOB",
+        "ranking": 8
+      },{
+        "name": "Bor. Mönchengladbach",
+        "code": "BMG",
+        "ranking": 9
+      },{
+        "name": "1. FC Köln",
+        "code": "KOE",
+        "ranking": 10
+      },{
+        "name": "FC Augsburg",
+        "code": "FCA",
+        "ranking": 11
+      },{
+        "name": "TSG 1899 Hoffenheim",
+        "code": "HOF",
+        "ranking": 12
+      },{
+        "name": "1. FSV Mainz 05",
+        "code": "M05",
+        "ranking": 13
+      },      {
+        "name": "Werder Bremen",
+        "code": "BRE",
+        "ranking": 14
+      },{
+        "name": "FC Schalke 04",
+        "code": "S04",
+        "ranking": 15
+      },{
+        "name": "Hertha BSC",
+        "code": "BSC",
+        "ranking": 16
+      },{
+        "name": "VfB Stuttgart",
+        "code": "VFB",
+        "ranking": 17
+      },{
+        "name": "Arminia Bielefeld",
+        "code": "DSC",
+        "ranking": 18
+      }
+    ]
+  }
+]

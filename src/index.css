@@ -1,16 +1,16 @@
+:root {
+  --color-background: #091c1a;
+  --color-main: #59a87d;
+  --color-secondary: #16453f;
+  --color-interactable: #f0debb;
+}
+
 * {
   box-sizing: border-box;
   font-family: Verdana, Arial, Tahoma, Serif;
   font-size: 1rem;
   margin: 0;
   padding: 0;
-}
-
-:root {
-  --color-background: #091c1a;
-  --color-main: #59a87d;
-  --color-secondary: #16453f;
-  --color-interactable: #f0debb;
 }
 
 body {
