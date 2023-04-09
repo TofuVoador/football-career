@@ -2,22 +2,9 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import Teams from './Database/teams.json';
 
-function randomNumber(min, max) { // min and max included 
+function RandomNumber(min, max) { // min and max included 
   return Math.floor(Math.random() * (max - min + 1) + min)
 }
-
-function getNewTeam() {
-  let league = Teams[randomNumber(0, Teams.length-1)];
-  let id = randomNumber(0, league.teams.length-1)
-  return(league.teams[id])
-}
-
-function getNewPosition() {
-  let pos = positions[randomNumber(0, positions.length-1)];
-  return(pos)
-}
-
-let transfer = getNewTeam();
 
 const positions = [
   {
@@ -58,88 +45,86 @@ const positions = [
 function App() {
   const [decisions, setDecisions]  = useState([]);
 
-  const [year, setYear] = useState(randomNumber(2019, 2021));
+  const [year, setYear] = useState(RandomNumber(2019, 2021));
 
   const [player, setPlayer] = useState({ 
-    age: randomNumber(17, 19),
-    position: getNewPosition(),
-    team: getNewTeam(),
+    age: RandomNumber(17, 19),
+    potential: RandomNumber(0, 4),
+    position: GetNewPosition(),
+    team: GetNewTeam(),
     totalGoals: 0,
     totalAssists: 0,
-    overall: randomNumber(60, 70),
+    overall: RandomNumber(62, 68),
     champions: 0,
     ballonDOr: 0,
     prodigyAward: 0,
     worldCup: 0
   })
 
+  function Generate (team = null) {
+    let newTeam = player.team;
 
-
-  function Generate (team) {
-    let newTeam = team;
     let newPosition = player.position;
 
-    if(team != player.team) {
-      newPosition = getNewPosition();
+    if(team) {
+      newTeam = team
+      newPosition = GetNewPosition()
     }
 
     let newAge = player.age+1;
 
-    let growth = (26+randomNumber(0, 10)-newAge)/2.5;
+    let growth = (player.potential+RandomNumber(24, 32)-newAge)/3;
 
     let newOverall = Math.floor(player.overall + growth);
 
     if(newOverall > 100) newOverall = 100;
 
-    let goalsThisYear = Math.floor((newOverall/2)  / newTeam.ranking) + randomNumber(0, newPosition.goalsBonus)
-    let assistsThisYear = Math.floor((newOverall/3) / newTeam.ranking) + randomNumber(0, newPosition.assistsBonus);
+    let goalsThisYear = Math.floor(newTeam.power*newOverall/10) + RandomNumber(0, newPosition.goalsBonus)
+    let assistsThisYear = Math.floor(newTeam.power*newOverall/20) + RandomNumber(0, newPosition.assistsBonus);
 
     let newGoals = player.totalGoals + goalsThisYear;
     let newAssists = player.totalAssists + assistsThisYear;
 
     let newTitles = [];
 
-    let chances = (newOverall/6-(newTeam.ranking*newTeam.ranking/2));
-
-    if(chances < 0) chances = 0;
-
-    console.log(chances)
+    let awardChances = (newOverall-75);
 
     let newChampions = player.champions;
-    if (randomNumber(1, 100) < chances) {
+    if (RandomNumber(1, 100) < newTeam.power*newTeam.power) {
       newChampions += 1;
       newTitles.push("Champions");
-      chances += 20;
+      awardChances += 15;
     }
     
     let newWorldCup = player.worldCup;
-    if((year+2)%4 == 0 && (newOverall > 80) && randomNumber(1,100) < newOverall/6) {
+    if((year+2)%4 == 0 && RandomNumber(1,100) < newOverall/12) {
         newWorldCup += 1;
         newTitles.push("Copa do Mundo");
-        chances += 20;
+        awardChances += 15;
     }
 
     let newBallonDOr = player.ballonDOr;
     let newProdigyAward = player.prodigyAward;
 
     if(newAge > 24){
-      if(newOverall >= 90 && randomNumber(1,100) <= chances) {
+      if(newOverall >= 85 && RandomNumber(1,100) <= awardChances - 10) {
         newBallonDOr += 1;
         newTitles.push("Ballon D'Or");
       }
     } else {
-      if(newOverall >= 75 && randomNumber(1,100) <= chances) {
+      if(newOverall >= 75 && RandomNumber(1,100) <= awardChances) {
         newProdigyAward += 1;
         newTitles.push("Prodígio");
       }
     }
 
-    if(randomNumber(1,100) <= 1) {
+    if(RandomNumber(1,100) <= 1) {
       newTitles.push("Puskás");
     }
 
     let newplayer = {
       age: newAge,
+      potential: player.potential,
       team: newTeam,
       position: newPosition,
       overall: newOverall,
@@ -169,8 +154,26 @@ function App() {
 
     setDecisions(newDecisions)
     setYear(year+1)
-    transfer = getNewTeam();
+    transfer = GetNewTeam();
   }
+  
+  function GetNewTeam() {
+    let league = Teams[RandomNumber(0, Teams.length-1)];
+    let id = RandomNumber(0, league.teams.length-1)
+    return(league.teams[id])
+  }
+  
+  function GetNewPosition() {
+    let pos = positions[RandomNumber(0, positions.length-1)];
+    return(pos)
+  }
+  
+  let transfer = GetNewTeam();
+
+  useEffect(() => {
+    console.log("Potencial: "+player.potential)
+    Generate(); 
+  }, []);
 
   return (
     <>
@@ -197,7 +200,7 @@ function App() {
           </div>
         ))}
       </div>
-      <a onClick={() => (Generate(player.team))}>Continuar em {player.team.name}</a>
+      <a onClick={() => (Generate())}>Continuar em {player.team.name}</a>
       <a onClick={() => (Generate(transfer))}>Transferir para {transfer.name}</a>
       <div className='stats'>
         <p>Gols: {player.totalGoals}</p>
