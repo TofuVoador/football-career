@@ -5,48 +5,26 @@ header {
   padding: 1rem;
 }
 
-.career {
-  color: var(--color-main);
-  padding: 2rem;
-}
-
-.decision {
-  margin-bottom: 1rem;
-}
-
-.stats-year {
-  display: flex;
-  gap: 2rem;
-}
-
-a {
-  color: var(--color-interactable);
+.career, .choices, .stats {
+  padding: 1rem;
   margin: 1rem;
-  padding: 1rem;
-  border-radius: 1rem;
-}
-
-a:hover {
-  background-color: var(--color-main);
-}
-
-.titles {
   display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--color-main);
+}
+
+.choices a {
   margin-bottom: 1rem;
-}
-
-.titles h1 {
-  margin-right: 1rem;
-}
-
-.titles-list {
-  display: flex;
-  justify-content: space-evenly;
-  gap: 1rem;
-}
-
-.stats {
-  margin-top: 1rem;
   padding: 1rem;
-  color: var(--color-secondary);
+  color: var(--color-emphassys);
+  border-radius: 1rem;
+  width: 100%;
+  max-width: 1000px;
+  display: flex;
+  justify-content: center;
+}
+
+.choices a:hover {
+  background-color: var(--color-main);
 }

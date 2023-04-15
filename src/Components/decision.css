@@ -1,0 +1,29 @@
+.decision {
+  margin-bottom: 2rem;
+  padding: 1rem;
+  border-radius: 2rem;
+  background-color: var(--color-secondary);
+  width: 100%;
+  max-width: 1000px;
+}
+
+.decision-title {
+  display: flex;
+  justify-content: center;
+  color: var(--color-emphassys);
+}
+
+.decision-titles {
+  margin: .5rem;
+  padding: .5rem;
+  border-radius: 2rem;
+  display: flex;
+  gap: 0.5rem;
+  color: var(--color-emphassys);
+}
+
+.decision-titles-list {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 0.5rem;
+}
