@@ -21,9 +21,3 @@
   gap: 0.5rem;
   color: var(--color-emphassys);
 }
-
-.decision-titles-list {
-  display: flex;
-  justify-content: space-evenly;
-  gap: 0.5rem;
-}

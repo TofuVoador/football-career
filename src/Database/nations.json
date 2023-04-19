@@ -1,161 +1,147 @@
 [
   {
-    "name": "Argentina",
-    "code": "ARG",
-    "power": 4
-  },
-  {
-    "name": "Bélgica",
-    "code": "BEL",
-    "power": 4
-  },
-  {
     "name": "Brasil",
     "code": "BRA",
     "power": 5
-  },
-  {
-    "name": "Chile",
-    "code": "CHI",
-    "power": 3
-  },
-  {
-    "name": "Colômbia",
-    "code": "COL",
-    "power": 3
-  },
-  {
-    "name": "Costa Rica",
-    "code": "CRC",
-    "power": 2
-  },
-  {
-    "name": "Croácia",
-    "code": "CRO",
-    "power": 3
-  },
-  {
-    "name": "Dinamarca",
-    "code": "DEN",
-    "power": 3
-  },
-  {
-    "name": "Egito",
-    "code": "EGY",
-    "power": 2
-  },
-  {
-    "name": "Espanha",
-    "code": "ESP",
-    "power": 4
-  },
-  {
-    "name": "Estados Unidos",
-    "code": "USA",
-    "power": 2
-  },
-  {
+  },{
     "name": "França",
     "code": "FRA",
     "power": 5
-  },
-  {
+  },{
+    "name": "Argentina",
+    "code": "ARG",
+    "power": 5
+  },{
+    "name": "Espanha",
+    "code": "ESP",
+    "power": 5
+  },{
+    "name": "Alemanha",
+    "code": "ALE",
+    "power": 4
+  },{
+    "name": "Itália",
+    "code": "ITA",
+    "power": 4
+  },{
+    "name": "Bélgica",
+    "code": "BEL",
+    "power": 4
+  },{
     "name": "Inglaterra",
     "code": "ENG",
     "power": 4
-  },
-  {
-    "name": "Irã",
-    "code": "IRN",
-    "power": 2
-  },
-  {
-    "name": "Islândia",
-    "code": "ISL",
-    "power": 2
-  },
-  {
-    "name": "Itália",
-    "code": "ITA",
-    "power": 3
-  },
-  {
-    "name": "Japão",
-    "code": "JPN",
-    "power": 3
-  },
-  {
-    "name": "Marrocos",
-    "code": "MAR",
-    "power": 2
-  },
-  {
-    "name": "México",
-    "code": "MEX",
-    "power": 3
-  },
-  {
-    "name": "Nigéria",
-    "code": "NGA",
-    "power": 3
-  },
-  {
-    "name": "Países Baixos",
-    "code": "NED",
-    "power": 3
-  },
-  {
-    "name": "Panamá",
-    "code": "PAN",
-    "power": 1
-  },
-  {
-    "name": "Peru",
-    "code": "PER",
-    "power": 2
-  },
-  {
-    "name": "Polônia",
-    "code": "POL",
-    "power": 3
-  },
-  {
+  },{
+    "name": "Croácia",
+    "code": "CRO",
+    "power": 4
+  },{
     "name": "Portugal",
     "code": "POR",
     "power": 4
-  },
-  {
-    "name": "Rússia",
-    "code": "RUS",
-    "power": 3
-  },
-  {
-    "name": "Senegal",
-    "code": "SEN",
+  },{
+    "name": "Países Baixos",
+    "code": "NED",
     "power": 3
   },{
-    "name": "Sérvia",
-    "code": "SRB",
+    "name": "Uruguai",
+    "code": "URU",
     "power": 3
-  },
-  {
-    "name": "Suécia",
-    "code": "SWE",
+  },{
+    "name": "Dinamarca",
+    "code": "DEN",
     "power": 3
-  },
-  {
+  },{
+    "name": "Marrocos",
+    "code": "MAR",
+    "power": 3
+  },{
+    "name": "México",
+    "code": "MEX",
+    "power": 3
+  },{
     "name": "Suíça",
     "code": "SUI",
     "power": 3
-  },
-  {
+  },{
+    "name": "Estados Unidos",
+    "code": "USA",
+    "power": 3
+  },{
+    "name": "Rússia",
+    "code": "RUS",
+    "power": 3
+  },{
+    "name": "Japão",
+    "code": "JPN",
+    "power": 2
+  },{
+    "name": "Chile",
+    "code": "CHI",
+    "power": 2
+  }, {
+    "name": "Polônia",
+    "code": "POL",
+    "power": 2
+  },{
+    "name": "Sérvia",
+    "code": "SRB",
+    "power": 2
+  },{
+    "name": "Senegal",
+    "code": "SEN",
+    "power": 2
+  },{
+    "name": "Suécia",
+    "code": "SWE",
+    "power": 2
+  },{
+    "name": "Nigéria",
+    "code": "NGA",
+    "power": 2
+  },{
+    "name": "Irã",
+    "code": "IRN",
+    "power": 2
+  },{
+    "name": "Colômbia",
+    "code": "COL",
+    "power": 1
+  },{
+    "name": "Costa Rica",
+    "code": "CRC",
+    "power": 1
+  },{
     "name": "Tunísia",
     "code": "TUN",
-    "power": 2
-  },
-  {
-    "name": "Uruguai",
-    "code": "URU",
-    "power": 4
+    "power": 1
+  },{
+    "name": "Egito",
+    "code": "EGY",
+    "power": 1
+  },{
+    "name": "Islândia",
+    "code": "ISL",
+    "power": 1
+  },{
+    "name": "Peru",
+    "code": "PER",
+    "power": 1
+  },{
+    "name": "Panamá",
+    "code": "PAN",
+    "power": 1
   }
+
+
+
+
+
+
+
+
+
+
+
+
 ]

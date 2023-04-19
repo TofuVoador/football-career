@@ -14,7 +14,6 @@ const Decision = (props) => {
         <p>Assistências: {decision.assists}</p>
       </div>
       <div className='decision-titles'>
-        <p>Títulos:</p>
         <div className='decision-titles-list'>
           {decision.titles.map((t) => (
             <p key={decision.year+t}>{t}</p>

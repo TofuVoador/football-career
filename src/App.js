@@ -11,43 +11,49 @@ function RandomNumber(min, max) { // min and max included
 const positions = [
   {
     title: "ST",
-    goalsBonus: 20,
+    goalsBonus: 12,
+    assistsBonus: 0,
+  },{
+    title: "CF",
+    goalsBonus: 12,
     assistsBonus: 0,
   },{
     title: "LW",
-    goalsBonus: 16,
-    assistsBonus: 4,
+    goalsBonus: 9,
+    assistsBonus: 3,
   },{
     title: "RW",
-    goalsBonus: 16,
-    assistsBonus: 4,
+    goalsBonus: 9,
+    assistsBonus: 3,
   },{
     title: "CAM",
-    goalsBonus: 12,
-    assistsBonus: 8,
-  },{
-    title: "CM",
-    goalsBonus: 8,
-    assistsBonus: 12,
+    goalsBonus: 6,
+    assistsBonus: 6,
   },{
     title: "LM",
-    goalsBonus: 4,
-    assistsBonus: 16,
+    goalsBonus: 3,
+    assistsBonus: 9,
   },{
     title: "RM",
-    goalsBonus: 4,
-    assistsBonus: 16,
+    goalsBonus: 3,
+    assistsBonus: 9,
+  },{
+    title: "CM",
+    goalsBonus: 0,
+    assistsBonus: 12,
   },{
     title: "CDM",
     goalsBonus: 0,
-    assistsBonus: 20,
+    assistsBonus: 12,
   }
 ]
+
+const TournamentPath = [ "Não Classificado", "Fase de Grupos", "16 avos", "Oitavas", "Quartas", "Semi-finais", "Final", "Vencedor" ]
 
 function App() {
   const [decisions, setDecisions]  = useState([]);
 
-  const [year, setYear] = useState(RandomNumber(2017, 2021));
+  const [year, setYear] = useState(RandomNumber(2021, 2025));
 
   const [player, setPlayer] = useState({ 
     potential: RandomNumber(1, 4),
@@ -59,10 +65,13 @@ function App() {
     overall: 68,
     totalGoals: 0,
     totalAssists: 0,
+    leagues: 0,
     champions: 0,
     worldCup: 0,
+    goldenShoes: 0,
     prodigyAward: 0,
-    ballonDOr: 0
+    ballonDOr: 0,
+    championsQualification: false
   })
 
   const [contract, setContract] = useState(RandomNumber(2, 6))
@@ -76,10 +85,13 @@ function App() {
     let newOverall = player.overall;
     let newGoals = player.totalGoals;
     let newAssists = player.totalAssists;
+    let newLeagues = player.leagues;
     let newChampions = player.champions;
     let newWorldCup = player.worldCup;
+    let newGoldenShoes = player.goldenShoes;
     let newProdigyAward = player.prodigyAward;
     let newBallonDOr = player.ballonDOr;
+    let newChampionsQualification = player.championsQualification;
 
     //pre season setup
     if(team) {    //if they change team
@@ -87,6 +99,7 @@ function App() {
       newPosition = GetNewPosition()
       newWage = Math.floor(Math.pow((player.overall - player.age) / 2.5 + (player.potential * newTeam.power), 2)) / 10
       setContract(RandomNumber(2,5))
+      if (4 <= GetLeaguePosition(newTeam.power)) newChampionsQualification = true
     } else {    //else if contract expires
       let cont = contract - 1;
       if(cont <= 0) {
@@ -98,7 +111,7 @@ function App() {
     }
 
     //calcule the player's performance
-    let growth = RandomNumber(-2, 3)/2.0-(newAge-(27+player.potential/1.6))/3.2;
+    let growth = RandomNumber(-2, 3)/2.0-(newAge-(26+player.potential/1.5))/3.0;
     newOverall += growth;
     if(newOverall > 100) newOverall = 100;
     
@@ -108,45 +121,92 @@ function App() {
     else if(starting < 0) starting = 0
 
     //giving the starting rate, randomize how many goals/assists did they score
-    let goalsThisYear = RandomNumber((starting/100) * newOverall / 3, (starting/100) * newOverall / 2) + RandomNumber(0, newPosition.goalsBonus);
-    let assistsThisYear = RandomNumber((starting/100) * newOverall / 5, (starting/100) * newOverall / 4) + RandomNumber(0, newPosition.assistsBonus);
+    let goalsThisYear = Math.floor((starting * newOverall / 300) + RandomNumber(0, newPosition.goalsBonus));
+    let assistsThisYear = Math.floor((starting * newOverall / 500) + RandomNumber(0, newPosition.assistsBonus));
 
-    //add to the carrer summary
+    let newTitles = [];   //collects the awards
+    let awardChances = starting * newOverall / 200;
+
+    //League
+    let leaguePosition = GetLeaguePosition(newTeam.power)
+
+    if(leaguePosition <= 1) {
+      newLeagues++
+      awardChances += 10
+      leaguePosition = 1
+    }
+
+    newTitles.push("Liga: " + leaguePosition + "° lugar");
+
+    let phase = 0;
+    let end = true;
+
+    //Champions Trophy
+    if(newChampionsQualification) {
+      phase++
+      end = false
+    }
+
+    while (!end) {
+      if (RandomNumber(0, 100) < (newTeam.power * newTeam.power * 4) - (phase * phase)) {   
+        phase++;
+
+        awardChances += phase;
+
+        if(phase >= TournamentPath.length - 1) {
+          newChampions += 1;
+          end = true
+        }
+      } else {
+        end = true
+      }
+    } 
+
+    newTitles.push("Champions: " + TournamentPath[phase]);
+
+    //World Cup Trophy
+    if ((year+2)%4 == 0) {
+      phase = 0;
+      end = false;
+
+      while (!end) {
+        if (RandomNumber(0, 100) < (player.nation.power * player.nation.power * 4) - (phase * phase)) {   
+          phase++;
+
+          awardChances += phase;
+  
+          if(phase >= TournamentPath.length - 1) {
+            newWorldCup += 1;
+            end = true
+          }
+        } else {
+          end = true
+        }
+      } 
+
+      newTitles.push("Copa do Mundo: " + TournamentPath[phase]);
+    }
+
+    //add goals to the carrer summary
     newGoals += goalsThisYear;
     newAssists += assistsThisYear;
 
     //post season results
-    let newTitles = [];   //collects the awards
+    if(RandomNumber(0,100) < 1) newTitles.push("Puskás");  //Puskás
 
-    if(RandomNumber(0,100) < 1) {   //Puskás
-      newTitles.push("Puskás");
-    }
-
-    let ballonDOreChances = (newOverall-88)*5;
-    let prodigyChances = (newOverall-80)*5;
-
-    if (RandomNumber(0, 100) < (newOverall/100)*(newTeam.power*newTeam.power-8)) {   //Champions Trophy
-      newChampions += 1;
-      newTitles.push("Champions");
-      ballonDOreChances += 15;
-      prodigyChances += 15;
-    }
-
-    if((year+2)%4 == 0 && RandomNumber(0, 100) < (newOverall/100)*(player.nation.power*player.nation.power-8)) {   //World Cup Trophy
-      newWorldCup += 1;
-      newTitles.push("Copa do Mundo");
-      ballonDOreChances += 20;
-      prodigyChances += 20;
+    if(RandomNumber(30,50) < goalsThisYear) {  //Golden Shoes
+      newGoldenShoes++
+      newTitles.push("Chuteira de Ouro");
     }
 
     if(newAge >= 24){
-      if(newOverall >= 88 && RandomNumber(0,100) <= ballonDOreChances) {    //Ballon D'or
-        newBallonDOr += 1;
+      if(newOverall >= 90 && RandomNumber(0,100) <= awardChances) {    //Ballon D'or
+        newBallonDOr++;
         newTitles.push("Ballon D'Or");
       }
     } else {
-      if(newOverall >= 80 && RandomNumber(0,100) <= prodigyChances) {   //Prodigy
-        newProdigyAward += 1;
+      if(newOverall >= 80 && RandomNumber(0,100) <= awardChances) {   //Prodigy
+        newProdigyAward++;
         newTitles.push("Prodígio");
       }
     }
@@ -159,14 +219,16 @@ function App() {
       stay_btn.style.display = "flex";
     }
 
-    //load two options of transfer
+    //load three options of transfer
     transfer = GetNewTeam();    
-    transfer2 = GetNewTeam();
 
     if(newAge >= 30) {    //retire option
       let retire_btn = document.getElementById("retire");
       retire_btn.style.display = "flex";
     }
+
+    if(leaguePosition <= 4) newChampionsQualification = true
+    else newChampionsQualification = false
 
     //set pleyer
     let newplayer = {
@@ -179,10 +241,13 @@ function App() {
       overall: newOverall,
       totalGoals: newGoals,
       totalAssists: newAssists,
+      leagues: newLeagues,
       champions: newChampions,
       worldCup: newWorldCup,
+      goldenShoes: newGoldenShoes,
       prodigyAward: newProdigyAward,
-      ballonDOr: newBallonDOr
+      ballonDOr: newBallonDOr,
+      championsQualification: newChampionsQualification
     }
     setPlayer(newplayer);
 
@@ -207,7 +272,8 @@ function App() {
   }
   
   function GetNewTeam() {
-    let league = Teams[RandomNumber(0, Teams.length-1)];
+    let leagueID = RandomNumber(0, Teams.length-1);
+    let league = Teams[leagueID];
     let team = league.teams[RandomNumber(0, league.teams.length-1)]
 
     return(team)
@@ -218,12 +284,15 @@ function App() {
     return(pos)
   }
 
+  function GetLeaguePosition(power) {
+    return RandomNumber(4-power, 12-power*2)
+  }
+
   function Retire() {
     console.log("Retired")
   }
   
   let transfer = GetNewTeam();
-  let transfer2 = GetNewTeam();
 
   return (
     <>
@@ -238,7 +307,6 @@ function App() {
       <div className='choices'>
         <a id='decision-stay' style={{display: "none"}} onClick={() => (Generate())}>Continuar em {player.team.name}</a>
         <a id='decision-transfer' onClick={() => (Generate(transfer))}>Transferir para {transfer.name}</a>
-        <a id='decision-transfer' onClick={() => (Generate(transfer2))}>Transferir para {transfer2.name}</a>
         <a id='retire' style={{display: "none"}}  onClick={() => (Retire())}>Aposentar-se</a>
       </div>
       <div className='stats'>
@@ -248,6 +316,7 @@ function App() {
         <h1>Carreira</h1>
         <p>Gols: {player.totalGoals}</p>
         <p>Assistências: {player.totalAssists}</p>
+        <p>Ligas: {player.leagues}</p>
         <p>Champions: {player.champions}</p>
         <p>Copa do Mundo: {player.worldCup}</p>
         <p>Prodígio: {player.prodigyAward}</p>

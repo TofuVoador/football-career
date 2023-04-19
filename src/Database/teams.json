@@ -3,84 +3,34 @@
     "name": "Premier League",
     "teams": [
       {
-        "name": "Manchester City FC",
-        "code": "MCI",
+        "name": "Manchester City",
         "power": 5
       },{
-        "name": "Liverpool FC",
-        "code": "LIV",
+        "name": "Liverpool",
         "power": 5
       },{
-        "name": "Manchester United FC",
-        "code": "MUN",
+        "name": "Manchester United",
         "power": 4
       },{
-        "name": "Arsenal FC",
-        "code": "ARS",
+        "name": "Arsenal",
         "power": 4
       },{
-        "name": "Chelsea FC",
-        "code": "CHE",
+        "name": "Chelsea",
         "power": 3
       },{
-        "name": "Tottenham Hotspur FC",
-        "code": "TOT",
+        "name": "Tottenham Hotspur",
         "power": 2
       },{
-        "name": "Everton FC",
-        "code": "EVE",
+        "name": "Everton",
         "power": 1
       },{
-        "name": "West Ham United FC",
-        "code": "WHU",
+        "name": "West Ham United",
         "power": 1
       },{
-        "name": "Aston Villa FC",
-        "code": "AVL",
-        "power": 1
-      },{
-        "name": "Newcastle United FC",
-        "code": "NEW",
-        "power": 1
-      },{
-        "name": "Crystal Palace FC",
-        "code": "CRY",
+        "name": "Aston Villa",
         "power": 0
       },{
-        "name": "Leicester City FC",
-        "code": "LEI",
-        "power": 0
-      },{
-        "name": "Leeds United FC",
-        "code": "LEE",
-        "power": 0
-      },{
-        "name": "Wolverhampton Wanderers FC",
-        "code": "WOL",
-        "power": 0
-      },{
-        "name": "Fulham FC",
-        "code": "FUL",
-        "power": 0
-      },{
-        "name": "Southampton FC",
-        "code": "SOU",
-        "power": 0
-      },{
-        "name": "Burnley FC",
-        "code": "BUR",
-        "power": 0
-      },{
-        "name": "West Bromwich Albion FC",
-        "code": "WBA",
-        "power": 0
-      },{
-        "name": "Sheffield United FC",
-        "code": "SHU",
-        "power": 0
-      },{
-        "name": "Brighton & Hove Albion FC",
-        "code": "BHA",
+        "name": "Newcastle United",
         "power": 0
       }
     ]
@@ -89,83 +39,33 @@
     "teams": [
       {
         "name": "Real Madrid",
-        "code": "RMD",
         "power": 5
       },{
-        "name": "FC Barcelona",
-        "code": "BAR",
+        "name": "Barcelona",
         "power": 5
       },{
         "name": "Atlético Madrid",
-        "code": "ATM",
+        "power": 4
+      },{
+        "name": "Villarreal",
+        "power": 4
+      },{
+        "name": "Sevilla",
         "power": 3
       },{
-        "name": "Villarreal CF",
-        "code": "VIL",
-        "power": 2
-      },{
-        "name": "Sevilla FC",
-        "code": "SEV",
-        "power": 1
-      },{
         "name": "Real Betis",
-        "code": "BET",
-        "power": 1
+        "power": 2
       },      {
         "name": "Athletic Club Bilbao",
-        "code": "ATH",
         "power": 1
       },{
-        "name": "Valencia CF",
-        "code": "VAL",
+        "name": "Valencia",
         "power": 1
       },{
         "name": "Real Sociedad",
-        "code": "RSO",
         "power": 0
       },{
-        "name": "RC Celta Vigo",
-        "code": "CEL",
-        "power": 0
-      },{
-        "name": "Getafe CF",
-        "code": "GET",
-        "power": 0
-      },{
-        "name": "CA Osasuna",
-        "code": "OSA",
-        "power": 0
-      },{
-        "name": "Cádiz CF",
-        "code": "CAD",
-        "power": 0
-      },{
-        "name": "Real Valladolid CF",
-        "code": "VLL",
-        "power": 0
-      },{
-        "name": "Granada CF",
-        "code": "GRA",
-        "power": 0
-      },{
-        "name": "Elche CF",
-        "code": "ELC",
-        "power": 0
-      },{
-        "name": "SD Eibar",
-        "code": "EIB",
-        "power": 0
-      },{
-        "name": "Deportivo Alavés",
-        "code": "ALA",
-        "power": 0
-      },{
-        "name": "Levante UD",
-        "code": "LEV",
-        "power": 0
-      },{
-        "name": "SD Huesca",
-        "code": "HUE",
+        "name": "Celta Vigo",
         "power": 0
       }
     ]
@@ -174,168 +74,33 @@
     "teams": [
       {
         "name": "Paris Saint-Germain",
-        "code": "PSG",
         "power": 5
       },{
         "name": "Olympique de Marseille",
-        "code": "OM",
         "power": 4
       },{
-        "name": "AS Monaco",
-        "code": "ASM",
+        "name": "Monaco",
         "power": 3
       },{
-        "name": "Lille OSC",
-        "code": "LOSC",
+        "name": "Lille",
+        "power": 3
+      },{
+        "name": "Nice",
         "power": 2
       },{
-        "name": "OGC Nice",
-        "code": "OGCN",
-        "power": 1
+        "name": "Rennais",
+        "power": 2
       },{
-        "name": "Stade Rennais FC",
-        "code": "SRFC",
-        "power": 1
-      },{
-        "name": "RC Lens",
-        "code": "RCL",
+        "name": "Lens",
         "power": 1
       },{
         "name": "Olympique Lyonnais",
-        "code": "OL",
         "power": 1
       },{
-        "name": "Stade de Reims",
-        "code": "SDR",
+        "name": "Reims",
         "power": 0
       },{
-        "name": "FC Nantes",
-        "code": "FCN",
-        "power": 0
-      },{
-        "name": "Angers SCO",
-        "code": "SCO",
-        "power": 0
-      },{
-        "name": "Montpellier HSC",
-        "code": "MHSC",
-        "power": 0
-      },{
-        "name": "Girondins de Bordeaux",
-        "code": "FCGB",
-        "power": 0
-      },{
-        "name": "FC Lorient",
-        "code": "FCL",
-        "power": 0
-      },{
-        "name": "Stade Brestois 29",
-        "code": "SB29",
-        "power": 0
-      },{
-        "name": "RC Strasbourg",
-        "code": "RCS",
-        "power": 0
-      },{
-        "name": "AS Saint-Étienne",
-        "code": "ASSE",
-        "power": 0
-      },{
-        "name": "FC Metz",
-        "code": "FCM",
-        "power": 0
-      },{
-        "name": "Dijon FCO",
-        "code": "DFCO",
-        "power": 0
-      },{
-        "name": "Nîmes Olympique",
-        "code": "NIMES",
-        "power": 0
-      }
-    ]
-  },{
-    "name": "Serie A",
-    "teams": [
-      {
-        "name": "SSC Napoli",
-        "code": "NAP",
-        "power": 4
-      },{
-        "name": "AC Milan",
-        "code": "MIL",
-        "power": 4
-      },{
-        "name": "FC Internazionale Milano",
-        "code": "INT",
-        "power": 3
-      },{
-        "name": "AS Roma",
-        "code": "ROM",
-        "power": 3
-      },{
-        "name": "SS Lazio",
-        "code": "LAZ",
-        "power": 2
-      },{
-        "name": "Juventus",
-        "code": "JUV",
-        "power": 2
-      },{
-        "name": "ACF Fiorentina",
-        "code": "FIO",
-        "power": 1
-      },{
-        "name": "Atalanta Bergamo",
-        "code": "ATA",
-        "power": 1
-      },{
-        "name": "Bologna FC",
-        "code": "BOL",
-        "power": 0
-      },{
-        "name": "Torino FC",
-        "code": "TOR",
-        "power": 0
-      },{
-        "name": "US Sassuolo Calcio",
-        "code": "SAS",
-        "power": 0
-      },{
-        "name": "Cagliari Calcio",
-        "code": "CAG",
-        "power": 0
-      },{
-        "name": "Hellas Verona",
-        "code": "HEL",
-        "power": 0
-      },{
-        "name": "Genoa CFC",
-        "code": "GEN",
-        "power": 0
-      },{
-        "name": "Spezia",
-        "code": "SPZ",
-        "power": 0
-      },{
-        "name": "UC Sampdoria",
-        "code": "SAM",
-        "power": 0
-      },{
-        "name": "Udinese Calcio",
-        "code": "UDI",
-        "power": 0
-      },{
-        "name": "Parma",
-        "code": "PAR",
-        "power": 0
-      },{
-        "name": "FC Crotone",
-        "code": "CRO",
-        "power": 0
-      },{
-        "name": "Benevento",
-        "code": "BEN",
+        "name": "Nantes",
         "power": 0
       }
     ]
@@ -344,75 +109,138 @@
     "teams": [
       {
         "name": "Bayern München",
-        "code": "FCB",
         "power": 5
       },{
         "name": "Borussia Dortmund",
-        "code": "BVB",
         "power": 4
       },{
         "name": "RB Leipzig",
-        "code": "RBL",
         "power": 3
       },{
-        "name": "Bayer 04 Leverkusen",
-        "code": "B04",
+        "name": "Bayer Leverkusen",
+        "power": 3
+      },{
+        "name": "Union Berlin",
         "power": 2
       },{
-        "name": "1. FC Union Berlin",
-        "code": "FCU",
-        "power": 1
-      },{
-        "name": "SC Freiburg",
-        "code": "SCF",
-        "power": 1
+        "name": "Freiburg",
+        "power": 2
       },{
         "name": "Eintracht Frankfurt",
-        "code": "FFM",
         "power": 1
       },{
-        "name": "VfL Wolfsburg",
-        "code": "WOB",
+        "name": "Wolfsburg",
         "power": 1
       },{
         "name": "Bor. Mönchengladbach",
-        "code": "BMG",
         "power": 0
       },{
-        "name": "1. FC Köln",
-        "code": "KOE",
+        "name": "Köln",
+        "power": 0
+      }
+    ]
+  },{
+    "name": "Serie A",
+    "teams": [
+      {
+        "name": "Internazionale Milano",
+        "power": 4
+      },{
+        "name": "Milan",
+        "power": 4
+      },{
+        "name": "Roma",
+        "power": 3
+      },{
+        "name": "Napoli",
+        "power": 3
+      },{
+        "name": "Lazio",
+        "power": 2
+      },{
+        "name": "Juventus",
+        "power": 2
+      },{
+        "name": "Fiorentina",
+        "power": 1
+      },{
+        "name": "Atalanta Bergamo",
+        "power": 1
+      },{
+        "name": "Bologna",
         "power": 0
       },{
-        "name": "FC Augsburg",
-        "code": "FCA",
+        "name": "Torino",
         "power": 0
-      },{
-        "name": "TSG 1899 Hoffenheim",
-        "code": "HOF",
-        "power": 0
-      },{
-        "name": "1. FSV Mainz 05",
-        "code": "M05",
-        "power": 0
+      }
+    ]
+  },{
+    "name": "Liga NOS",
+    "teams": [
+      {
+        "name": "Benfica",
+        "power": 4
       },      {
-        "name": "Werder Bremen",
-        "code": "BRE",
+        "name": "Porto",
+        "power": 4
+      },{
+        "name": "Sporting",
+        "power": 3
+      },{
+        "name": "Braga",
+        "power": 3
+      },{
+        "name": "Vitória de Guimarães",
+        "power": 2
+      },{
+        "name": "Famalicão",
+        "power": 2
+      },{
+        "name": "Santa Clara",
+        "power": 1
+      },{
+        "name": "Portimonense",
+        "power": 1
+      },{
+        "name": "Marítimo",
         "power": 0
       },{
-        "name": "FC Schalke 04",
-        "code": "S04",
+        "name": "Boavista",
+        "power": 0
+      }
+    ]
+  },{
+    "name": "Outros",
+    "teams": [
+      {
+        "name": "Zenit",
+        "power": 4
+      },{
+        "name": "Ajax",
+        "power": 4
+      },{
+        "name": "Olympiacos",
+        "power": 3
+      },{
+        "name": "Club Brugge",
+        "power": 3
+      },{
+        "name": "Feyenoord Rotterdam",
+        "power": 2
+      },{
+        "name": "Shakhtar",
+        "power": 2
+      },{
+        "name": "",
+        "power": 1
+      },{
+        "name": "",
+        "power": 1
+      },{
+        "name": "",
         "power": 0
       },{
-        "name": "Hertha BSC",
-        "code": "BSC",
-        "power": 0
-      },{
-        "name": "VfB Stuttgart",
-        "code": "VFB",
-        "power": 0
-      },{
-        "name": "Arminia Bielefeld",
-        "code": "DSC",
+        "name": "",
         "power": 0
       }
     ]
