@@ -111,7 +111,7 @@ function App() {
     }
 
     //calcule the player's performance
-    let growth = RandomNumber(-2, 3)/2.0-(newAge-(26+player.potential/1.5))/3.0;
+    let growth = (RandomNumber(-2, 3)-(newAge-(27+player.potential/2.0)))/2.5;
     newOverall += growth;
     if(newOverall > 100) newOverall = 100;
     
@@ -125,7 +125,7 @@ function App() {
     let assistsThisYear = Math.floor((starting * newOverall / 500) + RandomNumber(0, newPosition.assistsBonus));
 
     let newTitles = [];   //collects the awards
-    let awardChances = starting * newOverall / 200;
+    let awardChances = 0;
 
     //League
     let leaguePosition = GetLeaguePosition(newTeam.power)
@@ -200,7 +200,7 @@ function App() {
     }
 
     if(newAge >= 24){
-      if(newOverall >= 90 && RandomNumber(0,100) <= awardChances) {    //Ballon D'or
+      if(newOverall >= 88 && RandomNumber(0,100) <= awardChances) {    //Ballon D'or
         newBallonDOr++;
         newTitles.push("Ballon D'Or");
       }
@@ -213,7 +213,7 @@ function App() {
 
     //trasnfer window
     let stay_btn = document.getElementById("decision-stay")
-    if((growth < 1 && newAge < 24+newTeam.power/2.5) || (growth <= -1 && newAge < 27+newTeam.power/2.5) || (growth < newTeam.power/2.5-4)) {
+    if((growth < 1 && newAge < 25+newTeam.power/2.5) || (growth <= -1 && newAge < 27+newTeam.power/2.5) || (growth < newTeam.power/2.5-4)) {
       stay_btn.style.display = "none";    //fired by the team
     } else {
       stay_btn.style.display = "flex";
@@ -285,7 +285,7 @@ function App() {
   }
 
   function GetLeaguePosition(power) {
-    return RandomNumber(4-power, 12-power*2)
+    return RandomNumber(4-power, 14-power*2)
   }
 
   function Retire() {
@@ -301,7 +301,7 @@ function App() {
       </header>
       <div className='career'>
         {decisions.map((d, index) => (
-          <Decision key={index} decision={d}/>
+          <Decision key={index} decision={d} open={index >= decisions.length - 1}/>
         ))}
       </div>
       <div className='choices'>

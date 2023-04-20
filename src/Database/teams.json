@@ -6,17 +6,17 @@
         "name": "Manchester City",
         "power": 5
       },{
-        "name": "Liverpool",
-        "power": 5
-      },{
         "name": "Manchester United",
         "power": 4
       },{
         "name": "Arsenal",
-        "power": 4
+        "power": 3
+      },{
+        "name": "Liverpool",
+        "power": 3
       },{
         "name": "Chelsea",
-        "power": 3
+        "power": 2
       },{
         "name": "Tottenham Hotspur",
         "power": 2
@@ -42,16 +42,16 @@
         "power": 5
       },{
         "name": "Barcelona",
-        "power": 5
+        "power": 4
       },{
         "name": "Atlético Madrid",
-        "power": 4
+        "power": 3
       },{
         "name": "Villarreal",
-        "power": 4
+        "power": 3
       },{
         "name": "Sevilla",
-        "power": 3
+        "power": 2
       },{
         "name": "Real Betis",
         "power": 2
@@ -144,7 +144,7 @@
     "teams": [
       {
         "name": "Internazionale Milano",
-        "power": 4
+        "power": 5
       },{
         "name": "Milan",
         "power": 4
@@ -175,7 +175,7 @@
       }
     ]
   },{
-    "name": "Liga NOS",
+    "name": "Outros",
     "teams": [
       {
         "name": "Benfica",
@@ -184,63 +184,28 @@
         "name": "Porto",
         "power": 4
       },{
-        "name": "Sporting",
-        "power": 3
-      },{
-        "name": "Braga",
-        "power": 3
-      },{
-        "name": "Vitória de Guimarães",
-        "power": 2
-      },{
-        "name": "Famalicão",
-        "power": 2
-      },{
-        "name": "Santa Clara",
-        "power": 1
-      },{
-        "name": "Portimonense",
-        "power": 1
-      },{
-        "name": "Marítimo",
-        "power": 0
-      },{
-        "name": "Boavista",
-        "power": 0
-      }
-    ]
-  },{
-    "name": "Outros",
-    "teams": [
-      {
-        "name": "Zenit",
-        "power": 4
-      },{
         "name": "Ajax",
-        "power": 4
+        "power": 3
+      },{
+        "name": "Zenit",
+        "power": 3
+      },{
+        "name": "Sporting",
+        "power": 2
       },{
         "name": "Olympiacos",
-        "power": 3
+        "power": 2
       },{
         "name": "Club Brugge",
-        "power": 3
-      },{
-        "name": "Feyenoord Rotterdam",
-        "power": 2
+        "power": 1
       },{
         "name": "Shakhtar",
-        "power": 2
-      },{
-        "name": "",
         "power": 1
       },{
-        "name": "",
-        "power": 1
-      },{
-        "name": "",
+        "name": "Galatasaray",
         "power": 0
       },{
-        "name": "",
+        "name": "PSV",
         "power": 0
       }
     ]

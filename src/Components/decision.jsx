@@ -3,11 +3,13 @@ import './decision.css';
 
 const Decision = (props) => {
   let decision = props.decision
+  let open = props.open
   return ( 
-    <div className='decision' key={decision.year}>
-      <h1 className='decision-title'>{decision.year} (Idade: {decision.age}) - Overall: {Math.floor(decision.overall*10.0)/10}</h1>
+    <details className='decision' key={decision.year} open={open}>
+      <summary className='decision-title'>{decision.team.name} ({decision.position.title}) - Overall: {Math.floor(decision.overall*10.0)/10}</summary>
       <div className='decision-stats'>
-        <p>Time: {decision.team.name} ({decision.position.title})</p>
+        <p>Ano: {decision.year}</p>
+        <p>Idade: {decision.age}</p>
         <p>Salário Anual: {decision.wage}M</p>
         <p>Titular: {decision.starting}%</p>
         <p>Gols: {decision.goals}</p>
@@ -20,7 +22,7 @@ const Decision = (props) => {
           ))}
         </div>
       </div>
-    </div>
+    </details>
   );
 }
  
