@@ -2,7 +2,8 @@ import React, { useEffect, useState } from 'react';
 import './App.css';
 import Teams from './Database/teams.json';
 import Nations from './Database/nations.json'
-import Decision from './Components/decision';
+import ChartComponent from './Components/chartComponent';
+import Season from './Components/season';
 
 function RandomNumber(min, max) { // min and max included 
   return Math.floor(Math.random() * (max + 1 - min) + min)
@@ -51,7 +52,7 @@ const positions = [
 const TournamentPath = [ "Não Classificado", "Fase de Grupos", "16 avos", "Oitavas", "Quartas", "Semi-finais", "Final", "Vencedor" ]
 
 function App() {
-  const [decisions, setDecisions]  = useState([]);
+  const [seasons, setSeasons]  = useState([]);
 
   const [year, setYear] = useState(RandomNumber(2021, 2025));
 
@@ -97,21 +98,21 @@ function App() {
     if(team) {    //if they change team
       newTeam = team
       newPosition = GetNewPosition()
-      newWage = Math.floor(Math.pow((player.overall - player.age) / 2.5 + (player.potential * newTeam.power), 2)) / 10
-      setContract(RandomNumber(2,5))
+      newWage = Math.floor(Math.pow((27 + player.overall - player.age) / 4 + player.potential * 5, 2)) / 10
+      setContract(RandomNumber(1,4))
       if (4 <= GetLeaguePosition(newTeam.power)) newChampionsQualification = true
     } else {    //else if contract expires
       let cont = contract - 1;
       if(cont <= 0) {
-        setContract(RandomNumber(2,5))
-        newWage = Math.floor(Math.pow((player.overall - player.age) / 2.5 + (player.potential * newTeam.power), 2)) / 10
+        setContract(RandomNumber(1,4))
+        newWage = Math.floor(Math.pow((27 + player.overall - player.age) / 4 + player.potential * 5, 2)) / 10
       } else {
         setContract(cont)
       }
     }
 
     //calcule the player's performance
-    let growth = (RandomNumber(-2, 3)-(newAge-(27+player.potential/2.0)))/2.5;
+    let growth = (RandomNumber(-2, 3) / 2.0 - (newAge - (28 + player.potential / 2.5))) / 3.0;
     newOverall += growth;
     if(newOverall > 100) newOverall = 100;
     
@@ -121,8 +122,8 @@ function App() {
     else if(starting < 0) starting = 0
 
     //giving the starting rate, randomize how many goals/assists did they score
-    let goalsThisYear = Math.floor((starting * newOverall / 300) + RandomNumber(0, newPosition.goalsBonus));
-    let assistsThisYear = Math.floor((starting * newOverall / 500) + RandomNumber(0, newPosition.assistsBonus));
+    let goalsThisYear = Math.floor((starting * newOverall / 300) * (100 + RandomNumber(0, newPosition.goalsBonus)) / 100);
+    let assistsThisYear = Math.floor((starting * newOverall / 500) * (100 + RandomNumber(0, newPosition.assistsBonus)) / 100);
 
     let newTitles = [];   //collects the awards
     let awardChances = 0;
@@ -213,7 +214,7 @@ function App() {
 
     //trasnfer window
     let stay_btn = document.getElementById("decision-stay")
-    if((growth < 1 && newAge < 25+newTeam.power/2.5) || (growth <= -1 && newAge < 27+newTeam.power/2.5) || (growth < newTeam.power/2.5-4)) {
+    if((growth < 1 && newAge < 25 + newTeam.power / 2.5) || (growth < -1 && newAge < 30 + newTeam.power / 2.5) || (growth < -3)) {
       stay_btn.style.display = "none";    //fired by the team
     } else {
       stay_btn.style.display = "flex";
@@ -251,9 +252,9 @@ function App() {
     }
     setPlayer(newplayer);
 
-    //set Decisions
-    const newDecisions = [
-      ... decisions,
+    //set Seasons
+    const newSeasons = [
+      ... seasons,
       {
         year: year,
         age: newAge,
@@ -267,7 +268,7 @@ function App() {
         overall: newOverall
       }
     ];
-    setDecisions(newDecisions)
+    setSeasons(newSeasons)
     setYear(year+1)
   }
   
@@ -289,7 +290,10 @@ function App() {
   }
 
   function Retire() {
-    console.log("Retired")
+    let chart = document.getElementById('chart')
+    console.log(chart)
+    chart.style.display = 'flex';
+    chart.scrollIntoView()
   }
   
   let transfer = GetNewTeam();
@@ -300,8 +304,8 @@ function App() {
         <h1>Football Star</h1>
       </header>
       <div className='career'>
-        {decisions.map((d, index) => (
-          <Decision key={index} decision={d} open={index >= decisions.length - 1}/>
+        {seasons.map((s, index) => (
+          <Season key={index} season={s} open={index >= seasons.length - 1}/>
         ))}
       </div>
       <div className='choices'>
@@ -310,17 +314,22 @@ function App() {
         <a id='retire' style={{display: "none"}}  onClick={() => (Retire())}>Aposentar-se</a>
       </div>
       <div className='stats'>
-        <h1>Sobre</h1>
-        <p>Potencial: {player.potential}</p>
-        <p>Seleção: {player.nation.name}</p>
         <h1>Carreira</h1>
+        <br/>
+        <p>Seleção: {player.nation.name}</p>
+        <p>Copa do Mundo: {player.worldCup}</p>
+        <br/>
         <p>Gols: {player.totalGoals}</p>
         <p>Assistências: {player.totalAssists}</p>
+        <br/>
         <p>Ligas: {player.leagues}</p>
         <p>Champions: {player.champions}</p>
-        <p>Copa do Mundo: {player.worldCup}</p>
+        <br/>
         <p>Prodígio: {player.prodigyAward}</p>
         <p>Ballon D'Or: {player.ballonDOr}</p>
+      </div>
+      <div className='chart' id='chart' style={{display: 'none'}}>
+          <ChartComponent data={seasons}/>
       </div>
     </>
   );

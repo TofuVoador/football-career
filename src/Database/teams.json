@@ -174,40 +174,5 @@
         "power": 0
       }
     ]
-  },{
-    "name": "Outros",
-    "teams": [
-      {
-        "name": "Benfica",
-        "power": 4
-      },      {
-        "name": "Porto",
-        "power": 4
-      },{
-        "name": "Ajax",
-        "power": 3
-      },{
-        "name": "Zenit",
-        "power": 3
-      },{
-        "name": "Sporting",
-        "power": 2
-      },{
-        "name": "Olympiacos",
-        "power": 2
-      },{
-        "name": "Club Brugge",
-        "power": 1
-      },{
-        "name": "Shakhtar",
-        "power": 1
-      },{
-        "name": "Galatasaray",
-        "power": 0
-      },{
-        "name": "PSV",
-        "power": 0
-      }
-    ]
   }
 ]

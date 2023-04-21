@@ -28,3 +28,13 @@ header {
 .choices a:hover {
   background-color: var(--color-main);
 }
+
+.chart {
+  display: flex;
+  justify-content: center;
+}
+
+.chart div {
+  width: 100%;
+  max-width: 1000px;
+}
