@@ -73,11 +73,11 @@ function App() {
     worldCupPhase: null
   });
 
-  const [year, setYear] = useState(RandomNumber(2017, 2023));
+  const [year, setYear] = useState(new Date().getFullYear()-1);
 
   const [player, setPlayer] = useState({ 
     potential: RandomNumber(1, 5),
-    age: 19,
+    age: RandomNumber(17, 19),
     nation: Nations[RandomNumber(0, Nations.length-1)],
     team: GetNewTeam(),
     position: GetNewPosition(),
@@ -460,7 +460,14 @@ function App() {
   return (
     <>
       <header>
-        <h1>Football Star</h1>
+        <h1>Football Career Simulator</h1>
+        <h3 style={{marginTop: "1rem"}}>Como Jogar</h3>
+        <ol style={{marginLeft: "2rem"}}>
+          <li>Escolha entre ficar ou transferir para outro time.</li>
+          <li>Escolha uma posição para jogar</li>
+          <li>O jogo simulará uma temporada a partir do que você escolheu</li>
+          <li>Boa sorte e divirta-se</li>
+        </ol>
       </header>
       <div className='career'>
         {seasons.map((s, index) => (
