@@ -1,147 +1,135 @@
 [
   {
     "name": "Brasil",
-    "code": "BRA",
+    "continent": "América do Sul",
     "power": 5
   },{
     "name": "França",
-    "code": "FRA",
+    "continent": "Europa",
     "power": 5
   },{
     "name": "Argentina",
-    "code": "ARG",
+    "continent": "América do Sul",
     "power": 5
   },{
     "name": "Espanha",
-    "code": "ESP",
+    "continent": "Europa",
     "power": 5
   },{
     "name": "Alemanha",
-    "code": "ALE",
+    "continent": "Europa",
     "power": 4
   },{
     "name": "Itália",
-    "code": "ITA",
+    "continent": "Europa",
     "power": 4
   },{
     "name": "Bélgica",
-    "code": "BEL",
+    "continent": "Europa",
     "power": 4
   },{
     "name": "Inglaterra",
-    "code": "ENG",
+    "continent": "Europa",
     "power": 4
   },{
     "name": "Croácia",
-    "code": "CRO",
+    "continent": "Europa",
     "power": 4
   },{
     "name": "Portugal",
-    "code": "POR",
+    "continent": "Europa",
     "power": 4
   },{
     "name": "Países Baixos",
-    "code": "NED",
+    "continent": "Europa",
     "power": 3
   },{
     "name": "Uruguai",
-    "code": "URU",
+    "continent": "América do Sul",
     "power": 3
   },{
     "name": "Dinamarca",
-    "code": "DEN",
+    "continent": "Europa",
     "power": 3
   },{
     "name": "Marrocos",
-    "code": "MAR",
+    "continent": "África",
     "power": 3
   },{
     "name": "México",
-    "code": "MEX",
+    "continent": "América do Norte",
     "power": 3
   },{
     "name": "Suíça",
-    "code": "SUI",
+    "continent": "Europa",
     "power": 3
   },{
     "name": "Estados Unidos",
-    "code": "USA",
+    "continent": "América do Norte",
     "power": 3
   },{
     "name": "Rússia",
-    "code": "RUS",
+    "continent": "Europa",
     "power": 3
   },{
     "name": "Japão",
-    "code": "JPN",
+    "continent": "Ásia",
     "power": 2
   },{
     "name": "Chile",
-    "code": "CHI",
+    "continent": "América do Sul",
     "power": 2
-  }, {
+  },{
     "name": "Polônia",
-    "code": "POL",
+    "continent": "Europa",
     "power": 2
   },{
     "name": "Sérvia",
-    "code": "SRB",
+    "continent": "Europa",
     "power": 2
   },{
     "name": "Senegal",
-    "code": "SEN",
+    "continent": "África",
     "power": 2
   },{
     "name": "Suécia",
-    "code": "SWE",
+    "continent": "Europa",
     "power": 2
   },{
     "name": "Nigéria",
-    "code": "NGA",
+    "continent": "África",
     "power": 2
   },{
     "name": "Irã",
-    "code": "IRN",
+    "continent": "Ásia",
     "power": 2
   },{
     "name": "Colômbia",
-    "code": "COL",
+    "continent": "América do Sul",
     "power": 1
   },{
     "name": "Costa Rica",
-    "code": "CRC",
+    "continent": "América do Norte",
     "power": 1
   },{
     "name": "Tunísia",
-    "code": "TUN",
+    "continent": "África",
     "power": 1
   },{
     "name": "Egito",
-    "code": "EGY",
+    "continent": "África",
     "power": 1
   },{
     "name": "Islândia",
-    "code": "ISL",
+    "continent": "Europa",
     "power": 1
   },{
     "name": "Peru",
-    "code": "PER",
+    "continent": "América do Sul",
     "power": 1
   },{
     "name": "Panamá",
-    "code": "PAN",
+    "continent": "América do Norte",
     "power": 1
   }
-
-
-
-
-
-
-
-
-
-
-
-
 ]

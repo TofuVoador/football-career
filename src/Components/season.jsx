@@ -10,6 +10,7 @@ const Season = (props) => {
       <div className='season-stats'>
         <p>Idade: {season.age}</p>
         <p>Salário Anual: {season.wage}M</p>
+        <p>Desempenho: {season.performance > 0 ? "+" : ""}{season.performance}</p>
         <p>Titular: {season.starting}%</p>
         <p>Gols: {season.goals}</p>
         <p>Assistências: {season.assists}</p>
