@@ -38,3 +38,10 @@ header {
   width: 100%;
   max-width: 1000px;
 }
+
+.stats div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1rem;
+}

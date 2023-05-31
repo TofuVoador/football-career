@@ -6,7 +6,7 @@ const Season = (props) => {
   let open = props.open
   return ( 
     <details className='season' key={season.year} open={open}>
-      <summary className='season-title'>{season.year}: {season.team.name} ({season.position.title}) - Overall: {Math.floor(season.overall*10.0)/10}</summary>
+      <summary className='season-title'>{season.year}: {season.team.name} - Overall: {Math.floor(season.overall*10.0)/10}</summary>
       <div className='season-stats'>
         <p>Idade: {season.age}</p>
         <p>Salário Anual: {season.wage}M</p>

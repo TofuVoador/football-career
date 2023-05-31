@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import Teams from './Database/teams.json';
 import Nations from './Database/nations.json'
+import Sponsor from './Database/sponsors.json'
 import ChartComponent from './Components/chartComponent';
 import Season from './Components/season';
 
@@ -47,6 +48,22 @@ const positions = [
     title: "CDM",
     goalsBonus: 4,
     assistsBonus: 4,
+  },{
+    title: "LB",
+    goalsBonus: 6,
+    assistsBonus: 6,
+  },{
+    title: "RB",
+    goalsBonus: 5,
+    assistsBonus: 5,
+  },{
+    title: "CB",
+    goalsBonus: 4,
+    assistsBonus: 4,
+  },{
+    title: "GK",
+    goalsBonus: 4,
+    assistsBonus: 4,
   }
 ]
 
@@ -60,7 +77,6 @@ function App() {
     age: null,
     team: null,
     wage: null,
-    position: null,
     starting: null,
     titles: null,
     goals: null,
@@ -70,7 +86,8 @@ function App() {
     leaguePosition: null,
     championsPhase: null,
     europaPhase: null,
-    worldCupPhase: null
+    worldCupPhase: null,
+    seasonSponsor: null
   });
 
   const [year, setYear] = useState(new Date().getFullYear()-1);
@@ -92,19 +109,20 @@ function App() {
     goldenShoes: 0,
     ballonDOr: 0,
     championsQualification: false,
-    europaQualification: false
+    europaQualification: false,
+    currentSponsor: GetNewSponsor()
   })
 
   const [contract, setContract] = useState(0)
 
+  const [changeSponsor, setChangeSponsor] = useState(GetNewSponsor())
+
   const [transfer1, setTransfer1] = useState(GetNewTeam());
   const [transfer2, setTransfer2] = useState(GetNewTeam());
 
-  const [changePos, setChangePos] = useState(GetNewPosition());
-
   function ChooseTeam (team = null) {   //next season
     document.getElementById('team-choice').style.display = "none"
-    document.getElementById('position-choice').style.display = "flex"
+    document.getElementById('sponsor-choice').style.display = "flex"
 
     //load all player's stats
     let newPlayer = player
@@ -115,7 +133,7 @@ function App() {
     if(team) {    //if they change team
       newPlayer.team = team
       let newContract = RandomNumber(1,3);
-      newPlayer.wage = Math.floor(Math.pow(newPlayer.overall - newPlayer.age / 2 + newPlayer.team.power * 10, 2)) / 100;
+      newPlayer.wage = Math.floor(Math.pow(newPlayer.overall - newPlayer.age / 2, 2) / 2) / 10;
       setContract(newContract)
       let lp = GetLeaguePosition(newPlayer.team.power);
       if(lp <= 4) {
@@ -133,7 +151,7 @@ function App() {
       let cont = contract - 1;
       if(cont <= 0) {
         let newContract = RandomNumber(1,3);
-        newPlayer.wage = Math.floor(Math.pow(newPlayer.overall - newPlayer.age / 2 + newPlayer.team.power * 10, 2)) / 100;
+        newPlayer.wage = Math.floor(Math.pow(newPlayer.overall - newPlayer.age / 2, 2) / 2) / 10;
         setContract(newContract)
       } else {
         setContract(cont)
@@ -143,19 +161,19 @@ function App() {
     //calcule the player's performance
     
     let newPerformance = (RandomNumber(-10, 10) + RandomNumber(-10, 10) + newPlayer.team.power) / 10
-    newPlayer.overall = (82 + newPlayer.potential * 2) - Math.pow((30 - newPlayer.age), 2) / 10 + newPerformance;
+    newPlayer.overall = (84 + newPlayer.potential * 2) - Math.pow((30 - newPlayer.age), 2) / 10 + newPerformance;
     if(newPlayer.overall > 100) newPlayer.overall = 100;
     
     //giving the performance, set how many games did they were the starter player
-    let starting = Math.floor(8*(newPlayer.overall - (65 + 2 * newPlayer.team.power)))
+    let starting = Math.floor(8*(newPlayer.overall - (70 + 2 * newPlayer.team.power)))
     if(starting > 100) starting = 100
     else if(starting < 0) starting = 0
 
-    let newPos = GetNewPosition();
-    while (newPos.title == newPlayer.position.title) {
-      newPos = GetNewPosition();
+    let newSp = GetNewSponsor();
+    while (newSp.name == newPlayer.currentSponsor.title) {
+      newSp = GetNewPosition();
     }
-    setChangePos(newPos);
+    setChangeSponsor(newSp);
 
     //set season start
     let newSeason = {
@@ -163,7 +181,6 @@ function App() {
       age: newPlayer.age,
       team: newPlayer.team,
       wage: newPlayer.wage,
-      position: newPlayer.position,
       starting: starting,
       titles: [],
       goals: 0,
@@ -173,7 +190,8 @@ function App() {
       leaguePosition: (8-newPlayer.team.power),
       championsPhase: 0,
       europaPhase: 0,
-      worldCupPhase: 0
+      worldCupPhase: 0,
+      seasonSponsor: newPlayer.currentSponsor
     }
 
     //save
@@ -182,16 +200,16 @@ function App() {
     setYear(year+1)
   }
 
-  function ChoosePos(newPos = null) {
+  function ChooseSponsor(newSp = null) {
     document.getElementById('team-choice').style.display = "flex"
-    document.getElementById('position-choice').style.display = "none"
+    document.getElementById('sponsor-choice').style.display = "none"
 
     let newPlayer = player;
     let newSeason = currentSeason;
 
-    if(newPos) {
-      newPlayer.position = newPos;
-      newSeason.position = newPos;
+    if(newSp) {
+      newPlayer.currentSponsor = newSp;
+      newSeason.seasonSponsor = newSp;
     }
 
     //giving the starting rate, randomize how many goals/assists did they score
@@ -386,7 +404,9 @@ function App() {
     //trasnfer window
 
     //fired
-    if(newSeason.performance <= -1 && newSeason.europaPhase < newPlayer.team.power && newSeason.championsPhase < newPlayer.team.power && leaguePosition > (7 - newPlayer.team.power))
+    if((newSeason.performance <= -1 && 
+      newSeason.europaPhase < newPlayer.team.power && newSeason.championsPhase < newPlayer.team.power && leaguePosition > (7 - newPlayer.team.power)) ||
+      newPlayer.overall >= 85 + newPlayer.team.power * 3)
       document.getElementById("decision-stay").style.display = "none"
     else
       document.getElementById("decision-stay").style.display = "flex"
@@ -395,7 +415,8 @@ function App() {
     let newTransfer1 = GetNewTeam();
     let newTransfer2 = GetNewTeam();
 
-    while (newTransfer1.name == newPlayer.team.name || newTransfer2.name == newPlayer.team.name || newTransfer1.name == newTransfer2.name) {
+    while (newTransfer1.name == newPlayer.team.name || newTransfer2.name == newPlayer.team.name || newTransfer1.name == newTransfer2.name || 
+      newPlayer.overall >= 80 + newTransfer1.power * 4 || newPlayer.overall >= 80 + newTransfer2.power * 4) {
       newTransfer1 = GetNewTeam();
       newTransfer2 = GetNewTeam();
     } 
@@ -450,7 +471,15 @@ function App() {
     return(pos)
   }
 
+  function GetNewSponsor() {
+    let sponsorID = RandomNumber(0, Sponsor.length - 1);
+    let sp = Sponsor[sponsorID];
+    return(sp)
+  }
+
   function Retire() {
+    document.getElementById("team-choice").style.display = "none";
+    document.getElementById("sponsor-choice").style.display = "none";
     let chart = document.getElementById('chart')
     console.log(chart)
     chart.style.display = 'flex';
@@ -464,7 +493,7 @@ function App() {
         <h3 style={{marginTop: "1rem"}}>Como Jogar</h3>
         <ol style={{marginLeft: "2rem"}}>
           <li>Escolha entre ficar ou transferir para outro time.</li>
-          <li>Escolha uma posição para jogar</li>
+          <li>Escolha entre manter ou assinar com outro patrocinador.</li>
           <li>O jogo simulará uma temporada a partir do que você escolheu</li>
           <li>Boa sorte e divirta-se</li>
         </ol>
@@ -480,26 +509,33 @@ function App() {
         <a id='decision-transfer2' onClick={() => (ChooseTeam(transfer2))}>Transferir para {transfer2.name}</a>
         <a id='retire' style={{display: "none"}}  onClick={() => (Retire())}>Aposentar-se</a>
       </div>
-      <div className='choices' id='position-choice' style={{display: "none"}}>
-        <a id='decision-same-position' onClick={() => (ChoosePos())}>Jogar como {player.position.title}</a>
-        <a id='decision-change-position' onClick={() => (ChoosePos(changePos))}>Jogar como {changePos.title}</a>
+      <div className='choices' id='sponsor-choice' style={{display: "none"}}>
+        <a id='decision-same-sponsor' onClick={() => (ChooseSponsor())}>Continuar com {player.currentSponsor.name}: {player.currentSponsor.description}</a>
+        <a id='decision-change-sponsor' onClick={() => (ChooseSponsor(changeSponsor))}>Assinar com {changeSponsor.name}: {changeSponsor.description}</a>
       </div>
       <div className='stats'>
-        <h1>Carreira</h1>
-        <p>Potencial: {player.potential}</p>
-        <br/>
-        <p>Seleção: {player.nation.name}</p>
-        <p>Copa do Mundo: {player.worldCup}</p>
-        <br/>
-        <p>Gols: {player.totalGoals}</p>
-        <p>Assistências: {player.totalAssists}</p>
-        <br/>
-        <p>Ligas: {player.leagues}</p>
-        <p>Champions: {player.champions}</p>
-        <p>Europa League: {player.europa}</p>
-        <br/>
-        <p>Chuteiras de Ouro: {player.goldenShoes}</p>
-        <p>Ballon D'Or: {player.ballonDOr}</p>
+        <div>
+          <h1>Carreira</h1>
+          <p>Potencial: {player.potential}</p>
+          <p>Posição: {player.position.title}</p>
+        </div>
+        <div>
+          <p>Seleção: {player.nation.name}</p>
+          <p>Copa do Mundo: {player.worldCup}</p>
+        </div>
+        <div>
+          <p>Gols: {player.totalGoals}</p>
+          <p>Assistências: {player.totalAssists}</p>
+        </div>
+        <div>
+          <p>Ligas: {player.leagues}</p>
+          <p>Champions: {player.champions}</p>
+          <p>Europa League: {player.europa}</p>
+        </div>
+        <div>
+          <p>Chuteiras de Ouro: {player.goldenShoes}</p>
+          <p>Ballon D'Or: {player.ballonDOr}</p>
+        </div>
       </div>
       <div className='chart' id='chart' style={{display: 'none'}}>
           <ChartComponent data={seasons}/>

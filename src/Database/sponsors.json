@@ -1,0 +1,103 @@
+[
+  {
+    "name": "Emigrants",
+    "description": "Porque a grama do vizinho é mais verde",
+    "maxPayValue": 1000000,
+    "maxFameEarn": 5000
+  },{
+    "name": "Bye Emirates",
+    "description": "Adeus ao glamour, agora é só bagagem de mão",
+    "maxPayValue": 1200000,
+    "maxFameEarn": 6000
+  },{
+    "name": "Kuaitair Skyways",
+    "description": "De Kuait para o Mundo!",
+    "maxPayValue": 1000000,
+    "maxFameEarn": 5000
+  },{
+    "name": "Deep Motors",
+    "description": "Nas profundezas da tecnologia automotiva",
+    "maxPayValue": 800000,
+    "maxFameEarn": 4000
+  },{
+    "name": "Folskwagen",
+    "description": "Viaje tranquilo com os parças!",
+    "maxPayValue": 750000,
+    "maxFameEarn": 3800
+  },{
+    "name": "Huntday",
+    "description": "Caçando as melhores estradas",
+    "maxPayValue": 900000,
+    "maxFameEarn": 4500
+  },{
+    "name": "Sheetalet",
+    "description": "Diriga como um felino!",
+    "maxPayValue": 950000,
+    "maxFameEarn": 4700
+  },{
+    "name": "Arribas",
+    "description": "O seu centro esportivo mexicano",
+    "maxPayValue": 1100000,
+    "maxFameEarn": 5500
+  },{
+    "name": "Like",
+    "description": "Para amantes do Esporte",
+    "maxPayValue": 1050000,
+    "maxFameEarn": 5200
+  },{
+    "name": "Pluma",
+    "description": "Os materiais esportivos mais fofos do mercado",
+    "maxPayValue": 850000,
+    "maxFameEarn": 4200
+  },{
+    "name": "BetOneYear",
+    "description": "O favorito do apostador a longo prazo!",
+    "maxPayValue": 700000,
+    "maxFameEarn": 3500
+  },{
+    "name": "Cocain-Cola",
+    "description": "A bebida que vai te viciar",
+    "maxPayValue": 850000,
+    "maxFameEarn": 4200
+  },{
+    "name": "Pepsick",
+    "description": "Enjoado dos refrigerantes comuns?",
+    "maxPayValue": 800000,
+    "maxFameEarn": 4000
+  },{
+    "name": "Samsnug",
+    "description": "Tecnologia e conforto pertinho de você",
+    "maxPayValue": 950000,
+    "maxFameEarn": 4700
+  },{
+    "name": "Maestrocard",
+    "description": "A melhor sinfonia do empreendedor",
+    "maxPayValue": 900000,
+    "maxFameEarn": 4500
+  },{
+    "name": "Grillette",
+    "description": "A barba perfeita para o churrasco!",
+    "maxPayValue": 750000,
+    "maxFameEarn": 3800
+  },{
+    "name": "Ammozone",
+    "description": "Armas e Acessórios de A a Z",
+    "maxPayValue": 1100000,
+    "maxFameEarn": 5500
+  },{
+    "name": "Alphabet Poodle",
+    "description": "A maior rede de fotos de cachorros fofinhos",
+    "maxPayValue": 1050000,
+    "maxFameEarn": 5200
+  },{
+    "name": "Micro & Soft",
+    "description": "Pelo menos não machuca",
+    "maxPayValue": 1000000,
+    "maxFameEarn": 5000
+  },{
+    "name": "Mapple",
+    "description": "Tecnologia fora do mapa",
+    "maxPayValue": 1150000,
+    "maxFameEarn": 5750
+  }
+]
