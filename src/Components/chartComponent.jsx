@@ -6,6 +6,7 @@ const ChartComponent = ({ data }) => {
   const chartRef2 = useRef(null);
   const chartRef3 = useRef(null);
   const chartRef4 = useRef(null);
+  const chartRef5 = useRef(null);
 
   useEffect(() => {
     const chartOptions = {
@@ -25,8 +26,14 @@ const ChartComponent = ({ data }) => {
       ]
     };
 
+    const chart1 = new Chart(chartRef1.current, {
+      type: 'line', // specify chart type, e.g. line, bar, pie, etc.
+      data: chartData1,
+      options: chartOptions
+    });
+
     const chartData2 = {
-      labels: data.map(item => item.team.power), // x-axis labels
+      labels: data.map(item => item.age), // x-axis labels
       datasets: [
         {
           label: 'Wage',
@@ -38,8 +45,33 @@ const ChartComponent = ({ data }) => {
       ]
     };
 
+    const chart2 = new Chart(chartRef2.current, {
+      type: 'line', // specify chart type, e.g. line, bar, pie, etc.
+      data: chartData2,
+      options: chartOptions
+    });
+
     const chartData3 = {
-      labels: data.map(item => item.starting), // x-axis labels
+      labels: data.map(item => item.age), // x-axis labels
+      datasets: [
+        {
+          label: 'Fame',
+          data: data.map(item => item.fame), // y-axis data
+          backgroundColor: 'rgba(89, 168, 125, 1)', // specify chart color
+          borderColor: 'rgba(89, 168, 125, 1)', // specify border color
+          borderWidth: 2 // specify border width
+        }
+      ]
+    };
+
+    const chart3 = new Chart(chartRef3.current, {
+      type: 'line', // specify chart type, e.g. line, bar, pie, etc.
+      data: chartData3,
+      options: chartOptions
+    });
+
+    const chartData4 = {
+      labels: data.map(item => item.year), // x-axis labels
       datasets: [
         {
           label: 'Goals',
@@ -57,7 +89,13 @@ const ChartComponent = ({ data }) => {
       ]
     };
 
-    const chartData4 = {
+    const chart4 = new Chart(chartRef4.current, {
+      type: 'line', // specify chart type, e.g. line, bar, pie, etc.
+      data: chartData4,
+      options: chartOptions
+    });
+
+    const chartData5 = {
       labels: data.map(item => item.year), // x-axis labels
       datasets: [
         {
@@ -76,28 +114,9 @@ const ChartComponent = ({ data }) => {
       ]
     };
 
-    // Initialize the chart
-    const chart1 = new Chart(chartRef1.current, {
+    const chart5 = new Chart(chartRef5.current, {
       type: 'line', // specify chart type, e.g. line, bar, pie, etc.
-      data: chartData1,
-      options: chartOptions
-    });
-
-    const chart2 = new Chart(chartRef2.current, {
-      type: 'line', // specify chart type, e.g. line, bar, pie, etc.
-      data: chartData2,
-      options: chartOptions
-    });
-
-    const chart3 = new Chart(chartRef3.current, {
-      type: 'line', // specify chart type, e.g. line, bar, pie, etc.
-      data: chartData3,
-      options: chartOptions
-    });
-
-    const chart4 = new Chart(chartRef4.current, {
-      type: 'line', // specify chart type, e.g. line, bar, pie, etc.
-      data: chartData4,
+      data: chartData5,
       options: chartOptions
     });
 
@@ -108,6 +127,7 @@ const ChartComponent = ({ data }) => {
       chart2.destroy();
       chart3.destroy();
       chart4.destroy();
+      chart5.destroy();
     };
   }, [data]);
 
@@ -117,6 +137,7 @@ const ChartComponent = ({ data }) => {
       <canvas ref={chartRef2} />
       <canvas ref={chartRef3} />
       <canvas ref={chartRef4} />
+      <canvas ref={chartRef5} />
     </div>
   );
 };
