@@ -13,57 +13,72 @@ function RandomNumber(min, max) { // min and max included
 const positions = [
   {
     title: "ST",
-    goalsBonus: 10,
-    assistsBonus: 4,
+    goalsBonus: 60,
+    assistsBonus: 40,
   },{
     title: "CF",
-    goalsBonus: 9,
-    assistsBonus: 5,
+    goalsBonus: 54,
+    assistsBonus: 36,
+  },{
+    title: "LF",
+    goalsBonus: 48,
+    assistsBonus: 32,
+  },{
+    title: "RF",
+    goalsBonus: 48,
+    assistsBonus: 32,
+  },{
+    title: "CAM",
+    goalsBonus: 42,
+    assistsBonus: 28,
   },{
     title: "LW",
-    goalsBonus: 8,
-    assistsBonus: 6,
+    goalsBonus: 36,
+    assistsBonus: 24,
   },{
     title: "RW",
-    goalsBonus: 8,
-    assistsBonus: 6,
-  },{
-    
-    title: "CAM",
-    goalsBonus: 7,
-    assistsBonus: 7,
+    goalsBonus: 36,
+    assistsBonus: 24,
   },{
     title: "LM",
-    goalsBonus: 6,
-    assistsBonus: 6,
-  },{
-    title: "RM",
-    goalsBonus: 6,
-    assistsBonus: 6,
+    goalsBonus: 30,
+    assistsBonus: 20,
   },{
     title: "CM",
-    goalsBonus: 5,
-    assistsBonus: 5,
+    goalsBonus: 30,
+    assistsBonus: 20,
+  },{
+    title: "RM",
+    goalsBonus: 30,
+    assistsBonus: 20,
+  },{
+    title: "LWB",
+    goalsBonus: 24,
+    assistsBonus: 16,
+  },{
+    title: "RWB",
+    goalsBonus: 24,
+    assistsBonus: 16,
   },{
     title: "CDM",
-    goalsBonus: 4,
-    assistsBonus: 4,
+    goalsBonus: 18,
+    assistsBonus: 12,
   },{
     title: "LB",
-    goalsBonus: 6,
-    assistsBonus: 6,
+    goalsBonus: 12,
+    assistsBonus: 8,
   },{
     title: "RB",
-    goalsBonus: 5,
-    assistsBonus: 5,
+    goalsBonus: 12,
+    assistsBonus: 8,
   },{
     title: "CB",
-    goalsBonus: 4,
+    goalsBonus: 6,
     assistsBonus: 4,
   },{
     title: "GK",
-    goalsBonus: 4,
-    assistsBonus: 4,
+    goalsBonus: 0,
+    assistsBonus: 0,
   }
 ]
 
@@ -222,8 +237,8 @@ function App() {
     //newPlayer.fame += newPlayer.currentSponsor.fame_rating
 
     //giving the starting rate, randomize how many goals/assists did they score
-    newSeason.goals = Math.floor((newSeason.starting * newPlayer.overall) / 250 + RandomNumber(0, newPlayer.position.goalsBonus));
-    newSeason.assists = Math.floor((newSeason.starting * newPlayer.overall) / 500 + RandomNumber(0, newPlayer.position.assistsBonus));
+    newSeason.goals = Math.floor(((newSeason.starting / 100) * newPlayer.position.goalsBonus * (newPlayer.overall / 100)) + RandomNumber(-10, 10));
+    newSeason.assists = Math.floor(((newSeason.starting / 100) * newPlayer.position.assistsBonus * (newPlayer.overall / 100)) + RandomNumber(-10, 10));
 
     let awardPoints = newSeason.performance * 2;
 
@@ -417,7 +432,7 @@ function App() {
     if((newSeason.performance <= -1 && 
       newSeason.europaPhase < newPlayer.team.power && newSeason.championsPhase < newPlayer.team.power && leaguePosition > (7 - newPlayer.team.power)) ||
       newPlayer.overall >= 85 + newPlayer.team.power * 3 ||
-      (contract <= 1 && RandomNumber(0, 100) <= 20))
+      (contract <= 1 && RandomNumber(0, 100) <= 25))
       document.getElementById("decision-stay").style.display = "none"
     else
       document.getElementById("decision-stay").style.display = "flex"
