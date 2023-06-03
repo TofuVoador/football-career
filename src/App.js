@@ -13,68 +13,68 @@ function RandomNumber(min, max) { // min and max included
 const positions = [
   {
     title: "ST",
-    goalsBonus: 60,
-    assistsBonus: 30,
+    goalsBonus: 40,
+    assistsBonus: 20,
   },{
     title: "CF",
-    goalsBonus: 54,
-    assistsBonus: 27,
+    goalsBonus: 36,
+    assistsBonus: 18,
   },{
     title: "LF",
-    goalsBonus: 48,
-    assistsBonus: 24,
+    goalsBonus: 32,
+    assistsBonus: 16,
   },{
     title: "RF",
-    goalsBonus: 48,
-    assistsBonus: 24,
+    goalsBonus: 32,
+    assistsBonus: 16,
   },{
     title: "CAM",
-    goalsBonus: 42,
-    assistsBonus: 21,
+    goalsBonus: 28,
+    assistsBonus: 14,
   },{
     title: "LW",
-    goalsBonus: 36,
-    assistsBonus: 18,
+    goalsBonus: 24,
+    assistsBonus: 12,
   },{
     title: "RW",
-    goalsBonus: 36,
-    assistsBonus: 18,
+    goalsBonus: 24,
+    assistsBonus: 12,
   },{
     title: "LM",
-    goalsBonus: 30,
-    assistsBonus: 15,
+    goalsBonus: 20,
+    assistsBonus: 10,
   },{
     title: "CM",
-    goalsBonus: 30,
-    assistsBonus: 15,
+    goalsBonus: 20,
+    assistsBonus: 10,
   },{
     title: "RM",
-    goalsBonus: 30,
-    assistsBonus: 15,
+    goalsBonus: 20,
+    assistsBonus: 10,
   },{
     title: "LWB",
-    goalsBonus: 24,
-    assistsBonus: 12,
+    goalsBonus: 16,
+    assistsBonus: 8,
   },{
     title: "RWB",
-    goalsBonus: 24,
-    assistsBonus: 12,
+    goalsBonus: 16,
+    assistsBonus: 8,
   },{
     title: "CDM",
-    goalsBonus: 18,
-    assistsBonus: 9,
+    goalsBonus: 12,
+    assistsBonus: 6,
   },{
     title: "LB",
-    goalsBonus: 12,
-    assistsBonus: 6,
+    goalsBonus: 8,
+    assistsBonus: 4,
   },{
     title: "RB",
-    goalsBonus: 12,
-    assistsBonus: 6,
+    goalsBonus: 8,
+    assistsBonus: 4,
   },{
     title: "CB",
-    goalsBonus: 6,
-    assistsBonus: 3,
+    goalsBonus: 4,
+    assistsBonus: 2,
   },{
     title: "GK",
     goalsBonus: 0,
@@ -173,7 +173,7 @@ function App() {
       let cont = contract - 1;
       if(cont <= 0) {
         let newContract = RandomNumber(1,3);
-        newPlayer.wage = Math.floor(Math.pow(newPlayer.overall + RandomNumber(0, newPlayer.team.power * 2), 2) / 10) / 10;
+        newPlayer.wage = Math.floor(Math.pow(newPlayer.overall + RandomNumber(0, newPlayer.team.power), 2) / 10) / 10;
         setContract(newContract)
       } else {
         setContract(cont)
@@ -194,7 +194,7 @@ function App() {
     else if(starting < 0) starting = 0
 
     let newSp = GetNewSponsor();
-    while (newSp.name == newPlayer.currentSponsor.company_name || newSp.fame_rating > 2 + newPlayer.fame / 20) {
+    while (newSp.name == newPlayer.currentSponsor.company_name || newSp.fame_rating > 1.5 + newPlayer.fame / 15) {
       newSp = GetNewSponsor();
     }
     setChangeSponsor(newSp);
@@ -240,8 +240,11 @@ function App() {
     newPlayer.fame += RandomNumber(0, newPlayer.currentSponsor.fame_rating)
 
     //giving the starting rate, randomize how many goals/assists did they score
-    newSeason.goals = Math.floor(((newSeason.starting / 100) * newPlayer.position.goalsBonus * (newPlayer.overall / 100)) + RandomNumber(0, 10));
-    newSeason.assists = Math.floor(((newSeason.starting / 100) * newPlayer.position.assistsBonus * (newPlayer.overall / 100)) + RandomNumber(0, 10));
+    newSeason.goals = Math.floor(((newSeason.starting / 100) * newPlayer.position.goalsBonus * (newPlayer.overall / 100)) + newSeason.performance * 4);
+    newSeason.assists = Math.floor(((newSeason.starting / 100) * newPlayer.position.assistsBonus * (newPlayer.overall / 100)) + newSeason.performance * 2);
+
+    if(newSeason.goals < 0) newSeason.goals = 0;
+    if(newSeason.assists < 0) newSeason.assists = 0;
 
     let awardPoints = newSeason.performance * 2;
 
@@ -426,7 +429,7 @@ function App() {
     if(awardPoints + newPlayer.overall >= 100) {    //Ballon D'or
       newPlayer.ballonDOr++;
       newSeason.titles.push("Ballon D'Or");
-      newPlayer.fame += 10
+      newPlayer.fame += 20
     }
 
     //trasnfer window
@@ -501,7 +504,7 @@ function App() {
     let leagueID = RandomNumber(0, Teams.length-1);
     let league = Teams[leagueID];
     let team = league.teams[RandomNumber(0, league.teams.length-1)];
-    let contractValue = Math.floor(Math.pow(currentPlayer.overall + RandomNumber(0, team.power * 2), 2) / 10) / 10;
+    let contractValue = Math.floor(Math.pow(currentPlayer.overall + RandomNumber(team.power, team.power * 2), 2) / 10) / 10;
 
     return({"team": team, "contract": contractValue}) 
   }
