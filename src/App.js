@@ -14,73 +14,75 @@ const positions = [
   {
     title: "ST",
     goalsBonus: 60,
-    assistsBonus: 40,
+    assistsBonus: 30,
   },{
     title: "CF",
     goalsBonus: 54,
-    assistsBonus: 36,
+    assistsBonus: 27,
   },{
     title: "LF",
     goalsBonus: 48,
-    assistsBonus: 32,
+    assistsBonus: 24,
   },{
     title: "RF",
     goalsBonus: 48,
-    assistsBonus: 32,
+    assistsBonus: 24,
   },{
     title: "CAM",
     goalsBonus: 42,
-    assistsBonus: 28,
+    assistsBonus: 21,
   },{
     title: "LW",
     goalsBonus: 36,
-    assistsBonus: 24,
+    assistsBonus: 18,
   },{
     title: "RW",
     goalsBonus: 36,
-    assistsBonus: 24,
+    assistsBonus: 18,
   },{
     title: "LM",
     goalsBonus: 30,
-    assistsBonus: 20,
+    assistsBonus: 15,
   },{
     title: "CM",
     goalsBonus: 30,
-    assistsBonus: 20,
+    assistsBonus: 15,
   },{
     title: "RM",
     goalsBonus: 30,
-    assistsBonus: 20,
+    assistsBonus: 15,
   },{
     title: "LWB",
     goalsBonus: 24,
-    assistsBonus: 16,
+    assistsBonus: 12,
   },{
     title: "RWB",
     goalsBonus: 24,
-    assistsBonus: 16,
+    assistsBonus: 12,
   },{
     title: "CDM",
     goalsBonus: 18,
-    assistsBonus: 12,
+    assistsBonus: 9,
   },{
     title: "LB",
     goalsBonus: 12,
-    assistsBonus: 8,
+    assistsBonus: 6,
   },{
     title: "RB",
     goalsBonus: 12,
-    assistsBonus: 8,
+    assistsBonus: 6,
   },{
     title: "CB",
     goalsBonus: 6,
-    assistsBonus: 4,
+    assistsBonus: 3,
   },{
     title: "GK",
     goalsBonus: 0,
     assistsBonus: 0,
   }
 ]
+
+const StarPath = ["Esquecido", "Ok", "Bem visto", "Jogador mediano", "Deixou sua marca", "Estrela", "Ídolo Nacional", "Lenda", "GOAT"]
 
 const TournamentPath = [ "Não Classificado", "Fase de Grupos", "16 avos", "Oitavas", "Quartas", "Semi-finais", "Final", "Vencedor" ]
 
@@ -114,7 +116,7 @@ function App() {
     nation: Nations[RandomNumber(0, Nations.length-1)],
     team: GetNewOpponent(),
     position: GetNewPosition(),
-    wage: 20,
+    wage: 10,
     overall: 70,
     totalGoals: 0,
     totalAssists: 0,
@@ -134,8 +136,8 @@ function App() {
 
   const [changeSponsor, setChangeSponsor] = useState(GetNewSponsor())
 
-  const [transfer1, setTransfer1] = useState({"team": GetNewOpponent(), "contract": 10});
-  const [transfer2, setTransfer2] = useState({"team": GetNewOpponent(), "contract": 10});
+  const [transfer1, setTransfer1] = useState({"team": GetNewOpponent(), "contract": RandomNumber(50, 70)});
+  const [transfer2, setTransfer2] = useState({"team": GetNewOpponent(), "contract": RandomNumber(50, 70)});
 
   function ChooseTeam (newTeam = null) {   //next season
     document.getElementById('team-choice').style.display = "none"
@@ -148,11 +150,12 @@ function App() {
 
     //pre season setup
     if(newTeam) {    //if they change team
-      newPlayer.fame -= newPlayer.team.power * 5
+      newPlayer.fame -= newPlayer.team.power * 4
+      if(newPlayer.fame < 0) newPlayer.fame = 0;
       newPlayer.team = newTeam.team
       let newContract = RandomNumber(1,3) + 1;
       newPlayer.wage = newTeam.contract;
-      newPlayer.fame += newPlayer.team.power * 5
+      newPlayer.fame += newPlayer.team.power * 4
       setContract(newContract)
       let lp = GetLeaguePosition(newPlayer.team.power);
       if(lp <= 4) {
@@ -170,7 +173,7 @@ function App() {
       let cont = contract - 1;
       if(cont <= 0) {
         let newContract = RandomNumber(1,3);
-        newPlayer.wage = Math.floor(Math.pow(newPlayer.overall - newPlayer.age / 2, 2) / 5) / 10;
+        newPlayer.wage = Math.floor(Math.pow(newPlayer.overall + RandomNumber(0, newPlayer.team.power * 2), 2) / 10) / 10;
         setContract(newContract)
       } else {
         setContract(cont)
@@ -183,16 +186,16 @@ function App() {
     newPlayer.overall = (82 + newPlayer.potential * 2) - Math.pow((30 - newPlayer.age), 2) / 10 + newPerformance;
     if(newPlayer.overall > 100) newPlayer.overall = 100;
     
-    newPlayer.fame += newPerformance * 2
+    newPlayer.fame += newPerformance
 
     //giving the performance, set how many games did they were the starter player
-    let starting = Math.floor(8*(newPlayer.overall - (70 + 2 * newPlayer.team.power)))
+    let starting = Math.floor(8*(newPlayer.overall - (67.5 + newPlayer.team.power)))
     if(starting > 100) starting = 100
     else if(starting < 0) starting = 0
 
     let newSp = GetNewSponsor();
-    while (newSp.name == newPlayer.currentSponsor.company_name) {
-      newSp = GetNewPosition();
+    while (newSp.name == newPlayer.currentSponsor.company_name || newSp.fame_rating > 2 + newPlayer.fame / 20) {
+      newSp = GetNewSponsor();
     }
     setChangeSponsor(newSp);
 
@@ -234,11 +237,11 @@ function App() {
       newSeason.seasonSponsor = newSp;
     }
 
-    //newPlayer.fame += newPlayer.currentSponsor.fame_rating
+    newPlayer.fame += RandomNumber(0, newPlayer.currentSponsor.fame_rating)
 
     //giving the starting rate, randomize how many goals/assists did they score
-    newSeason.goals = Math.floor(((newSeason.starting / 100) * newPlayer.position.goalsBonus * (newPlayer.overall / 100)) + RandomNumber(-10, 10));
-    newSeason.assists = Math.floor(((newSeason.starting / 100) * newPlayer.position.assistsBonus * (newPlayer.overall / 100)) + RandomNumber(-10, 10));
+    newSeason.goals = Math.floor(((newSeason.starting / 100) * newPlayer.position.goalsBonus * (newPlayer.overall / 100)) + RandomNumber(0, 10));
+    newSeason.assists = Math.floor(((newSeason.starting / 100) * newPlayer.position.assistsBonus * (newPlayer.overall / 100)) + RandomNumber(0, 10));
 
     let awardPoints = newSeason.performance * 2;
 
@@ -429,10 +432,9 @@ function App() {
     //trasnfer window
 
     //fired
-    if((newSeason.performance <= -1 && 
-      newSeason.europaPhase < newPlayer.team.power && newSeason.championsPhase < newPlayer.team.power && leaguePosition > (7 - newPlayer.team.power)) ||
-      newPlayer.overall >= 85 + newPlayer.team.power * 3 ||
-      (contract <= 1 && RandomNumber(0, 100) <= 25))
+    if(
+      (newSeason.performance <= -1 && newSeason.europaPhase < newPlayer.team.power && newSeason.championsPhase < newPlayer.team.power && leaguePosition > (7 - newPlayer.team.power)) ||
+      (contract <= 1 && (newPlayer.overall >= 80 + newPlayer.team.power * 4 || RandomNumber(0, 100) <= 50)))
       document.getElementById("decision-stay").style.display = "none"
     else
       document.getElementById("decision-stay").style.display = "flex"
@@ -499,7 +501,7 @@ function App() {
     let leagueID = RandomNumber(0, Teams.length-1);
     let league = Teams[leagueID];
     let team = league.teams[RandomNumber(0, league.teams.length-1)];
-    let contractValue = Math.floor(Math.pow(currentPlayer.overall - currentPlayer.age / 2 + RandomNumber(0, team.power), 2) / 5) / 10;
+    let contractValue = Math.floor(Math.pow(currentPlayer.overall + RandomNumber(0, team.power * 2), 2) / 10) / 10;
 
     return({"team": team, "contract": contractValue}) 
   }
@@ -520,7 +522,6 @@ function App() {
     document.getElementById("team-choice").style.display = "none";
     document.getElementById("sponsor-choice").style.display = "none";
     let chart = document.getElementById('chart')
-    console.log(chart)
     chart.style.display = 'flex';
     chart.scrollIntoView()
   }
@@ -550,12 +551,15 @@ function App() {
         <a id='retire' style={{display: "none"}}  onClick={() => (Retire())}>Aposentar-se</a>
       </div>
       <div className='choices' id='sponsor-choice' style={{display: "none"}}>
-        <a id='decision-same-sponsor' onClick={() => (ChooseSponsor())}>Continuar com {player.currentSponsor.company_name}</a>
-        <a id='decision-change-sponsor' onClick={() => (ChooseSponsor(changeSponsor))}>Assinar com {changeSponsor.company_name}</a>
+        <a id='decision-same-sponsor' onClick={() => (ChooseSponsor())}>Continuar com {player.currentSponsor.company_name} (${player.currentSponsor.contract_value}M)</a>
+        <a id='decision-change-sponsor' onClick={() => (ChooseSponsor(changeSponsor))}>Assinar com {changeSponsor.company_name} (${changeSponsor.contract_value}M)</a>
       </div>
       <div className='stats'>
+        <h1>Carreira</h1>
         <div>
-          <h1>Carreira</h1>
+          <p>Fama: {Math.floor(player.fame)} ({StarPath[Math.floor(player.fame / 25)]})</p>
+        </div>
+        <div>
           <p>Potencial: {player.potential}</p>
           <p>Posição: {player.position.title}</p>
         </div>

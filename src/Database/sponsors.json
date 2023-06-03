@@ -2,92 +2,92 @@
   {
     "company_name": "Nike",
     "contract_value": 20,
-    "fame_rating": 10
+    "fame_rating": 5
   },
   {
     "company_name": "Adidas",
     "contract_value": 19,
-    "fame_rating": 10
+    "fame_rating": 5
   },
   {
     "company_name": "Puma",
     "contract_value": 18,
-    "fame_rating": 9
+    "fame_rating": 5
   },
   {
     "company_name": "Red Bull",
     "contract_value": 17,
-    "fame_rating": 9
+    "fame_rating": 5
   },
   {
     "company_name": "Emirates",
     "contract_value": 16,
-    "fame_rating": 8
+    "fame_rating": 4
   },
   {
     "company_name": "Qatar Airways",
     "contract_value": 15,
-    "fame_rating": 8
+    "fame_rating": 4
   },
   {
     "company_name": "Coca-Cola",
     "contract_value": 14,
-    "fame_rating": 7
-  },
-  {
-    "company_name": "Samsung",
-    "contract_value": 13,
-    "fame_rating": 7
-  },
-  {
-    "company_name": "Chevrolet",
-    "contract_value": 12,
-    "fame_rating": 6
+    "fame_rating": 4
   },
   {
     "company_name": "Sony",
+    "contract_value": 13,
+    "fame_rating": 4
+  },
+  {
+    "company_name": "Samsung",
+    "contract_value": 12,
+    "fame_rating": 3
+  },
+  {
+    "company_name": "Chevrolet",
     "contract_value": 11,
-    "fame_rating": 6
+    "fame_rating": 3
   },
   {
     "company_name": "Pepsi",
     "contract_value": 10,
-    "fame_rating": 5
+    "fame_rating": 3
   },
   {
     "company_name": "Visa",
     "contract_value": 9,
-    "fame_rating": 5
+    "fame_rating": 3
   },
   {
     "company_name": "Toyota",
     "contract_value": 8,
-    "fame_rating": 4
+    "fame_rating": 2
   },
   {
     "company_name": "Mastercard",
     "contract_value": 7,
-    "fame_rating": 4
+    "fame_rating": 2
   },
   {
     "company_name": "Gatorade",
     "contract_value": 6,
-    "fame_rating": 3
+    "fame_rating": 2
   },
   {
     "company_name": "Gillette",
     "contract_value": 5,
-    "fame_rating": 3
+    "fame_rating": 2
   },
   {
     "company_name": "Emirates NBD",
     "contract_value": 4,
-    "fame_rating": 2
+    "fame_rating": 1
   },
   {
     "company_name": "Herbalife",
     "contract_value": 3,
-    "fame_rating": 2
+    "fame_rating": 1
   },
   {
     "company_name": "McDonald's",
