@@ -11,7 +11,7 @@ const Season = (props) => {
         <p>Idade: {season.age}</p>
         <p>Salário Anual: {season.wage}M</p>
         <p>Desempenho: {season.performance > 0 ? "+" : ""}{season.performance}</p>
-        <p>Fama: {season.fame}</p>
+        <p>Fama: {Math.floor(season.fame)}</p>
         <p>Titular: {season.starting}%</p>
         <p>Gols: {season.goals}</p>
         <p>Assistências: {season.assists}</p>
