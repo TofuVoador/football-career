@@ -112,7 +112,7 @@ function App() {
 
   const [player, setPlayer] = useState({ 
     potential: RandomNumber(1, 5),
-    age: RandomNumber(17, 19),
+    age: 17,
     nation: Nations[RandomNumber(0, Nations.length-1)],
     team: GetNewOpponent(),
     position: GetNewPosition(),
@@ -136,8 +136,19 @@ function App() {
 
   const [changeSponsor, setChangeSponsor] = useState(GetNewSponsor())
 
-  const [transfer1, setTransfer1] = useState({"team": GetNewOpponent(), "contract": RandomNumber(50, 70)});
-  const [transfer2, setTransfer2] = useState({"team": GetNewOpponent(), "contract": RandomNumber(50, 70)});
+  const [maxFame, setMaxFame] = useState(0);
+
+  const [transfer1, setTransfer1] = useState(GetNewTeam({ 
+    potential: 3,
+    age: 17,
+    overall: 72
+  }));
+
+  const [transfer2, setTransfer2] = useState(GetNewTeam({ 
+    potential: 3,
+    age: 17,
+    overall: 72
+  }));
 
   function ChooseTeam (newTeam = null) {   //next season
     document.getElementById('team-choice').style.display = "none"
@@ -150,12 +161,12 @@ function App() {
 
     //pre season setup
     if(newTeam) {    //if they change team
-      newPlayer.fame -= newPlayer.team.power * 4
+      newPlayer.fame -= newPlayer.team.power * 10
       if(newPlayer.fame < 0) newPlayer.fame = 0;
       newPlayer.team = newTeam.team
       let newContract = RandomNumber(1,3) + 1;
       newPlayer.wage = newTeam.contract;
-      newPlayer.fame += newPlayer.team.power * 4
+      newPlayer.fame += newPlayer.team.power * 10
       setContract(newContract)
       let lp = GetLeaguePosition(newPlayer.team.power);
       if(lp <= 4) {
@@ -173,7 +184,7 @@ function App() {
       let cont = contract - 1;
       if(cont <= 0) {
         let newContract = RandomNumber(1,3);
-        newPlayer.wage = Math.floor(Math.pow(newPlayer.overall + RandomNumber(0, newPlayer.team.power), 2) / 10) / 10;
+        newPlayer.wage = Math.floor(Math.pow(newPlayer.overall + RandomNumber(0, newPlayer.team.power * newPlayer.potential), 2) / 10) / 10;
         setContract(newContract)
       } else {
         setContract(cont)
@@ -188,13 +199,15 @@ function App() {
     
     newPlayer.fame += newPerformance
 
+    if(newPlayer.fame < 0) newPlayer.fame = 0;
+
     //giving the performance, set how many games did they were the starter player
     let starting = Math.floor(8*(newPlayer.overall - (67.5 + newPlayer.team.power)))
     if(starting > 100) starting = 100
     else if(starting < 0) starting = 0
 
     let newSp = GetNewSponsor();
-    while (newSp.name == newPlayer.currentSponsor.company_name || newSp.fame_rating > 1.5 + newPlayer.fame / 15) {
+    while (newSp.name == newPlayer.currentSponsor.company_name || newSp.fame_rating > newPlayer.fame / 20) {
       newSp = GetNewSponsor();
     }
     setChangeSponsor(newSp);
@@ -237,8 +250,7 @@ function App() {
       newSeason.seasonSponsor = newSp;
     }
 
-    newPlayer.fame += RandomNumber(0, newPlayer.currentSponsor.fame_rating)
-
+    newPlayer.fame += RandomNumber(0, newPlayer.currentSponsor.fame_rating) / 2
     //giving the starting rate, randomize how many goals/assists did they score
     newSeason.goals = Math.floor(((newSeason.starting / 100) * newPlayer.position.goalsBonus * (newPlayer.overall / 100)) + newSeason.performance * 4);
     newSeason.assists = Math.floor(((newSeason.starting / 100) * newPlayer.position.assistsBonus * (newPlayer.overall / 100)) + newSeason.performance * 2);
@@ -429,7 +441,8 @@ function App() {
     if(awardPoints + newPlayer.overall >= 100) {    //Ballon D'or
       newPlayer.ballonDOr++;
       newSeason.titles.push("Ballon D'Or");
-      newPlayer.fame += 20
+      newPlayer.fame += 25
+      if(newPlayer.fame < 100) newPlayer.fame = 100;
     }
 
     //trasnfer window
@@ -446,8 +459,7 @@ function App() {
     let newTransfer1 = GetNewTeam(newPlayer);
     let newTransfer2 = GetNewTeam(newPlayer);
 
-    while (newTransfer1.team.name == newPlayer.team.name || newTransfer2.team.name == newPlayer.team.name || newTransfer1.team.name == newTransfer2.team.name || 
-      newPlayer.overall >= 80 + newTransfer1.team.power * 4 || newPlayer.overall >= 80 + newTransfer2.team.power * 4) {
+    while (newTransfer1.team.name == newPlayer.team.name || newTransfer2.team.name == newPlayer.team.name || newTransfer1.team.name == newTransfer2.team.name) {
       newTransfer1 = GetNewTeam(newPlayer);
       newTransfer2 = GetNewTeam(newPlayer);
     } 
@@ -479,6 +491,8 @@ function App() {
     
     newSeason.fame = newPlayer.fame
 
+    if(newSeason.fame > maxFame) setMaxFame(newSeason.fame);
+
     //set Seasons
     const newSeasons = [
       ... seasons,
@@ -504,7 +518,17 @@ function App() {
     let leagueID = RandomNumber(0, Teams.length-1);
     let league = Teams[leagueID];
     let team = league.teams[RandomNumber(0, league.teams.length-1)];
-    let contractValue = Math.floor(Math.pow(currentPlayer.overall + RandomNumber(team.power, team.power * 2), 2) / 10) / 10;
+
+    while (
+      currentPlayer.overall >= 80 + team.power * 4 || 
+      ((currentPlayer.age > 30 && currentPlayer.overall <= 70 + team.power * 3) || 
+      currentPlayer.overall <= 60 + team.power * 4)
+    ) {
+      league = Teams[leagueID];
+      team = league.teams[RandomNumber(0, league.teams.length-1)];
+    }
+
+    let contractValue = Math.floor(Math.pow(currentPlayer.overall + RandomNumber(0, team.power * currentPlayer.potential), 2) / 10) / 10;
 
     return({"team": team, "contract": contractValue}) 
   }
@@ -560,7 +584,7 @@ function App() {
       <div className='stats'>
         <h1>Carreira</h1>
         <div>
-          <p>Fama: {Math.floor(player.fame)} ({StarPath[Math.floor(player.fame / 25)]})</p>
+          <p>Fama da Carreira: {Math.floor(maxFame)} ({StarPath[Math.floor(maxFame / 25)]})</p>
         </div>
         <div>
           <p>Potencial: {player.potential}</p>
