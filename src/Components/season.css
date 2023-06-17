@@ -12,6 +12,8 @@
   display: flex;
   justify-content: center;
   color: var(--color-emphassys);
+  font-size: 1.5rem;
+  font-weight: bold;
 }
 
 .season-titles {
@@ -21,4 +23,18 @@
   display: flex;
   gap: 0.5rem;
   color: var(--color-emphassys);
+}
+
+.season-titles-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.season-titles-list div h2 {
+  font-size: 1.2rem;
+}
+
+.season-titles-list div p {
+  color: var(--color-main);
 }
