@@ -159,15 +159,16 @@ function App() {
 
     newPlayer.age++
 
+    let newContract = contract - 1
+    
     //pre season setup
     if(newTeam) {    //if they change team
       newPlayer.fame -= newPlayer.team.power * 10
       if(newPlayer.fame < 0) newPlayer.fame = 0;
       newPlayer.team = newTeam.team
-      let newContract = RandomNumber(1,3) + 1;
-      newPlayer.wage = newTeam.contract;
+      newContract = newTeam.contract.duration;
+      newPlayer.wage = newTeam.contract.value;
       newPlayer.fame += newPlayer.team.power * 10
-      setContract(newContract)
       let lp = GetLeaguePosition(newPlayer.team.power);
       if(lp <= 4) {
         newPlayer.championsQualification = true
@@ -180,15 +181,9 @@ function App() {
         newPlayer.championsQualification = false
         newPlayer.europaQualification = false
       }
-    } else {    //else if contract expires
-      let cont = contract - 1;
-      if(cont <= 0) {
-        let newContract = RandomNumber(1,3);
-        newPlayer.wage = Math.floor(Math.pow(newPlayer.overall + RandomNumber(0, newPlayer.team.power * newPlayer.potential), 2) / 10) / 10;
-        setContract(newContract)
-      } else {
-        setContract(cont)
-      }
+    } else if(newContract <= 0) {   //else if contract expires
+      newContract = Math.floor((60 - newPlayer.age) / 10)
+      newPlayer.wage = Math.floor(Math.pow(newPlayer.overall + newContract * newPlayer.potential * RandomNumber(0, newPlayer.team.power) / 2, 2) / 10) / 10;
     }
 
     //calcule the player's performance
@@ -232,6 +227,7 @@ function App() {
     setCurrentSeason(newSeason)
     setPlayer(newPlayer);
     setYear(year+1)
+    setContract(newContract)
   }
 
   function ChooseSponsor(newSp = null) {
@@ -446,15 +442,10 @@ function App() {
     //trasnfer window
 
     //fired
-    if(
-      (newSeason.performance <= -1 && 
-      ((newSeason.europaPhase < newPlayer.team.power && newSeason.championsPhase < newPlayer.team.power) || leaguePosition > (6 - newPlayer.team.power))) ||
-      (contract <= 1 && newPlayer.overall >= 75 + newPlayer.team.power * 4)) {
+    if(contract <= 1 && (newPlayer.overall >= 75 + newPlayer.team.power * 4 || newPlayer.overall <= 65 + newPlayer.team.power * 3)) {
         document.getElementById("decision-stay").style.display = "none"
-        document.getElementById("decision-transfer2").style.display = "flex"
       } else {
         document.getElementById("decision-stay").style.display = "flex"
-        document.getElementById("decision-transfer2").style.display = "none"
       }
 
     //load option of transfer
@@ -501,6 +492,9 @@ function App() {
       newSeason
     ];
     setSeasons(newSeasons)
+
+    //continue
+    if(contract > 1) ChooseTeam()
   }
 
   function GetLeaguePosition(teamPower) {
@@ -537,18 +531,26 @@ function App() {
     let league = Teams[leagueID];
     let team = league.teams[RandomNumber(0, league.teams.length-1)];
 
+    let count = 0;
+
     while (
       currentPlayer.overall >= 80 + team.power * 4 || 
-      ((currentPlayer.age > 30 && currentPlayer.overall <= 70 + team.power * 3) || 
-      currentPlayer.overall <= 60 + team.power * 4)
-    ) {
+      currentPlayer.overall <= 60 + team.power * 2 ||
+      (currentPlayer.age > 30 && currentPlayer.overall <= 70 + team.power * 2)) {
       league = Teams[leagueID];
       team = league.teams[RandomNumber(0, league.teams.length-1)];
+
+      count++
+      if(count > 10) {
+        return(null) 
+      }
     }
 
-    let contractValue = Math.floor(Math.pow(currentPlayer.overall + RandomNumber(0, team.power * currentPlayer.potential), 2) / 10) / 10;
+    let contractDuration = Math.floor((60 - currentPlayer.age) / 10) + RandomNumber(0,2);
+    let contractValue = Math.floor(Math.pow(currentPlayer.overall + contractDuration * currentPlayer.potential * RandomNumber(0, team.power) / 2, 2) / 10) / 10;
+    let newContract = {"value": contractValue, "duration": contractDuration}
+    return({"team": team, "contract": newContract}) 
 
-    return({"team": team, "contract": contractValue}) 
   }
   
   function GetNewPosition() {
@@ -591,8 +593,8 @@ function App() {
       </div>
       <div className='choices' id='team-choice'>
         <a className='d-stay' id='decision-stay' style={{display: "none"}} onClick={() => (ChooseTeam())}>Continuar em {player.team.name}</a>
-        <a className='d-alert' id='decision-transfer1' onClick={() => (ChooseTeam(transfer1))}>Transferir para {transfer1.team.name} (${transfer1.contract}M)</a>
-        <a className='d-alert' id='decision-transfer2' onClick={() => (ChooseTeam(transfer2))}>Transferir para {transfer2.team.name} (${transfer2.contract}M)</a>
+        <a className='d-alert' id='decision-transfer1' onClick={() => (ChooseTeam(transfer1))}>Transferir para {transfer1.team.name} (${transfer1.contract.value}M | {transfer1.contract.duration} anos)</a>
+        <a className='d-alert' id='decision-transfer2' onClick={() => (ChooseTeam(transfer2))}>Transferir para {transfer2.team.name} (${transfer2.contract.value}M | {transfer2.contract.duration} anos)</a>
         <a className='d-alert' id='retire' style={{display: "none"}}  onClick={() => (Retire())}>Aposentar-se</a>
       </div>
       <div className='choices' id='sponsor-choice' style={{display: "none"}}>
@@ -602,7 +604,7 @@ function App() {
       <div className='stats'>
         <h1>Carreira</h1>
         <div>
-          <p>Fama da Carreira: {Math.floor(maxFame)} ({StarPath[Math.floor(maxFame / 30)]})</p>
+          <p>Fama da Carreira: {Math.floor(maxFame)} ({StarPath[Math.floor(3 * maxFame / 100)]})</p>
         </div>
         <div>
           <p>Potencial: {player.potential}</p>
