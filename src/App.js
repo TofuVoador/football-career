@@ -268,19 +268,19 @@ function App() {
 
     awardPoints += (4-leaguePosition)
     newSeason.leaguePosition = leaguePosition
-    newSeason.titles.push("Liga: " + newSeason.leaguePosition + "° lugar");
+    newSeason.titles.push("Liga: " + newSeason.leaguePosition + "º lugar");
 
     //Champions & Europa League
     if(newPlayer.championsQualification) {
       let phase = 1;
 
       let op1 = GetNewOpponent()
-      while (op1.power == 0 || op1.power == newPlayer.team.power || newPlayer.team.league == op1.league) {
+      while (op1.power <= 1 || op1.power == newPlayer.team.power || newPlayer.team.league == op1.league) {
         op1 = GetNewOpponent()
       }
 
       let op2 = GetNewOpponent()
-      while (op2.power == 0 || op2.power == newPlayer.team.power || op1.power == op2.power || newPlayer.team.league == op2.league || op1.league == op2.league) {
+      while (op2.power <= 1 || op2.power == newPlayer.team.power || op1.power == op2.power || newPlayer.team.league == op2.league || op1.league == op2.league) {
         op2 = GetNewOpponent()
       }
 
@@ -292,7 +292,7 @@ function App() {
         let end = false;
         while (!end) {
           let op = GetNewOpponent()
-          while (op.power < (phase) / 2 + 1 || op.name == newPlayer.team.name || opponents.includes(op) || (phase <= 3 && (op1.name == op.name || op2.name == op.name))) {
+          while (op2.power <= 1 || op.power < (phase / 2 + 1) || op.name == newPlayer.team.name || opponents.includes(op) || (phase <= 3 && (op1.name == op.name || op2.name == op.name))) {
             op = GetNewOpponent()
           }
           opponents.push(op) 
@@ -322,12 +322,12 @@ function App() {
       let phase = 1;
 
       let op1 = GetNewOpponent()
-      while (op1.power == 5 || op1.power == newPlayer.team.power || newPlayer.team.league == op1.league) {
+      while (op1.power >= 4 || op1.power == newPlayer.team.power || newPlayer.team.league == op1.league) {
         op1 = GetNewOpponent()
       }
 
       let op2 = GetNewOpponent()
-      while (op2.power == 5 || op2.power == newPlayer.team.power || op1.power == op2.power || newPlayer.team.league == op2.league || op1.league == op2.league) {
+      while (op2.power >= 4 || op2.power == newPlayer.team.power || op1.power == op2.power || newPlayer.team.league == op2.league || op1.league == op2.league) {
         op2 = GetNewOpponent()
       }
 
@@ -339,7 +339,7 @@ function App() {
         let end = false;
         while (!end) {
           let op = GetNewOpponent();
-          while (op.power < (phase) / 2 + 1 || op.name == newPlayer.team.name || opponents.includes(op) || (phase <= 3 && (op1.name == op.name || op2.name == op.name))) {
+          while (op.power >= 4 || op.name == newPlayer.team.name || opponents.includes(op) || (phase <= 3 && (op1.name == op.name || op2.name == op.name))) {
             op = GetNewOpponent();
           }
           opponents.push(op) 
@@ -434,20 +434,28 @@ function App() {
 
     if(awardPoints + newPlayer.overall >= 100) {    //Ballon D'or
       newPlayer.ballonDOr++;
-      newSeason.titles.push("Ballon D'Or");
+      newSeason.titles.push("Ballon D'Or: Ganhador");
       newPlayer.fame += 25
       if(newPlayer.fame < 100) newPlayer.fame = 100;
+    } else if(awardPoints + newPlayer.overall >= 90) {
+      let ballonDOr_pos = Math.floor(101 - (awardPoints + newPlayer.overall))
+      newSeason.titles.push("Ballon D'Or: " + ballonDOr_pos + "º lugar");
+      newPlayer.fame += (10 - ballonDOr_pos)
     }
 
     //trasnfer window
 
     //fired
     if(
-      (newSeason.performance <= -1 && newSeason.europaPhase < newPlayer.team.power && newSeason.championsPhase < newPlayer.team.power && leaguePosition > (7 - newPlayer.team.power)) ||
-      (contract <= 1 && (newPlayer.overall >= 80 + newPlayer.team.power * 4 || RandomNumber(0, 100) <= 50)))
-      document.getElementById("decision-stay").style.display = "none"
-    else
-      document.getElementById("decision-stay").style.display = "flex"
+      (newSeason.performance <= -1 && 
+      ((newSeason.europaPhase < newPlayer.team.power && newSeason.championsPhase < newPlayer.team.power) || leaguePosition > (6 - newPlayer.team.power))) ||
+      (contract <= 1 && newPlayer.overall >= 75 + newPlayer.team.power * 4)) {
+        document.getElementById("decision-stay").style.display = "none"
+        document.getElementById("decision-transfer2").style.display = "flex"
+      } else {
+        document.getElementById("decision-stay").style.display = "flex"
+        document.getElementById("decision-transfer2").style.display = "none"
+      }
 
     //load option of transfer
     let newTransfer1 = GetNewTeam(newPlayer);
@@ -496,7 +504,7 @@ function App() {
   }
 
   function GetLeaguePosition(teamPower) {
-    let pos = RandomNumber(4, 8) - teamPower 
+    let pos = (6 - teamPower) + Math.floor((RandomNumber(-2, 2) - RandomNumber(-2, 2)) / 2)
      return pos;
   }
 
@@ -508,8 +516,8 @@ function App() {
 
     if(playerTeamScore < 0) playerTeamScore = 0;
 
-    opponentScore = Math.floor(opponentScore / (2 + playerTeam.power / 2));
-    playerTeamScore = Math.floor(playerTeamScore / (2 + opponent.power / 2));
+    opponentScore = Math.floor(opponentScore / (2.5 + playerTeam.power / 2.5));
+    playerTeamScore = Math.floor(playerTeamScore / (2.5 + opponent.power / 2.5));
 
     let game = playerTeam.name + " " + playerTeamScore + " x " + opponentScore + " " + opponent.name
 
@@ -582,14 +590,14 @@ function App() {
         ))}
       </div>
       <div className='choices' id='team-choice'>
-        <a id='decision-stay' style={{display: "none"}} onClick={() => (ChooseTeam())}>Continuar em {player.team.name}</a>
-        <a id='decision-transfer1' onClick={() => (ChooseTeam(transfer1))}>Transferir para {transfer1.team.name} (${transfer1.contract}M)</a>
-        <a id='decision-transfer2' onClick={() => (ChooseTeam(transfer2))}>Transferir para {transfer2.team.name} (${transfer2.contract}M)</a>
-        <a id='retire' style={{display: "none"}}  onClick={() => (Retire())}>Aposentar-se</a>
+        <a className='d-stay' id='decision-stay' style={{display: "none"}} onClick={() => (ChooseTeam())}>Continuar em {player.team.name}</a>
+        <a className='d-alert' id='decision-transfer1' onClick={() => (ChooseTeam(transfer1))}>Transferir para {transfer1.team.name} (${transfer1.contract}M)</a>
+        <a className='d-alert' id='decision-transfer2' onClick={() => (ChooseTeam(transfer2))}>Transferir para {transfer2.team.name} (${transfer2.contract}M)</a>
+        <a className='d-alert' id='retire' style={{display: "none"}}  onClick={() => (Retire())}>Aposentar-se</a>
       </div>
       <div className='choices' id='sponsor-choice' style={{display: "none"}}>
-        <a id='decision-same-sponsor' onClick={() => (ChooseSponsor())}>Continuar com {player.currentSponsor.company_name} (${player.currentSponsor.contract_value}M)</a>
-        <a id='decision-change-sponsor' onClick={() => (ChooseSponsor(changeSponsor))}>Assinar com {changeSponsor.company_name} (${changeSponsor.contract_value}M)</a>
+        <a className='d-stay' id='decision-same-sponsor' onClick={() => (ChooseSponsor())}>Continuar com {player.currentSponsor.company_name} (${player.currentSponsor.contract_value}M)</a>
+        <a className='d-alert' id='decision-change-sponsor' onClick={() => (ChooseSponsor(changeSponsor))}>Assinar com {changeSponsor.company_name} (${changeSponsor.contract_value}M)</a>
       </div>
       <div className='stats'>
         <h1>Carreira</h1>

@@ -23,10 +23,16 @@ header {
   max-width: 1000px;
   display: flex;
   justify-content: center;
+  transition: 0.2s;
 }
 
-.choices a:hover {
+.d-stay:hover {
   background-color: var(--color-main);
+}
+
+.d-alert:hover {
+  background-color: var(--color-emphassys);
+  color: var(--color-secondary);
 }
 
 .chart {
