@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from 'react';
 import './App.css';
 import Teams from './Database/teams.json';
 import Nations from './Database/nations.json'
-import Sponsor from './Database/sponsors.json'
 import ChartComponent from './Components/chartComponent';
 import Season from './Components/season';
 
@@ -104,7 +103,6 @@ function App() {
     championsPhase: null,
     europaPhase: null,
     worldCupPhase: null,
-    seasonSponsor: null,
     fame: null
   });
 
@@ -128,34 +126,25 @@ function App() {
     ballonDOr: 0,
     championsQualification: false,
     europaQualification: false,
-    currentSponsor: GetNewSponsor(),
     fame: 0
   })
 
   const [contract, setContract] = useState(0)
 
-  const [changeSponsor, setChangeSponsor] = useState(GetNewSponsor())
-
+  const [generalPerformance, setGeneralPerformance] = useState(0);
   const [maxFame, setMaxFame] = useState(0);
 
-  const [transfer1, setTransfer1] = useState(GetNewTeam({ 
-    potential: 3,
-    age: 17,
-    overall: 72
-  }));
+  const [transfer1, setTransfer1] = useState(GetNewTeam());
 
-  const [transfer2, setTransfer2] = useState(GetNewTeam({ 
-    potential: 3,
-    age: 17,
-    overall: 72
-  }));
+  const [transfer2, setTransfer2] = useState(GetNewTeam());
 
   function ChooseTeam (newTeam = null) {   //next season
     document.getElementById('team-choice').style.display = "none"
-    document.getElementById('sponsor-choice').style.display = "flex"
+    document.getElementById('continue').style.display = "flex"
 
     //load all player's stats
     let newPlayer = player
+    let newGeneralPerformance = generalPerformance
 
     newPlayer.age++
 
@@ -163,6 +152,7 @@ function App() {
     
     //pre season setup
     if(newTeam) {    //if they change team
+      newGeneralPerformance = 0;
       newPlayer.fame -= newPlayer.team.power * 10
       if(newPlayer.fame < 0) newPlayer.fame = 0;
       newPlayer.team = newTeam.team
@@ -183,25 +173,19 @@ function App() {
       }
     } else if(newContract <= 0) {   //else if contract expires
       newContract = Math.floor((60 - newPlayer.age) / 10)
-      newPlayer.wage = Math.floor(Math.pow(newPlayer.overall + newContract * newPlayer.potential * RandomNumber(0, newPlayer.team.power) / 2, 2) / 10) / 10;
+      newPlayer.wage = Math.floor(Math.pow(newPlayer.overall + newContract * (newPlayer.potential + newPlayer.team.power), 2) / 10) / 10;
     }
 
     //calcule the player's performance
     
-    let newPerformance = (RandomNumber(-10, 10) + RandomNumber(-10, 10) + newPlayer.team.power) / 10
-    newPlayer.overall = (82 + newPlayer.potential * 2) - Math.pow((30 - newPlayer.age), 2) / 10 + newPerformance;
-    if(newPlayer.overall > 100) newPlayer.overall = 100;
+    let newPerformance = (RandomNumber(-10, 10) + RandomNumber(-10, 10) + newPlayer.team.power) / 20
+    newPlayer.overall = (82 + newPlayer.potential * 2) - Math.pow((28 - newPlayer.age + newPlayer.potential / 2.5), 2) / 10 + newPerformance;
+    newGeneralPerformance += newPerformance
 
     //giving the performance, set how many games did they were the starter player
     let starting = Math.floor(8 * (newPlayer.overall - (67.5 + newPlayer.team.power * 1.5)))
     if(starting > 100) starting = 100
     else if(starting < 0) starting = 0
-
-    let newSp = GetNewSponsor();
-    while (newSp.name == newPlayer.currentSponsor.company_name || newSp.fame_rating > newPlayer.fame / 20) {
-      newSp = GetNewSponsor();
-    }
-    setChangeSponsor(newSp);
 
     //set season start
     let newSeason = {
@@ -219,7 +203,6 @@ function App() {
       championsPhase: 0,
       europaPhase: 0,
       worldCupPhase: 0,
-      seasonSponsor: newPlayer.currentSponsor,
       fame: newPlayer.fame
     }
 
@@ -228,21 +211,16 @@ function App() {
     setPlayer(newPlayer);
     setYear(year+1)
     setContract(newContract)
+    setGeneralPerformance(newGeneralPerformance)
   }
 
-  function ChooseSponsor(newSp = null) {
+  function Continue() {
     document.getElementById('team-choice').style.display = "flex"
-    document.getElementById('sponsor-choice').style.display = "none"
+    document.getElementById('continue').style.display = "none"
 
     let newPlayer = player;
     let newSeason = currentSeason;
 
-    if(newSp) {
-      newPlayer.currentSponsor = newSp;
-      newSeason.seasonSponsor = newSp;
-    }
-
-    newPlayer.fame += RandomNumber(0, newPlayer.currentSponsor.fame_rating) / 2
     //giving the starting rate, randomize how many goals/assists did they score
     newSeason.goals = Math.floor(((newSeason.starting / 100) * (newPlayer.team.power * 2 + newPlayer.position.goalsBonus) * (newPlayer.overall / 100)) + newSeason.performance * 4);
     newSeason.assists = Math.floor(((newSeason.starting / 100) * (newPlayer.team.power + newPlayer.position.assistsBonus) * (newPlayer.overall / 100)) + newSeason.performance * 2);
@@ -252,17 +230,14 @@ function App() {
 
     let awardPoints = newSeason.performance * 2;
 
-    let playerAssistBonus = (newPlayer.performance > 1) ? 1.5 : (newPlayer.performance > -1) ? 0.5 : -0.5;
+    let playerImpactBonus = (newPlayer.performance > 0.5) ? 2.5 : (newPlayer.performance > -0.5) ? 1.5 : 0.5;
 
     //League
     let leaguePosition = GetLeaguePosition(newPlayer.team.power)
 
-    if(leaguePosition <= 1) {
-      newPlayer.leagues++
-      leaguePosition = 1
-    }
+    if(leaguePosition == 1) newPlayer.leagues++
 
-    awardPoints += (4-leaguePosition)
+    awardPoints += (5-leaguePosition)
     newSeason.leaguePosition = leaguePosition
     newSeason.titles.push("Liga: " + newSeason.leaguePosition + "º lugar");
 
@@ -271,35 +246,36 @@ function App() {
       let phase = 1;
 
       let op1 = GetNewOpponent()
-      while (op1.power <= 1 || op1.power == newPlayer.team.power || newPlayer.team.league == op1.league) {
+      while (op1.power == 0 || op1.power == newPlayer.team.power || newPlayer.team.league == op1.league) {
         op1 = GetNewOpponent()
       }
 
       let op2 = GetNewOpponent()
-      while (op2.power <= 1 || op2.power == newPlayer.team.power || op1.power == op2.power || newPlayer.team.league == op2.league || op1.league == op2.league) {
+      while (op2.power == 0 || op2.power == newPlayer.team.power || op1.power == op2.power || newPlayer.team.league == op2.league || op1.league == op2.league) {
         op2 = GetNewOpponent()
       }
 
       let description = TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
 
-      if(GetWinner(op1, newPlayer.team, playerAssistBonus).result || GetWinner(op2, newPlayer.team, playerAssistBonus).result) {
-        phase++;    
+      if(GetWinner(op1, newPlayer.team, playerImpactBonus).result || GetWinner(op2, newPlayer.team, playerImpactBonus).result) {
+        phase++;
         let opponents = [];
         let end = false;
         while (!end) {
           let op = GetNewOpponent()
-          while (op2.power <= 1 || op.power < (phase / 2 + 1) || op.name == newPlayer.team.name || opponents.includes(op) || (phase <= 3 && (op1.name == op.name || op2.name == op.name))) {
+          while (op2.power == 0 || op.power < (phase / 2 + 1) || op.name == newPlayer.team.name || opponents.includes(op) || (phase <= 3 && (op1.name == op.name || op2.name == op.name))) {
             op = GetNewOpponent()
           }
           opponents.push(op) 
 
-          let game = GetWinner(op, newPlayer.team, playerAssistBonus)
+          let game = GetWinner(op, newPlayer.team, playerImpactBonus)
 
           description += "->" + TournamentPath[phase] + ": " + game.game;
     
           if(game.result) {
             phase++
-            awardPoints++
+            awardPoints += 0.8
+            newPlayer.fame++
             if(phase >= TournamentPath.length - 1){
               end = true
               newPlayer.champions++
@@ -318,38 +294,38 @@ function App() {
       let phase = 1;
 
       let op1 = GetNewOpponent()
-      while (op1.power >= 4 || op1.power == newPlayer.team.power || newPlayer.team.league == op1.league) {
+      while (op1.power == 5 || newPlayer.team.league == op1.league) {
         op1 = GetNewOpponent()
       }
 
       let op2 = GetNewOpponent()
-      while (op2.power >= 4 || op2.power == newPlayer.team.power || op1.power == op2.power || newPlayer.team.league == op2.league || op1.league == op2.league) {
+      while (op2.power == 5 || newPlayer.team.league == op2.league || op1.league == op2.league) {
         op2 = GetNewOpponent()
       }
 
       let description = TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
       
-      if(GetWinner(op1, newPlayer.team, playerAssistBonus) || GetWinner(op2, newPlayer.team, playerAssistBonus)) {
-        phase++;    
+      if(GetWinner(op1, newPlayer.team, playerImpactBonus) || GetWinner(op2, newPlayer.team, playerImpactBonus)) {
+        phase++;
         let opponents = [];
         let end = false;
         while (!end) {
           let op = GetNewOpponent();
-          while (op.power >= 4 || op.name == newPlayer.team.name || opponents.includes(op) || (phase <= 3 && (op1.name == op.name || op2.name == op.name))) {
+          while (op.power == 5 || op.name == newPlayer.team.name || opponents.includes(op) || (phase <= 3 && (op1.name == op.name || op2.name == op.name))) {
             op = GetNewOpponent();
           }
           opponents.push(op) 
 
-          let game = GetWinner(op, newPlayer.team, playerAssistBonus)
+          let game = GetWinner(op, newPlayer.team, playerImpactBonus)
 
           description += "->" + TournamentPath[phase] + ": " + game.game;
     
           if(game.result) {
             phase++
+            newPlayer.fame += 0.5
             if(phase >= TournamentPath.length - 1){
               end = true
               newPlayer.europa++
-              awardPoints++
             }
           } else {
             end = true
@@ -379,7 +355,7 @@ function App() {
 
       let description = TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
 
-      if(GetWinner(op1, newPlayer.nation, playerAssistBonus) || GetWinner(op2, newPlayer.nation, playerAssistBonus)) {
+      if(GetWinner(op1, newPlayer.nation, playerImpactBonus) || GetWinner(op2, newPlayer.nation, playerImpactBonus)) {
         phase++;    
         let opponents = [];
         let end = false;
@@ -390,16 +366,17 @@ function App() {
           }
           opponents.push(op) 
 
-          let game = GetWinner(op, newPlayer.nation, playerAssistBonus);
+          let game = GetWinner(op, newPlayer.nation, playerImpactBonus);
 
           description += "->" + TournamentPath[phase] + ": " + game.game;
     
           if(game.result) {
             phase++
+            newPlayer.fame++
             if(phase >= TournamentPath.length - 1){
               end = true
               newPlayer.worldCup++
-              awardPoints++
+              awardPoints += 2
             }
           } else {
             end = true
@@ -420,29 +397,32 @@ function App() {
     //post season results
     if(RandomNumber(0,100) < 1) newSeason.titles.push("Puskás");  //Puskás
 
-    if(RandomNumber(40,50) < newSeason.goals) {  //Golden Shoes
+    if(37.5 + RandomNumber(0,10) < newSeason.goals) {  //Golden Shoes
       newPlayer.goldenShoes++
-      awardPoints++
+      awardPoints += 2
+      newPlayer.fame += 10
       newSeason.titles.push("Chuteira de Ouro");
     }
 
-    newPlayer.fame += awardPoints
+    newPlayer.fame += awardPoints / 2
 
-    if(awardPoints + newPlayer.overall >= 100) {    //Ballon D'or
+    if(awardPoints + newPlayer.overall >= 99) {    //Ballon D'or
       newPlayer.ballonDOr++;
       newSeason.titles.push("Ballon D'Or: Ganhador");
-      newPlayer.fame += 25
+      newPlayer.fame += 20
       if(newPlayer.fame < 100) newPlayer.fame = 100;
     } else if(awardPoints + newPlayer.overall >= 90) {
-      let ballonDOr_pos = Math.floor(101 - (awardPoints + newPlayer.overall))
-      newSeason.titles.push("Ballon D'Or: " + ballonDOr_pos + "º lugar");
-      newPlayer.fame += (10 - ballonDOr_pos)
+      let pts = Math.floor((awardPoints + newPlayer.overall) - 90)
+      newPlayer.fame += pts
+      let position = 10 - pts;
+      newSeason.titles.push("Ballon D'Or: " + position + "º lugar");
     }
 
     //trasnfer window
 
     //fired
-    if(contract <= 1 && (newPlayer.overall >= 75 + newPlayer.team.power * 4 || newPlayer.overall <= 65 + newPlayer.team.power * 3)) {
+    if(contract <= 1 && (newPlayer.overall >= 80 + newPlayer.team.power * 4 || (newPlayer.age > 28 && newPlayer.overall <= 79 + newPlayer.team.power) ||
+      generalPerformance < 0)) {
         document.getElementById("decision-stay").style.display = "none"
       } else {
         document.getElementById("decision-stay").style.display = "flex"
@@ -452,17 +432,32 @@ function App() {
     let newTransfer1 = GetNewTeam(newPlayer);
     let newTransfer2 = GetNewTeam(newPlayer);
 
-    while (newTransfer1.team.name == newPlayer.team.name || newTransfer2.team.name == newPlayer.team.name || newTransfer1.team.name == newTransfer2.team.name) {
-      newTransfer1 = GetNewTeam(newPlayer);
-      newTransfer2 = GetNewTeam(newPlayer);
-    } 
+    if(newTransfer1 == null) {
+      document.getElementById("decision-transfer1").style.display = "none"
+    } else {
+      document.getElementById("decision-transfer1").style.display = "flex"
+      setTransfer1(newTransfer1);
+    }
 
-    setTransfer1(newTransfer1);
-    setTransfer2(newTransfer2);
+    if(newTransfer1 != null) {
+      if(newTransfer2 == null || newTransfer2.team.name == newTransfer1.team.name) {
+        document.getElementById("decision-transfer2").style.display = "none"
+      } else {
+        document.getElementById("decision-transfer2").style.display = "flex"
+        setTransfer2(newTransfer2);
+      }  
+    } else {
+      if(newTransfer2 == null) {
+        document.getElementById("decision-transfer2").style.display = "none"
+        document.getElementById("retire").style.display = "flex";;
+      } else {
+        setTransfer2(newTransfer2);
+      }  
+    }
 
-    if(newPlayer.age >= 30) {    //retire option
-      let retire_btn = document.getElementById("retire");
-      retire_btn.style.display = "flex";
+    
+    if(newPlayer.age >= 28) {    //retire option
+      document.getElementById("retire").style.display = "flex";
     }
 
     if(leaguePosition <= 4) {
@@ -498,20 +493,24 @@ function App() {
   }
 
   function GetLeaguePosition(teamPower) {
-    let pos = (6 - teamPower) + Math.floor((RandomNumber(-2, 2) - RandomNumber(-2, 2)) / 2)
-     return pos;
+    let pos = (6 - teamPower) + ((RandomNumber(0, 3 - teamPower / 2.5) - RandomNumber(0, 3 - teamPower / 2.5)))
+    if(pos < 1) pos = 1
+    return pos;
   }
 
   function GetWinner(opponent, playerTeam, bonus) {
-    let opponentScore = RandomNumber(0, opponent.power * opponent.power)
-    let playerTeamScore = RandomNumber(0, playerTeam.power * playerTeam.power) + bonus
+    let opponentPower = opponent.power / 2 + 1.5
+    let playerTeamPower = playerTeam.power / 2 + 1.5
+
+    let opponentScore = RandomNumber(opponentPower, opponentPower * opponentPower)
+    let playerTeamScore = RandomNumber(playerTeamPower, playerTeamPower * playerTeamPower) + bonus 
 
     let result = (opponentScore < playerTeamScore)
 
     if(playerTeamScore < 0) playerTeamScore = 0;
 
-    opponentScore = Math.floor(opponentScore / (2.5 + playerTeam.power / 2.5));
-    playerTeamScore = Math.floor(playerTeamScore / (2.5 + opponent.power / 2.5));
+    opponentScore = Math.floor(opponentScore / 4);
+    playerTeamScore = Math.floor(playerTeamScore / 4);
 
     let game = playerTeam.name + " " + playerTeamScore + " x " + opponentScore + " " + opponent.name
 
@@ -526,31 +525,33 @@ function App() {
     return(team) 
   }
   
-  function GetNewTeam(currentPlayer) {
+  function GetNewTeam(currentPlayer = null) {
     let leagueID = RandomNumber(0, Teams.length-1);
     let league = Teams[leagueID];
     let team = league.teams[RandomNumber(0, league.teams.length-1)];
+    let contractDuration = RandomNumber(1,4);
+    let contractValue = Math.floor(Math.pow(80 + contractDuration + team.power, 2) / 10) / 10;
 
-    let count = 0;
+    if(currentPlayer) {
+      let count = 0
+      while (currentPlayer.overall >= 80 + team.power * 4 || 
+      currentPlayer.overall <= 74 + team.power ||
+      (currentPlayer.age > 28 && currentPlayer.overall <= 79 + team.power) ||
+      currentPlayer.team.name == team.name) {
+        league = Teams[leagueID];
+        team = league.teams[RandomNumber(0, league.teams.length-1)];
 
-    while (
-      currentPlayer.overall >= 80 + team.power * 4 || 
-      currentPlayer.overall <= 60 + team.power * 2 ||
-      (currentPlayer.age > 30 && currentPlayer.overall <= 70 + team.power * 2)) {
-      league = Teams[leagueID];
-      team = league.teams[RandomNumber(0, league.teams.length-1)];
-
-      count++
-      if(count > 10) {
-        return(null) 
+        count++
+        if(count > 10) return(null) 
       }
+
+      contractDuration++
+      contractValue = Math.floor(Math.pow(currentPlayer.overall + contractDuration + currentPlayer.potential + team.power, 2) / 10) / 10;
     }
-
-    let contractDuration = Math.floor((60 - currentPlayer.age) / 10) + RandomNumber(0,2);
-    let contractValue = Math.floor(Math.pow(currentPlayer.overall + contractDuration * currentPlayer.potential * RandomNumber(0, team.power) / 2, 2) / 10) / 10;
+    
     let newContract = {"value": contractValue, "duration": contractDuration}
-    return({"team": team, "contract": newContract}) 
 
+    return({"team": team, "contract": newContract}) 
   }
   
   function GetNewPosition() {
@@ -559,18 +560,11 @@ function App() {
     return(pos)
   }
 
-  function GetNewSponsor() {
-    let sponsorID = RandomNumber(0, Sponsor.length - 1);
-    let sp = Sponsor[sponsorID];
-    return(sp)
-  }
-
   function Retire() {
     document.getElementById("team-choice").style.display = "none";
-    document.getElementById("sponsor-choice").style.display = "none";
+    document.getElementById("continue").style.display = "none";
     let chart = document.getElementById('chart')
     chart.style.display = 'flex';
-    chart.scrollIntoView()
   }
 
   return (
@@ -580,9 +574,8 @@ function App() {
         <h3 style={{marginTop: "1rem"}}>Como Jogar</h3>
         <ol style={{marginLeft: "2rem"}}>
           <li>Escolha entre ficar ou transferir para outro time.</li>
-          <li>Escolha entre manter ou assinar com outro patrocinador.</li>
-          <li>O jogo simulará uma temporada a partir do que você escolheu</li>
-          <li>Você pode recarregar a página caso não gostar dos atributos iniciais de seu jogador</li>
+          <li>O jogo simulará a partir do que você escolheu</li>
+          <li>Você pode recarregar a página para alterar os atributos iniciais do jogador</li>
           <li>Boa sorte e divirta-se</li>
         </ol>
       </header>
@@ -597,9 +590,11 @@ function App() {
         <a className='d-alert' id='decision-transfer2' onClick={() => (ChooseTeam(transfer2))}>Transferir para {transfer2.team.name} (${transfer2.contract.value}M | {transfer2.contract.duration} anos)</a>
         <a className='d-alert' id='retire' style={{display: "none"}}  onClick={() => (Retire())}>Aposentar-se</a>
       </div>
-      <div className='choices' id='sponsor-choice' style={{display: "none"}}>
-        <a className='d-stay' id='decision-same-sponsor' onClick={() => (ChooseSponsor())}>Continuar com {player.currentSponsor.company_name} (${player.currentSponsor.contract_value}M)</a>
-        <a className='d-alert' id='decision-change-sponsor' onClick={() => (ChooseSponsor(changeSponsor))}>Assinar com {changeSponsor.company_name} (${changeSponsor.contract_value}M)</a>
+      <div className='choices' id='continue' style={{display: "none"}}>
+        <a className='d-stay' onClick={() => (Continue())}>Simular Temporada ({contract} {(contract > 1) ? "anos restantes" : "ano restante"})</a>
+      </div>
+      <div className='chart' id='chart' style={{display: 'none'}}>
+          <ChartComponent data={seasons}/>
       </div>
       <div className='stats'>
         <h1>Carreira</h1>
@@ -627,9 +622,6 @@ function App() {
           <p>Chuteiras de Ouro: {player.goldenShoes}</p>
           <p>Ballon D'Or: {player.ballonDOr}</p>
         </div>
-      </div>
-      <div className='chart' id='chart' style={{display: 'none'}}>
-          <ChartComponent data={seasons}/>
       </div>
     </>
   );
