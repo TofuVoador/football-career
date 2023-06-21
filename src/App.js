@@ -184,7 +184,7 @@ function App() {
         newPlayer.europaQualification = false
       }
     } else if(newContract <= 0) {   //else if contract expires
-      newContract = Math.floor((60 - newPlayer.age) / 10)
+      newContract = RandomNumber(1, 3)
       newPlayer.wage = Math.floor(Math.pow(newPlayer.overall + newContract * (newPlayer.potential + newPlayer.team.power + newPlayer.fame / 10), 2) / 20) / 10;
     }
 
@@ -621,7 +621,7 @@ function App() {
     let leagueID = RandomNumber(0, Teams.length-1);
     let league = Teams[leagueID];
     let team = league.teams[RandomNumber(0, league.teams.length-1)];
-    let contractDuration = RandomNumber(1,4);
+    let contractDuration = RandomNumber(2,4);
     let contractValue = Math.floor(Math.pow(80 + contractDuration + team.power, 2) / 10) / 10;
 
     if(currentPlayer) {
@@ -636,8 +636,6 @@ function App() {
         count++
         if(count > 10) return(null) 
       }
-
-      contractDuration++
       contractValue = Math.floor(Math.pow(currentPlayer.overall + contractDuration + currentPlayer.potential + team.power + currentPlayer.fame / 10, 2) / 20) / 10;
     }
     
