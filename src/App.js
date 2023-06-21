@@ -114,7 +114,7 @@ function App() {
     potential: RandomNumber(1, 5),
     age: 17,
     nation: Nations[RandomNumber(0, Nations.length-1)],
-    team: GetNewOpponent(),
+    team: null,
     position: GetNewPosition(),
     wage: 10,
     overall: 70,
@@ -155,9 +155,9 @@ function App() {
     
     //pre season setup
     if(newTeam) {    //if they change team
-      let oldTeamLeague = newPlayer.team.league
+      let oldTeamLeague = newPlayer.team == null ? "" : newPlayer.team.league
       newGeneralPerformance = 0;
-      newPlayer.fame -= newPlayer.team.power * 10
+      newPlayer.fame -= (newPlayer.team == null ? 0 : newPlayer.team.power) * 10
       if(newPlayer.fame < 0) newPlayer.fame = 0;
       newPlayer.team = newTeam.team
       newContract = newTeam.contract.duration;
@@ -185,7 +185,7 @@ function App() {
       }
     } else if(newContract <= 0) {   //else if contract expires
       newContract = RandomNumber(1, 3)
-      newPlayer.wage = Math.floor(Math.pow(newPlayer.overall + newContract * (newPlayer.potential + newPlayer.team.power + newPlayer.fame / 10), 2) / 20) / 10;
+      newPlayer.wage = Math.floor(Math.pow(newPlayer.overall + (newContract * newPlayer.potential) + newPlayer.team.power + newPlayer.fame / 5, 2) / 50) / 10;
     }
 
     //calcule the player's performance
@@ -622,7 +622,7 @@ function App() {
     let league = Teams[leagueID];
     let team = league.teams[RandomNumber(0, league.teams.length-1)];
     let contractDuration = RandomNumber(2,4);
-    let contractValue = Math.floor(Math.pow(80 + contractDuration + team.power, 2) / 10) / 10;
+    let contractValue = Math.floor(Math.pow(80 + (contractDuration * 3) + team.power, 2) / 50) / 10;
 
     if(currentPlayer) {
       let count = 0
@@ -636,7 +636,7 @@ function App() {
         count++
         if(count > 10) return(null) 
       }
-      contractValue = Math.floor(Math.pow(currentPlayer.overall + contractDuration + currentPlayer.potential + team.power + currentPlayer.fame / 10, 2) / 20) / 10;
+      contractValue = Math.floor(Math.pow(currentPlayer.overall + (contractDuration * currentPlayer.potential) + team.power + currentPlayer.fame / 5, 2) / 50) / 10;
     }
     
     let newContract = {"value": contractValue, "duration": contractDuration}
@@ -675,7 +675,7 @@ function App() {
         ))}
       </div>
       <div className='choices' id='team-choice'>
-        <a className='d-stay' id='decision-stay' style={{display: "none"}} onClick={() => (ChooseTeam())}>Continuar em {player.team.name}</a>
+        <a className='d-stay' id='decision-stay' style={{display: "none"}} onClick={() => (ChooseTeam())}>Continuar em {player.team == null ? "" : player.team.name}</a>
         <a className='d-alert' id='decision-transfer1' onClick={() => (ChooseTeam(transfer1))}>Transferir para {transfer1.team.name} (${transfer1.contract.value}M | {transfer1.contract.duration} anos)</a>
         <a className='d-alert' id='decision-transfer2' onClick={() => (ChooseTeam(transfer2))}>Transferir para {transfer2.team.name} (${transfer2.contract.value}M | {transfer2.contract.duration} anos)</a>
         <a className='d-alert' id='retire' style={{display: "none"}}  onClick={() => (Retire())}>Aposentar-se</a>
