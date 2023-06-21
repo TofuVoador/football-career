@@ -9,19 +9,19 @@
       },{
         "name": "Manchester United",
         "league": "Premier League",
+        "power": 5
+      },{
+        "name": "Liverpool",
+        "league": "Premier League",
         "power": 4
       },{
         "name": "Arsenal",
         "league": "Premier League",
         "power": 3
       },{
-        "name": "Liverpool",
-        "league": "Premier League",
-        "power": 3
-      },{
         "name": "Chelsea",
         "league": "Premier League",
-        "power": 2
+        "power": 3
       },{
         "name": "Tottenham Hotspur",
         "league": "Premier League",
@@ -54,11 +54,11 @@
       },{
         "name": "Barcelona",
         "league": "La Liga",
-        "power": 4
+        "power": 5
       },{
         "name": "Atlético Madrid",
         "league": "La Liga",
-        "power": 3
+        "power": 4
       },{
         "name": "Villarreal",
         "league": "La Liga",
@@ -66,7 +66,7 @@
       },{
         "name": "Sevilla",
         "league": "La Liga",
-        "power": 2
+        "power": 3
       },{
         "name": "Real Betis",
         "league": "La Liga",
@@ -160,7 +160,7 @@
       },{
         "name": "Rennais",
         "league": "Ligue 1",
-        "power": 1
+        "power": 2
       },{
         "name": "Lens",
         "league": "Ligue 1",
@@ -168,7 +168,7 @@
       },{
         "name": "Olympique Lyonnais",
         "league": "Ligue 1",
-        "power": 0
+        "power": 1
       },{
         "name": "Reims",
         "league": "Ligue 1",
@@ -205,7 +205,7 @@
       },{
         "name": "Juventus",
         "league": "Serie A",
-        "power": 1
+        "power": 2
       },{
         "name": "Fiorentina",
         "league": "Serie A",
@@ -213,7 +213,7 @@
       },{
         "name": "Atalanta Bergamo",
         "league": "Serie A",
-        "power": 0
+        "power": 1
       },{
         "name": "Bologna",
         "league": "Serie A",
