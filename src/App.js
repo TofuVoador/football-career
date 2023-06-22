@@ -211,6 +211,7 @@ function App() {
       assists: 0,
       overall: newPlayer.overall,
       performance: newPerformance,
+      awardPoints: 0,
       leagueTable: [],
       leaguePosition: 1,
       nationalCupPhase: 0,
@@ -242,7 +243,7 @@ function App() {
     if(newSeason.goals < 0) newSeason.goals = 0;
     if(newSeason.assists < 0) newSeason.assists = 0;
 
-    let awardPoints = newSeason.performance * 2;
+    newSeason.awardPoints = newSeason.performance * 2.5;
 
     let playerImpactBonus = (newPlayer.performance > 0.5) ? 2.5 : (newPlayer.performance > -0.5) ? 1.5 : 0.5;
 
@@ -262,7 +263,7 @@ function App() {
 
     if(leaguePosition == 1) newPlayer.leagues++
 
-    awardPoints += (4-leaguePosition)
+    newSeason.awardPoints += (4-leaguePosition)
     newSeason.leaguePosition = leaguePosition
     newSeason.titles.push("Liga: " + newSeason.leaguePosition + "º lugar->" + topSix);
 
@@ -287,7 +288,7 @@ function App() {
 
       if(game.result) {
         phase++
-        awardPoints += 0.4
+        newSeason.awardPoints += 0.4
         if(phase >= TournamentPath.length - 3){
           end = true
           newPlayer.nationalCup++
@@ -335,7 +336,7 @@ function App() {
     
           if(game.result) {
             phase++
-            awardPoints += 0.8
+            newSeason.awardPoints++
             newPlayer.fame++
             if(phase >= TournamentPath.length - 1){
               end = true
@@ -437,7 +438,7 @@ function App() {
             if(phase >= TournamentPath.length - 1){
               end = true
               newPlayer.worldCup++
-              awardPoints += 2
+              newSeason.awardPoints += 2
             }
           } else {
             end = true
@@ -460,20 +461,20 @@ function App() {
 
     if(37.5 + RandomNumber(0,10) < newSeason.goals) {  //Golden Shoes
       newPlayer.goldenShoes++
-      awardPoints += 2
+      newSeason.awardPoints += 2
       newPlayer.fame += 10
       newSeason.titles.push("Chuteira de Ouro");
     }
 
-    newPlayer.fame += awardPoints / 2
+    newPlayer.fame += newSeason.awardPoints / 2
 
-    if(awardPoints + newPlayer.overall >= 99) {    //Ballon D'or
+    if(newSeason.awardPoints + newPlayer.overall >= 99) {    //Ballon D'or
       newPlayer.ballonDOr++;
       newSeason.titles.push("Ballon D'Or: Ganhador");
       newPlayer.fame += 30
       if(newPlayer.fame < 100) newPlayer.fame = 100;
-    } else if(awardPoints + newPlayer.overall >= 90) {
-      let pts = Math.floor((awardPoints + newPlayer.overall) - 90)
+    } else if(newSeason.awardPoints + newPlayer.overall >= 90) {
+      let pts = Math.floor((newSeason.awardPoints + newPlayer.overall) - 90)
       newPlayer.fame += pts * 2
       let position = 10 - pts;
       newSeason.titles.push("Ballon D'Or: " + position + "º lugar");
@@ -591,18 +592,18 @@ function App() {
   }  
 
   function GetWinner(opponent, playerTeam, bonus) {
-    let opponentPower = opponent.power / 2 + 3.5
-    let playerTeamPower = playerTeam.power / 2 + 3.5
+    let opponentPower = opponent.power / 2 + 2.5
+    let playerTeamPower = playerTeam.power / 2 + 2.5
 
-    let opponentScore = RandomNumber(opponentPower, opponentPower * opponentPower)
-    let playerTeamScore = RandomNumber(playerTeamPower, playerTeamPower * playerTeamPower) + bonus 
+    let opponentScore = RandomNumber(opponent.power, opponentPower * opponentPower)
+    let playerTeamScore = RandomNumber(playerTeam.power, playerTeamPower * playerTeamPower) + bonus 
 
     let result = (opponentScore < playerTeamScore)
 
     if(playerTeamScore < 0) playerTeamScore = 0;
 
-    opponentScore = Math.floor(opponentScore / 6);
-    playerTeamScore = Math.floor(playerTeamScore / 6);
+    opponentScore = Math.floor(opponentScore / 5);
+    playerTeamScore = Math.floor(playerTeamScore / 5);
 
     let game = playerTeam.name + " " + playerTeamScore + " x " + opponentScore + " " + opponent.name
 

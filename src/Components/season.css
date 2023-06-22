@@ -2,7 +2,7 @@
   padding: 0 1rem;
   margin-bottom: 2rem;
   border-radius: 2rem;
-  background-color: var(--color-secondary);
+  background-color: var(--color-dark);
   width: 100%;
   max-width: 1000px;
 }
@@ -11,7 +11,7 @@
   padding: 1rem;
   display: flex;
   justify-content: center;
-  color: var(--color-emphassys);
+  color: var(--color-light2);
   font-size: 1.5rem;
   font-weight: bold;
 }
@@ -22,7 +22,7 @@
   border-radius: 2rem;
   display: flex;
   gap: 0.5rem;
-  color: var(--color-emphassys);
+  color: var(--color-light2);
 }
 
 .season-titles-list {
@@ -36,5 +36,5 @@
 }
 
 .season-titles-list div p {
-  color: var(--color-main);
+  color: var(--color-light);
 }
