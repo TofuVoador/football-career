@@ -35,6 +35,6 @@
   font-size: 1.2rem;
 }
 
-.season-titles-list details p {
+.season-titles-list div p {
   color: var(--color-light);
 }
