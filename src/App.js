@@ -265,7 +265,7 @@ function App() {
 
     newSeason.awardPoints += (5-leaguePosition) / 2
     newSeason.leaguePosition = leaguePosition
-    newSeason.titles.push("Liga: " + newSeason.leaguePosition + "º lugar->" + topSix);
+    newSeason.titles.push("Liga: " + newSeason.leaguePosition + "º lugar" + topSix);
 
     //national cup
     let opponents = [];
@@ -298,7 +298,7 @@ function App() {
       }
     }
 
-    description = "Copa Nacional: " + TournamentPath[phase + 2] + "->" + description
+    description = "Copa Nacional: " + TournamentPath[phase + 2] + description
 
     newSeason.nationalCupPhase = phase;
     newSeason.titles.push(description);
@@ -347,7 +347,7 @@ function App() {
         }
       }
 
-      description = "Champions League: " + TournamentPath[phase] + "->" + description
+      description = "Champions League: " + TournamentPath[phase] + description
 
       newSeason.championsPhase = phase;
       newSeason.titles.push(description);
@@ -394,7 +394,7 @@ function App() {
         }
       }
 
-      description = "Europa League: " + TournamentPath[phase] + "->" + description
+      description = "Europa League: " + TournamentPath[phase] + description
 
       newSeason.europaPhase = phase;
       newSeason.titles.push(description);
@@ -444,7 +444,7 @@ function App() {
         }
       }
 
-      description = "World Cup: " + TournamentPath[phase] + "->" + description
+      description = "World Cup: " + TournamentPath[phase] + description
 
       newSeason.worldCupPhase = phase;
       newSeason.titles.push(description);
@@ -689,8 +689,8 @@ function App() {
       </div>
       <div className='choices' id='team-choice'>
         <a className='d-stay' id='decision-stay' style={{display: "none"}} onClick={() => (ChooseTeam())}>Continuar em {player.team == null ? "" : player.team.name}</a>
-        <a className='d-alert' id='decision-transfer1' onClick={() => (ChooseTeam(transfer1))}>Transferir para {transfer1.team.name} (${transfer1.contract.value}M | {transfer1.contract.duration} anos)</a>
-        <a className='d-alert' id='decision-transfer2' onClick={() => (ChooseTeam(transfer2))}>Transferir para {transfer2.team.name} (${transfer2.contract.value}M | {transfer2.contract.duration} anos)</a>
+        <a className='d-alert' id='decision-transfer1' onClick={() => (ChooseTeam(transfer1))}><p>Transferir para {transfer1.team.name}</p> <p>(${transfer1.contract.value}M | {transfer1.contract.duration} anos)</p></a>
+        <a className='d-alert' id='decision-transfer2' onClick={() => (ChooseTeam(transfer2))}><p>Transferir para {transfer2.team.name}</p> <p>(${transfer2.contract.value}M | {transfer2.contract.duration} anos)</p></a>
         <a className='d-alert' id='retire' style={{display: "none"}}  onClick={() => (Retire())}>Aposentar-se</a>
       </div>
       <div className='choices' id='continue' style={{display: "none"}}>

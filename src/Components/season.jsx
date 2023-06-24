@@ -20,13 +20,21 @@ const Season = (props) => {
         <div className='season-titles-list'>
           {season.titles.map((t) => {
             let titleDesc = t.split("->");
-            let matches = titleDesc.slice(1);
-            return <div key={season.year+titleDesc[0]}>
-              <h1>{titleDesc[0]}</h1>{
-              matches.map((match) => (<p key={season.year+match}>{match}</p>))
-            }</div>
-          }
-          )}
+            console.log(titleDesc);
+            if (titleDesc.length > 1) {
+              let matches = titleDesc.slice(1);
+              return (
+                <details key={season.year + titleDesc[0]}>
+                  <summary>{titleDesc[0]}</summary>
+                  {matches.map((match) => (
+                    <p key={season.year + match}>{match}</p>
+                  ))}
+                </details>
+              );
+            } else {
+              return <h1 key={season.year + titleDesc[0]}>{titleDesc[0]}</h1>;
+            }
+          })}
         </div>
       </div>
     </details>
