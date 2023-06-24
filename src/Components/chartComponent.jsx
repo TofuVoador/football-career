@@ -62,7 +62,7 @@ const ChartComponent = ({ data }) => {
         labels: data.map(item => item.age), // x-axis labels
         datasets: [
           {
-            label: 'Wage',
+            label: 'Salário Anual',
             data: data.map(item => item.wage), // y-axis data
             backgroundColor: 'rgba(234, 231, 177, 1)', // Set background color
             borderColor: 'rgba(234, 231, 177, 1)', // Set border color
@@ -78,7 +78,7 @@ const ChartComponent = ({ data }) => {
         labels: data.map(item => item.age), // x-axis labels
         datasets: [
           {
-            label: 'Fame',
+            label: 'Fama',
             data: data.map(item => item.fame), // y-axis data
             backgroundColor: 'rgba(234, 231, 177, 1)', // Set background color
             borderColor: 'rgba(234, 231, 177, 1)', // Set border color
@@ -94,12 +94,12 @@ const ChartComponent = ({ data }) => {
         labels: data.map(item => item.year), // x-axis labels
         datasets: [
           {
-            label: 'Goals',
+            label: 'Gols',
             data: data.map(item => item.goals), // y-axis data
             backgroundColor: 'rgba(234, 231, 177, 1)', // Set background color
             borderColor: 'rgba(234, 231, 177, 1)', // Set border color
           },{
-            label: 'Assists',
+            label: 'Assistências',
             data: data.map(item => item.assists), // y-axis data
             backgroundColor: 'rgba(166, 187, 141, 1)', // Set background color
             borderColor: 'rgba(166, 187, 141, 1)', // Set border color

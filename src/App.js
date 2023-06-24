@@ -13,71 +13,71 @@ const positions = [
   {
     title: "ST",
     goalsBonus: 30,
-    assistsBonus: 15,
+    assistsBonus: 12,
   },{
     title: "CF",
-    goalsBonus: 27,
-    assistsBonus: 15,
+    goalsBonus: 30,
+    assistsBonus: 12,
   },{
     title: "LF",
-    goalsBonus: 24,
-    assistsBonus: 15,
+    goalsBonus: 27,
+    assistsBonus: 12,
   },{
     title: "RF",
-    goalsBonus: 24,
-    assistsBonus: 15,
+    goalsBonus: 27,
+    assistsBonus: 12,
   },{
     title: "CAM",
-    goalsBonus: 21,
-    assistsBonus: 15,
+    goalsBonus: 24,
+    assistsBonus: 12,
   },{
     title: "LW",
-    goalsBonus: 18,
-    assistsBonus: 15,
+    goalsBonus: 21,
+    assistsBonus: 12,
   },{
     title: "RW",
-    goalsBonus: 18,
-    assistsBonus: 15,
+    goalsBonus: 21,
+    assistsBonus: 12,
   },{
     title: "LM",
-    goalsBonus: 15,
-    assistsBonus: 15,
+    goalsBonus: 18,
+    assistsBonus: 12,
   },{
     title: "CM",
-    goalsBonus: 15,
-    assistsBonus: 15,
+    goalsBonus: 18,
+    assistsBonus: 12,
   },{
     title: "RM",
-    goalsBonus: 15,
-    assistsBonus: 15,
+    goalsBonus: 18,
+    assistsBonus: 12,
   },{
     title: "LWB",
-    goalsBonus: 12,
-    assistsBonus: 12,
+    goalsBonus: 15,
+    assistsBonus: 10,
   },{
     title: "RWB",
-    goalsBonus: 12,
-    assistsBonus: 12,
+    goalsBonus: 15,
+    assistsBonus: 10,
   },{
     title: "CDM",
-    goalsBonus: 9,
-    assistsBonus: 9,
+    goalsBonus: 12,
+    assistsBonus: 8,
   },{
     title: "LB",
-    goalsBonus: 6,
+    goalsBonus: 9,
     assistsBonus: 6,
   },{
     title: "RB",
-    goalsBonus: 6,
+    goalsBonus: 9,
     assistsBonus: 6,
   },{
     title: "CB",
-    goalsBonus: 3,
-    assistsBonus: 3,
+    goalsBonus: 6,
+    assistsBonus: 4,
   },{
     title: "GK",
-    goalsBonus: 0,
-    assistsBonus: 0,
+    goalsBonus: 3,
+    assistsBonus: 2,
   }
 ]
 
@@ -190,12 +190,12 @@ function App() {
 
     //calcule the player's performance
     
-    let newPerformance = (RandomNumber(-10, 10) + RandomNumber(-10, 10) + newPlayer.team.power) / 20
-    newPlayer.overall = (82 + newPlayer.potential * 2) - Math.pow((28 - newPlayer.age + newPlayer.potential / 2.5), 2) / 10 + newPerformance;
+    let newPerformance = (RandomNumber(-10, 10) - RandomNumber(-10, 10) + newPlayer.team.power) / 20
+    newPlayer.overall = (82 + newPlayer.potential * 2) - Math.pow((28 - newPlayer.age + newPlayer.potential / 2.5), 2) / (10 + newPlayer.potential / 2.5) + newPerformance;
     newGeneralPerformance += newPerformance
 
     //giving the performance, set how many games did they were the starter player
-    let starting = Math.floor(8 * (newPlayer.overall - (67.5 + newPlayer.team.power * 1.5)))
+    let starting = Math.floor(10 * (newPlayer.overall - (70 + newPlayer.team.power * 2)))
     if(starting > 100) starting = 100
     else if(starting < 0) starting = 0
 
@@ -237,15 +237,15 @@ function App() {
     let newSeason = currentSeason;
 
     //giving the starting rate, randomize how many goals/assists did they score
-    newSeason.goals = Math.floor(((newSeason.starting / 100) * (newPlayer.team.power * 2 + newPlayer.position.goalsBonus) * (newPlayer.overall / 100)) + newSeason.performance * 4);
-    newSeason.assists = Math.floor(((newSeason.starting / 100) * (newPlayer.team.power + newPlayer.position.assistsBonus) * (newPlayer.overall / 100)) + newSeason.performance * 2);
+    newSeason.goals = Math.floor(((newSeason.starting / 100) * (newPlayer.position.goalsBonus * (1 + (RandomNumber(0, newPlayer.team.power * 2) / 2 + newSeason.performance * 5) / 20)) * (newPlayer.overall / 100)));
+    newSeason.assists = Math.floor(((newSeason.starting / 100) * (newPlayer.position.assistsBonus * (1 + (RandomNumber(0, newPlayer.team.power * 2) / 2 + newSeason.performance * 5) / 20)) * (newPlayer.overall / 100)));
 
     if(newSeason.goals < 0) newSeason.goals = 0;
     if(newSeason.assists < 0) newSeason.assists = 0;
 
     newSeason.awardPoints = newSeason.performance * 2.5;
 
-    let playerImpactBonus = (newPlayer.performance > 0.5) ? 2.5 : (newPlayer.performance > -0.5) ? 1.5 : 0.5;
+    let playerImpactBonus = (newPlayer.performance > 0.5) ? 1.5 : (newPlayer.performance > -0.5) ? 0.5 : -0.5;
 
     //national tournaments
     let nationalTeams = Teams.find((league) => league.name === newPlayer.team.league)?.teams || [];
@@ -263,7 +263,7 @@ function App() {
 
     if(leaguePosition == 1) newPlayer.leagues++
 
-    newSeason.awardPoints += (4-leaguePosition)
+    newSeason.awardPoints += (5-leaguePosition) / 2
     newSeason.leaguePosition = leaguePosition
     newSeason.titles.push("Liga: " + newSeason.leaguePosition + "º lugar->" + topSix);
 
@@ -282,7 +282,7 @@ function App() {
     let phase = 0;
 
     while (!end) {
-      let game = GetWinner(opponents[phase], newPlayer.team, playerImpactBonus)
+      let game = GetWinner(newPlayer.team, opponents[phase], playerImpactBonus)
 
       description += "->" + TournamentPath[phase + 2] + ": " + game.game;
 
@@ -319,7 +319,7 @@ function App() {
 
       let description = TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
 
-      if(GetWinner(op1, newPlayer.team, playerImpactBonus).result || GetWinner(op2, newPlayer.team, playerImpactBonus).result) {
+      if(GetWinner(newPlayer.team, op1, playerImpactBonus).result || GetWinner(newPlayer.team, op2, playerImpactBonus).result) {
         phase++;
         opponents = [];
         end = false;
@@ -330,14 +330,13 @@ function App() {
           }
           opponents.push(op) 
 
-          let game = GetWinner(op, newPlayer.team, playerImpactBonus)
+          let game = GetWinner(newPlayer.team, op, playerImpactBonus)
 
           description += "->" + TournamentPath[phase] + ": " + game.game;
     
           if(game.result) {
             phase++
-            newSeason.awardPoints++
-            newPlayer.fame++
+            newSeason.awardPoints += 0.6
             if(phase >= TournamentPath.length - 1){
               end = true
               newPlayer.champions++
@@ -367,7 +366,7 @@ function App() {
 
       let description = TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
       
-      if(GetWinner(op1, newPlayer.team, playerImpactBonus) || GetWinner(op2, newPlayer.team, playerImpactBonus)) {
+      if(GetWinner(newPlayer.team, op1, playerImpactBonus) || GetWinner(newPlayer.team, op2, playerImpactBonus)) {
         phase++;
         opponents = [];
         end = false;
@@ -378,16 +377,16 @@ function App() {
           }
           opponents.push(op) 
 
-          let game = GetWinner(op, newPlayer.team, playerImpactBonus)
+          let game = GetWinner(newPlayer.team, op, playerImpactBonus)
 
           description += "->" + TournamentPath[phase] + ": " + game.game;
     
           if(game.result) {
             phase++
-            newPlayer.fame += 0.5
             if(phase >= TournamentPath.length - 1){
               end = true
               newPlayer.europa++
+              newSeason.awardPoints++
             }
           } else {
             end = true
@@ -417,7 +416,7 @@ function App() {
 
       let description = TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
 
-      if(GetWinner(op1, newPlayer.nation, playerImpactBonus) || GetWinner(op2, newPlayer.nation, playerImpactBonus)) {
+      if(GetWinner(newPlayer.nation, op1, playerImpactBonus).result || GetWinner(newPlayer.nation, op2, playerImpactBonus).result) {
         phase++;    
         opponents = [];
         end = false;
@@ -428,13 +427,12 @@ function App() {
           }
           opponents.push(op) 
 
-          let game = GetWinner(op, newPlayer.nation, playerImpactBonus);
+          let game = GetWinner(newPlayer.nation, op, playerImpactBonus);
 
           description += "->" + TournamentPath[phase] + ": " + game.game;
     
           if(game.result) {
             phase++
-            newPlayer.fame++
             if(phase >= TournamentPath.length - 1){
               end = true
               newPlayer.worldCup++
@@ -459,14 +457,14 @@ function App() {
     //post season results
     if(RandomNumber(0,100) < 1) newSeason.titles.push("Puskás");  //Puskás
 
-    if(37.5 + RandomNumber(0,10) < newSeason.goals) {  //Golden Shoes
+    if(36 + RandomNumber(0,15) < newSeason.goals) {  //Golden Shoes
       newPlayer.goldenShoes++
-      newSeason.awardPoints += 2
+      newSeason.awardPoints++
       newPlayer.fame += 10
       newSeason.titles.push("Chuteira de Ouro");
     }
 
-    newPlayer.fame += newSeason.awardPoints / 2
+    newPlayer.fame += newSeason.awardPoints
 
     if(newSeason.awardPoints + newPlayer.overall >= 99) {    //Ballon D'or
       newPlayer.ballonDOr++;
@@ -483,6 +481,7 @@ function App() {
     //trasnfer window
 
     //fired
+    console.log(generalPerformance)
     if(contract <= 1 && (newPlayer.overall >= 80 + newPlayer.team.power * 4 || (newPlayer.age > 28 && newPlayer.overall <= 79 + newPlayer.team.power) ||
       generalPerformance < 0)) {
         document.getElementById("decision-stay").style.display = "none"
@@ -559,16 +558,12 @@ function App() {
     for (let home = 0; home < teams.length; home++) {
       for (let away = 0; away < teams.length; away++) {
         if (teams[home] !== teams[away]) {
-          let awayPower = teams[away].power / 2 + 2.5;
-          let homePower = teams[home].power / 2 + 2.5;
+          let game = GetGame(teams[home], teams[away], 0.5)
   
-          let awayScore = Math.floor(RandomNumber(awayPower, awayPower * awayPower) / 5);
-          let homeScore = Math.floor(RandomNumber(homePower, homePower * homePower) / 5);
-  
-          if (awayScore > homeScore) {
-            points[away] += 3;
-          } else if (homeScore > awayScore) {
+          if (game[0] > game[1]) {
             points[home] += 3;
+          } else if (game[1]  > game[0]) {
+            points[away] += 3;
           } else {
             points[away] += 1;
             points[home] += 1;
@@ -591,19 +586,36 @@ function App() {
     };
   }  
 
-  function GetWinner(opponent, playerTeam, bonus) {
-    let opponentPower = opponent.power / 2 + 2.5
-    let playerTeamPower = playerTeam.power / 2 + 2.5
+  function GetGame(team1, team2, bonus) {
+    let team1Power = team1.power / 2 + 2.5
+    let team2Power = team2.power / 2 + 2.5
 
-    let opponentScore = RandomNumber(opponent.power, opponentPower * opponentPower)
-    let playerTeamScore = RandomNumber(playerTeam.power, playerTeamPower * playerTeamPower) + bonus 
+    let team1Score = RandomNumber(team1Power, team1Power * team1Power - team2Power) + RandomNumber(team1Power, team1Power * team1Power - team2Power) + bonus 
+    let team2Score = RandomNumber(team2Power, team2Power * team2Power - team1Power) + RandomNumber(team2Power, team2Power * team2Power - team1Power)
+
+    team1Score = Math.floor(team1Score / 10);
+    team2Score = Math.floor(team2Score / 10);
+
+    if(team1Score < 0) team1Score = 0;
+    if(team2Score < 0) team2Score = 0;
+
+    return [team1Score, team2Score]
+  }
+
+  function GetWinner(playerTeam, opponent, bonus) {
+    let playerTeamPower = playerTeam.power / 2 + 2.5
+    let opponentPower = opponent.power / 2 + 2.5
+
+    let playerTeamScore = RandomNumber(playerTeam.power, playerTeamPower * playerTeamPower - opponent.power) + RandomNumber(playerTeam.power, playerTeamPower * playerTeamPower - opponent.power) + bonus 
+    let opponentScore = RandomNumber(opponent.power, opponentPower * opponentPower - playerTeam.power) + RandomNumber(opponent.power, opponentPower * opponentPower - playerTeam.power)
 
     let result = (opponentScore < playerTeamScore)
 
-    if(playerTeamScore < 0) playerTeamScore = 0;
+    playerTeamScore = Math.floor(playerTeamScore / 10);
+    opponentScore = Math.floor(opponentScore / 10);
 
-    opponentScore = Math.floor(opponentScore / 5);
-    playerTeamScore = Math.floor(playerTeamScore / 5);
+    if(playerTeamScore < 0) playerTeamScore = 0;
+    if(opponentScore < 0) opponentScore = 0;
 
     let game = playerTeam.name + " " + playerTeamScore + " x " + opponentScore + " " + opponent.name
 
@@ -621,15 +633,14 @@ function App() {
   function GetNewTeam(currentPlayer = null) {
     let leagueID = RandomNumber(0, Teams.length-1);
     let league = Teams[leagueID];
-    let team = league.teams[RandomNumber(0, league.teams.length-1)];
+    let team = league.teams[RandomNumber(league.teams.length-5, league.teams.length-1)];
     let contractDuration = RandomNumber(2,4);
     let contractValue = Math.floor(Math.pow(80 + (contractDuration * 3) + team.power, 2) / 50) / 10;
 
     if(currentPlayer) {
       let count = 0
       while (currentPlayer.overall >= 80 + team.power * 4 || 
-      currentPlayer.overall <= 74 + team.power ||
-      (currentPlayer.age > 28 && currentPlayer.overall <= 79 + team.power) ||
+      (currentPlayer.age > 28 && currentPlayer.overall <= 80 + team.power) ||
       currentPlayer.team.name == team.name) {
         league = Teams[leagueID];
         team = league.teams[RandomNumber(0, league.teams.length-1)];
@@ -637,6 +648,7 @@ function App() {
         count++
         if(count > 10) return(null) 
       }
+
       contractValue = Math.floor(Math.pow(currentPlayer.overall + (contractDuration * currentPlayer.potential) + team.power + currentPlayer.fame / 5, 2) / 50) / 10;
     }
     

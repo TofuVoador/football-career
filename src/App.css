@@ -51,3 +51,17 @@ header {
   align-items: center;
   margin: 1rem;
 }
+
+@media (max-width: 900px) {
+  header h1, .stats h1 {
+    font-size: 16px;
+  }
+
+  header h3, .choices a, .stats div p {
+    font-size: 12px;
+  }
+
+  header ol {
+    font-size: 8px;
+  }
+}

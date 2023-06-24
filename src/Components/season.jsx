@@ -21,10 +21,10 @@ const Season = (props) => {
           {season.titles.map((t) => {
             let titleDesc = t.split("->");
             let matches = titleDesc.slice(1);
-            return <div key={season.year+titleDesc[0]}>
-              <h2>{titleDesc[0]}</h2>{
+            return <details key={season.year+titleDesc[0]}>
+              <summary>{titleDesc[0]}</summary>{
               matches.map((match) => (<p key={season.year+match}>{match}</p>))
-            }</div>
+            }</details>
           }
           )}
         </div>

@@ -31,10 +31,10 @@
   gap: 0.5rem;
 }
 
-.season-titles-list div h2 {
+.season-titles-list details summary {
   font-size: 1.2rem;
 }
 
-.season-titles-list div p {
+.season-titles-list details p {
   color: var(--color-light);
 }
