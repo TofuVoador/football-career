@@ -31,7 +31,7 @@
   gap: 0.5rem;
 }
 
-.season-titles-list details summary {
+.season-titles-list details summary, .season-titles-list h1 {
   font-size: 1.2rem;
 }
 
@@ -44,7 +44,7 @@
     font-size: 1rem;
   }
 
-  .season-titles-list details summary {
+  .season-titles-list details summary, .season-titles-list h1 {
     font-size: 1rem;
   }
 
