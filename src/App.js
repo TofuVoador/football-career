@@ -298,7 +298,7 @@ function App() {
       }
     }
 
-    description = "Copa Nacional: " + TournamentPath[phase + 2] + description
+    description = "->" + "Copa Nacional: " + TournamentPath[phase + 2] + description
 
     newSeason.nationalCupPhase = phase;
     newSeason.titles.push(description);
@@ -364,7 +364,7 @@ function App() {
         op2 = GetNewOpponent()
       }
 
-      let description = TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
+      let description = "->" + TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
       
       if(GetWinner(newPlayer.team, op1, playerImpactBonus) || GetWinner(newPlayer.team, op2, playerImpactBonus)) {
         phase++;
@@ -414,7 +414,7 @@ function App() {
         op2 = Nations[RandomNumber(0, Nations.length - 1)]
       }
 
-      let description = TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
+      let description = "->" + TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
 
       if(GetWinner(newPlayer.nation, op1, playerImpactBonus).result || GetWinner(newPlayer.nation, op2, playerImpactBonus).result) {
         phase++;    
