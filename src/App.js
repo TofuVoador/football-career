@@ -317,7 +317,7 @@ function App() {
         op2 = GetNewOpponent()
       }
 
-      description = TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
+      description = "->" + TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
 
       if(GetWinner(newPlayer.team, op1, playerImpactBonus).result || GetWinner(newPlayer.team, op2, playerImpactBonus).result) {
         phase++;
