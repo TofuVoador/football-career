@@ -298,7 +298,7 @@ function App() {
       }
     }
 
-    description = "->" + "Copa Nacional: " + TournamentPath[phase + 2] + description
+    description = "Copa Nacional: " + TournamentPath[phase + 2] + description
 
     newSeason.nationalCupPhase = phase;
     newSeason.titles.push(description);
@@ -317,7 +317,7 @@ function App() {
         op2 = GetNewOpponent()
       }
 
-      let description = TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
+      description = TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
 
       if(GetWinner(newPlayer.team, op1, playerImpactBonus).result || GetWinner(newPlayer.team, op2, playerImpactBonus).result) {
         phase++;
@@ -364,7 +364,7 @@ function App() {
         op2 = GetNewOpponent()
       }
 
-      let description = "->" + TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
+      description = "->" + TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
       
       if(GetWinner(newPlayer.team, op1, playerImpactBonus) || GetWinner(newPlayer.team, op2, playerImpactBonus)) {
         phase++;
@@ -414,7 +414,7 @@ function App() {
         op2 = Nations[RandomNumber(0, Nations.length - 1)]
       }
 
-      let description = "->" + TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
+      description = "->" + TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
 
       if(GetWinner(newPlayer.nation, op1, playerImpactBonus).result || GetWinner(newPlayer.nation, op2, playerImpactBonus).result) {
         phase++;    
@@ -633,7 +633,7 @@ function App() {
   function GetNewTeam(currentPlayer = null) {
     let leagueID = RandomNumber(0, Teams.length-1);
     let league = Teams[leagueID];
-    let team = league.teams[RandomNumber(league.teams.length-5, league.teams.length-1)];
+    let team = league.teams[RandomNumber(3, league.teams.length-1)];
     let contractDuration = RandomNumber(2,4);
     let contractValue = Math.floor(Math.pow(80 + (contractDuration * 3) + team.power, 2) / 50) / 10;
 
