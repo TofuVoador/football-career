@@ -20,7 +20,6 @@ const Season = (props) => {
         <div className='season-titles-list'>
           {season.titles.map((t) => {
             let titleDesc = t.split("->");
-            console.log(titleDesc);
             if (titleDesc.length > 1) {
               let matches = titleDesc.slice(1);
               return (
