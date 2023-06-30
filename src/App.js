@@ -16,26 +16,18 @@ const positions = [
     assistsBonus: 12,
   },{
     title: "CF",
-    goalsBonus: 30,
-    assistsBonus: 12,
-  },{
-    title: "LF",
     goalsBonus: 27,
-    assistsBonus: 12,
-  },{
-    title: "RF",
-    goalsBonus: 27,
-    assistsBonus: 12,
-  },{
-    title: "CAM",
-    goalsBonus: 24,
     assistsBonus: 12,
   },{
     title: "LW",
-    goalsBonus: 21,
+    goalsBonus: 24,
     assistsBonus: 12,
   },{
     title: "RW",
+    goalsBonus: 24,
+    assistsBonus: 12,
+  },{
+    title: "CAM",
     goalsBonus: 21,
     assistsBonus: 12,
   },{
@@ -51,33 +43,25 @@ const positions = [
     goalsBonus: 18,
     assistsBonus: 12,
   },{
-    title: "LWB",
-    goalsBonus: 15,
-    assistsBonus: 10,
-  },{
-    title: "RWB",
-    goalsBonus: 15,
-    assistsBonus: 10,
-  },{
     title: "CDM",
+    goalsBonus: 15,
+    assistsBonus: 10,
+  },{
+    title: "LB",
     goalsBonus: 12,
     assistsBonus: 8,
   },{
-    title: "LB",
-    goalsBonus: 9,
-    assistsBonus: 6,
-  },{
     title: "RB",
-    goalsBonus: 9,
-    assistsBonus: 6,
+    goalsBonus: 12,
+    assistsBonus: 8,
   },{
     title: "CB",
-    goalsBonus: 6,
-    assistsBonus: 4,
+    goalsBonus: 9,
+    assistsBonus: 6,
   },{
     title: "GK",
-    goalsBonus: 3,
-    assistsBonus: 2,
+    goalsBonus: 6,
+    assistsBonus: 4,
   }
 ]
 
@@ -192,7 +176,7 @@ function App() {
 
     //calcule the player's performance
     
-    let newPerformance = 1//(RandomNumber(-10, 10) - RandomNumber(-10, 10) + (newPlayer.team.power - 2) * 2) / 20
+    let newPerformance = (RandomNumber(-10, 10) - RandomNumber(-10, 10) + (newPlayer.team.power - 2) * 2) / 20
     newPlayer.overall = (85 + newPlayer.potential * 1.5) - Math.pow((27.5 - newPlayer.age + newPlayer.potential / 2), 2) / 12 + newPerformance;
     newGeneralPerformance += newPerformance
 
@@ -254,7 +238,7 @@ function App() {
     let league = Teams.find((league) => league.name === newPlayer.team.league);
 
     //national league
-    let leagueResults = GetLeaguePosition(league.teams, newPlayer.team);
+    let leagueResults = GetLeaguePosition(league.teams, newPlayer, newSeason.performance * 2);
     let leaguePosition = leagueResults.pos
 
     newSeason.leagueTable = leagueResults.table
@@ -285,7 +269,7 @@ function App() {
     let phase = 0;
 
     while (!end) {
-      let game = GetWinner(newPlayer.team, opponents[phase], newSeason.performance * 2)
+      let game = GetWinner(newPlayer.team, opponents[phase], newSeason.performance)
 
       description += "->" + TournamentPath[phase + 2] + ": " + game.game;
 
@@ -321,7 +305,7 @@ function App() {
 
       description = "->" + TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
 
-      if(GetWinner(newPlayer.team, op1, newSeason.performance * 5).result || GetWinner(newPlayer.team, op2, newSeason.performance * 5).result) {
+      if(GetWinner(newPlayer.team, op1, newSeason.performance * 4).result || GetWinner(newPlayer.team, op2, newSeason.performance * 4).result) {
         phase++;
         opponents = [];
         end = false;
@@ -332,7 +316,7 @@ function App() {
           }
           opponents.push(op) 
 
-          let game = GetWinner(newPlayer.team, op, newSeason.performance * 5)
+          let game = GetWinner(newPlayer.team, op, newSeason.performance * 4)
 
           description += "->" + TournamentPath[phase] + ": " + game.game;
     
@@ -423,7 +407,7 @@ function App() {
 
       description = "->" + TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
 
-      if(GetWinner(newPlayer.nation, op1, newSeason.performance * 4).result || GetWinner(newPlayer.nation, op2, newSeason.performance * 4).result) {
+      if(GetWinner(newPlayer.nation, op1, newSeason.performance * 5).result || GetWinner(newPlayer.nation, op2, newSeason.performance * 5).result) {
         phase++;    
         opponents = [];
         end = false;
@@ -434,7 +418,7 @@ function App() {
           }
           opponents.push(op) 
 
-          let game = GetWinner(newPlayer.nation, op, newSeason.performance * 4);
+          let game = GetWinner(newPlayer.nation, op, newSeason.performance * 5);
 
           description += "->" + TournamentPath[phase] + ": " + game.game;
     
@@ -559,12 +543,17 @@ function App() {
     if(contract > 1) ChooseTeam()
   }
 
-  function GetLeaguePosition(teams, playerTeam) {
+  function GetLeaguePosition(teams, currentPlayer, bonus) {
     let points = new Array(teams.length).fill(0);
     for (let home = 0; home < teams.length; home++) {
       for (let away = 0; away < teams.length; away++) {
         if (teams[home] !== teams[away]) {
-          let game = GetGame(teams[home], teams[away], 0.5)
+          let b = 0.5
+
+          if(teams[home] === currentPlayer.team) b += bonus
+          else if (teams[away] === currentPlayer.team) b -= bonus
+
+          let game = GetGame(teams[home], teams[away], b)
   
           if (game[0] > game[1]) {
             points[home] += 3;
@@ -582,7 +571,7 @@ function App() {
   
     teamPositions.sort((a, b) => points[b - 1] - points[a - 1]);
   
-    let playerPosition = teamPositions.findIndex((position) => teams[position - 1] === playerTeam);
+    let playerPosition = teamPositions.findIndex((position) => teams[position - 1] === player.team);
 
     let table = teamPositions.map((position) => teams[position - 1]);
   
@@ -593,18 +582,11 @@ function App() {
   }  
 
   function GetGame(team1, team2, bonus) {
-    let team1Points = RandomNumber(0, (team1.power - 2) * 4) + RandomNumber(0, (team1.power - 2) * 4) + bonus 
-    let team2Points = RandomNumber(0, (team2.power - 2) * 4) + RandomNumber(0, (team2.power - 2) * 4)
+    let team1Points = (team1.power - 1) * 2 + RandomNumber(0, (team1.power - 1) * 4) - RandomNumber(0, (team2.power - 2) * 2) + bonus
+    let team2Points = (team2.power - 1) * 2 + RandomNumber(0, (team2.power - 1) * 4) - RandomNumber(0, (team1.power - 2) * 2) 
 
-    let divisor = 5
-    let team1Score = Math.floor(team1Points / divisor);
-    let team2Score = Math.floor(team2Points / divisor);
-    
-    while(team2Score + team1Score > 5) {
-      divisor++
-      team1Score = Math.floor(team1Points / divisor);
-      team2Score = Math.floor(team2Points / divisor);
-    }
+    let team1Score = Math.floor(team1Points / 6);
+    let team2Score = Math.floor(team2Points / 6);
 
     if(team1Score < 0) team1Score = 0;
     if(team2Score < 0) team2Score = 0;
@@ -613,20 +595,14 @@ function App() {
   }
 
   function GetWinner(playerTeam, opponent, bonus) {
-    let playerTeamPoints = RandomNumber(playerTeam.power, (playerTeam.power - 2) * 4) + RandomNumber(playerTeam.power, (playerTeam.power - 2) * 4) + bonus 
-    let opponentPoints = RandomNumber(opponent.power, (opponent.power - 2) * 4) + RandomNumber(opponent.power, (opponent.power - 2) * 4)
+    let playerTeamPoints = (playerTeam.power - 1) * 2 + RandomNumber(0, (playerTeam.power - 1) * 4) - RandomNumber(0, (opponent.power - 2) * 2) + bonus
+    let opponentPoints = (opponent.power - 1) * 2 + RandomNumber(0, (opponent.power - 1) * 4) - RandomNumber(0, (playerTeam.power - 2) * 2) 
 
     let result = (opponentPoints < playerTeamPoints)
 
-    let divisor = 5
-    let playerTeamScore = Math.floor(playerTeamPoints / divisor);
-    let opponentScore = Math.floor(opponentPoints / divisor);
-    
-    while(playerTeamScore + opponentScore > 5) {
-      divisor++
-      playerTeamScore = Math.floor(playerTeamPoints / divisor);
-      opponentScore = Math.floor(opponentPoints / divisor);
-    }
+    let playerTeamScore = Math.floor(playerTeamPoints / 5);
+    let opponentScore = Math.floor(opponentPoints / 5);
+
 
     if(playerTeamScore < 0) playerTeamScore = 0;
     if(opponentScore < 0) opponentScore = 0;
@@ -663,7 +639,7 @@ function App() {
         if(count > 20) return(null) 
       }
 
-      contractValue = Math.floor(Math.pow(currentPlayer.overall + (contractDuration * currentPlayer.potential) + (team.power - 2.5) * 3 + currentPlayer.fame / 6, 2) / 50) / 10;
+      contractValue = Math.floor(Math.pow(currentPlayer.overall + (contractDuration * currentPlayer.potential) + (team.power - 2.5) * 3 + currentPlayer.fame / 5, 2) / 50) / 10;
     }
     
     let newContract = {"value": contractValue, "duration": contractDuration}

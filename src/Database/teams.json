@@ -9,15 +9,15 @@
         "league": "Premier League",
         "power": 5
       },{
-        "name": "Manchester United",
+        "name": "Liverpool",
         "league": "Premier League",
         "power": 5
       },{
-        "name": "Liverpool",
+        "name": "Arsenal",
         "league": "Premier League",
         "power": 4.5
       },{
-        "name": "Arsenal",
+        "name": "Manchester United",
         "league": "Premier League",
         "power": 4
       },{
@@ -209,15 +209,15 @@
         "league": "Primeira Liga",
         "power": 3
       },{
-        "name": "Paços de Ferreira",
-        "league": "Primeira Liga",
-        "power": 3
-      },{
         "name": "Santa Clara",
         "league": "Primeira Liga",
         "power": 3
       },{
         "name": "Famalicão",
+        "league": "Primeira Liga",
+        "power": 3
+      },{
+        "name": "Paços de Ferreira",
         "league": "Primeira Liga",
         "power": 2.5
       },{
