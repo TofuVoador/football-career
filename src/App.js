@@ -109,7 +109,7 @@ function App() {
     europa: 0,
     champions: 0,
     worldCup: 0,
-    goldenShoes: 0,
+    goldenAward: 0,
     ballonDOr: 0,
     championsQualification: false,
     europaQualification: false,
@@ -124,6 +124,11 @@ function App() {
   const [transfer1, setTransfer1] = useState(GetNewTeam());
 
   const [transfer2, setTransfer2] = useState(GetNewTeam());
+
+  const [card, setCard] = useState({
+    overall: 90,
+    
+  })
 
   function ChooseTeam (newTeam = null) {   //next season
     document.getElementById('team-choice').style.display = "none"
@@ -305,7 +310,7 @@ function App() {
 
       description = "->" + TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
 
-      if(GetWinner(newPlayer.team, op1, newSeason.performance * 4).result || GetWinner(newPlayer.team, op2, newSeason.performance * 4).result) {
+      if(GetWinner(newPlayer.team, op1, newSeason.performance * 3).result || GetWinner(newPlayer.team, op2, newSeason.performance * 3).result) {
         phase++;
         opponents = [];
         end = false;
@@ -316,7 +321,7 @@ function App() {
           }
           opponents.push(op) 
 
-          let game = GetWinner(newPlayer.team, op, newSeason.performance * 4)
+          let game = GetWinner(newPlayer.team, op, newSeason.performance * 3)
 
           description += "->" + TournamentPath[phase] + ": " + game.game;
     
@@ -357,7 +362,7 @@ function App() {
       if (newSeason.championsPhase == 1) description = "->Fase de Grupos da Champions"
       else description = "->" + TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
 
-      if(GetWinner(newPlayer.team, op1, newSeason.performance * 3) || GetWinner(newPlayer.team, op2, newSeason.performance * 3) || newSeason.championsPhase == 1) {
+      if(GetWinner(newPlayer.team, op1, newSeason.performance) || GetWinner(newPlayer.team, op2, newSeason.performance) || newSeason.championsPhase == 1) {
         phase++;
         opponents = [];
         end = false;
@@ -368,7 +373,7 @@ function App() {
           }
           opponents.push(op) 
 
-          let game = GetWinner(newPlayer.team, op, newSeason.performance * 3)
+          let game = GetWinner(newPlayer.team, op, newSeason.performance)
 
           description += "->" + TournamentPath[phase] + ": " + game.game;
     
@@ -407,7 +412,7 @@ function App() {
 
       description = "->" + TournamentPath[phase] + ": " + op1.name + " / " + op2.name;
 
-      if(GetWinner(newPlayer.nation, op1, newSeason.performance * 5).result || GetWinner(newPlayer.nation, op2, newSeason.performance * 5).result) {
+      if(GetWinner(newPlayer.nation, op1, newSeason.performance * 3).result || GetWinner(newPlayer.nation, op2, newSeason.performance * 3).result) {
         phase++;    
         opponents = [];
         end = false;
@@ -418,7 +423,7 @@ function App() {
           }
           opponents.push(op) 
 
-          let game = GetWinner(newPlayer.nation, op, newSeason.performance * 5);
+          let game = GetWinner(newPlayer.nation, op, newSeason.performance * 3);
 
           description += "->" + TournamentPath[phase] + ": " + game.game;
     
@@ -449,10 +454,14 @@ function App() {
     if(RandomNumber(0,100) < 1) newSeason.titles.push("Puskás");  //Puskás
 
     if(35 + RandomNumber(0,10) < newSeason.goals) {  //Golden Shoes
-      newPlayer.goldenShoes++
+      newPlayer.goldenAward++
       newSeason.awardPoints++
       newPlayer.fame += 10
       newSeason.titles.push("Chuteira de Ouro");
+    } else if (player.position.title == "GK" && newSeason.performance * 10 + (newPlayer.overall - 60) / 4 > 12) {
+      newPlayer.fame += 10
+      newSeason.awardPoints++
+      newSeason.titles.push("Luva de Ouro")
     }
 
     newPlayer.fame += newSeason.awardPoints
@@ -582,8 +591,8 @@ function App() {
   }  
 
   function GetGame(team1, team2, bonus) {
-    let team1Points = (team1.power - 1) * 2 + RandomNumber(0, (team1.power - 1) * 4) - RandomNumber(0, (team2.power - 2) * 2) + bonus
-    let team2Points = (team2.power - 1) * 2 + RandomNumber(0, (team2.power - 1) * 4) - RandomNumber(0, (team1.power - 2) * 2) 
+    let team1Points = (team1.power - 1.5) * 2 + RandomNumber(0, (team1.power - 1.5) * 4) - RandomNumber(0, (team2.power - 2) * 2) + bonus
+    let team2Points = (team2.power - 1.5) * 2 + RandomNumber(0, (team2.power - 1.5) * 4) - RandomNumber(0, (team1.power - 2) * 2) 
 
     let team1Score = Math.floor(team1Points / 6);
     let team2Score = Math.floor(team2Points / 6);
@@ -595,8 +604,8 @@ function App() {
   }
 
   function GetWinner(playerTeam, opponent, bonus) {
-    let playerTeamPoints = (playerTeam.power - 1) * 2 + RandomNumber(0, (playerTeam.power - 1) * 4) - RandomNumber(0, (opponent.power - 2) * 2) + bonus
-    let opponentPoints = (opponent.power - 1) * 2 + RandomNumber(0, (opponent.power - 1) * 4) - RandomNumber(0, (playerTeam.power - 2) * 2) 
+    let playerTeamPoints = (playerTeam.power - 1.5) * 2 + RandomNumber(0, (playerTeam.power - 1.5) * 4) - RandomNumber(0, (opponent.power - 2.5) * 2) + bonus
+    let opponentPoints = (opponent.power - 1.5) * 2 + RandomNumber(0, (opponent.power - 1.5) * 4) - RandomNumber(0, (playerTeam.power - 2.5) * 2) 
 
     let result = (opponentPoints < playerTeamPoints)
 
@@ -678,7 +687,7 @@ function App() {
         ))}
       </div>
       <div className='choices' id='team-choice'>
-        <a className='d-stay' id='decision-stay' style={{display: "none"}} onClick={() => (ChooseTeam())}>Continuar em {player.team == null ? "" : player.team.name}</a>
+        <a className='d-stay' id='decision-stay' style={{display: "none"}} onClick={() => (ChooseTeam())}><p>Continuar em {player.team == null ? "" : player.team.name}</p> <p>($??.?M | ? anos)</p></a>
         <a className='d-alert' id='decision-transfer1' onClick={() => (ChooseTeam(transfer1))}><p>Transferir para {transfer1.team.name}</p> <p>(${transfer1.contract.value}M | {transfer1.contract.duration} anos)</p></a>
         <a className='d-alert' id='decision-transfer2' onClick={() => (ChooseTeam(transfer2))}><p>Transferir para {transfer2.team.name}</p> <p>(${transfer2.contract.value}M | {transfer2.contract.duration} anos)</p></a>
         <a className='d-alert' id='retire' style={{display: "none"}}  onClick={() => (Retire())}>Aposentar-se</a>
@@ -713,7 +722,7 @@ function App() {
           <p>Europa League: {player.europa}</p>
         </div>
         <div>
-          <p>Chuteiras de Ouro: {player.goldenShoes}</p>
+          <p>Chuteiras/Luvas de Ouro: {player.goldenAward}</p>
           <p>Ballon D'Or: {player.ballonDOr}</p>
         </div>
       </div>
