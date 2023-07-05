@@ -40,14 +40,6 @@
     "continent": "Europa",
     "power": 4.5
   },{
-    "name": "Dinamarca",
-    "continent": "Europa",
-    "power": 4
-  },{
-    "name": "Japão",
-    "continent": "Ásia",
-    "power": 4
-  },{
     "name": "Marrocos",
     "continent": "África",
     "power": 4
@@ -60,18 +52,6 @@
     "continent": "Europa",
     "power": 4
   },{
-    "name": "Polônia",
-    "continent": "Europa",
-    "power": 4
-  },{
-    "name": "Rússia",
-    "continent": "Europa",
-    "power": 4
-  },{
-    "name": "Senegal",
-    "continent": "África",
-    "power": 4
-  },{
     "name": "Suíça",
     "continent": "Europa",
     "power": 4
@@ -80,84 +60,64 @@
     "continent": "América do Sul",
     "power": 4
   },{
-    "name": "Arábia Saudita",
-    "continent": "Ásia",
-    "power": 3.5
-  },{
-    "name": "Argélia",
-    "continent": "África",
-    "power": 3.5
-  },{
-    "name": "Áustria",
+    "name": "Dinamarca",
     "continent": "Europa",
     "power": 3.5
   },{
-    "name": "Chile",
-    "continent": "América do Sul",
+    "name": "Japão",
+    "continent": "Ásia",
     "power": 3.5
+  },{
+    "name": "Polônia",
+    "continent": "Europa",
+    "power": 3.5
+  },{
+    "name": "Rússia",
+    "continent": "Europa",
+    "power": 3.5
+  },{
+    "name": "Senegal",
+    "continent": "África",
+    "power": 3.5
+  },{
+    "name": "Arábia Saudita",
+    "continent": "Ásia",
+    "power": 3
   },{
     "name": "Costa do Marfim",
     "continent": "África",
-    "power": 3.5
-  },{
-    "name": "Costa Rica",
-    "continent": "América do Norte",
-    "power": 3.5
+    "power": 3
   },{
     "name": "Egito",
     "continent": "África",
-    "power": 3.5
+    "power": 3
   },{
     "name": "Estados Unidos",
     "continent": "América do Norte",
-    "power": 3.5
-  },{
-    "name": "Irã",
-    "continent": "Ásia",
-    "power": 3.5
+    "power": 3
   },{
     "name": "Suécia",
     "continent": "Europa",
-    "power": 3.5
-  },{
-    "name": "Canadá",
-    "continent": "América do Norte",
     "power": 3
   },{
-    "name": "Coreia do Sul",
-    "continent": "Ásia",
-    "power": 3
+    "name": "Argélia",
+    "continent": "África",
+    "power": 2.5
   },{
-    "name": "Iraque",
-    "continent": "Ásia",
-    "power": 3
+    "name": "Áustria",
+    "continent": "Europa",
+    "power": 2.5
   },{
-    "name": "Peru",
+    "name": "Chile",
     "continent": "América do Sul",
-    "power": 3
-  },{
-    "name": "Tunísia",
-    "continent": "África",
-    "power": 3
-  },{
-    "name": "Camarões",
-    "continent": "África",
     "power": 2.5
   },{
-    "name": "Gana",
-    "continent": "África",
-    "power": 2.5
-  },{
-    "name": "Jamaica",
+    "name": "Costa Rica",
     "continent": "América do Norte",
     "power": 2.5
   },{
-    "name": "Nigéria",
-    "continent": "África",
-    "power": 2.5
-  },{
-    "name": "Nova Zelândia",
-    "continent": "Oceania",
+    "name": "Irã",
+    "continent": "Ásia",
     "power": 2.5
   }
 ]
