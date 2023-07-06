@@ -5,26 +5,23 @@ import Nations from "./Database/nations.json";
 import Positions from "./Database/positions.json";
 import ChartComponent from "./Components/chartComponent";
 import Season from "./Components/season";
-
-function RandomNumber(min, max) {
-  // min and max included
-  return Math.floor(Math.random() * (max + 1 - min) + min);
-}
+import { RandomNumber } from "./Utils";
 
 const StarPath = [
-  "Esquecido",
-  "Ok",
-  "Bem visto",
-  "Jogador mediano",
-  "Deixou sua marca",
-  "Estrela",
-  "Ídolo Nacional",
-  "Lenda",
-  "GOAT",
+  "Esquecido", //0
+  "Péssimo", //30
+  "Ruim", //60
+  "Ok", //90
+  "Bom", //120
+  "Ótimo", //150
+  "Deixou sua marca", //180
+  "Estrela", //210
+  "Ídolo Nacional", //240
+  "Lenda", //270
+  "GOAT", //300
 ];
 
 const TournamentPath = [
-  "Não Classificado",
   "Fase de Grupos",
   "16 avos",
   "Oitavas",
@@ -57,8 +54,6 @@ function App() {
     fame: null,
   });
 
-  const [year, setYear] = useState(new Date().getFullYear() - 1);
-
   const [player, setPlayer] = useState({
     potential: RandomNumber(1, 5),
     age: 17,
@@ -80,6 +75,8 @@ function App() {
     europaQualification: false,
     fame: 0,
   });
+
+  const [year, setYear] = useState(new Date().getFullYear() - 1);
 
   const [contract, setContract] = useState(0);
 
@@ -109,12 +106,12 @@ function App() {
       let oldTeamLeague = newPlayer.team == null ? "" : newPlayer.team.league; //store old league table results
       newGeneralPerformance = 0; //resets team affection
       newPlayer.fame -=
-        newPlayer.team == null ? 0 : (newPlayer.team.power - 2.5) * 10; //remove fame buff
+        newPlayer.team == null ? 0 : (newPlayer.team.power - 2.5) * 20; //remove fame buff
       if (newPlayer.fame < 0) newPlayer.fame = 0;
       newPlayer.team = newTeam.team;
       newContract = newTeam.contract.duration;
       newPlayer.wage = newTeam.contract.value;
-      newPlayer.fame += (newPlayer.team.power - 2.5) * 10; //add fame buff
+      newPlayer.fame += (newPlayer.team.power - 2.5) * 20; //add fame buff
       let lp = 99;
       //if the new team is in the same league as the old
       if (oldTeamLeague == newPlayer.team.league) {
@@ -153,13 +150,12 @@ function App() {
       newContract = RandomNumber(1, 3); //new contrat lenght
       newPlayer.wage =
         Math.floor(
-          Math.pow(
-            newPlayer.overall +
-              newContract * newPlayer.potential +
-              (newPlayer.team.power - 2.5) * RandomNumber(1, 3) +
-              newPlayer.fame / 5,
-            2
-          ) / 50
+          (newPlayer.overall +
+            newContract * newPlayer.potential +
+            (newPlayer.team.power - 2.5) * RandomNumber(1, 3) +
+            newPlayer.fame / 5) **
+            2 /
+            50
         ) / 10; //generate a new wage payment
     }
 
@@ -172,7 +168,7 @@ function App() {
     newPlayer.overall =
       85 +
       newPlayer.potential * 1.4 -
-      Math.pow(27.5 - newPlayer.age + newPlayer.potential / 2, 2) / 12 +
+      (27.5 - newPlayer.age + newPlayer.potential / 2) ** 2 / 12 +
       newPerformance;
     newGeneralPerformance += newPerformance;
 
@@ -207,9 +203,9 @@ function App() {
 
     //save
     setCurrentSeason(newSeason);
-    setPlayer(newPlayer);
     setYear(year + 1);
     setContract(newContract);
+    setPlayer(newPlayer);
     setGeneralPerformance(newGeneralPerformance);
   }
 
@@ -288,7 +284,7 @@ function App() {
     }
 
     opponents.sort((a, b) => {
-      return a.power - b.power + RandomNumber(-2, 2) / 2;
+      return a.power - b.power + RandomNumber(-2, 2) / 3;
     });
 
     let description = "";
@@ -302,12 +298,12 @@ function App() {
         newSeason.performance * 2
       );
 
-      description += "->" + TournamentPath[phase + 2] + ": " + game.game;
+      description += "->" + TournamentPath[phase + 1] + ": " + game.game;
 
       if (game.result) {
         phase++;
         newSeason.awardPoints += 0.2;
-        if (phase >= TournamentPath.length - 3) {
+        if (phase >= TournamentPath.length - 2) {
           end = true;
           newPlayer.nationalCup++;
         }
@@ -316,14 +312,14 @@ function App() {
       }
     }
 
-    description = "Copa Nacional: " + TournamentPath[phase + 2] + description;
+    description = "Copa Nacional: " + TournamentPath[phase + 1] + description;
 
     newSeason.nationalCupPhase = phase;
     newSeason.titles.push(description);
 
     if (newPlayer.championsQualification) {
       //Champions League
-      phase = 1;
+      phase = 0;
 
       let op1 = GetNewOpponent();
       while (
@@ -364,7 +360,10 @@ function App() {
             op.power < 4 ||
             op.name == newPlayer.team.name ||
             opponents.includes(op) ||
-            (phase <= 3 && (op1.name == op.name || op2.name == op.name))
+            (phase <= 2 &&
+              (op1.name == op.name ||
+                op2.name == op.name ||
+                op.league == newPlayer.team.league))
           ) {
             op = GetNewOpponent();
           }
@@ -401,12 +400,12 @@ function App() {
       newSeason.championsPhase = phase;
       newSeason.titles.push(description);
 
-      if (newSeason.championsPhase == 1) newPlayer.europaQualification = true;
+      if (newSeason.championsPhase == 0) newPlayer.europaQualification = true;
     }
 
     if (newPlayer.europaQualification) {
       //Europa league
-      phase = 1;
+      phase = 0;
 
       let op1 = GetNewOpponent();
       while (op1.power >= 4 || newPlayer.team.league == op1.league) {
@@ -422,7 +421,7 @@ function App() {
         op2 = GetNewOpponent();
       }
 
-      if (newSeason.championsPhase == 1)
+      if (newSeason.championsPhase == 0)
         description = "->Fase de Grupos da Champions";
       else
         description =
@@ -435,7 +434,7 @@ function App() {
         (game1[0] > game1[1] ? 3 : game1[0] == game1[1] ? 1 : 0) +
           (game2[0] > game2[1] ? 3 : game2[0] == game2[1] ? 1 : 0) >=
           2 ||
-        newSeason.championsPhase == 1
+        newSeason.championsPhase == 0
       ) {
         phase++;
         opponents = [];
@@ -445,7 +444,7 @@ function App() {
             op.power == 5 ||
             op.name == newPlayer.team.name ||
             opponents.includes(op) ||
-            (phase <= 3 && (op1.name == op.name || op2.name == op.name))
+            (phase <= 2 && (op1.name == op.name || op2.name == op.name))
           ) {
             op = GetNewOpponent();
           }
@@ -484,7 +483,7 @@ function App() {
 
     //World Cup
     if ((year + 2) % 4 == 0) {
-      phase = 1;
+      phase = 0;
 
       let op1 = Nations[RandomNumber(0, Nations.length - 1)];
       while (
@@ -522,7 +521,7 @@ function App() {
             op.power < 4 ||
             op.name == player.nation.name ||
             opponents.includes(op) ||
-            (phase <= 3 && (op1.name == op.name || op2.name == op.name))
+            (phase <= 2 && (op1.name == op.name || op2.name == op.name))
           ) {
             op = Nations[RandomNumber(0, Nations.length - 1)];
           }
@@ -582,7 +581,8 @@ function App() {
       newSeason.titles.push("Luva de Ouro");
     }
 
-    newPlayer.fame += newSeason.awardPoints;
+    newPlayer.fame += newSeason.awardPoints / 2;
+    console.log(newSeason.awardPoints);
 
     if (newSeason.awardPoints + newPlayer.overall >= 99) {
       //Ballon D'or
@@ -602,9 +602,8 @@ function App() {
     //fired
     if (
       contract <= 1 &&
-      (newPlayer.overall >= 80 + (newPlayer.team.power - 2.5) * 6 ||
-        (newPlayer.age > 28 &&
-          newPlayer.overall <= 82.5 + newPlayer.team.power / 2) ||
+      ((newPlayer.age > 28 &&
+        newPlayer.overall <= 82.5 + newPlayer.team.power / 2) ||
         generalPerformance < 0)
     ) {
       document.getElementById("decision-stay").style.display = "none";
@@ -719,12 +718,12 @@ function App() {
 
   function GetGame(team1, team2, bonus) {
     let team1Points =
-      (team1.power - 1) * 2 +
+      team1.power +
       RandomNumber(0, (team1.power - 1) * 2) -
       RandomNumber(0, (team2.power - 1) * 2) +
       bonus;
     let team2Points =
-      (team2.power - 1) * 2 +
+      team2.power +
       RandomNumber(0, (team2.power - 1) * 2) -
       RandomNumber(0, (team1.power - 1) * 2);
 
@@ -775,18 +774,15 @@ function App() {
     let contractDuration = RandomNumber(3, 5);
     let contractValue =
       Math.floor(
-        Math.pow(
-          80 + contractDuration * 3 + (team.power - 2.5) * RandomNumber(0, 3),
-          2
-        ) / 50
+        (80 + contractDuration * 3 + (team.power - 2.5) * RandomNumber(0, 3)) **
+          2 /
+          50
       ) / 10;
 
     if (currentPlayer) {
       let count = 0;
       while (
-        currentPlayer.overall >= 80 + (team.power - 2.5) * 6 ||
-        (currentPlayer.age > 28 &&
-          currentPlayer.overall <= 82.5 + team.power / 2) ||
+        (currentPlayer.age > 28 && currentPlayer.overall <= 80 + team.power) ||
         currentPlayer.team.name == team.name
       ) {
         league = Teams[leagueID];
@@ -799,13 +795,12 @@ function App() {
       contractDuration = RandomNumber(2, 4);
       contractValue =
         Math.floor(
-          Math.pow(
-            currentPlayer.overall +
-              contractDuration * currentPlayer.potential +
-              (team.power - 2.5) * RandomNumber(1, 3) +
-              currentPlayer.fame / 5,
-            2
-          ) / 50
+          (currentPlayer.overall +
+            contractDuration * currentPlayer.potential +
+            (team.power - 2.5) * RandomNumber(1, 3) +
+            currentPlayer.fame / 5) **
+            2 /
+            50
         ) / 10;
     }
 
@@ -899,7 +894,7 @@ function App() {
         <div>
           <p>
             Fama da Carreira: {Math.floor(maxFame)} (
-            {StarPath[Math.floor(Math.min(maxFame / 40, StarPath.length))]})
+            {StarPath[Math.min(Math.floor(maxFame / 30), StarPath.length - 1)]})
           </p>
         </div>
         <div>
