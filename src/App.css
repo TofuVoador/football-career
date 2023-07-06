@@ -5,7 +5,9 @@ header {
   padding: 1rem;
 }
 
-.career, .choices, .stats {
+.career,
+.choices,
+.stats {
   padding: 1rem;
   margin: 1rem;
   display: flex;
@@ -55,11 +57,13 @@ header {
 }
 
 @media (max-width: 900px) {
-  header h1, .stats h1 {
+  header h1,
+  .stats h1 {
     font-size: 20px;
   }
 
-  header h3, .stats div p {
+  header h3,
+  .stats div p {
     font-size: 15px;
   }
 
@@ -80,7 +84,9 @@ header {
     padding: 0.5rem;
   }
 
-  .career, .choices, .stats {
+  .career,
+  .choices,
+  .stats {
     padding: 0.5rem;
     margin: 0.5rem;
   }

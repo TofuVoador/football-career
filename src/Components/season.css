@@ -17,8 +17,8 @@
 }
 
 .season-titles {
-  margin: .5rem;
-  padding: .5rem;
+  margin: 0.5rem;
+  padding: 0.5rem;
   border-radius: 2rem;
   display: flex;
   gap: 0.5rem;
@@ -31,7 +31,8 @@
   gap: 0.5rem;
 }
 
-.season-titles-list details summary, .season-titles-list h1 {
+.season-titles-list details summary,
+.season-titles-list h1 {
   font-size: 1.2rem;
 }
 
@@ -44,13 +45,14 @@
     font-size: 1rem;
   }
 
-  .season-titles-list details summary, .season-titles-list h1 {
+  .season-titles-list details summary,
+  .season-titles-list h1 {
     font-size: 1rem;
   }
 
   .season-titles {
-    margin: .2rem;
-    padding: .2rem;
+    margin: 0.2rem;
+    padding: 0.2rem;
   }
   .season {
     padding: 0 1rem;

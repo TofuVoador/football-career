@@ -8,45 +8,55 @@
         "name": "Manchester City",
         "league": "Premier League",
         "power": 5
-      },{
+      },
+      {
         "name": "Liverpool",
         "league": "Premier League",
         "power": 4.5
-      },{
+      },
+      {
         "name": "Arsenal",
         "league": "Premier League",
         "power": 4
-      },{
+      },
+      {
         "name": "Manchester United",
         "league": "Premier League",
         "power": 4
-      },{
+      },
+      {
         "name": "Chelsea",
         "league": "Premier League",
         "power": 3.5
-      },{
+      },
+      {
         "name": "Tottenham Hotspur",
         "league": "Premier League",
         "power": 3.5
-      },{
+      },
+      {
         "name": "Everton",
         "league": "Premier League",
         "power": 3
-      },{
+      },
+      {
         "name": "West Ham United",
         "league": "Premier League",
         "power": 3
-      },{
+      },
+      {
         "name": "Aston Villa",
         "league": "Premier League",
         "power": 2.5
-      },{
+      },
+      {
         "name": "Newcastle United",
         "league": "Premier League",
         "power": 2.5
       }
     ]
-  },{
+  },
+  {
     "name": "La Liga",
     "championsSpots": 4,
     "europaSpots": 2,
@@ -55,45 +65,55 @@
         "name": "Real Madrid",
         "league": "La Liga",
         "power": 5
-      },{
+      },
+      {
         "name": "Barcelona",
         "league": "La Liga",
         "power": 5
-      },{
+      },
+      {
         "name": "Atlético Madrid",
         "league": "La Liga",
         "power": 4.5
-      },{
+      },
+      {
         "name": "Villarreal",
         "league": "La Liga",
         "power": 4
-      },{
+      },
+      {
         "name": "Sevilla",
         "league": "La Liga",
         "power": 3.5
-      },{
+      },
+      {
         "name": "Real Betis",
         "league": "La Liga",
         "power": 3
-      },{
+      },
+      {
         "name": "Real Sociedad",
         "league": "La Liga",
         "power": 2.5
-      },{
+      },
+      {
         "name": "Celta Vigo",
         "league": "La Liga",
         "power": 2.5
-      },{
+      },
+      {
         "name": "Athletic Club Bilbao",
         "league": "La Liga",
         "power": 2
-      },{
+      },
+      {
         "name": "Valencia",
         "league": "La Liga",
         "power": 2
       }
     ]
-  },{
+  },
+  {
     "name": "Bundesliga",
     "championsSpots": 4,
     "europaSpots": 2,
@@ -102,45 +122,55 @@
         "name": "Bayern München",
         "league": "Bundesliga",
         "power": 5
-      },{
+      },
+      {
         "name": "Borussia Dortmund",
         "league": "Bundesliga",
         "power": 4
-      },{
+      },
+      {
         "name": "RB Leipzig",
         "league": "Bundesliga",
         "power": 4
-      },{
+      },
+      {
         "name": "Bayer Leverkusen",
         "league": "Bundesliga",
         "power": 3.5
-      },{
+      },
+      {
         "name": "Eintracht Frankfurt",
         "league": "Bundesliga",
         "power": 3.5
-      },{
+      },
+      {
         "name": "Union Berlin",
         "league": "Bundesliga",
         "power": 3
-      },{
+      },
+      {
         "name": "Freiburg",
         "league": "Bundesliga",
         "power": 2.5
-      },{
+      },
+      {
         "name": "Bor. Mönchengladbach",
         "league": "Bundesliga",
         "power": 2.5
-      },{
+      },
+      {
         "name": "Wolfsburg",
         "league": "Bundesliga",
         "power": 2
-      },{
+      },
+      {
         "name": "Köln",
         "league": "Bundesliga",
         "power": 2
       }
     ]
-  },{
+  },
+  {
     "name": "Serie A",
     "championsSpots": 4,
     "europaSpots": 2,
@@ -149,45 +179,55 @@
         "name": "Internazionale Milano",
         "league": "Serie A",
         "power": 4.5
-      },{
+      },
+      {
         "name": "Milan",
         "league": "Serie A",
         "power": 4
-      },{
+      },
+      {
         "name": "Napoli",
         "league": "Serie A",
         "power": 4
-      },{
+      },
+      {
         "name": "Roma",
         "league": "Serie A",
         "power": 3.5
-      },{
+      },
+      {
         "name": "Juventus",
         "league": "Serie A",
         "power": 3.5
-      },{
+      },
+      {
         "name": "Lazio",
         "league": "Serie A",
         "power": 3
-      },{
+      },
+      {
         "name": "Fiorentina",
         "league": "Serie A",
         "power": 3
-      },{
+      },
+      {
         "name": "Atalanta Bergamo",
         "league": "Serie A",
         "power": 2.5
-      },{
+      },
+      {
         "name": "Bologna",
         "league": "Serie A",
         "power": 2
-      },{
+      },
+      {
         "name": "Torino",
         "league": "Serie A",
         "power": 2
       }
     ]
-  },{
+  },
+  {
     "name": "Primeira Liga",
     "championsSpots": 3,
     "europaSpots": 1,
@@ -196,45 +236,55 @@
         "name": "Porto",
         "league": "Primeira Liga",
         "power": 4
-      },{
+      },
+      {
         "name": "Benfica",
         "league": "Primeira Liga",
         "power": 3.5
-      },{
+      },
+      {
         "name": "Sporting CP",
         "league": "Primeira Liga",
         "power": 3.5
-      },{
+      },
+      {
         "name": "Braga",
         "league": "Primeira Liga",
         "power": 3
-      },{
+      },
+      {
         "name": "Arouca",
         "league": "Primeira Liga",
         "power": 3
-      },{
+      },
+      {
         "name": "Boavista",
         "league": "Primeira Liga",
         "power": 2.5
-      },{
+      },
+      {
         "name": "Paços de Ferreira",
         "league": "Primeira Liga",
         "power": 2.5
-      },{
+      },
+      {
         "name": "Santa Clara",
         "league": "Primeira Liga",
         "power": 2
-      },{
+      },
+      {
         "name": "Famalicão",
         "league": "Primeira Liga",
         "power": 2
-      },{
+      },
+      {
         "name": "Vitória Guimarães",
         "league": "Primeira Liga",
         "power": 2
       }
     ]
-  },{
+  },
+  {
     "name": "Ligue 1",
     "championsSpots": 2,
     "europaSpots": 1,
@@ -243,39 +293,48 @@
         "name": "Paris Saint-Germain",
         "league": "Ligue 1",
         "power": 4.5
-      },{
+      },
+      {
         "name": "Olympique de Marseille",
         "league": "Ligue 1",
         "power": 3.5
-      },{
+      },
+      {
         "name": "Monaco",
         "league": "Ligue 1",
         "power": 3
-      },{
+      },
+      {
         "name": "Lille",
         "league": "Ligue 1",
         "power": 3
-      },{
+      },
+      {
         "name": "Olympique Lyonnais",
         "league": "Ligue 1",
         "power": 2.5
-      },{
+      },
+      {
         "name": "Nice",
         "league": "Ligue 1",
         "power": 2.5
-      },{
+      },
+      {
         "name": "Rennais",
         "league": "Ligue 1",
         "power": 2.5
-      },{
+      },
+      {
         "name": "Lens",
         "league": "Ligue 1",
         "power": 2
-      },{
+      },
+      {
         "name": "Nantes",
         "league": "Ligue 1",
         "power": 2
-      },{
+      },
+      {
         "name": "Reims",
         "league": "Ligue 1",
         "power": 2
