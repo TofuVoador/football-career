@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import "./App.css";
 import Teams from "./Database/teams.json";
 import Nations from "./Database/nations.json";
+import Positions from "./Database/positions.json";
 import ChartComponent from "./Components/chartComponent";
 import Season from "./Components/season";
 
@@ -9,74 +10,6 @@ function RandomNumber(min, max) {
   // min and max included
   return Math.floor(Math.random() * (max + 1 - min) + min);
 }
-
-const positions = [
-  {
-    title: "ST",
-    goalsBonus: 27,
-    assistsBonus: 10,
-  },
-  {
-    title: "CF",
-    goalsBonus: 24,
-    assistsBonus: 10,
-  },
-  {
-    title: "LW",
-    goalsBonus: 21,
-    assistsBonus: 10,
-  },
-  {
-    title: "RW",
-    goalsBonus: 21,
-    assistsBonus: 10,
-  },
-  {
-    title: "CAM",
-    goalsBonus: 18,
-    assistsBonus: 10,
-  },
-  {
-    title: "LM",
-    goalsBonus: 15,
-    assistsBonus: 10,
-  },
-  {
-    title: "CM",
-    goalsBonus: 15,
-    assistsBonus: 10,
-  },
-  {
-    title: "RM",
-    goalsBonus: 15,
-    assistsBonus: 10,
-  },
-  {
-    title: "CDM",
-    goalsBonus: 12,
-    assistsBonus: 8,
-  },
-  {
-    title: "LB",
-    goalsBonus: 9,
-    assistsBonus: 6,
-  },
-  {
-    title: "RB",
-    goalsBonus: 9,
-    assistsBonus: 6,
-  },
-  {
-    title: "CB",
-    goalsBonus: 6,
-    assistsBonus: 4,
-  },
-  {
-    title: "GK",
-    goalsBonus: 3,
-    assistsBonus: 2,
-  },
-];
 
 const StarPath = [
   "Esquecido",
@@ -166,53 +99,58 @@ function App() {
     let newPlayer = player;
     let newGeneralPerformance = generalPerformance;
 
+    //age and contract
     newPlayer.age++;
-
     let newContract = contract - 1;
 
     //pre season setup
     if (newTeam) {
       //if they change team
-      let oldTeamLeague = newPlayer.team == null ? "" : newPlayer.team.league;
-      newGeneralPerformance = 0;
+      let oldTeamLeague = newPlayer.team == null ? "" : newPlayer.team.league; //store old league table results
+      newGeneralPerformance = 0; //resets team affection
       newPlayer.fame -=
-        newPlayer.team == null ? 0 : (newPlayer.team.power - 2.5) * 10;
+        newPlayer.team == null ? 0 : (newPlayer.team.power - 2.5) * 10; //remove fame buff
       if (newPlayer.fame < 0) newPlayer.fame = 0;
       newPlayer.team = newTeam.team;
       newContract = newTeam.contract.duration;
       newPlayer.wage = newTeam.contract.value;
-      newPlayer.fame += (newPlayer.team.power - 2.5) * 10;
+      newPlayer.fame += (newPlayer.team.power - 2.5) * 10; //add fame buff
       let lp = 99;
-
+      //if the new team is in the same league as the old
       if (oldTeamLeague == newPlayer.team.league) {
         lp =
           currentSeason.leagueTable.findIndex(
             (team) => team === newPlayer.team
-          ) + 1;
+          ) + 1; //get the new team's position
       } else {
         let nationalTeams =
           Teams.find((league) => league.name === newPlayer.team.league)
-            ?.teams || [];
-        lp = GetLeaguePosition(nationalTeams, newPlayer.team).pos;
+            ?.teams || []; //find the new team league
+        lp = GetLeaguePosition(nationalTeams, newPlayer.team).pos; //simulate the past season
       }
 
+      //get players league
       let league = Teams.find(
         (league) => league.name === newPlayer.team.league
       );
 
+      //was classificated last year
       if (lp <= league.championsSpots) {
+        //for the champions
         newPlayer.championsQualification = true;
         newPlayer.europaQualification = false;
       } else if (lp <= league.championsSpots + league.europaSpots) {
+        //for the europa league
         newPlayer.championsQualification = false;
         newPlayer.europaQualification = true;
       } else {
+        //was not
         newPlayer.championsQualification = false;
         newPlayer.europaQualification = false;
       }
     } else if (newContract <= 0) {
       //else if contract expires
-      newContract = RandomNumber(1, 3);
+      newContract = RandomNumber(1, 3); //new contrat lenght
       newPlayer.wage =
         Math.floor(
           Math.pow(
@@ -222,11 +160,10 @@ function App() {
               newPlayer.fame / 5,
             2
           ) / 50
-        ) / 10;
+        ) / 10; //generate a new wage payment
     }
 
     //calcule the player's performance
-
     let newPerformance =
       (RandomNumber(0, 20) -
         RandomNumber(0, 20) +
@@ -326,6 +263,7 @@ function App() {
 
     newSeason.leagueTable = leagueResults.table;
 
+    //top six from the league
     let topSix = "";
     for (let p = 0; p < 6; p++) {
       topSix += "->" + (p + 1) + "º: " + leagueResults.table[p].name;
@@ -877,8 +815,8 @@ function App() {
   }
 
   function GetNewPosition() {
-    let posID = RandomNumber(0, positions.length - 1);
-    let pos = positions[posID];
+    let posID = RandomNumber(0, Positions.length - 1);
+    let pos = Positions[posID];
     return pos;
   }
 

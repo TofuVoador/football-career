@@ -1,0 +1,67 @@
+[
+  {
+    "title": "ST",
+    "goalsBonus": 27,
+    "assistsBonus": 10
+  },
+  {
+    "title": "CF",
+    "goalsBonus": 24,
+    "assistsBonus": 10
+  },
+  {
+    "title": "LW",
+    "goalsBonus": 21,
+    "assistsBonus": 10
+  },
+  {
+    "title": "RW",
+    "goalsBonus": 21,
+    "assistsBonus": 10
+  },
+  {
+    "title": "CAM",
+    "goalsBonus": 18,
+    "assistsBonus": 10
+  },
+  {
+    "title": "LM",
+    "goalsBonus": 15,
+    "assistsBonus": 10
+  },
+  {
+    "title": "CM",
+    "goalsBonus": 15,
+    "assistsBonus": 10
+  },
+  {
+    "title": "RM",
+    "goalsBonus": 15,
+    "assistsBonus": 10
+  },
+  {
+    "title": "CDM",
+    "goalsBonus": 12,
+    "assistsBonus": 8
+  },
+  {
+    "title": "LB",
+    "goalsBonus": 9,
+    "assistsBonus": 6
+  },
+  {
+    "title": "RB",
+    "goalsBonus": 9,
+    "assistsBonus": 6
+  },
+  {
+    "title": "CB",
+    "goalsBonus": 6,
+    "assistsBonus": 4
+  },
+  {
+    "title": "GK",
+    "goalsBonus": 3,
+    "assistsBonus": 2
+  }
+]
