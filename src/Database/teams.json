@@ -22,7 +22,7 @@
       {
         "name": "Bayer Leverkusen",
         "league": "Bundesliga",
-        "power": 3.5
+        "power": 3
       },
       {
         "name": "Eintracht Frankfurt",
@@ -64,37 +64,37 @@
       {
         "name": "Ajax",
         "league": "Eredivisie",
-        "power": 4.5
+        "power": 4
       },
       {
         "name": "PSV",
         "league": "Eredivisie",
-        "power": 4
-      },
-      {
-        "name": "Feyenoord",
-        "league": "Eredivisie",
-        "power": 3.5
+        "power": 3
       },
       {
         "name": "AZ",
         "league": "Eredivisie",
-        "power": 3
+        "power": 2.5
+      },
+      {
+        "name": "Feyenoord",
+        "league": "Eredivisie",
+        "power": 2
       },
       {
         "name": "Vitesse",
         "league": "Eredivisie",
-        "power": 3
+        "power": 2
       },
       {
         "name": "Utrecht",
         "league": "Eredivisie",
-        "power": 2.5
+        "power": 1.5
       },
       {
         "name": "Heracles Almelo",
         "league": "Eredivisie",
-        "power": 2
+        "power": 1.5
       },
       {
         "name": "PEC Zwolle",
@@ -146,17 +146,17 @@
       {
         "name": "Real Betis",
         "league": "La Liga",
-        "power": 3
+        "power": 2
       },
       {
         "name": "Real Sociedad",
         "league": "La Liga",
-        "power": 2.5
+        "power": 2
       },
       {
         "name": "Celta Vigo",
         "league": "La Liga",
-        "power": 2
+        "power": 1.5
       },
       {
         "name": "Athletic Club Bilbao",
@@ -198,7 +198,7 @@
       {
         "name": "Nice",
         "league": "Ligue 1",
-        "power": 2.5
+        "power": 3
       },
       {
         "name": "Olympique Lyonnais",
@@ -213,7 +213,7 @@
       {
         "name": "Lens",
         "league": "Ligue 1",
-        "power": 2
+        "power": 1.5
       },
       {
         "name": "Nantes",
@@ -240,7 +240,7 @@
       {
         "name": "Liverpool",
         "league": "Premier League",
-        "power": 5
+        "power": 4.5
       },
       {
         "name": "Arsenal",
@@ -292,7 +292,7 @@
       {
         "name": "Porto",
         "league": "Primeira Liga",
-        "power": 4.5
+        "power": 4
       },
       {
         "name": "Benfica",
@@ -302,32 +302,32 @@
       {
         "name": "Sporting CP",
         "league": "Primeira Liga",
-        "power": 4
+        "power": 3.5
       },
       {
         "name": "Braga",
         "league": "Primeira Liga",
-        "power": 3.5
+        "power": 2.5
       },
       {
         "name": "Arouca",
         "league": "Primeira Liga",
-        "power": 3
+        "power": 2.5
       },
       {
         "name": "Boavista",
         "league": "Primeira Liga",
-        "power": 2.5
+        "power": 2
       },
       {
         "name": "Santa Clara",
         "league": "Primeira Liga",
-        "power": 2
+        "power": 1.5
       },
       {
         "name": "Paços de Ferreira",
         "league": "Primeira Liga",
-        "power": 1.5
+        "power": 1
       },
       {
         "name": "Famalicão",
@@ -349,42 +349,42 @@
       {
         "name": "Zenit",
         "league": "Russian Premier League",
-        "power": 4
+        "power": 3.5
       },
       {
         "name": "Lokomotiv Moscow",
         "league": "Russian Premier League",
-        "power": 3.5
+        "power": 3
       },
       {
         "name": "CSKA Moscow",
         "league": "Russian Premier League",
-        "power": 3.5
+        "power": 2.5
       },
       {
         "name": "Spartak Moscow",
         "league": "Russian Premier League",
-        "power": 3
+        "power": 2.5
       },
       {
         "name": "Krasnodar",
         "league": "Russian Premier League",
-        "power": 2.5
+        "power": 2
       },
       {
         "name": "Rubin Kazan",
         "league": "Russian Premier League",
-        "power": 2.5
+        "power": 2
       },
       {
         "name": "Rostov",
         "league": "Russian Premier League",
-        "power": 2
+        "power": 1.5
       },
       {
         "name": "Ural Yekaterinburg",
         "league": "Russian Premier League",
-        "power": 1.5
+        "power": 1
       },
       {
         "name": "Dynamo Moscow",
@@ -426,7 +426,7 @@
       {
         "name": "Roma",
         "league": "Serie A",
-        "power": 3
+        "power": 3.5
       },
       {
         "name": "Fiorentina",
