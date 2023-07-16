@@ -9,16 +9,16 @@ import { RandomNumber } from "./Utils";
 
 const StarPath = [
   "Esquecido", //0
-  "Péssimo", //30
-  "Ruim", //60
-  "Ok", //90
-  "Bom", //120
-  "Ótimo", //150
-  "Deixou sua marca", //180
-  "Estrela", //210
-  "Ídolo Nacional", //240
-  "Lenda", //270
-  "GOAT", //300
+  "Péssimo", //100
+  "Ruim", //200
+  "Ok", //300
+  "Bom", //400
+  "Ótimo", //500
+  "Deixou sua marca", //600
+  "Estrela", //700
+  "Ídolo Nacional", //800
+  "Lenda", //900
+  "GOAT", //1000
 ];
 
 const TournamentPath = [
@@ -105,12 +105,12 @@ function App() {
       //if they change team
       let oldTeamLeague = newPlayer.team == null ? "" : newPlayer.team.league; //store old league table results
       newGeneralPerformance = []; //resets team affection
-      newPlayer.fame -= newPlayer.team == null ? 0 : newPlayer.team.power * 20; //remove fame buff
+      newPlayer.fame -= newPlayer.team == null ? 0 : newPlayer.team.power * 40; //remove fame buff
       if (newPlayer.fame < 0) newPlayer.fame = 0;
       newPlayer.team = newTeam.team;
       newContract = newTeam.contract.duration;
       newPlayer.wage = newTeam.contract.value;
-      newPlayer.fame += newPlayer.team.power * 20; //add fame buff
+      newPlayer.fame += newPlayer.team.power * 40; //add fame buff
       let lp = 99;
       //if the new team is in the same league as the old
       if (oldTeamLeague == newPlayer.team.league) {
@@ -149,10 +149,10 @@ function App() {
       newContract = RandomNumber(1, 3); //new contrat lenght
       newPlayer.wage =
         Math.floor(
-          (newPlayer.overall / 10 +
-            (newPlayer.team.power * newPlayer.fame) / 20 +
-            newContract * newPlayer.potential) **
-            2.5 /
+          (newPlayer.overall +
+            newPlayer.team.power * 10 +
+            newPlayer.fame / 20) **
+            2 /
             100
         ) / 10;
     }
@@ -163,6 +163,7 @@ function App() {
         RandomNumber(0, 20) +
         (newPlayer.team.power - 1) * 2) /
       20;
+
     newPlayer.overall =
       85 +
       newPlayer.potential * 1.4 -
@@ -174,10 +175,12 @@ function App() {
 
     //giving the performance, set how many games did they were the starter player
     let starting = Math.floor(
-      5 * (newPlayer.overall - (65 + newPlayer.team.power * 2))
+      (newPlayer.overall - (65 + newPlayer.team.power * 2)) / 0.15
     );
     if (starting > 100) starting = 100;
     else if (starting < 0) starting = 0;
+
+    newPlayer.fame += (starting / 100) * newPlayer.team.power;
 
     //set season start
     let newSeason = {
@@ -292,10 +295,11 @@ function App() {
     let phase = 0;
 
     while (!end) {
-      let game = GetHomeAwayResult(
+      let game = GetGameResult(
         newPlayer.team,
         opponents[phase],
-        newSeason.performance
+        newSeason.performance,
+        phase >= TournamentPath.length - 2 ? 1 : 2
       );
 
       description += `-> ${TournamentPath[phase]}: ${game.game}`;
@@ -385,10 +389,11 @@ function App() {
         });
         end = false;
         while (!end) {
-          let game = GetHomeAwayResult(
+          let game = GetGameResult(
             newPlayer.team,
             opponents[phase],
-            newSeason.performance
+            newSeason.performance,
+            phase >= TournamentPath.length - 2 ? 1 : 2
           );
 
           description += `-> ${TournamentPath[phase]}: ${game.game}`;
@@ -484,10 +489,11 @@ function App() {
         });
         end = false;
         while (!end) {
-          let game = GetHomeAwayResult(
+          let game = GetGameResult(
             newPlayer.team,
             opponents[phase],
-            newSeason.performance
+            newSeason.performance,
+            phase >= TournamentPath.length - 2 ? 1 : 2
           );
 
           description += `-> ${TournamentPath[phase]}: ${game.game}`;
@@ -497,7 +503,7 @@ function App() {
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.europa++;
-              newPlayer.fame += 10;
+              newPlayer.fame += 20;
             }
           } else {
             end = true;
@@ -569,10 +575,11 @@ function App() {
         });
         end = false;
         while (!end) {
-          let game = GetHomeAwayResult(
+          let game = GetGameResult(
             newPlayer.nation,
             opponents[phase],
-            newSeason.performance
+            newSeason.performance,
+            1
           );
 
           description += `-> ${TournamentPath[phase]}: ${game.game}`;
@@ -583,7 +590,7 @@ function App() {
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.worldCup++;
-              newPlayer.fame += 20;
+              newPlayer.fame += 40;
             }
           } else {
             end = true;
@@ -614,8 +621,9 @@ function App() {
       player.position.title == "GK" &&
       newSeason.performance * 10 + (newPlayer.overall - 70) / 3 >= 18
     ) {
-      newPlayer.fame += 10;
+      newPlayer.goldenAward++;
       newSeason.awardPoints++;
+      newPlayer.fame += 10;
       newSeason.titles.push("Luva de Ouro");
     }
 
@@ -625,10 +633,10 @@ function App() {
       //Ballon D'or
       newPlayer.ballonDOr++;
       newSeason.titles.push("Ballon D'Or: Ganhador");
-      newPlayer.fame += 40;
+      newPlayer.fame += 50;
     } else if (newSeason.awardPoints + newPlayer.overall >= 90) {
       let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 90);
-      newPlayer.fame += pts * 2;
+      newPlayer.fame += pts * 3;
       let position = 10 - pts;
       newSeason.titles.push("Ballon D'Or: " + position + "º lugar");
     }
@@ -644,8 +652,8 @@ function App() {
 
     if (
       contract <= 1 &&
-      ((newPlayer.overall <= 79 + newPlayer.team.power && newPlayer.age > 28) ||
-        med - newPlayer.team.power / 10 < -0.5)
+      ((newPlayer.overall <= 80 + newPlayer.team.power && newPlayer.age > 28) ||
+        med < newPlayer.team.power / 10 - 0.5)
     ) {
       document.getElementById("decision-stay").style.display = "none";
     } else {
@@ -716,15 +724,19 @@ function App() {
   }
 
   function GetLeaguePosition(teams, playerTeam, bonus) {
+    let goals = new Array(teams.length).fill(0);
     let points = new Array(teams.length).fill(0);
     for (let home = 0; home < teams.length; home++) {
       for (let away = 0; away < teams.length; away++) {
         if (teams[home] !== teams[away]) {
-          let game = GetGame(
+          let game = GetMatch(
             teams[home],
             teams[away],
             teams[home] === playerTeam ? bonus : 0.5
           );
+
+          goals[home] += game[0];
+          goals[away] += game[1];
 
           if (game[0] > game[1]) {
             points[home] += 3;
@@ -756,17 +768,19 @@ function App() {
     };
   }
 
-  function GetGame(team1, team2, bonus) {
+  function GetMatch(team1, team2, bonus) {
     let team1Points =
-      bonus +
-      team1.power +
-      (RandomNumber(0, team1.power * 2) - RandomNumber(0, team2.power * 2)) / 2;
-    let team2Points =
-      team2.power +
-      (RandomNumber(0, team2.power * 2) - RandomNumber(0, team1.power * 2)) / 2;
+      team1.power / 2 +
+      RandomNumber(0, team1.power * 3) / 2 -
+      RandomNumber(0, team2.power * 2) / 2;
 
-    let team1Score = Math.floor(team1Points / 4);
-    let team2Score = Math.floor(team2Points / 4);
+    let team2Points =
+      team2.power / 2 +
+      RandomNumber(0, team2.power * 3) / 2 -
+      RandomNumber(0, team1.power * 2) / 2;
+
+    let team1Score = Math.floor((team1Points + bonus) / 3);
+    let team2Score = Math.floor(team2Points / 3);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
@@ -774,26 +788,66 @@ function App() {
     return [team1Score, team2Score];
   }
 
-  function GetHomeAwayResult(team1, team2, bonus) {
-    let game1 = GetGame(team1, team2, bonus);
-    let game2 = GetGame(team1, team2, bonus);
-    let gameDesc = "";
+  function GetPenalties(team1, team2) {
+    let winner = false;
+    let team1goals = 0;
+    let team2goals = 0;
+    let count = 0;
+    while (!winner) {
+      count++;
+      let team1shooter = RandomNumber(0, (team1.power + 1) * 2);
+      let team2keeper = RandomNumber(0, team2.power * 2);
+      if (team1shooter > team2keeper) team1goals++;
 
-    let teamGoals1 = game1[0] + game2[0];
-    let teamGoals2 = game1[1] + game2[1];
+      if (count <= 5 && Math.abs(team1goals - team2goals) > 6 - count) {
+        winner = true;
+        break;
+      }
 
-    if (teamGoals1 == teamGoals2) {
-      let extra = GetGame(team1, team2, 0);
-      teamGoals1 += extra[0];
-      teamGoals2 += extra[1];
-      gameDesc = teamGoals1 == teamGoals2 ? "(Penaltis)" : "(Prorrog.)";
+      let team2shooter = RandomNumber(0, (team2.power + 1) * 2);
+      let team1keeper = RandomNumber(0, team1.power * 2);
+      if (team2shooter > team1keeper) team2goals++;
+
+      if (
+        (count > 5 && team1goals != team2goals) ||
+        (count <= 5 && Math.abs(team1goals - team2goals) > 5 - count)
+      ) {
+        winner = true;
+      }
     }
 
-    gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name} ${gameDesc}`;
+    return [team1goals, team2goals];
+  }
 
-    let result =
-      teamGoals1 + team1.power / 10 + bonus / 100 >
-      teamGoals2 + team2.power / 10;
+  function GetGameResult(team1, team2, bonus, numberOfGames = 1) {
+    let gameDesc = "";
+    let teamGoals1 = 0;
+    let teamGoals2 = 0;
+
+    for (let i = 0; i < numberOfGames; i++) {
+      let game = GetMatch(team1, team2, bonus);
+      teamGoals1 += game[0];
+      teamGoals2 += game[1];
+    }
+
+    if (teamGoals1 == teamGoals2) {
+      let extra = GetMatch(team1, team2, bonus);
+      teamGoals1 += extra[0];
+      teamGoals2 += extra[1];
+
+      if (teamGoals1 == teamGoals2) {
+        let penalties = GetPenalties(team1, team2);
+        gameDesc = `${team1.name} ${teamGoals1} (${penalties[0]}) x (${penalties[1]}) ${teamGoals2} ${team2.name} (Penaltis)`;
+        teamGoals1 += penalties[0];
+        teamGoals2 += penalties[1];
+      } else {
+        gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name} (Prorrogação)`;
+      }
+    } else {
+      gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name}`;
+    }
+
+    let result = teamGoals1 > teamGoals2;
 
     return { result: result, game: gameDesc };
   }
@@ -811,14 +865,13 @@ function App() {
     let league = Teams[leagueID];
     let team = league.teams[RandomNumber(2, league.teams.length - 1)];
     let contractDuration = 3;
-    let contractValue =
-      Math.floor((7 + contractDuration * 3) ** 2.5 / 100) / 10;
+    let contractValue = Math.floor((75 + team.power * 10) ** 2 / 100) / 10;
 
     if (currentPlayer) {
       let count = 0;
       while (
-        currentPlayer.overall >= 80 + team.power * (team.power - 1) ||
-        (currentPlayer.overall <= 80 + team.power && currentPlayer.age > 30) ||
+        currentPlayer.overall >= 80 + team.power * (3 + count / 20) ||
+        (currentPlayer.overall <= 82 + team.power && currentPlayer.age > 30) ||
         currentPlayer.team.name == team.name
       ) {
         league = Teams[leagueID];
@@ -831,10 +884,8 @@ function App() {
       contractDuration = RandomNumber(2, 4);
       contractValue =
         Math.floor(
-          (currentPlayer.overall / 10 +
-            (team.power * currentPlayer.fame) / 20 +
-            contractDuration * currentPlayer.potential) **
-            2.5 /
+          (currentPlayer.overall + team.power * 10 + currentPlayer.fame / 20) **
+            2 /
             100
         ) / 10;
     }
@@ -929,7 +980,8 @@ function App() {
         <div>
           <p>
             Fama da Carreira: {Math.floor(maxFame)} (
-            {StarPath[Math.min(Math.floor(maxFame / 50), StarPath.length - 1)]})
+            {StarPath[Math.min(Math.floor(maxFame / 100), StarPath.length - 1)]}
+            )
           </p>
         </div>
         <div>
