@@ -870,7 +870,7 @@ function App() {
     if (currentPlayer) {
       let count = 0;
       while (
-        currentPlayer.overall >= 80 + team.power * (3 + count / 20) ||
+        currentPlayer.overall >= 80 + count / 2 + team.power * 3 ||
         (currentPlayer.overall <= 82 + team.power && currentPlayer.age > 30) ||
         currentPlayer.team.name == team.name
       ) {
@@ -878,13 +878,18 @@ function App() {
         team = league.teams[RandomNumber(0, league.teams.length - 1)];
 
         count++;
-        if (count > 20) return null;
+        if (count > 10) {
+          return null;
+        }
       }
 
       contractDuration = RandomNumber(2, 4);
       contractValue =
         Math.floor(
-          (currentPlayer.overall + team.power * 10 + currentPlayer.fame / 20) **
+          (currentPlayer.overall +
+            team.power * 10 +
+            currentPlayer.fame / 20 -
+            count) **
             2 /
             100
         ) / 10;
