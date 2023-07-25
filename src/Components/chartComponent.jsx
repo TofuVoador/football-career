@@ -67,6 +67,12 @@ const ChartComponent = ({ data }) => {
             backgroundColor: "rgba(234, 231, 177, 1)", // Set background color
             borderColor: "rgba(234, 231, 177, 1)", // Set border color
           },
+          {
+            label: "Valor de Mercado",
+            data: data.map((item) => item.marketValue), // y-axis data
+            backgroundColor: "rgba(166, 187, 141, 1)", // Set background color
+            borderColor: "rgba(166, 187, 141, 1)", // Set border color
+          },
         ],
       },
       options: chartOptions,

@@ -11,6 +11,7 @@ const Season = (props) => {
       </summary>
       <div className="season-stats">
         <p>Idade: {season.age}</p>
+        <p>Valor de Mercado: {season.marketValue}M</p>
         <p>Salário Anual: {season.wage}M</p>
         <p>
           Desempenho: {season.performance > 0 ? "+" : ""}

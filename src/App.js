@@ -52,6 +52,7 @@ function App() {
     europaPhase: null,
     worldCupPhase: null,
     fame: null,
+    marketValue: null,
   });
 
   const [player, setPlayer] = useState({
@@ -60,8 +61,9 @@ function App() {
     nation: Nations[RandomNumber(0, Nations.length - 1)],
     team: null,
     position: GetNewPosition(),
-    wage: 10,
+    wage: 1,
     overall: 70,
+    performance: 0,
     totalGoals: 0,
     totalAssists: 0,
     leagues: 0,
@@ -74,6 +76,7 @@ function App() {
     championsQualification: false,
     europaQualification: false,
     fame: 0,
+    marketValue: 1,
   });
 
   const [year, setYear] = useState(new Date().getFullYear() - 1);
@@ -110,6 +113,7 @@ function App() {
       newPlayer.team = newTeam.team;
       newContract = newTeam.contract.duration;
       newPlayer.wage = newTeam.contract.value;
+      newPlayer.marketValue = newTeam.trasferValue;
       newPlayer.fame += newPlayer.team.power * 40; //add fame buff
       let lp = 99;
       //if the new team is in the same league as the old
@@ -149,16 +153,15 @@ function App() {
       newContract = RandomNumber(1, 3); //new contrat lenght
       newPlayer.wage =
         Math.floor(
-          (newPlayer.overall +
-            newPlayer.team.power * 10 +
-            newPlayer.fame / 20) **
+          (newPlayer.overall + newPlayer.team.power + newPlayer.fame / 20) **
             2 /
-            100
+            50
         ) / 10;
     }
 
     //calcule the player's performance
-    let newPerformance =
+
+    newPlayer.performance =
       (RandomNumber(0, 20) -
         RandomNumber(0, 20) +
         (newPlayer.team.power - 1) * 2) /
@@ -168,9 +171,9 @@ function App() {
       85 +
       newPlayer.potential * 1.4 -
       (27.5 - newPlayer.age + newPlayer.potential / 2) ** 2 / 10 +
-      newPerformance;
+      newPlayer.performance;
 
-    newGeneralPerformance.push(newPerformance);
+    newGeneralPerformance.push(newPlayer.performance);
     if (newGeneralPerformance.length > 3) newGeneralPerformance.shift();
 
     //giving the performance, set how many games did they were the starter player
@@ -193,7 +196,7 @@ function App() {
       goals: 0,
       assists: 0,
       overall: newPlayer.overall,
-      performance: newPerformance,
+      performance: newPlayer.performance,
       awardPoints: 0,
       leagueTable: [],
       leaguePosition: 1,
@@ -202,6 +205,7 @@ function App() {
       europaPhase: 0,
       worldCupPhase: 0,
       fame: newPlayer.fame,
+      marketValue: newPlayer.marketValue,
     };
 
     //save
@@ -865,7 +869,14 @@ function App() {
     let league = Teams[leagueID];
     let team = league.teams[RandomNumber(2, league.teams.length - 1)];
     let contractDuration = 3;
-    let contractValue = Math.floor((75 + team.power * 10) ** 2 / 100) / 10;
+    let contractValue = Math.floor((60 + team.power) ** 2 / 50) / 10;
+    let trasferValue =
+      Math.floor(
+        (40 +
+          team.power * RandomNumber(1, contractDuration * contractDuration)) **
+          2 /
+          50
+      ) / 10;
 
     if (currentPlayer) {
       let count = 0;
@@ -887,17 +898,25 @@ function App() {
       contractValue =
         Math.floor(
           (currentPlayer.overall +
-            team.power * 10 +
+            team.power +
             currentPlayer.fame / 20 -
             count) **
             2 /
-            100
+            50
         ) / 10;
+      trasferValue = Math.floor(
+        (currentPlayer.overall +
+          team.power +
+          currentPlayer.performance * RandomNumber(0, 10) -
+          currentPlayer.age * 2) **
+          2 /
+          50
+      );
     }
 
     let newContract = { value: contractValue, duration: contractDuration };
 
-    return { team: team, contract: newContract };
+    return { team: team, contract: newContract, trasferValue: trasferValue };
   }
 
   function GetNewPosition() {
@@ -988,9 +1007,6 @@ function App() {
             {StarPath[Math.min(Math.floor(maxFame / 100), StarPath.length - 1)]}
             )
           </p>
-        </div>
-        <div>
-          <p>Potencial: {player.potential}</p>
           <p>Posição: {player.position.title}</p>
         </div>
         <div>
