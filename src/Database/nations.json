@@ -1,118 +1,88 @@
 [
   {
-    "name": "Alemanha",
-    "continent": "Europa",
-    "power": 5
-  },
-  {
     "name": "Argentina",
     "continent": "América do Sul",
-    "power": 5
+    "power": 10
   },
   {
     "name": "Brasil",
     "continent": "América do Sul",
-    "power": 5
-  },
-  {
-    "name": "Espanha",
-    "continent": "Europa",
-    "power": 5
+    "power": 10
   },
   {
     "name": "França",
     "continent": "Europa",
-    "power": 5
+    "power": 10
   },
   {
-    "name": "Bélgica",
+    "name": "Alemanha",
     "continent": "Europa",
-    "power": 4.5
+    "power": 9.5
+  },
+  {
+    "name": "Espanha",
+    "continent": "Europa",
+    "power": 9.5
   },
   {
     "name": "Croácia",
     "continent": "Europa",
-    "power": 4.5
+    "power": 9
   },
   {
     "name": "Inglaterra",
     "continent": "Europa",
-    "power": 4.5
+    "power": 9
+  },
+  {
+    "name": "Bélgica",
+    "continent": "Europa",
+    "power": 8.5
   },
   {
     "name": "Itália",
     "continent": "Europa",
-    "power": 4.5
-  },
-  {
-    "name": "Portugal",
-    "continent": "Europa",
-    "power": 4.5
-  },
-  {
-    "name": "Marrocos",
-    "continent": "África",
-    "power": 4
-  },
-  {
-    "name": "México",
-    "continent": "América do Norte",
-    "power": 4
+    "power": 8.5
   },
   {
     "name": "Países Baixos",
     "continent": "Europa",
-    "power": 4
+    "power": 8.5
   },
   {
-    "name": "Suíça",
+    "name": "Marrocos",
+    "continent": "África",
+    "power": 8
+  },
+  {
+    "name": "México",
+    "continent": "América do Norte",
+    "power": 8
+  },
+  {
+    "name": "Portugal",
     "continent": "Europa",
-    "power": 4
-  },
-  {
-    "name": "Uruguai",
-    "continent": "América do Sul",
-    "power": 4
+    "power": 8
   },
   {
     "name": "Dinamarca",
     "continent": "Europa",
-    "power": 3.5
+    "power": 7.5
   },
   {
-    "name": "Japão",
-    "continent": "Ásia",
-    "power": 3.5
-  },
-  {
-    "name": "Polônia",
+    "name": "Suíça",
     "continent": "Europa",
-    "power": 3.5
+    "power": 7.5
   },
   {
     "name": "Rússia",
     "continent": "Europa",
-    "power": 3.5
+    "power": 7.5
   },
   {
-    "name": "Senegal",
-    "continent": "África",
-    "power": 3.5
-  },
-  {
-    "name": "Arábia Saudita",
-    "continent": "Ásia",
-    "power": 3
-  },
-  {
-    "name": "Costa do Marfim",
-    "continent": "África",
-    "power": 3
-  },
-  {
-    "name": "Egito",
-    "continent": "África",
-    "power": 3
+    "name": "Uruguai",
+    "continent": "América do Sul",
+    "power": 7.5
   },
   {
     "name": "Estados Unidos",
@@ -120,33 +90,63 @@
     "power": 3
   },
   {
+    "name": "Japão",
+    "continent": "Ásia",
+    "power": 7
+  },
+  {
+    "name": "Polônia",
+    "continent": "Europa",
+    "power": 7
+  },
+  {
+    "name": "Arábia Saudita",
+    "continent": "Ásia",
+    "power": 6.5
+  },
+  {
+    "name": "Senegal",
+    "continent": "África",
+    "power": 6.5
+  },
+  {
     "name": "Suécia",
     "continent": "Europa",
-    "power": 3
+    "power": 6.5
   },
   {
-    "name": "Argélia",
+    "name": "Costa do Marfim",
     "continent": "África",
-    "power": 2.5
-  },
-  {
-    "name": "Áustria",
-    "continent": "Europa",
-    "power": 2.5
-  },
-  {
-    "name": "Chile",
-    "continent": "América do Sul",
-    "power": 2.5
-  },
-  {
-    "name": "Costa Rica",
-    "continent": "América do Norte",
-    "power": 2.5
+    "power": 6
   },
   {
     "name": "Irã",
     "continent": "Ásia",
-    "power": 2.5
+    "power": 6
+  },
+  {
+    "name": "Áustria",
+    "continent": "Europa",
+    "power": 5.5
+  },
+  {
+    "name": "Egito",
+    "continent": "África",
+    "power": 5.5
+  },
+  {
+    "name": "Argélia",
+    "continent": "África",
+    "power": 5
+  },
+  {
+    "name": "Chile",
+    "continent": "América do Sul",
+    "power": 5
+  },
+  {
+    "name": "Costa Rica",
+    "continent": "América do Norte",
+    "power": 5
   }
 ]
