@@ -877,7 +877,7 @@ function App() {
   }
 
   function GetNewTeam(currentPlayer = null) {
-    let leagueID = RandomNumber(0, Teams.length - 5);
+    let leagueID = RandomNumber(0, Teams.length - 1);
     let league = Teams[leagueID];
     let team = league.teams[RandomNumber(4, 12)];
     let contractDuration = 3;
