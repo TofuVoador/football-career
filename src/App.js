@@ -56,7 +56,7 @@ function App() {
   });
 
   const [player, setPlayer] = useState({
-    potential: RandomNumber(2, 10),
+    potential: RandomNumber(1, 6) + RandomNumber(1, 6),
     age: 17,
     nation: Nations[RandomNumber(0, Nations.length - 1)],
     team: null,
@@ -164,8 +164,8 @@ function App() {
     newPlayer.performance = (RandomNumber(0, 20) - RandomNumber(0, 20)) / 10;
 
     newPlayer.overall =
-      82 +
-      newPlayer.potential -
+      86 +
+      newPlayer.potential / 2 -
       (30 - newPlayer.age) ** 2 / 10 +
       newPlayer.performance;
 
@@ -245,7 +245,7 @@ function App() {
     if (newSeason.goals < 0) newSeason.goals = 0;
     if (newSeason.assists < 0) newSeason.assists = 0;
 
-    newSeason.awardPoints = newSeason.performance * 2;
+    newSeason.awardPoints = newSeason.performance * 2; //max = 4
 
     //national tournaments
     let league = Teams.find((league) => league.name === newPlayer.team.league);
@@ -269,7 +269,7 @@ function App() {
 
     if (leaguePosition == 1) newPlayer.leagues++;
 
-    newSeason.awardPoints += 4 - leaguePosition;
+    newSeason.awardPoints += (6 - leaguePosition) / 2; //max = 2.5
     newSeason.leaguePosition = leaguePosition;
     newSeason.titles.push(
       "Liga: " + newSeason.leaguePosition + "º lugar" + topSix
@@ -305,7 +305,7 @@ function App() {
 
       if (game.result) {
         phase++;
-        newSeason.awardPoints += 0.3;
+        newSeason.awardPoints += 0.3; //max 0.3 x 5
         if (phase >= TournamentPath.length - 2) {
           end = true;
           newPlayer.nationalCup++;
@@ -380,7 +380,7 @@ function App() {
         for (let i = 0; i < TournamentPath.length; i++) {
           let op = GetNewOpponent();
           while (
-            op.power < 7.5 ||
+            op.power < 8 ||
             op.name == newPlayer.team.name ||
             opponents.includes(op) ||
             (phase <= 2 &&
@@ -408,7 +408,7 @@ function App() {
 
           if (game.result) {
             phase++;
-            newSeason.awardPoints += 0.7;
+            newSeason.awardPoints += 0.8; //max 0.8 x 5 = 4.0
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.champions++;
@@ -510,7 +510,7 @@ function App() {
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.europa++;
-              newPlayer.fame += 20;
+              newPlayer.fame += 10;
             }
           } else {
             end = true;
@@ -606,11 +606,11 @@ function App() {
 
           if (game.result) {
             phase++;
-            newSeason.awardPoints += 0.5;
+            newSeason.awardPoints += 0.5; //max 0.5 x 5 = 2.5
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.worldCup++;
-              newPlayer.fame += 40;
+              newPlayer.fame += 30;
             }
           } else {
             end = true;
@@ -653,10 +653,10 @@ function App() {
       //Ballon D'or
       newPlayer.ballonDOr++;
       newSeason.titles.push("Ballon D'Or: Ganhador");
-      newPlayer.fame += 50;
+      newPlayer.fame += 60;
     } else if (newSeason.awardPoints + newPlayer.overall >= 90) {
       let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 90);
-      newPlayer.fame += pts * 3;
+      newPlayer.fame += pts * 4;
       let position = 10 - pts;
       newSeason.titles.push("Ballon D'Or: " + position + "º lugar");
     }
@@ -879,7 +879,7 @@ function App() {
   function GetNewTeam(currentPlayer = null) {
     let leagueID = RandomNumber(0, Teams.length - 1);
     let league = Teams[leagueID];
-    let team = league.teams[RandomNumber(4, 12)];
+    let team = league.teams[5 + RandomNumber(0, 10)];
     let contractDuration = 3;
     let contractValue = Math.floor((60 + team.power) ** 2 / 50) / 10;
     let trasferValue = Math.floor((20 + team.power) ** 2 / 20);
@@ -888,7 +888,7 @@ function App() {
       let count = 0;
       do {
         league = Teams[leagueID];
-        team = league.teams[RandomNumber(0, 12)];
+        team = league.teams[RandomNumber(0, 15 - currentPlayer.overall / 10)];
 
         count++;
         if (count > 10) {
@@ -904,19 +904,20 @@ function App() {
         Math.floor(
           (currentPlayer.overall +
             team.power +
+            currentPlayer.potential +
             currentPlayer.fame / 20 -
-            count * 2) **
+            count * 5) **
             2 /
             50
         ) / 10;
       trasferValue = Math.floor(
-        (currentPlayer.overall * 0.6 +
+        (currentPlayer.overall * 0.5 +
           (team.power +
             currentPlayer.potential +
             currentPlayer.position.value +
-            currentPlayer.performance * 5) *
+            currentPlayer.performance) *
             2 -
-          currentPlayer.age * 1.8) **
+          currentPlayer.age * 2) **
           2 /
           20
       );
