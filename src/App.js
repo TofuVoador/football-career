@@ -773,7 +773,7 @@ function App() {
     teamPositions.sort((a, b) => points[b - 1] - points[a - 1]);
 
     let playerPosition = teamPositions.findIndex(
-      (position) => teams[position - 1] === player.team
+      (position) => teams[position - 1] === playerTeam
     );
 
     let table = teamPositions.map((position) => teams[position - 1]);
