@@ -549,25 +549,24 @@ function App() {
         opRange = 4;
       }
 
-      let op1 = Nations[(opRange % 4) * 7 + RandomNumber(0, 9)];
+      let op1 = Nations[(opRange % 4) * 7 + RandomNumber(0, 8)];
       while (op1.continent == newPlayer.nation.continent) {
-        op1 = Nations[(opRange % 4) * 7 + RandomNumber(0, 9)];
+        op1 = Nations[(opRange % 4) * 7 + RandomNumber(0, 8)];
       }
       nationsLeft.splice(op1.continent, 1);
 
-      let op2 = Nations[((opRange + 2) % 4) * 7 + RandomNumber(0, 9)];
+      let op2 = Nations[((opRange + 1) % 4) * 7 + RandomNumber(0, 8)];
       while (
         op1.continent == newPlayer.nation.continent ||
         op2.continent == op1.continent
       ) {
-        op2 = Nations[((opRange + 2) % 4) * 7 + RandomNumber(0, 9)];
+        op2 = Nations[((opRange + 1) % 4) * 7 + RandomNumber(0, 8)];
       }
       nationsLeft.splice(op2.continent, 1);
-      opRange++;
 
-      let op3 = Nations[((opRange + 1) % 4) * 7 + RandomNumber(0, 9)];
+      let op3 = Nations[((opRange + 2) % 4) * 7 + RandomNumber(0, 8)];
       while (op3 == newPlayer.nation || op3 == op2 || op3 == op1) {
-        op3 = Nations[((opRange + 1) % 4) * 7 + RandomNumber(0, 9)];
+        op3 = Nations[((opRange + 2) % 4) * 7 + RandomNumber(0, 8)];
       }
 
       description = `-> ${TournamentPath[phase]}: ${op1.name} / ${op2.name} / ${op3.name}`;
@@ -584,7 +583,7 @@ function App() {
         for (let i = 0; i < TournamentPath.length; i++) {
           let op = Nations[RandomNumber(0, Nations.length - 1)];
           while (
-            op.power <= 7 ||
+            op.power < 7 ||
             op.name == player.nation.name ||
             opponents.includes(op) ||
             (phase <= 7 &&
