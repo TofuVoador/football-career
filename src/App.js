@@ -3,6 +3,8 @@ import "./App.css";
 import Teams from "./Database/teams.json";
 import Nations from "./Database/nations.json";
 import Positions from "./Database/positions.json";
+import Players from "./Database/players.json";
+import Legends from "./Database/legends.json";
 import ChartComponent from "./Components/chartComponent";
 import Season from "./Components/season";
 import { RandomNumber } from "./Utils";
@@ -32,6 +34,10 @@ const TournamentPath = [
 ];
 
 function App() {
+  const [allPlayers, setAllPlayers] = useState(Players);
+  const [allLegends, setAllLegends] = useState(Legends);
+  const [allTeams, setAllTeams] = useState(Teams);
+
   const [seasons, setSeasons] = useState([]);
 
   const [currentSeason, setCurrentSeason] = useState({
@@ -80,7 +86,7 @@ function App() {
     marketValue: 1,
   });
 
-  const [year, setYear] = useState(new Date().getFullYear() - 1);
+  const [year, setYear] = useState(new Date().getFullYear() - 5);
 
   const [contract, setContract] = useState(0);
 
@@ -99,6 +105,9 @@ function App() {
     //load all player's stats
     let newPlayer = player;
     let newGeneralPerformance = generalPerformance;
+    let newAllTeams = allTeams;
+    let newAllPlayers = allPlayers;
+    let newAllLegends = allLegends;
 
     //age and contract
     newPlayer.age++;
@@ -125,13 +134,13 @@ function App() {
           ) + 1; //get the new team's position
       } else {
         let nationalTeams =
-          Teams.find((league) => league.name === newPlayer.team.league)
+          newAllTeams.find((league) => league.name === newPlayer.team.league)
             ?.teams || []; //find the new team league
         lp = GetLeaguePosition(nationalTeams, newPlayer.team, 0.5).pos; //simulate the past season
       }
 
       //get players league
-      let league = Teams.find(
+      let league = newAllTeams.find(
         (league) => league.name === newPlayer.team.league
       );
 
@@ -166,10 +175,23 @@ function App() {
     newPlayer.performance = (RandomNumber(0, 20) - RandomNumber(0, 20)) / 10;
 
     newPlayer.overall =
-      86 +
-      newPlayer.potential / 2 -
-      (30 - newPlayer.age) ** 2 / 10 +
-      newPlayer.performance;
+      GetOverall(newPlayer.potential, newPlayer.age) + newPlayer.performance;
+
+    newAllPlayers.forEach((p) => {
+      p.age += 1;
+      if (p.age > 36) {
+        p.age = 17;
+        newAllLegends.push(p.name);
+        let r = RandomNumber(0, 5);
+        p.name = newAllLegends[r];
+        newAllLegends.splice(r, 1);
+      }
+      p.overall =
+        GetOverall(p.potential, p.age) +
+        (RandomNumber(0, 5) - RandomNumber(0, 5)) / 20;
+    });
+
+    newAllPlayers.sort((a, b) => b.overall - a.overall);
 
     newGeneralPerformance.push(newPlayer.performance);
     if (newGeneralPerformance.length > 3) newGeneralPerformance.shift();
@@ -212,6 +234,8 @@ function App() {
     setContract(newContract);
     setPlayer(newPlayer);
     setGeneralPerformance(newGeneralPerformance);
+    setAllPlayers(newAllPlayers);
+    setAllTeams(newAllTeams);
   }
 
   function Continue() {
@@ -220,6 +244,8 @@ function App() {
 
     let newPlayer = player;
     let newSeason = currentSeason;
+    let newAllTeams = allTeams;
+    let newAllPlayers = allPlayers;
 
     //giving the starting rate, randomize how many goals/assists did they score
     let goalsOppostunities =
@@ -250,7 +276,9 @@ function App() {
     newSeason.awardPoints = newSeason.performance * 2; //max = 4
 
     //national tournaments
-    let league = Teams.find((league) => league.name === newPlayer.team.league);
+    let league = newAllTeams.find(
+      (league) => league.name === newPlayer.team.league
+    );
 
     //national league
     let leagueResults = GetLeaguePosition(
@@ -325,28 +353,27 @@ function App() {
     if (newPlayer.championsQualification) {
       //Champions League
       phase = 0;
-      let counter = 0;
 
-      let league1 = Teams[RandomNumber(0, Teams.length - 1)];
+      let league1 = newAllTeams[RandomNumber(0, newAllTeams.length - 1)];
       while (league1.name == newPlayer.team.league) {
-        league1 = Teams[RandomNumber(0, Teams.length - 1)];
+        league1 = newAllTeams[RandomNumber(0, newAllTeams.length - 1)];
       }
 
-      let league2 = Teams[RandomNumber(0, Teams.length - 1)];
+      let league2 = newAllTeams[RandomNumber(0, newAllTeams.length - 1)];
       while (
         league2.name == newPlayer.team.league ||
         league2.name == league1.name
       ) {
-        league2 = Teams[RandomNumber(0, Teams.length - 1)];
+        league2 = newAllTeams[RandomNumber(0, newAllTeams.length - 1)];
       }
 
-      let league3 = Teams[RandomNumber(0, Teams.length - 1)];
+      let league3 = newAllTeams[RandomNumber(0, newAllTeams.length - 1)];
       while (
         league3.name == newPlayer.team.league ||
         league3.name == league1.name ||
         league3.name == league2.name
       ) {
-        league3 = Teams[RandomNumber(0, Teams.length - 1)];
+        league3 = newAllTeams[RandomNumber(0, newAllTeams.length - 1)];
       }
 
       let positionsLeft = [1, 2, 3, 4];
@@ -657,13 +684,27 @@ function App() {
     if (newSeason.awardPoints + newPlayer.overall >= 99) {
       //Ballon D'or
       newPlayer.ballonDOr++;
-      newSeason.titles.push("Ballon D'Or: Ganhador");
       newPlayer.fame += 60;
+
+      description = `-> 1º: You`;
+      for (let i = 2; i <= 5; i++) {
+        description += `-> ${i}º: ${newAllPlayers[i].name} (${newAllPlayers[i].age})`;
+      }
+      newSeason.titles.push("Ballon D'Or: Ganhador" + description);
     } else if (newSeason.awardPoints + newPlayer.overall >= 90) {
       let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 90);
       newPlayer.fame += pts * 4;
       let position = 10 - pts;
-      newSeason.titles.push("Ballon D'Or: " + position + "º lugar");
+
+      description = "";
+      for (let i = 1; i <= 5; i++) {
+        if (i == position) {
+          i++;
+          description += `-> ${position}º: You`;
+        }
+        description += `-> ${i}º: ${newAllPlayers[i].name} (${newAllPlayers[i].age})`;
+      }
+      newSeason.titles.push(`Ballon D'Or: ${position} º lugar` + description);
     }
 
     //trasnfer window
@@ -883,8 +924,8 @@ function App() {
   }
 
   function GetNewTeam(currentPlayer = null) {
-    let leagueID = RandomNumber(0, Teams.length - 1);
-    let league = Teams[leagueID];
+    let leagueID = RandomNumber(0, allTeams.length - 1);
+    let league = allTeams[leagueID];
     let team = league.teams[5 + RandomNumber(0, 10)];
     let contractDuration = 3;
     let contractValue = Math.floor((60 + team.power) ** 2 / 50) / 10;
@@ -893,7 +934,7 @@ function App() {
     if (currentPlayer) {
       let count = 0;
       do {
-        league = Teams[leagueID];
+        league = allTeams[leagueID];
         team = league.teams[RandomNumber(0, 15 - currentPlayer.overall / 10)];
 
         count++;
@@ -938,6 +979,10 @@ function App() {
     let posID = RandomNumber(0, Positions.length - 1);
     let pos = Positions[posID];
     return pos;
+  }
+
+  function GetOverall(potential, age) {
+    return 86 + potential / 2 - (30 - age) ** 2 / 10;
   }
 
   function Retire() {
