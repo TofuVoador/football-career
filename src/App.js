@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Teams from "./Database/teams.json";
 import Nations from "./Database/nations.json";
@@ -181,6 +181,7 @@ function App() {
       p.age += 1;
       if (p.age > 39) {
         p.age = 20;
+        p.potential = RandomNumber(1, 6) + RandomNumber(1, 6);
         let r = RandomNumber(0, newAllNewBies.length - 1);
         p.name = newAllNewBies[r];
         newAllNewBies.splice(r, 1);
@@ -299,7 +300,7 @@ function App() {
 
     if (leaguePosition == 1) newPlayer.leagues++;
 
-    newSeason.awardPoints += (6 - leaguePosition) / 2; //max = 2.5
+    newSeason.awardPoints += (7 - leaguePosition) / 2; //max = 3.0
     newSeason.leaguePosition = leaguePosition;
     newSeason.titles.push(
       "Liga: " + newSeason.leaguePosition + "º lugar" + topSix
@@ -335,7 +336,7 @@ function App() {
 
       if (game.result) {
         phase++;
-        newSeason.awardPoints += 0.3; //max 0.3 x 5
+        newSeason.awardPoints += 0.4; //max 0.4 x 5 = 2.0
         if (phase >= TournamentPath.length - 2) {
           end = true;
           newPlayer.nationalCup++;
@@ -638,7 +639,7 @@ function App() {
 
           if (game.result) {
             phase++;
-            newSeason.awardPoints += 0.5; //max 0.5 x 5 = 2.5
+            newSeason.awardPoints += 0.4; //max 0.4 x 5 = 2.0
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.worldCup++;
