@@ -59,7 +59,7 @@ function App() {
 
   const [player, setPlayer] = useState({
     potential: RandomNumber(1, 6) + RandomNumber(1, 6),
-    age: 19,
+    age: 17,
     nation: Nations[RandomNumber(0, Nations.length - 1)],
     team: null,
     position: GetNewPosition(),
@@ -116,8 +116,8 @@ function App() {
       if (newPlayer.fame < 0) newPlayer.fame = 0;
       newPlayer.team = newTeam.team;
       newContract = newTeam.contract.duration;
-      newPlayer.wage = newTeam.contract.value;
       newPlayer.marketValue = newTeam.trasferValue;
+      newPlayer.wage = newTeam.contract.value;
       newPlayer.fame += newPlayer.team.power * 20; //add fame buff
       let lp = 99;
       //if the new team is in the same league as the old
@@ -156,11 +156,16 @@ function App() {
     } else if (newContract <= 0) {
       //else if contract expires
       newContract = RandomNumber(1, 3); //new contrat lenght
+      newPlayer.marketValue = Math.floor(
+        (newPlayer.overall - 80) * 3 +
+          newPlayer.team.power * newPlayer.performance +
+          newPlayer.potential * newPlayer.position.value
+      );
       newPlayer.wage =
         Math.floor(
           (newPlayer.overall + newPlayer.team.power + newPlayer.fame / 20) **
             2 /
-            50
+            60
         ) / 10;
     }
 
@@ -176,7 +181,8 @@ function App() {
 
     //giving the performance, set how many games did they were the starter player
     let starting = Math.floor(
-      (newPlayer.overall - (65 + newPlayer.team.power)) / 0.15
+      (newPlayer.overall - (68 + newPlayer.team.power)) / 0.1 +
+        RandomNumber(-5, 5)
     );
     if (starting > 100) starting = 100;
     else if (starting < 0) starting = 0;
@@ -226,14 +232,10 @@ function App() {
     //giving the starting rate, randomize how many goals/assists did they score
     let goalsOppostunities =
       newPlayer.position.goalsBonus *
-      (1 +
-        (RandomNumber(0, newPlayer.team.power) + newSeason.performance * 10) /
-          20);
+      (1 + (newPlayer.team.power + newSeason.performance * 10) / 20);
     let assistsOppostunities =
       newPlayer.position.assistsBonus *
-      (1 +
-        (RandomNumber(0, newPlayer.team.power) + newSeason.performance * 10) /
-          20);
+      (1 + (newPlayer.team.power + newSeason.performance * 10) / 20);
 
     newSeason.goals = Math.floor(
       (newSeason.starting / 100) *
@@ -904,7 +906,7 @@ function App() {
       let count = 0;
       do {
         league = allTeams[leagueID];
-        team = league.teams[RandomNumber(0, 15 - currentPlayer.overall / 10)];
+        team = league.teams[RandomNumber(0, 12 - currentPlayer.overall / 10)];
 
         count++;
         if (count > 10) {
@@ -915,7 +917,7 @@ function App() {
         currentPlayer.team.name == team.name
       );
 
-      contractDuration = RandomNumber(2, 4);
+      contractDuration = RandomNumber(2, 5);
       contractValue =
         Math.floor(
           (currentPlayer.overall +
