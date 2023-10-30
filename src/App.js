@@ -3,8 +3,6 @@ import "./App.css";
 import Teams from "./Database/teams.json";
 import Nations from "./Database/nations.json";
 import Positions from "./Database/positions.json";
-import Players from "./Database/players.json";
-import Newbies from "./Database/newbies.json";
 import ChartComponent from "./Components/chartComponent";
 import Season from "./Components/season";
 import { RandomNumber } from "./Utils";
@@ -34,8 +32,6 @@ const TournamentPath = [
 ];
 
 function App() {
-  const [allPlayers, setAllPlayers] = useState(Players);
-  const [allNewbies, setAllNewbies] = useState(Newbies);
   const [allTeams, setAllTeams] = useState(Teams);
 
   const [seasons, setSeasons] = useState([]);
@@ -106,8 +102,6 @@ function App() {
     let newPlayer = player;
     let newGeneralPerformance = generalPerformance;
     let newAllTeams = allTeams;
-    let newAllPlayers = allPlayers;
-    let newAllNewBies = allNewbies;
 
     //age and contract
     newPlayer.age++;
@@ -177,22 +171,6 @@ function App() {
     newPlayer.overall =
       GetOverall(newPlayer.potential, newPlayer.age) + newPlayer.performance;
 
-    newAllPlayers.forEach((p) => {
-      p.age += 1;
-      if (p.age > 39) {
-        p.age = 20;
-        p.potential = RandomNumber(1, 6) + RandomNumber(1, 6);
-        let r = RandomNumber(0, newAllNewBies.length - 1);
-        p.name = newAllNewBies[r];
-        newAllNewBies.splice(r, 1);
-      }
-      p.overall =
-        GetOverall(p.potential, p.age) +
-        (RandomNumber(0, 10) - RandomNumber(0, 10)) / 20;
-    });
-
-    newAllPlayers.sort((a, b) => b.overall - a.overall);
-
     newGeneralPerformance.push(newPlayer.performance);
     if (newGeneralPerformance.length > 3) newGeneralPerformance.shift();
 
@@ -234,9 +212,7 @@ function App() {
     setContract(newContract);
     setPlayer(newPlayer);
     setGeneralPerformance(newGeneralPerformance);
-    setAllPlayers(newAllPlayers);
     setAllTeams(newAllTeams);
-    setAllNewbies(newAllNewBies);
   }
 
   function Continue() {
@@ -246,7 +222,6 @@ function App() {
     let newPlayer = player;
     let newSeason = currentSeason;
     let newAllTeams = allTeams;
-    let newAllPlayers = allPlayers;
 
     //giving the starting rate, randomize how many goals/assists did they score
     let goalsOppostunities =
@@ -690,31 +665,12 @@ function App() {
       newPlayer.fame += 60;
       position = 1;
 
-      description = `-> ${position}º: You`;
-      for (let i = 2; i <= 10; i++) {
-        description += `-> ${i}º: ${newAllPlayers[i - 1].name} (${
-          newAllPlayers[i - 1].age
-        })`;
-      }
-      newSeason.titles.push(`Ballon D'Or: ${position}º lugar` + description);
+      newSeason.titles.push(`Ballon D'Or: 1º lugar`);
     } else if (newSeason.awardPoints + newPlayer.overall >= 90) {
       let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 90);
       newPlayer.fame += pts * 4;
       position = 10 - pts;
-
-      let dif = 1;
-      description = "";
-      for (let i = 1; i <= 10; i++) {
-        if (i == position) {
-          dif = 2;
-          description += `-> ${i}º: You`;
-        } else {
-          description += `-> ${i}º: ${newAllPlayers[i - dif].name} (${
-            newAllPlayers[i - dif].age
-          })`;
-        }
-      }
-      newSeason.titles.push(`Ballon D'Or: ${position}º lugar` + description);
+      newSeason.titles.push(`Ballon D'Or: ${position}º lugar`);
     }
 
     if (position > 0) {
@@ -939,10 +895,10 @@ function App() {
   function GetNewTeam(currentPlayer = null) {
     let leagueID = RandomNumber(0, allTeams.length - 1);
     let league = allTeams[leagueID];
-    let team = league.teams[RandomNumber(0, 15)];
+    let team = league.teams[RandomNumber(0, 12)];
     let contractDuration = 3;
-    let contractValue = Math.floor((60 + team.power) ** 2 / 50) / 10;
-    let trasferValue = Math.floor((20 + team.power) ** 2 / 20);
+    let contractValue = Math.floor((60 + team.power) ** 2 / 60) / 10;
+    let trasferValue = 10;
 
     if (currentPlayer) {
       let count = 0;
@@ -968,19 +924,15 @@ function App() {
             currentPlayer.fame / 20 -
             count * 5) **
             2 /
-            50
+            60
         ) / 10;
       trasferValue = Math.floor(
-        (currentPlayer.overall * 0.5 +
-          (team.power +
-            currentPlayer.potential +
-            currentPlayer.position.value +
-            currentPlayer.performance) *
-            2 -
-          currentPlayer.age * 2) **
-          2 /
-          20
+        (currentPlayer.overall - 80) * 3 +
+          team.power * currentPlayer.performance +
+          currentPlayer.potential * currentPlayer.position.value
       );
+
+      if (trasferValue < 0) trasferValue = 0;
     }
 
     let newContract = { value: contractValue, duration: contractDuration };
