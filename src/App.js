@@ -284,7 +284,7 @@ function App() {
 
     if (leaguePosition == 1) newPlayer.leagues++;
 
-    newSeason.awardPoints += (5 - leaguePosition) / 2; //max = 2.0
+    newSeason.awardPoints += (7 - leaguePosition) / 2; //max = 3.0
     newSeason.leaguePosition = leaguePosition;
     newSeason.titles.push(
       "Liga: " + newSeason.leaguePosition + "º lugar" + topSix
@@ -424,7 +424,7 @@ function App() {
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.champions++;
-              newPlayer.fame += 20;
+              newPlayer.fame += 30;
             }
           } else {
             end = true;
@@ -622,14 +622,11 @@ function App() {
 
           if (game.result) {
             phase++;
-            if (newPlayer.overall > 75 + newPlayer.nation.power && med > -0.4)
+            if (newPlayer.overall > 75 + newPlayer.nation.power || med > 0)
               newSeason.awardPoints += 0.6; //max 0.6 x 5 = 3.0
             if (phase >= TournamentPath.length - 1) {
               end = true;
-              if (
-                newPlayer.overall > 75 + newPlayer.nation.power &&
-                med > -0.4
-              ) {
+              if (newPlayer.overall > 75 + newPlayer.nation.power || med > 0) {
                 newPlayer.worldCup++;
                 newPlayer.fame += 30;
               }
@@ -640,7 +637,7 @@ function App() {
         }
       }
 
-      description = `Wolrd Cup: ${TournamentPath[phase]} ${
+      description = `World Cup: ${TournamentPath[phase]} ${
         newPlayer.overall > 75 + newPlayer.nation.power && med > -0.4
           ? ""
           : " (Não Convocado)"
@@ -661,7 +658,7 @@ function App() {
       //Golden Shoes
       newPlayer.goldenAward++;
       newSeason.awardPoints += 2;
-      newPlayer.fame += 30;
+      newPlayer.fame += 20;
       newSeason.titles.push("Chuteira de Ouro");
     } else if (
       player.position.title == "GK" &&
@@ -669,7 +666,7 @@ function App() {
     ) {
       newPlayer.goldenAward++;
       newSeason.awardPoints += 2;
-      newPlayer.fame += 30;
+      newPlayer.fame += 20;
       newSeason.titles.push("Luva de Ouro");
     }
 
@@ -699,7 +696,7 @@ function App() {
     //fired
     if (
       contract <= 1 &&
-      ((newPlayer.overall <= 75 + newPlayer.team.power && newPlayer.age > 35) ||
+      ((newPlayer.overall <= 75 + newPlayer.team.power && newPlayer.age > 32) ||
         med < -0.4)
     ) {
       document.getElementById("decision-stay").style.display = "none";
