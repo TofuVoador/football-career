@@ -638,7 +638,7 @@ function App() {
       }
 
       description = `World Cup: ${TournamentPath[phase]} ${
-        newPlayer.overall > 75 + newPlayer.nation.power && med > -0.4
+        newPlayer.overall > 75 + newPlayer.nation.power || med > 0
           ? ""
           : " (Não Convocado)"
       } ${description}`;
