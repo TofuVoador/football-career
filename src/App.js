@@ -157,9 +157,9 @@ function App() {
       //else if contract expires
       newContract = RandomNumber(1, 3); //new contrat lenght
       newPlayer.marketValue = Math.floor(
-        (newPlayer.overall - 80) * 3 +
-          newPlayer.team.power * newPlayer.performance +
-          newPlayer.potential * newPlayer.position.value
+        (((newPlayer.overall - 70) / 5.0) ^ 2) * newPlayer.position.value +
+          newPlayer.performance * 5 +
+          newPlayer.team.power * 3
       );
       newPlayer.wage =
         Math.floor(
@@ -187,7 +187,8 @@ function App() {
     if (starting > 100) starting = 100;
     else if (starting < 0) starting = 0;
 
-    newPlayer.fame += (starting / 100) * newPlayer.team.power;
+    newPlayer.fame +=
+      (starting / 100 + newPlayer.performance) * newPlayer.team.power;
 
     //set season start
     let newSeason = {
@@ -251,7 +252,13 @@ function App() {
     if (newSeason.goals < 0) newSeason.goals = 0;
     if (newSeason.assists < 0) newSeason.assists = 0;
 
-    newSeason.awardPoints = newSeason.performance * 2; //max = 4
+    newSeason.awardPoints = newSeason.performance * 2; //max = 4.0
+
+    let med = 0;
+    for (let i = 0; i < generalPerformance.length; i++) {
+      med += generalPerformance[i];
+    }
+    med /= generalPerformance.length;
 
     //national tournaments
     let league = newAllTeams.find(
@@ -277,7 +284,7 @@ function App() {
 
     if (leaguePosition == 1) newPlayer.leagues++;
 
-    newSeason.awardPoints += (7 - leaguePosition) / 2; //max = 3.0
+    newSeason.awardPoints += (5 - leaguePosition) / 2; //max = 2.0
     newSeason.leaguePosition = leaguePosition;
     newSeason.titles.push(
       "Liga: " + newSeason.leaguePosition + "º lugar" + topSix
@@ -417,7 +424,7 @@ function App() {
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.champions++;
-              newPlayer.fame += 30;
+              newPlayer.fame += 20;
             }
           } else {
             end = true;
@@ -515,7 +522,6 @@ function App() {
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.europa++;
-              newPlayer.fame += 10;
             }
           } else {
             end = true;
@@ -616,11 +622,17 @@ function App() {
 
           if (game.result) {
             phase++;
-            newSeason.awardPoints += 0.4; //max 0.4 x 5 = 2.0
+            if (newPlayer.overall > 75 + newPlayer.nation.power && med > -0.4)
+              newSeason.awardPoints += 0.6; //max 0.6 x 5 = 3.0
             if (phase >= TournamentPath.length - 1) {
               end = true;
-              newPlayer.worldCup++;
-              newPlayer.fame += 30;
+              if (
+                newPlayer.overall > 75 + newPlayer.nation.power &&
+                med > -0.4
+              ) {
+                newPlayer.worldCup++;
+                newPlayer.fame += 30;
+              }
             }
           } else {
             end = true;
@@ -628,7 +640,11 @@ function App() {
         }
       }
 
-      description = `Wolrd Cup: ${TournamentPath[phase]} ${description}`;
+      description = `Wolrd Cup: ${TournamentPath[phase]} ${
+        newPlayer.overall > 75 + newPlayer.nation.power && med > -0.4
+          ? ""
+          : " (Não Convocado)"
+      } ${description}`;
 
       newSeason.worldCupPhase = phase;
       newSeason.titles.push(description);
@@ -641,19 +657,19 @@ function App() {
     //post season results
     if (RandomNumber(0, 100) < 1) newSeason.titles.push("Puskás"); //Puskás
 
-    if (35 + RandomNumber(0, 10) < newSeason.goals) {
+    if (40 + RandomNumber(0, 10) < newSeason.goals) {
       //Golden Shoes
       newPlayer.goldenAward++;
-      newSeason.awardPoints++;
-      newPlayer.fame += 20;
+      newSeason.awardPoints += 2;
+      newPlayer.fame += 30;
       newSeason.titles.push("Chuteira de Ouro");
     } else if (
       player.position.title == "GK" &&
-      newSeason.performance * 5 + (newPlayer.overall - 70) / 3 >= 18
+      newSeason.performance * 2 + (newPlayer.overall - 74) / 2 >= 10
     ) {
       newPlayer.goldenAward++;
-      newSeason.awardPoints++;
-      newPlayer.fame += 20;
+      newSeason.awardPoints += 2;
+      newPlayer.fame += 30;
       newSeason.titles.push("Luva de Ouro");
     }
 
@@ -661,15 +677,15 @@ function App() {
 
     let position = -1;
 
-    if (newSeason.awardPoints + newPlayer.overall >= 99) {
+    if (newSeason.awardPoints + newPlayer.overall >= 100) {
       //Ballon D'or
       newPlayer.ballonDOr++;
       newPlayer.fame += 60;
       position = 1;
 
       newSeason.titles.push(`Ballon D'Or: 1º lugar`);
-    } else if (newSeason.awardPoints + newPlayer.overall >= 90) {
-      let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 90);
+    } else if (newSeason.awardPoints + newPlayer.overall >= 91) {
+      let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 91);
       newPlayer.fame += pts * 4;
       position = 10 - pts;
       newSeason.titles.push(`Ballon D'Or: ${position}º lugar`);
@@ -681,16 +697,10 @@ function App() {
     //trasnfer window
 
     //fired
-    let med = 0;
-    for (let i = 0; i < generalPerformance.length; i++) {
-      med += generalPerformance[i];
-    }
-    med /= generalPerformance.length;
-
     if (
       contract <= 1 &&
-      ((newPlayer.overall <= 72 + newPlayer.team.power && newPlayer.age > 30) ||
-        med < -0.5)
+      ((newPlayer.overall <= 75 + newPlayer.team.power && newPlayer.age > 35) ||
+        med < -0.4)
     ) {
       document.getElementById("decision-stay").style.display = "none";
     } else {
@@ -727,7 +737,7 @@ function App() {
       }
     }
 
-    if (newPlayer.age >= 28) {
+    if (newPlayer.age >= 32) {
       //retire option
       document.getElementById("retire").style.display = "flex";
     }
@@ -897,7 +907,7 @@ function App() {
   function GetNewTeam(currentPlayer = null) {
     let leagueID = RandomNumber(0, allTeams.length - 1);
     let league = allTeams[leagueID];
-    let team = league.teams[RandomNumber(0, 12)];
+    let team = league.teams[RandomNumber(0, 10)];
     let contractDuration = 3;
     let contractValue = Math.floor((60 + team.power) ** 2 / 60) / 10;
     let trasferValue = 10;
@@ -906,18 +916,18 @@ function App() {
       let count = 0;
       do {
         league = allTeams[leagueID];
-        team = league.teams[RandomNumber(0, 12 - currentPlayer.overall / 10)];
+        team = league.teams[RandomNumber(0, 10 - currentPlayer.overall / 10)];
 
         count++;
         if (count > 10) {
           return null;
         }
       } while (
-        (currentPlayer.overall <= 78 + team.power && currentPlayer.age > 30) ||
+        (currentPlayer.overall <= 75 + team.power && currentPlayer.age > 30) ||
         currentPlayer.team.name == team.name
       );
 
-      contractDuration = RandomNumber(2, 5);
+      contractDuration = RandomNumber(2, 4);
       contractValue =
         Math.floor(
           (currentPlayer.overall +
@@ -929,9 +939,10 @@ function App() {
             60
         ) / 10;
       trasferValue = Math.floor(
-        (currentPlayer.overall - 80) * 3 +
-          team.power * currentPlayer.performance +
-          currentPlayer.potential * currentPlayer.position.value
+        (((currentPlayer.overall - 70) / 5.0) ^ 2) *
+          currentPlayer.position.value +
+          currentPlayer.performance * 5 +
+          currentPlayer.team.power * 3
       );
 
       if (trasferValue < 0) trasferValue = 0;
@@ -949,7 +960,7 @@ function App() {
   }
 
   function GetOverall(potential, age) {
-    return 86 + potential / 2 - (30 - age) ** 2 / 12;
+    return 87 + potential / 2 - (30 - age) ** 2 / 11;
   }
 
   function Retire() {
