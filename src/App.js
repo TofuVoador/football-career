@@ -654,7 +654,7 @@ function App() {
     //post season results
     if (RandomNumber(0, 100) < 1) newSeason.titles.push("Puskás"); //Puskás
 
-    if (40 + RandomNumber(0, 10) < newSeason.goals) {
+    if (42 + RandomNumber(0, 10) < newSeason.goals) {
       //Golden Shoes
       newPlayer.goldenAward++;
       newSeason.awardPoints += 2;
@@ -662,7 +662,7 @@ function App() {
       newSeason.titles.push("Chuteira de Ouro");
     } else if (
       player.position.title == "GK" &&
-      newSeason.performance * 2 + (newPlayer.overall - 74) / 2 >= 10
+      newSeason.performance * 2 + (newPlayer.overall - 75) / 2 >= 10
     ) {
       newPlayer.goldenAward++;
       newSeason.awardPoints += 2;
@@ -904,7 +904,7 @@ function App() {
   function GetNewTeam(currentPlayer = null) {
     let leagueID = RandomNumber(0, allTeams.length - 1);
     let league = allTeams[leagueID];
-    let team = league.teams[RandomNumber(0, 10)];
+    let team = league.teams[RandomNumber(0, 12)];
     let contractDuration = 3;
     let contractValue = Math.floor((60 + team.power) ** 2 / 60) / 10;
     let trasferValue = 10;
@@ -913,7 +913,7 @@ function App() {
       let count = 0;
       do {
         league = allTeams[leagueID];
-        team = league.teams[RandomNumber(0, 10 - currentPlayer.overall / 10)];
+        team = league.teams[RandomNumber(0, 12 - currentPlayer.overall / 10)];
 
         count++;
         if (count > 10) {
