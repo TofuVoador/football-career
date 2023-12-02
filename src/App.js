@@ -233,10 +233,10 @@ function App() {
     //giving the starting rate, randomize how many goals/assists did they score
     let goalsOppostunities =
       newPlayer.position.goalsBonus *
-      (1 + (newPlayer.team.power + newSeason.performance * 10) / 20);
+      (1 + (newPlayer.team.power + newSeason.performance * 5) / 20);
     let assistsOppostunities =
       newPlayer.position.assistsBonus *
-      (1 + (newPlayer.team.power + newSeason.performance * 10) / 20);
+      (1 + (newPlayer.team.power + newSeason.performance * 5) / 20);
 
     newSeason.goals = Math.floor(
       (newSeason.starting / 100) *
@@ -904,7 +904,7 @@ function App() {
   function GetNewTeam(currentPlayer = null) {
     let leagueID = RandomNumber(0, allTeams.length - 1);
     let league = allTeams[leagueID];
-    let team = league.teams[RandomNumber(0, 12)];
+    let team = league.teams[RandomNumber(0, 10)];
     let contractDuration = 3;
     let contractValue = Math.floor((60 + team.power) ** 2 / 60) / 10;
     let trasferValue = 10;
@@ -913,7 +913,7 @@ function App() {
       let count = 0;
       do {
         league = allTeams[leagueID];
-        team = league.teams[RandomNumber(0, 12 - currentPlayer.overall / 10)];
+        team = league.teams[RandomNumber(0, 10)];
 
         count++;
         if (count > 10) {
@@ -921,7 +921,8 @@ function App() {
         }
       } while (
         (currentPlayer.overall <= 75 + team.power && currentPlayer.age > 30) ||
-        currentPlayer.team.name == team.name
+        currentPlayer.team.name == team.name ||
+        currentPlayer.overall - 75 >= team.power * 2
       );
 
       contractDuration = RandomNumber(2, 4);
@@ -936,10 +937,11 @@ function App() {
             60
         ) / 10;
       trasferValue = Math.floor(
-        (((currentPlayer.overall - 70) / 5.0) ^ 2) *
-          currentPlayer.position.value +
-          currentPlayer.performance * 5 +
-          currentPlayer.team.power * 3
+        (((currentPlayer.overall / 4.0) ^ 2) / 10) *
+          currentPlayer.position.value *
+          (1 + currentPlayer.performance / 20) +
+          (1 + currentPlayer.team.power / 20) +
+          (1 + contractDuration / 20)
       );
 
       if (trasferValue < 0) trasferValue = 0;
@@ -957,14 +959,13 @@ function App() {
   }
 
   function GetOverall(potential, age) {
-    return 87 + potential / 2 - (30 - age) ** 2 / 11;
+    return 86 + potential / 2 - (30 - age) ** 2 / 12;
   }
 
   function Retire() {
     document.getElementById("team-choice").style.display = "none";
     document.getElementById("continue").style.display = "none";
-    let chart = document.getElementById("chart");
-    chart.style.display = "flex";
+    document.getElementById("chart").style.display = "flex";
   }
 
   return (

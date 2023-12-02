@@ -2,79 +2,79 @@
   {
     "title": "ST",
     "goalsBonus": 30,
-    "assistsBonus": 9,
+    "assistsBonus": 7,
     "value": 4
   },
   {
     "title": "CF",
     "goalsBonus": 26,
-    "assistsBonus": 12,
+    "assistsBonus": 10,
     "value": 4
   },
   {
     "title": "LW",
-    "goalsBonus": 22,
-    "assistsBonus": 15,
+    "goalsBonus": 26,
+    "assistsBonus": 13,
     "value": 4
   },
   {
     "title": "RW",
-    "goalsBonus": 22,
-    "assistsBonus": 15,
+    "goalsBonus": 26,
+    "assistsBonus": 13,
     "value": 4
   },
   {
     "title": "CAM",
     "goalsBonus": 22,
-    "assistsBonus": 15,
+    "assistsBonus": 16,
     "value": 4
   },
   {
     "title": "LM",
     "goalsBonus": 18,
-    "assistsBonus": 12,
+    "assistsBonus": 13,
     "value": 3
   },
   {
     "title": "CM",
     "goalsBonus": 18,
-    "assistsBonus": 12,
+    "assistsBonus": 13,
     "value": 3
   },
   {
     "title": "RM",
     "goalsBonus": 18,
-    "assistsBonus": 12,
+    "assistsBonus": 13,
     "value": 3
   },
   {
     "title": "CDM",
     "goalsBonus": 14,
-    "assistsBonus": 9,
+    "assistsBonus": 10,
     "value": 3
   },
   {
     "title": "LB",
     "goalsBonus": 10,
-    "assistsBonus": 6,
+    "assistsBonus": 7,
     "value": 2
   },
   {
     "title": "RB",
     "goalsBonus": 10,
-    "assistsBonus": 6,
+    "assistsBonus": 7,
     "value": 2
   },
   {
     "title": "CB",
     "goalsBonus": 6,
-    "assistsBonus": 6,
+    "assistsBonus": 4,
     "value": 2
   },
   {
     "title": "GK",
     "goalsBonus": 2,
-    "assistsBonus": 3,
+    "assistsBonus": 1,
     "value": 1
   }
 ]
