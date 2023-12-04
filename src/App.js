@@ -58,7 +58,7 @@ function App() {
   });
 
   const [player, setPlayer] = useState({
-    potential: RandomNumber(1, 6) + RandomNumber(1, 6),
+    potential: RandomNumber(1, 5) + RandomNumber(1, 5),
     age: 17,
     nation: Nations[RandomNumber(0, Nations.length - 1)],
     team: null,
@@ -116,7 +116,7 @@ function App() {
       if (newPlayer.fame < 0) newPlayer.fame = 0;
       newPlayer.team = newTeam.team;
       newContract = newTeam.contract.duration;
-      newPlayer.marketValue = newTeam.trasferValue;
+      newPlayer.marketValue = newTeam.transferValue;
       newPlayer.wage = newTeam.contract.value;
       newPlayer.fame += newPlayer.team.power * 20; //add fame buff
       let lp = 99;
@@ -156,10 +156,9 @@ function App() {
     } else if (newContract <= 0) {
       //else if contract expires
       newContract = RandomNumber(1, 3); //new contrat lenght
-      newPlayer.marketValue = Math.floor(
-        (((newPlayer.overall - 70) / 5.0) ^ 2) * newPlayer.position.value +
-          newPlayer.performance * 5 +
-          newPlayer.team.power * 3
+      newPlayer.marketValue = Math.max(
+        transfer1.transferValue,
+        transfer2.transferValue
       );
       newPlayer.wage =
         Math.floor(
@@ -320,7 +319,7 @@ function App() {
 
       if (game.result) {
         phase++;
-        newSeason.awardPoints += 0.4; //max 0.4 x 5 = 2.0
+        newSeason.awardPoints += 0.6; //max 0.6 x 5 = 3.0
         if (phase >= TournamentPath.length - 2) {
           end = true;
           newPlayer.nationalCup++;
@@ -537,6 +536,7 @@ function App() {
 
     //World Cup
     if ((year + 2) % 4 == 0) {
+      newSeason.awardPoints -= 2.0;
       phase = 0;
 
       let nationsLeft = [
@@ -623,7 +623,7 @@ function App() {
           if (game.result) {
             phase++;
             if (newPlayer.overall > 75 + newPlayer.nation.power || med > 0)
-              newSeason.awardPoints += 0.6; //max 0.6 x 5 = 3.0
+              newSeason.awardPoints += 0.8; //max 0.8 x 5 = 4.0
             if (phase >= TournamentPath.length - 1) {
               end = true;
               if (newPlayer.overall > 75 + newPlayer.nation.power || med > 0) {
@@ -638,7 +638,8 @@ function App() {
       }
 
       description = `World Cup: ${TournamentPath[phase]} ${
-        newPlayer.overall > 75 + newPlayer.nation.power || med > 0
+        newPlayer.overall > 75 + newPlayer.nation.power ||
+        (med > 0 && newPlayer.overall > 70 + newPlayer.nation.power)
           ? ""
           : " (Não Convocado)"
       } ${description}`;
@@ -907,22 +908,23 @@ function App() {
     let team = league.teams[RandomNumber(0, 10)];
     let contractDuration = 3;
     let contractValue = Math.floor((60 + team.power) ** 2 / 60) / 10;
-    let trasferValue = 10;
+    let transferValue = 10;
 
     if (currentPlayer) {
       let count = 0;
       do {
         league = allTeams[leagueID];
-        team = league.teams[RandomNumber(0, 10)];
+        team = league.teams[RandomNumber(0, 8)];
 
         count++;
         if (count > 10) {
           return null;
         }
       } while (
-        (currentPlayer.overall <= 75 + team.power && currentPlayer.age > 30) ||
         currentPlayer.team.name == team.name ||
-        currentPlayer.overall - 75 >= team.power * 2
+        (team.power < currentPlayer.team.power - count / 2 &&
+          currentPlayer.age < 32) ||
+        (team.power >= currentPlayer.team.power && currentPlayer.age >= 32)
       );
 
       contractDuration = RandomNumber(2, 4);
@@ -936,20 +938,21 @@ function App() {
             2 /
             60
         ) / 10;
-      trasferValue = Math.floor(
-        (((currentPlayer.overall / 4.0) ^ 2) / 10) *
+      transferValue = Math.floor(
+        (((currentPlayer.overall / 5.0) ^ 2) / 10) *
           currentPlayer.position.value *
-          (1 + currentPlayer.performance / 20) +
-          (1 + currentPlayer.team.power / 20) +
-          (1 + contractDuration / 20)
+          (1 + currentPlayer.performance / 20.0) +
+          (1 + team.power / 20.0) +
+          (1 + contractDuration / 20.0) +
+          (1 + RandomNumber(-10, 10) / 100)
       );
 
-      if (trasferValue < 0) trasferValue = 0;
+      if (transferValue < 0) transferValue = 0;
     }
 
     let newContract = { value: contractValue, duration: contractDuration };
 
-    return { team: team, contract: newContract, trasferValue: trasferValue };
+    return { team: team, contract: newContract, transferValue: transferValue };
   }
 
   function GetNewPosition() {
@@ -959,7 +962,7 @@ function App() {
   }
 
   function GetOverall(potential, age) {
-    return 86 + potential / 2 - (30 - age) ** 2 / 12;
+    return 87 + potential / 2 - (30 - age) ** 2 / 10;
   }
 
   function Retire() {
@@ -995,7 +998,8 @@ function App() {
           style={{ display: "none" }}
           onClick={() => ChooseTeam()}
         >
-          Continuar em {player.team == null ? "" : player.team.name}
+          <p>Continuar em {player.team == null ? "" : player.team.name}</p>
+          <p>(Valores não definidos)</p>
         </a>
         <a
           className="d-alert"
