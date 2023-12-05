@@ -232,10 +232,10 @@ function App() {
     //giving the starting rate, randomize how many goals/assists did they score
     let goalsOppostunities =
       newPlayer.position.goalsBonus *
-      (1 + (newPlayer.team.power + newSeason.performance * 5) / 20);
+      (1 + (newPlayer.team.power + newSeason.performance * 2.5) / 20);
     let assistsOppostunities =
       newPlayer.position.assistsBonus *
-      (1 + (newPlayer.team.power + newSeason.performance * 5) / 20);
+      (1 + (newPlayer.team.power + newSeason.performance * 2.5) / 20);
 
     newSeason.goals = Math.floor(
       (newSeason.starting / 100) *
@@ -245,7 +245,8 @@ function App() {
     newSeason.assists = Math.floor(
       (newSeason.starting / 100) *
         assistsOppostunities *
-        (newPlayer.overall / 100)
+        (newPlayer.overall / 100) *
+        (newPlayer.team.power / 8)
     );
 
     if (newSeason.goals < 0) newSeason.goals = 0;
@@ -697,8 +698,8 @@ function App() {
     //fired
     if (
       contract <= 1 &&
-      ((newPlayer.overall <= 75 + newPlayer.team.power && newPlayer.age > 32) ||
-        med < -0.4)
+      ((newPlayer.overall <= 77 + newPlayer.team.power && newPlayer.age > 32) ||
+        med <= -0.35)
     ) {
       document.getElementById("decision-stay").style.display = "none";
     } else {
@@ -905,16 +906,16 @@ function App() {
   function GetNewTeam(currentPlayer = null) {
     let leagueID = RandomNumber(0, allTeams.length - 1);
     let league = allTeams[leagueID];
-    let team = league.teams[RandomNumber(0, 10)];
+    let team = league.teams[RandomNumber(0, 7)];
     let contractDuration = 3;
-    let contractValue = Math.floor((60 + team.power) ** 2 / 60) / 10;
-    let transferValue = 10;
+    let contractValue = Math.floor((70 + team.power) ** 2 / 60) / 10;
+    let transferValue = 18 + RandomNumber(0, 4);
 
     if (currentPlayer) {
       let count = 0;
       do {
         league = allTeams[leagueID];
-        team = league.teams[RandomNumber(0, 8)];
+        team = league.teams[RandomNumber(0, 7)];
 
         count++;
         if (count > 10) {
@@ -922,9 +923,11 @@ function App() {
         }
       } while (
         currentPlayer.team.name == team.name ||
-        (team.power < currentPlayer.team.power - count / 2 &&
+        (team.power < currentPlayer.team.power - count / 3 &&
           currentPlayer.age < 32) ||
-        (team.power >= currentPlayer.team.power && currentPlayer.age >= 32)
+        ((team.power >= currentPlayer.team.power ||
+          currentPlayer.overall < 77 + team.power) &&
+          currentPlayer.age >= 32)
       );
 
       contractDuration = RandomNumber(2, 4);
@@ -939,11 +942,9 @@ function App() {
             60
         ) / 10;
       transferValue = Math.floor(
-        (((currentPlayer.overall / 5.0) ^ 2) / 10) *
+        ((currentPlayer.overall / 5.0) ** 2 / 10) *
           currentPlayer.position.value *
           (1 + currentPlayer.performance / 20.0) +
-          (1 + team.power / 20.0) +
-          (1 + contractDuration / 20.0) +
           (1 + RandomNumber(-10, 10) / 100)
       );
 
