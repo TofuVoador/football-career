@@ -656,7 +656,7 @@ function App() {
     //post season results
     if (RandomNumber(0, 100) < 1) newSeason.titles.push("Puskás"); //Puskás
 
-    if (42 + RandomNumber(0, 10) < newSeason.goals) {
+    if (45 + RandomNumber(0, 10) < newSeason.goals) {
       //Golden Shoes
       newPlayer.goldenAward++;
       newSeason.awardPoints += 2;
@@ -924,10 +924,11 @@ function App() {
       } while (
         currentPlayer.team.name == team.name ||
         (team.power < currentPlayer.team.power - count / 3 &&
-          currentPlayer.age < 32) ||
-        ((team.power >= currentPlayer.team.power ||
-          currentPlayer.overall < 77 + team.power) &&
-          currentPlayer.age >= 32)
+          currentPlayer.age <= 30) ||
+        (team.power > currentPlayer.team.power &&
+          currentPlayer.age > 30 &&
+          currentPlayer.age < 35) ||
+        (currentPlayer.overall < 77 + team.power && currentPlayer.age >= 35)
       );
 
       contractDuration = RandomNumber(2, 4);
