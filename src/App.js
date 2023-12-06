@@ -964,7 +964,7 @@ function App() {
   }
 
   function GetOverall(potential, age) {
-    return 87 + potential / 2 - (30 - age) ** 2 / 10;
+    return 88 + potential / 2 - (30 - age) ** 2 / 10;
   }
 
   function Retire() {
