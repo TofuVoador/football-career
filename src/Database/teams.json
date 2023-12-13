@@ -20,22 +20,22 @@
         "power": 8
       },
       {
-        "name": "Eintracht Frankfurt",
-        "league": "Bundesliga",
-        "power": 8
-      },
-      {
-        "name": "Wolfsburg",
+        "name": "Bayer Leverkusen",
         "league": "Bundesliga",
         "power": 7.5
       },
       {
-        "name": "Bayer Leverkusen",
+        "name": "Union Berlin",
+        "league": "Bundesliga",
+        "power": 7.5
+      },
+      {
+        "name": "Eintracht Frankfurt",
         "league": "Bundesliga",
         "power": 7
       },
       {
-        "name": "Union Berlin",
+        "name": "Wolfsburg",
         "league": "Bundesliga",
         "power": 7
       },
@@ -102,12 +102,12 @@
     "europaSpots": 2,
     "teams": [
       {
-        "name": "Ajax",
+        "name": "Feyenoord",
         "league": "Eredivisie",
-        "power": 8.5
+        "power": 8
       },
       {
-        "name": "Feyenoord",
+        "name": "Ajax",
         "league": "Eredivisie",
         "power": 7.5
       },
@@ -157,11 +157,6 @@
         "power": 5.5
       },
       {
-        "name": "RKC Waalwijk",
-        "league": "Eredivisie",
-        "power": 5.5
-      },
-      {
         "name": "Sparta Rotterdam",
         "league": "Eredivisie",
         "power": 5.5
@@ -178,6 +173,11 @@
       },
       {
         "name": "FC Emmen",
+        "league": "Eredivisie",
+        "power": 5
+      },
+      {
+        "name": "RKC Waalwijk",
         "league": "Eredivisie",
         "power": 5
       },
@@ -206,7 +206,7 @@
       {
         "name": "Barcelona",
         "league": "La Liga",
-        "power": 10
+        "power": 9.5
       },
       {
         "name": "Atlético Madrid",
@@ -251,7 +251,7 @@
       {
         "name": "Espanyol",
         "league": "La Liga",
-        "power": 6.5
+        "power": 6
       },
       {
         "name": "Granada",
@@ -326,7 +326,7 @@
         "power": 7
       },
       {
-        "name": "Reims",
+        "name": "Lens",
         "league": "Ligue 1",
         "power": 6.5
       },
@@ -336,17 +336,17 @@
         "power": 6.5
       },
       {
-        "name": "Lens",
-        "league": "Ligue 1",
-        "power": 6
-      },
-      {
         "name": "Montpellier",
         "league": "Ligue 1",
         "power": 6
       },
       {
         "name": "Nantes",
+        "league": "Ligue 1",
+        "power": 6
+      },
+      {
+        "name": "Reims",
         "league": "Ligue 1",
         "power": 6
       },
@@ -408,11 +408,6 @@
         "power": 9
       },
       {
-        "name": "Manchester United",
-        "league": "Premier League",
-        "power": 9
-      },
-      {
         "name": "Tottenham Hotspur",
         "league": "Premier League",
         "power": 8.5
@@ -423,12 +418,17 @@
         "power": 8
       },
       {
+        "name": "Manchester United",
+        "league": "Premier League",
+        "power": 8
+      },
+      {
         "name": "Everton",
         "league": "Premier League",
         "power": 7.5
       },
       {
-        "name": "West Ham United",
+        "name": "Newcastle United",
         "league": "Premier League",
         "power": 7.5
       },
@@ -438,19 +438,9 @@
         "power": 7
       },
       {
-        "name": "Leicester City",
+        "name": "West Ham United",
         "league": "Premier League",
         "power": 7
-      },
-      {
-        "name": "Wolves",
-        "league": "Premier League",
-        "power": 7
-      },
-      {
-        "name": "Newcastle United",
-        "league": "Premier League",
-        "power": 6.5
       },
       {
         "name": "Southampton",
@@ -458,12 +448,22 @@
         "power": 6.5
       },
       {
+        "name": "Wolves",
+        "league": "Premier League",
+        "power": 6.5
+      },
+      {
+        "name": "Crystal Palace",
+        "league": "Premier League",
+        "power": 6
+      },
+      {
         "name": "Leeds United",
         "league": "Premier League",
         "power": 6
       },
       {
-        "name": "Crystal Palace",
+        "name": "Leicester City",
         "league": "Premier League",
         "power": 5.5
       },
@@ -589,20 +589,20 @@
       {
         "name": "Internazionale Milano",
         "league": "Serie A",
-        "power": 9.5
+        "power": 9
       },
       {
         "name": "Milan",
-        "league": "Serie A",
-        "power": 9.5
-      },
-      {
-        "name": "Napoli",
         "league": "Serie A",
         "power": 9
       },
       {
         "name": "Juventus",
+        "league": "Serie A",
+        "power": 8.5
+      },
+      {
+        "name": "Napoli",
         "league": "Serie A",
         "power": 8.5
       },
@@ -617,14 +617,14 @@
         "power": 8
       },
       {
-        "name": "Lazio",
+        "name": "Atalanta Bergamo",
         "league": "Serie A",
         "power": 7.5
       },
       {
-        "name": "Atalanta Bergamo",
+        "name": "Lazio",
         "league": "Serie A",
-        "power": 7
+        "power": 7.5
       },
       {
         "name": "Torino",

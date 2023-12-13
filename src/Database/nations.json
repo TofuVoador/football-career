@@ -5,37 +5,37 @@
     "power": 10
   },
   {
-    "name": "Brasil",
-    "continent": "América do Sul",
-    "power": 10
-  },
-  {
     "name": "França",
     "continent": "Europa",
     "power": 10
   },
   {
-    "name": "Alemanha",
-    "continent": "Europa",
+    "name": "Brasil",
+    "continent": "América do Sul",
     "power": 9.5
-  },
-  {
-    "name": "Espanha",
-    "continent": "Europa",
-    "power": 9.5
-  },
-  {
-    "name": "Croácia",
-    "continent": "Europa",
-    "power": 9
   },
   {
     "name": "Inglaterra",
     "continent": "Europa",
+    "power": 9.5
+  },
+  {
+    "name": "Alemanha",
+    "continent": "Europa",
     "power": 9
   },
   {
-    "name": "Bélgica",
+    "name": "Espanha",
+    "continent": "Europa",
+    "power": 9
+  },
+  {
+    "name": "Países Baixos",
+    "continent": "Europa",
+    "power": 9
+  },
+  {
+    "name": "Croácia",
     "continent": "Europa",
     "power": 8.5
   },
@@ -45,23 +45,23 @@
     "power": 8.5
   },
   {
-    "name": "Países Baixos",
+    "name": "Portugal",
     "continent": "Europa",
     "power": 8.5
   },
   {
+    "name": "Bélgica",
+    "continent": "Europa",
+    "power": 8
+  },
+  {
+    "name": "Japão",
+    "continent": "Ásia",
+    "power": 8
+  },
+  {
     "name": "Marrocos",
     "continent": "África",
-    "power": 8
-  },
-  {
-    "name": "México",
-    "continent": "América do Norte",
-    "power": 8
-  },
-  {
-    "name": "Portugal",
-    "continent": "Europa",
     "power": 8
   },
   {
@@ -70,12 +70,12 @@
     "power": 7.5
   },
   {
-    "name": "Suíça",
-    "continent": "Europa",
+    "name": "México",
+    "continent": "América do Norte",
     "power": 7.5
   },
   {
-    "name": "Rússia",
+    "name": "Suíça",
     "continent": "Europa",
     "power": 7.5
   },
@@ -85,23 +85,28 @@
     "power": 7.5
   },
   {
-    "name": "Estados Unidos",
-    "continent": "América do Norte",
-    "power": 3
-  },
-  {
-    "name": "Japão",
+    "name": "Arábia Saudita",
     "continent": "Ásia",
     "power": 7
   },
   {
-    "name": "Polônia",
+    "name": "Estados Unidos",
+    "continent": "América do Norte",
+    "power": 7
+  },
+  {
+    "name": "Suécia",
     "continent": "Europa",
     "power": 7
   },
   {
-    "name": "Arábia Saudita",
-    "continent": "Ásia",
+    "name": "Noruega",
+    "continent": "Europa",
+    "power": 6.5
+  },
+  {
+    "name": "Polônia",
+    "continent": "Europa",
     "power": 6.5
   },
   {
@@ -110,9 +115,9 @@
     "power": 6.5
   },
   {
-    "name": "Suécia",
+    "name": "Áustria",
     "continent": "Europa",
-    "power": 6.5
+    "power": 6
   },
   {
     "name": "Costa do Marfim",
@@ -125,8 +130,8 @@
     "power": 6
   },
   {
-    "name": "Áustria",
-    "continent": "Europa",
+    "name": "Chile",
+    "continent": "América do Sul",
     "power": 5.5
   },
   {
@@ -137,11 +142,6 @@
   {
     "name": "Argélia",
     "continent": "África",
-    "power": 5
-  },
-  {
-    "name": "Chile",
-    "continent": "América do Sul",
     "power": 5
   },
   {
