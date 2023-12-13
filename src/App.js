@@ -813,12 +813,12 @@ function App() {
 
   function GetMatch(team1, team2, bonus) {
     let team1Points =
-      team1.power / 2 +
+      (team1.power - 1) / 2 +
       RandomNumber(0, team1.power * 2) / 4 -
       RandomNumber(0, team2.power * 2) / 4;
 
     let team2Points =
-      team2.power / 2 +
+      (team2.power - 1) / 2 +
       RandomNumber(0, team2.power * 2) / 4 -
       RandomNumber(0, team1.power * 2) / 4;
 
@@ -924,11 +924,11 @@ function App() {
       } while (
         currentPlayer.team.name == team.name ||
         (team.power < currentPlayer.team.power - count / 3 &&
-          currentPlayer.age <= 30) ||
+          currentPlayer.age <= 32) ||
         (team.power > currentPlayer.team.power &&
-          currentPlayer.age > 30 &&
-          currentPlayer.age < 35) ||
-        (currentPlayer.overall < 77 + team.power && currentPlayer.age >= 35)
+          currentPlayer.age > 32 &&
+          currentPlayer.age < 36) ||
+        (currentPlayer.overall < 77 + team.power && currentPlayer.age >= 36)
       );
 
       contractDuration = RandomNumber(2, 4);
