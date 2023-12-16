@@ -341,7 +341,13 @@ function App() {
       let qualified = [newPlayer.team];
 
       for (let l = 0; l < newAllTeams.length; l++) {
-        for (let i = 0; i < newAllTeams[l].championsSpots * 1.5; i++) {
+        for (
+          let i = 0;
+          i <
+          newAllTeams[l].championsSpots * 1.5 -
+            (newPlayer.team.league == newAllTeams[l].name ? 1 : 0);
+          i++
+        ) {
           let t =
             newAllTeams[l].teams[
               RandomNumber(0, newAllTeams[l].championsSpots * 2)
@@ -355,8 +361,7 @@ function App() {
               ];
 
             count++;
-            if (count >= 10) {
-              console.log(qualified);
+            if (count >= 20) {
               throw new Error("Limite de Loop atingido");
             }
           }
@@ -365,13 +370,11 @@ function App() {
         }
       }
 
-      let group = GetLeaguePosition(
+      let group = GetChampionsPosition(
         qualified,
         newPlayer.team,
         newSeason.performance
       );
-
-      console.log(group.table);
 
       description = `-> ${TournamentPath[phase]}: ${group.pos}º lugar`;
 
@@ -441,7 +444,7 @@ function App() {
       let op1 = GetRandomOpponent();
       while (
         op1.power < 4.5 ||
-        op1.power > 8.5 ||
+        op1.power > 7.5 ||
         newPlayer.team.league == op1.league
       ) {
         op1 = GetRandomOpponent();
@@ -450,7 +453,7 @@ function App() {
       let op2 = GetRandomOpponent();
       while (
         op2.power < 4.5 ||
-        op2.power > 8.5 ||
+        op2.power > 7.5 ||
         newPlayer.team.league == op2.league ||
         op1.league == op2.league
       ) {
@@ -460,7 +463,7 @@ function App() {
       let op3 = GetRandomOpponent();
       while (
         op3.power < 4.5 ||
-        op3.power > 8.5 ||
+        op3.power > 7.5 ||
         newPlayer.team.league == op3.league ||
         op1.league == op3.league ||
         op2.league == op3.league
@@ -540,6 +543,7 @@ function App() {
         "América do Norte",
         "Ásia",
         "África",
+        "Europa",
       ];
       nationsLeft.splice(newPlayer.nation.continent, 1);
 
@@ -548,13 +552,13 @@ function App() {
       let op1 =
         Nations[
           RandomNumber(0, Nations.length / 2 - 1) +
-            (medPower > 6.5 ? 0 : Nations.length / 2)
+            (medPower < 7.5 ? 0 : Nations.length / 2)
         ];
-      while (op1.continent == newPlayer.nation.continent) {
+      while (!nationsLeft.includes(op1.continent)) {
         op1 =
           Nations[
             RandomNumber(0, Nations.length / 2 - 1) +
-              (medPower > 6.5 ? 0 : Nations.length / 2)
+              (medPower < 7.5 ? 0 : Nations.length / 2)
           ];
       }
       nationsLeft.splice(op1.continent, 1);
@@ -563,25 +567,27 @@ function App() {
       let op2 =
         Nations[
           RandomNumber(0, Nations.length / 2 - 1) +
-            (medPower > 6.5 ? 0 : Nations.length / 2)
+            (medPower < 15 ? 0 : Nations.length / 2)
         ];
       while (
-        op2.continent == newPlayer.nation.continent ||
-        op2.continent == op1.continent
+        !nationsLeft.includes(op2.continent) ||
+        op2.name == newPlayer.nation.name ||
+        op2.name == op1.name
       ) {
         op2 =
           Nations[
             RandomNumber(0, Nations.length / 2 - 1) +
-              (medPower > 6.5 ? 0 : Nations.length / 2)
+              (medPower < 15 ? 0 : Nations.length / 2)
           ];
       }
       nationsLeft.splice(op2.continent, 1);
 
       let op3 = Nations[RandomNumber(0, Nations.length - 1)];
       while (
-        op3.continent == newPlayer.nation.continent ||
-        op3.continent == op1.continent ||
-        op3.continent == op2.continent
+        !nationsLeft.includes(op3.continent) ||
+        op3.name == newPlayer.nation.name ||
+        op3.name == op2.name ||
+        op3.name == op1.name
       ) {
         op3 = Nations[RandomNumber(0, Nations.length - 1)];
       }
@@ -776,6 +782,63 @@ function App() {
     if (contract > 1) ChooseTeam();
   }
 
+  function GetChampionsPosition(teams, playerTeam, bonus) {
+    //sort by power
+    teams.sort((a, b) => {
+      return a.power - b.power + RandomNumber(-2, 2);
+    });
+
+    let points = new Array(teams.length).fill(0);
+    for (let round = 0; round < 8; round++) {
+      let newOrderTeams = [];
+      let newOrderPoints = [];
+      for (let i = 0; i < teams.length / 2; i++) {
+        let home = i;
+        let away = i + teams.length / 2;
+
+        let game = GetMatch(
+          teams[home],
+          teams[away],
+          teams[home] === playerTeam ? bonus : 0.5
+        );
+
+        if (game[0] > game[1]) {
+          points[home] += 3;
+        } else if (game[1] > game[0]) {
+          points[away] += 3;
+        } else {
+          points[away] += 1;
+          points[home] += 1;
+        }
+
+        newOrderTeams.push(teams[home]);
+        newOrderTeams.push(teams[away]);
+        newOrderPoints.push(points[home]);
+        newOrderPoints.push(points[away]);
+      }
+
+      teams = newOrderTeams;
+      points = newOrderPoints;
+    }
+
+    let teamPositions = [...Array(teams.length).keys()].map(
+      (position) => position + 1
+    );
+
+    teamPositions.sort((a, b) => points[b - 1] - points[a - 1]);
+
+    let playerPosition = teamPositions.findIndex(
+      (position) => teams[position - 1] === playerTeam
+    );
+
+    let table = teamPositions.map((position) => teams[position - 1]);
+
+    return {
+      pos: playerPosition + 1,
+      table: table,
+    };
+  }
+
   function GetLeaguePosition(teams, playerTeam, bonus) {
     let points = new Array(teams.length).fill(0);
     for (let home = 0; home < teams.length; home++) {
@@ -918,9 +981,11 @@ function App() {
     let transferValue = 18 + RandomNumber(0, 4);
 
     if (currentPlayer) {
-      if (
+      let count = 0;
+      while (
         currentPlayer.team.name == team.name ||
-        (team.power < currentPlayer.team.power && currentPlayer.age <= 32) ||
+        (team.power < currentPlayer.team.power - count / 3 &&
+          currentPlayer.age <= 32) ||
         (team.power > currentPlayer.team.power &&
           currentPlayer.age > 32 &&
           currentPlayer.age < 36) ||
@@ -928,6 +993,10 @@ function App() {
       ) {
         league = allTeams[leagueID];
         team = league.teams[RandomNumber(0, league.teams.length - 1)];
+
+        count++;
+
+        if (count >= 10) return null;
       }
 
       contractDuration = RandomNumber(2, 3);
