@@ -535,7 +535,7 @@ function App() {
 
     //World Cup
     if ((year + 2) % 4 == 0) {
-      newSeason.awardPoints -= 2.0;
+      newSeason.awardPoints -= 1.0;
       phase = 0;
 
       let nationsLeft = [
@@ -641,11 +641,17 @@ function App() {
 
           if (game.result) {
             phase++;
-            if (newPlayer.overall > 75 + newPlayer.nation.power || med > 0)
+            if (
+              newPlayer.overall > 75 + newPlayer.nation.power ||
+              (med > 0 && newPlayer.age < 36)
+            )
               newSeason.awardPoints += 0.8; //max 0.8 x 5 = 4.0
             if (phase >= TournamentPath.length - 1) {
               end = true;
-              if (newPlayer.overall > 75 + newPlayer.nation.power || med > 0) {
+              if (
+                newPlayer.overall > 75 + newPlayer.nation.power ||
+                (med > 0 && newPlayer.age < 36)
+              ) {
                 newPlayer.worldCup++;
                 newPlayer.fame += 30;
               }
@@ -658,7 +664,7 @@ function App() {
 
       description = `World Cup: ${TournamentPath[phase]} ${
         newPlayer.overall > 75 + newPlayer.nation.power ||
-        (med > 0 && newPlayer.overall > 70 + newPlayer.nation.power)
+        (med > 0 && newPlayer.age < 36)
           ? ""
           : " (Não Convocado)"
       } ${description}`;
