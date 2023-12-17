@@ -1003,7 +1003,7 @@ function App() {
 
         count++;
 
-        if (count >= 10) return null;
+        if (count >= 15) return null;
       }
 
       contractDuration = RandomNumber(2, 3);
