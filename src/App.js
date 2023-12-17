@@ -111,6 +111,7 @@ function App() {
     if (newTeam) {
       //if they change team
       let oldTeamLeague = newPlayer.team == null ? "" : newPlayer.team.league; //store old league table results
+      newGeneralPerformance = [];
       newPlayer.fame -= newPlayer.team == null ? 0 : newPlayer.team.power * 20; //remove fame buff
       if (newPlayer.fame < 0) newPlayer.fame = 0;
       newPlayer.team = newTeam.team;
@@ -545,7 +546,8 @@ function App() {
         "África",
         "Europa",
       ];
-      nationsLeft.splice(newPlayer.nation.continent, 1);
+
+      nationsLeft.splice(nationsLeft.indexOf(newPlayer.nation.name), 1);
 
       let medPower = newPlayer.nation.power;
 
@@ -554,14 +556,18 @@ function App() {
           RandomNumber(0, Nations.length / 2 - 1) +
             (medPower < 7.5 ? 0 : Nations.length / 2)
         ];
-      while (!nationsLeft.includes(op1.continent)) {
+      while (
+        !nationsLeft.includes(op1.continent) ||
+        op1.name == newPlayer.nation.name
+      ) {
         op1 =
           Nations[
             RandomNumber(0, Nations.length / 2 - 1) +
               (medPower < 7.5 ? 0 : Nations.length / 2)
           ];
       }
-      nationsLeft.splice(op1.continent, 1);
+      nationsLeft.splice(nationsLeft.indexOf(op1.continent), 1);
+
       medPower += op1.power;
 
       let op2 =
@@ -580,7 +586,7 @@ function App() {
               (medPower < 15 ? 0 : Nations.length / 2)
           ];
       }
-      nationsLeft.splice(op2.continent, 1);
+      nationsLeft.splice(nationsLeft.indexOf(op2.continent), 1);
 
       let op3 = Nations[RandomNumber(0, Nations.length - 1)];
       while (
@@ -591,7 +597,7 @@ function App() {
       ) {
         op3 = Nations[RandomNumber(0, Nations.length - 1)];
       }
-      nationsLeft.splice(op3.continent, 1);
+      nationsLeft.splice(nationsLeft.indexOf(op3.continent), 1);
 
       let group = GetLeaguePosition(
         [newPlayer.nation, op1, op2, op3],
@@ -710,7 +716,8 @@ function App() {
     //fired
     if (
       contract <= 1 &&
-      ((newPlayer.overall <= 77 + newPlayer.team.power && newPlayer.age > 32) ||
+      ((newPlayer.overall <= 80 + newPlayer.team.power / 2 &&
+        newPlayer.age > 32) ||
         med <= -0.35)
     ) {
       document.getElementById("decision-stay").style.display = "none";
@@ -989,7 +996,7 @@ function App() {
         (team.power > currentPlayer.team.power &&
           currentPlayer.age > 32 &&
           currentPlayer.age < 36) ||
-        (currentPlayer.overall < 78 + team.power && currentPlayer.age >= 36)
+        (currentPlayer.overall < 80 + team.power / 2 && currentPlayer.age >= 36)
       ) {
         league = allTeams[leagueID];
         team = league.teams[RandomNumber(0, league.teams.length - 1)];
