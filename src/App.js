@@ -155,7 +155,7 @@ function App() {
       }
     } else if (newContract <= 0) {
       //else if contract expires
-      newContract = RandomNumber(2, 3); //new contrat lenght
+      newContract = RandomNumber(1, 3); //new contrat lenght
       newPlayer.marketValue = Math.max(
         transfer1.transferValue,
         transfer2.transferValue
@@ -722,7 +722,7 @@ function App() {
     //fired
     if (
       contract <= 1 &&
-      ((newPlayer.overall <= 80 + newPlayer.team.power / 2 &&
+      ((newPlayer.overall <= 82 + newPlayer.team.power / 2 &&
         newPlayer.age > 32) ||
         med <= -0.35)
     ) {
@@ -1002,7 +1002,7 @@ function App() {
         (team.power > currentPlayer.team.power &&
           currentPlayer.age > 32 &&
           currentPlayer.age < 36) ||
-        (currentPlayer.overall < 80 + team.power / 2 && currentPlayer.age >= 36)
+        (currentPlayer.overall < 82 + team.power / 2 && currentPlayer.age >= 36)
       ) {
         league = allTeams[leagueID];
         team = league.teams[RandomNumber(0, league.teams.length - 1)];
@@ -1012,21 +1012,22 @@ function App() {
         if (count >= 15) return null;
       }
 
-      contractDuration = RandomNumber(2, 3);
+      contractDuration = RandomNumber(2, 4);
       contractValue =
         Math.floor(
           (currentPlayer.overall +
             team.power +
             currentPlayer.potential +
-            currentPlayer.fame / 20) **
+            currentPlayer.fame / 20 -
+            count) **
             2 /
             60
         ) / 10;
       transferValue = Math.floor(
         ((currentPlayer.overall / 5.0) ** 2 / 10) *
           currentPlayer.position.value *
-          (1 + currentPlayer.performance / 20.0) +
-          (1 + RandomNumber(-10, 10) / 100)
+          (1 + currentPlayer.performance / 20.0) *
+          (1 + RandomNumber(-10, 10) / 100.0)
       );
 
       if (transferValue < 0) transferValue = 0;
