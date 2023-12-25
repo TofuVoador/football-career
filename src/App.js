@@ -988,7 +988,7 @@ function App() {
   function GetNewTeam(currentPlayer = null) {
     let leagueID = RandomNumber(0, allTeams.length - 1);
     let league = allTeams[leagueID];
-    let team = league.teams[RandomNumber(0, league.teams.length - 1)];
+    let team = league.teams[RandomNumber(0, 10)];
     let contractDuration = 3;
     let contractValue = Math.floor((70 + team.power) ** 2 / 60) / 10;
     let transferValue = 18 + RandomNumber(0, 4);
@@ -997,16 +997,16 @@ function App() {
       let count = 0;
       while (
         currentPlayer.team.name == team.name ||
-        (team.power < currentPlayer.team.power - count / 2.5 &&
+        (team.power < currentPlayer.team.power - count / 3 &&
           currentPlayer.age < 34) ||
         (currentPlayer.overall < 82 + team.power / 2 && currentPlayer.age >= 34)
       ) {
         league = allTeams[leagueID];
-        team = league.teams[RandomNumber(0, league.teams.length - 1)];
+        team = league.teams[RandomNumber(0, 10)];
 
         count++;
 
-        if (count >= 20) return null;
+        if (count >= 15) return null;
       }
 
       contractDuration = RandomNumber(2, 4);
