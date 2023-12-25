@@ -997,19 +997,16 @@ function App() {
       let count = 0;
       while (
         currentPlayer.team.name == team.name ||
-        (team.power < currentPlayer.team.power - count / 3 &&
-          currentPlayer.age <= 32) ||
-        (team.power > currentPlayer.team.power &&
-          currentPlayer.age > 32 &&
-          currentPlayer.age < 36) ||
-        (currentPlayer.overall < 82 + team.power / 2 && currentPlayer.age >= 36)
+        (team.power < currentPlayer.team.power - count / 2.5 &&
+          currentPlayer.age < 34) ||
+        (currentPlayer.overall < 82 + team.power / 2 && currentPlayer.age >= 34)
       ) {
         league = allTeams[leagueID];
         team = league.teams[RandomNumber(0, league.teams.length - 1)];
 
         count++;
 
-        if (count >= 15) return null;
+        if (count >= 20) return null;
       }
 
       contractDuration = RandomNumber(2, 4);
