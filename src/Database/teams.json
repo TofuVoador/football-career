@@ -27,12 +27,17 @@
       {
         "name": "Union Berlin",
         "league": "Bundesliga",
-        "power": 5
+        "power": 6
       },
       {
         "name": "Eintracht Frankfurt",
         "league": "Bundesliga",
         "power": 5
+      },
+      {
+        "name": "Mainz 05",
+        "league": "Bundesliga",
+        "power": 4
       },
       {
         "name": "Wolfsburg",
@@ -45,7 +50,7 @@
         "power": 3
       },
       {
-        "name": "Mainz 05",
+        "name": "Köln",
         "league": "Bundesliga",
         "power": 3
       },
@@ -53,11 +58,6 @@
         "name": "Freiburg",
         "league": "Bundesliga",
         "power": 2
-      },
-      {
-        "name": "Köln",
-        "league": "Bundesliga",
-        "power": 3
       },
       {
         "name": "Stuttgart",
@@ -213,25 +213,25 @@
       {
         "name": "Barcelona",
         "league": "La Liga",
-        "power": 9
+        "power": 10
       },
       {
         "name": "Atlético Madrid",
         "league": "La Liga",
-        "power": 8
+        "power": 9
       },
       {
         "name": "Sevilla",
         "league": "La Liga",
-        "power": 7
+        "power": 8
       },
       {
-        "name": "Villarreal",
+        "name": "Real Sociedad",
         "league": "La Liga",
         "power": 6
       },
       {
-        "name": "Real Sociedad",
+        "name": "Villarreal",
         "league": "La Liga",
         "power": 5
       },
@@ -352,7 +352,7 @@
       {
         "name": "Arsenal",
         "league": "Premier League",
-        "power": 8
+        "power": 9
       },
       {
         "name": "Tottenham Hotspur",
@@ -360,19 +360,14 @@
         "power": 7
       },
       {
-        "name": "Chelsea",
-        "league": "Premier League",
-        "power": 5
-      },
-      {
         "name": "Manchester United",
         "league": "Premier League",
         "power": 6
       },
       {
-        "name": "Everton",
+        "name": "Chelsea",
         "league": "Premier League",
-        "power": 3
+        "power": 5
       },
       {
         "name": "Newcastle United",
@@ -383,6 +378,11 @@
         "name": "Aston Villa",
         "league": "Premier League",
         "power": 4
+      },
+      {
+        "name": "Everton",
+        "league": "Premier League",
+        "power": 3
       },
       {
         "name": "West Ham United",
@@ -499,12 +499,12 @@
         "power": 6
       },
       {
-        "name": "Roma",
+        "name": "Lazio",
         "league": "Serie A",
-        "power": 6
+        "power": 5
       },
       {
-        "name": "Lazio",
+        "name": "Roma",
         "league": "Serie A",
         "power": 5
       },
@@ -516,7 +516,7 @@
       {
         "name": "Bologna",
         "league": "Serie A",
-        "power": 4
+        "power": 3
       },
       {
         "name": "Torino",
