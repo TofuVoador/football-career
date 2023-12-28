@@ -252,7 +252,7 @@ function App() {
     if (newSeason.goals < 0) newSeason.goals = 0;
     if (newSeason.assists < 0) newSeason.assists = 0;
 
-    newSeason.awardPoints = newSeason.performance; //max = 2.0
+    newSeason.awardPoints = newSeason.performance * 1.5; //max = 3.0
 
     let med = 0;
     for (let i = 0; i < generalPerformance.length; i++) {
@@ -1036,7 +1036,7 @@ function App() {
   }
 
   function GetOverall(potential, age) {
-    return 87 + potential / 2 - (30 - age) ** 2 / 10;
+    return 88 + potential / 2 - (30 - age) ** 2 / 10;
   }
 
   function Retire() {
