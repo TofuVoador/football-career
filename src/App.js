@@ -692,6 +692,8 @@ function App() {
 
     newPlayer.fame += newSeason.awardPoints;
 
+    console.log(newSeason.awardPoints);
+
     let position = -1;
 
     if (newSeason.awardPoints + newPlayer.overall >= 100) {
@@ -703,12 +705,9 @@ function App() {
       newSeason.titles.push(`Ballon D'Or: 1º lugar`);
     } else if (newSeason.awardPoints + newPlayer.overall >= 91) {
       let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 91);
-      newPlayer.fame += pts * 4;
+      newPlayer.fame += pts * 3;
       position = 10 - pts;
       newSeason.titles.push(`Ballon D'Or: ${position}º lugar`);
-    }
-
-    if (position > 0) {
     }
 
     //trasnfer window
