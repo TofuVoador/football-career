@@ -420,7 +420,7 @@ function App() {
 
           if (game.result) {
             phase++;
-            newSeason.awardPoints += 0.8; //max 0.8 x 5 = 4.0
+            newSeason.awardPoints += 1.0; //max 0.8 x 5 = 4.0
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.champions++;
