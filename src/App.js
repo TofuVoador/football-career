@@ -58,7 +58,7 @@ function App() {
   });
 
   const [player, setPlayer] = useState({
-    potential: RandomNumber(1, 5) + RandomNumber(1, 5),
+    potential: RandomNumber(0, 5) + RandomNumber(0, 5),
     age: 17,
     nation: Nations[RandomNumber(0, Nations.length - 1)],
     team: null,
@@ -181,7 +181,7 @@ function App() {
     //giving the performance, set how many games did they were the starter player
     let starting = Math.floor(
       (newPlayer.overall - (68 + newPlayer.team.power)) / 0.1 +
-        RandomNumber(-5, 5)
+        RandomNumber(-10, 10)
     );
     if (starting > 100) starting = 100;
     else if (starting < 0) starting = 0;
@@ -252,7 +252,7 @@ function App() {
     if (newSeason.goals < 0) newSeason.goals = 0;
     if (newSeason.assists < 0) newSeason.assists = 0;
 
-    newSeason.awardPoints = newSeason.performance * 2; //max = 4.0
+    newSeason.awardPoints = newSeason.performance; //max = 2.0
 
     let med = 0;
     for (let i = 0; i < generalPerformance.length; i++) {
@@ -320,7 +320,7 @@ function App() {
 
       if (game.result) {
         phase++;
-        newSeason.awardPoints += 0.6; //max 0.6 x 5 = 3.0
+        newSeason.awardPoints += 0.4; //max 0.4 x 5 = 2.0
         if (phase >= TournamentPath.length - 2) {
           end = true;
           newPlayer.nationalCup++;
@@ -478,15 +478,9 @@ function App() {
         newSeason.performance
       );
 
-      if (newSeason.championsPhase == 0 && newPlayer.championsQualification)
-        description = "->Fase de Grupos da Champions";
-      else
-        description = `-> ${TournamentPath[phase]}: ${group.table[0].name} / ${group.table[1].name} / ${group.table[2].name} / ${group.table[3].name}`;
+      description = `-> ${TournamentPath[phase]}: ${group.table[0].name} / ${group.table[1].name} / ${group.table[2].name} / ${group.table[3].name}`;
 
-      if (
-        group.pos <= 2 ||
-        (newSeason.championsPhase == 0 && newPlayer.championsQualification)
-      ) {
+      if (group.pos <= 2) {
         phase++;
         opponents = [];
         for (let i = 0; i < TournamentPath.length; i++) {
@@ -645,7 +639,7 @@ function App() {
               newPlayer.overall > 75 + newPlayer.nation.power ||
               (med > 0 && newPlayer.age < 36)
             )
-              newSeason.awardPoints += 0.8; //max 0.8 x 5 = 4.0
+              newSeason.awardPoints += 0.8; //max 0.8 x 5 - 1.0 = 3.0
             if (phase >= TournamentPath.length - 1) {
               end = true;
               if (
