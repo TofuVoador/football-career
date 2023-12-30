@@ -727,7 +727,11 @@ function App() {
     if (contract <= 1) {
       let renewValue =
         Math.floor(
-          (newPlayer.overall + newPlayer.potential + newPlayer.fame / 20) ** 2 /
+          (newPlayer.overall +
+            newPlayer.potential +
+            newPlayer.fame / 20 +
+            med * 4) **
+            2 /
             60
         ) / 10;
       let renewDuration = RandomNumber(1, 3);
