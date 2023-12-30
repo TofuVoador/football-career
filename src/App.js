@@ -93,6 +93,8 @@ function App() {
 
   const [transfer2, setTransfer2] = useState(GetNewTeam());
 
+  const [renew, setRenew] = useState({ value: 0, duration: 0 });
+
   function ChooseTeam(newTeam = null) {
     //next season
     document.getElementById("team-choice").style.display = "none";
@@ -155,17 +157,13 @@ function App() {
       }
     } else if (newContract <= 0) {
       //else if contract expires
-      newContract = RandomNumber(1, 3); //new contrat lenght
       newPlayer.marketValue = Math.max(
         transfer1.transferValue,
         transfer2.transferValue
       );
-      newPlayer.wage =
-        Math.floor(
-          (newPlayer.overall + newPlayer.team.power + newPlayer.fame / 20) **
-            2 /
-            60
-        ) / 10;
+
+      newContract = renew.duration; //new contrat lenght
+      newPlayer.wage = renew.value; //new contrat value
     }
 
     //calcule the player's performance
@@ -692,8 +690,6 @@ function App() {
 
     newPlayer.fame += newSeason.awardPoints;
 
-    console.log(newSeason.awardPoints);
-
     let position = -1;
 
     if (newSeason.awardPoints + newPlayer.overall >= 100) {
@@ -727,6 +723,16 @@ function App() {
     //load option of transfer
     let newTransfer1 = GetNewTeam(newPlayer);
     let newTransfer2 = GetNewTeam(newPlayer);
+
+    if (contract <= 1) {
+      let renewValue =
+        Math.floor(
+          (newPlayer.overall + newPlayer.potential + newPlayer.fame / 20) ** 2 /
+            60
+        ) / 10;
+      let renewDuration = RandomNumber(1, 3);
+      setRenew({ value: renewValue, duration: renewDuration });
+    }
 
     if (newTransfer1 == null) {
       document.getElementById("decision-transfer1").style.display = "none";
@@ -990,16 +996,17 @@ function App() {
       let count = 0;
       while (
         currentPlayer.team.name == team.name ||
-        (team.power < currentPlayer.team.power - count / 3 &&
+        (team.power < currentPlayer.team.power - count / 2 &&
           currentPlayer.age < 34) ||
         (currentPlayer.overall < 82 + team.power / 2 && currentPlayer.age >= 34)
       ) {
+        leagueID = RandomNumber(0, allTeams.length - 1);
         league = allTeams[leagueID];
         team = league.teams[RandomNumber(0, 10)];
 
         count++;
 
-        if (count >= 15) return null;
+        if (count >= 16) return null;
       }
 
       contractDuration = RandomNumber(2, 4);
@@ -1072,7 +1079,10 @@ function App() {
           onClick={() => ChooseTeam()}
         >
           <p>Continuar em {player.team == null ? "" : player.team.name}</p>
-          <p>(Valores não definidos)</p>
+          <p>
+            (${renew.value}M |{" "}
+            {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")})
+          </p>
         </a>
         <a
           className="d-alert"
