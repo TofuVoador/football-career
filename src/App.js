@@ -725,16 +725,18 @@ function App() {
     let newTransfer2 = GetNewTeam(newPlayer);
 
     if (contract <= 1) {
+      let renewDuration = RandomNumber(1, 3);
+      if (newPlayer.age < 30) renewDuration += RandomNumber(1, 3);
       let renewValue =
         Math.floor(
           (newPlayer.overall +
             newPlayer.potential +
             newPlayer.fame / 20 +
-            med * 4) **
+            med * 5 +
+            renewDuration) **
             2 /
             60
         ) / 10;
-      let renewDuration = RandomNumber(1, 3);
       setRenew({ value: renewValue, duration: renewDuration });
     }
 
@@ -1010,17 +1012,20 @@ function App() {
 
         count++;
 
-        if (count >= 16) return null;
+        if (count >= 15) return null;
       }
 
-      contractDuration = RandomNumber(2, 4);
+      contractDuration = RandomNumber(1, 3);
+      if (currentPlayer.age < 30) contractDuration += RandomNumber(1, 3);
+
       contractValue =
         Math.floor(
           (currentPlayer.overall +
             team.power +
             currentPlayer.potential +
             currentPlayer.fame / 20 -
-            count) **
+            count +
+            contractDuration) **
             2 /
             60
         ) / 10;
