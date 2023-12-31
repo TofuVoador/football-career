@@ -726,7 +726,7 @@ function App() {
 
     if (contract <= 1) {
       let renewDuration = RandomNumber(1, 3);
-      if (newPlayer.age < 30) renewDuration += RandomNumber(1, 3);
+      if (newPlayer.age < 30) renewDuration += RandomNumber(0, 2);
       let renewValue =
         Math.floor(
           (newPlayer.overall +
@@ -1015,7 +1015,7 @@ function App() {
         if (count >= 15) return null;
       }
 
-      contractDuration = RandomNumber(2, 4);
+      contractDuration = RandomNumber(1, 3);
       if (currentPlayer.age < 30) contractDuration += RandomNumber(0, 2);
 
       contractValue =
