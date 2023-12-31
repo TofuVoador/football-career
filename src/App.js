@@ -1015,8 +1015,8 @@ function App() {
         if (count >= 15) return null;
       }
 
-      contractDuration = RandomNumber(1, 3);
-      if (currentPlayer.age < 30) contractDuration += RandomNumber(1, 3);
+      contractDuration = RandomNumber(2, 4);
+      if (currentPlayer.age < 30) contractDuration += RandomNumber(0, 2);
 
       contractValue =
         Math.floor(
