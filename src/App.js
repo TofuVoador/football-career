@@ -238,17 +238,15 @@ function App() {
     newSeason.goals = Math.floor(
       (newSeason.starting / 100) *
         goalsOppostunities *
-        (newPlayer.overall / 100)
+        (newPlayer.overall / 90) *
+        (newPlayer.team.power / 8)
     );
     newSeason.assists = Math.floor(
       (newSeason.starting / 100) *
         assistsOppostunities *
-        (newPlayer.overall / 100) *
+        (newPlayer.overall / 90) *
         (newPlayer.team.power / 8)
     );
-
-    if (newSeason.goals < 0) newSeason.goals = 0;
-    if (newSeason.assists < 0) newSeason.assists = 0;
 
     newSeason.awardPoints = newSeason.performance * 1.5; //max = 3.0
 
@@ -672,7 +670,7 @@ function App() {
     //post season results
     if (RandomNumber(0, 100) < 1) newSeason.titles.push("Puskás"); //Puskás
 
-    if (45 + RandomNumber(0, 10) < newSeason.goals) {
+    if (42 + RandomNumber(0, 8) < newSeason.goals) {
       //Golden Shoes
       newPlayer.goldenAward++;
       newSeason.awardPoints += 2;
