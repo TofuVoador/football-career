@@ -229,23 +229,23 @@ function App() {
 
     //giving the starting rate, randomize how many goals/assists did they score
     let goalsOppostunities =
+      (newSeason.starting / 90.0) *
       newPlayer.position.goalsBonus *
-      (1 + (newPlayer.team.power + newSeason.performance * 2.5) / 20);
+      (newPlayer.team.power / 8.0);
     let assistsOppostunities =
+      (newSeason.starting / 90.0) *
       newPlayer.position.assistsBonus *
-      (1 + (newPlayer.team.power + newSeason.performance * 2.5) / 20);
+      (newPlayer.team.power / 8.0);
 
     newSeason.goals = Math.floor(
-      (newSeason.starting / 100) *
-        goalsOppostunities *
-        (newPlayer.overall / 90) *
-        (newPlayer.team.power / 8)
+      goalsOppostunities *
+        (newPlayer.overall / 90.0) *
+        (1.0 + newSeason.performance / 10.0)
     );
     newSeason.assists = Math.floor(
-      (newSeason.starting / 100) *
-        assistsOppostunities *
-        (newPlayer.overall / 90) *
-        (newPlayer.team.power / 8)
+      assistsOppostunities *
+        (newPlayer.overall / 90.0) *
+        (1.0 + newSeason.performance / 10.0)
     );
 
     newSeason.awardPoints = newSeason.performance * 1.5; //max = 3.0
@@ -670,18 +670,18 @@ function App() {
     //post season results
     if (RandomNumber(0, 100) < 1) newSeason.titles.push("Puskás"); //Puskás
 
-    if (42 + RandomNumber(0, 8) < newSeason.goals) {
+    if (40 + RandomNumber(0, 10) < newSeason.goals) {
       //Golden Shoes
       newPlayer.goldenAward++;
-      newSeason.awardPoints += 2;
+      newSeason.awardPoints += 1;
       newPlayer.fame += 20;
       newSeason.titles.push("Chuteira de Ouro");
     } else if (
       player.position.title == "GK" &&
-      newSeason.performance * 2 + (newPlayer.overall - 75) / 2 >= 10
+      newSeason.performance * 2.5 + (newPlayer.overall - 75) / 2 > 10
     ) {
       newPlayer.goldenAward++;
-      newSeason.awardPoints += 2;
+      newSeason.awardPoints += 1;
       newPlayer.fame += 20;
       newSeason.titles.push("Luva de Ouro");
     }
