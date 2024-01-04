@@ -287,9 +287,9 @@ function App() {
     //national cup
     let opponents = [];
     for (let i = 0; i < 5; i++) {
-      let op = league.teams[RandomNumber(0, league.teams.length - 1)];
+      let op = league.teams[RandomNumber(0, 3 + i)];
       while (op.name == newPlayer.team.name || opponents.includes(op)) {
-        op = league.teams[RandomNumber(0, league.teams.length - 1)];
+        op = league.teams[RandomNumber(0, 3 + i)];
       }
       opponents.push(op);
     }
