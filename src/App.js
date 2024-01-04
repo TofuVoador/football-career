@@ -1141,15 +1141,13 @@ function App() {
             )
           </p>
           <p>Posição: {player.position.title}</p>
+          <p>Seleção: {player.nation.name}</p>
         </div>
         <div>
-          <p>Seleção: {player.nation.name}</p>
-          <p>
-            Copa do Mundo:{" "}
-            {player.worldCup.map((wc) => (
-              <p>{wc}</p>
-            ))}
-          </p>
+          Copa do Mundo:{" "}
+          {player.worldCup.map((wc) => (
+            <p>{wc}</p>
+          ))}
         </div>
         <div>
           <p>Gols: {player.totalGoals}</p>
