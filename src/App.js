@@ -68,13 +68,12 @@ function App() {
     performance: 0,
     totalGoals: 0,
     totalAssists: 0,
-    leagues: 0,
-    nationalCup: 0,
-    europa: 0,
-    champions: 0,
-    worldCup: 0,
-    goldenAward: 0,
-    ballonDOr: 0,
+    leagues: [],
+    nationalCup: [],
+    europa: [],
+    champions: [],
+    worldCup: [],
+    goldenAwards: [],
     championsQualification: false,
     lastLeaguePosition: 0,
     europaQualification: false,
@@ -275,16 +274,15 @@ function App() {
     //top six from the league
     let topSix = "";
     for (let p = 0; p < 6; p++) {
-      topSix += "->" + (p + 1) + "º: " + leagueResults.table[p].name;
+      topSix += `-> ${p + 1}º: ${leagueResults.table[p].name}`;
     }
 
-    if (leaguePosition == 1) newPlayer.leagues++;
+    if (leaguePosition == 1)
+      newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
 
     newSeason.awardPoints += (7 - leaguePosition) / 2; //max = 3.0
     newSeason.leaguePosition = leaguePosition;
-    newSeason.titles.push(
-      "Liga: " + newSeason.leaguePosition + "º lugar" + topSix
-    );
+    newSeason.titles.push(`Liga: ${newSeason.leaguePosition}º lugar ${topSix}`);
 
     //national cup
     let opponents = [];
@@ -319,7 +317,7 @@ function App() {
         newSeason.awardPoints += 0.4; //max 0.4 x 5 = 2.0
         if (phase >= TournamentPath.length - 2) {
           end = true;
-          newPlayer.nationalCup++;
+          newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
         }
       } else {
         end = true;
@@ -419,7 +417,7 @@ function App() {
             newSeason.awardPoints += 1.0; //max 0.8 x 5 = 4.0
             if (phase >= TournamentPath.length - 1) {
               end = true;
-              newPlayer.champions++;
+              newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
               newPlayer.fame += 30;
             }
           } else {
@@ -509,7 +507,7 @@ function App() {
             phase++;
             if (phase >= TournamentPath.length - 1) {
               end = true;
-              newPlayer.europa++;
+              newPlayer.europa.push(`${year} (${newPlayer.team.name})`);
             }
           } else {
             end = true;
@@ -642,7 +640,7 @@ function App() {
                 newPlayer.overall > 75 + newPlayer.nation.power ||
                 (med > 0 && newPlayer.age < 36)
               ) {
-                newPlayer.worldCup++;
+                newPlayer.worldCup.push(`${year}`);
                 newPlayer.fame += 30;
               }
             }
@@ -672,7 +670,9 @@ function App() {
 
     if (40 + RandomNumber(0, 10) < newSeason.goals) {
       //Golden Shoes
-      newPlayer.goldenAward++;
+      newPlayer.goldenAwards.push(
+        `Chuteiras de Ouro ${year} (${newPlayer.team.name})`
+      );
       newSeason.awardPoints += 1;
       newPlayer.fame += 20;
       newSeason.titles.push("Chuteira de Ouro");
@@ -680,7 +680,9 @@ function App() {
       player.position.title == "GK" &&
       newSeason.performance * 2.5 + (newPlayer.overall - 75) / 2 > 10
     ) {
-      newPlayer.goldenAward++;
+      newPlayer.goldenAwards.push(
+        `Luvas de Ouro ${year} (${newPlayer.team.name})`
+      );
       newSeason.awardPoints += 1;
       newPlayer.fame += 20;
       newSeason.titles.push("Luva de Ouro");
@@ -692,7 +694,9 @@ function App() {
 
     if (newSeason.awardPoints + newPlayer.overall >= 100) {
       //Ballon D'or
-      newPlayer.ballonDOr++;
+      newPlayer.goldenAwards.push(
+        `Ballon D'or ${year} (${newPlayer.team.name})`
+      );
       newPlayer.fame += 60;
       position = 1;
 
@@ -1140,21 +1144,46 @@ function App() {
         </div>
         <div>
           <p>Seleção: {player.nation.name}</p>
-          <p>Copa do Mundo: {player.worldCup}</p>
+          <p>
+            Copa do Mundo:{" "}
+            {player.worldCup.map((wc) => (
+              <p>{wc}</p>
+            ))}
+          </p>
         </div>
         <div>
           <p>Gols: {player.totalGoals}</p>
           <p>Assistências: {player.totalAssists}</p>
         </div>
         <div>
-          <p>Ligas: {player.leagues}</p>
-          <p>Copas Nacionais: {player.nationalCup}</p>
-          <p>Champions: {player.champions}</p>
-          <p>Europa League: {player.europa}</p>
+          Ligas:
+          {player.leagues.map((l) => (
+            <p>{l}</p>
+          ))}
         </div>
         <div>
-          <p>Chuteiras/Luvas de Ouro: {player.goldenAward}</p>
-          <p>Ballon D'Or: {player.ballonDOr}</p>
+          Copas Nacionais:
+          {player.nationalCup.map((nc) => (
+            <p>{nc}</p>
+          ))}
+        </div>
+        <div>
+          Champions League:
+          {player.champions.map((ch) => (
+            <p>{ch}</p>
+          ))}
+        </div>
+        <div>
+          Europa League:
+          {player.europa.map((el) => (
+            <p>{el}</p>
+          ))}
+        </div>
+        <div>
+          Premiações:
+          {player.goldenAwards.map((b) => (
+            <p>{b}</p>
+          ))}
         </div>
       </div>
     </>
