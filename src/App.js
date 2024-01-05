@@ -1144,7 +1144,7 @@ function App() {
           <p>Seleção: {player.nation.name}</p>
         </div>
         <div>
-          Copa do Mundo:{" "}
+          Copa do Mundo: {player.worldCup.length}
           {player.worldCup.map((wc) => (
             <p>{wc}</p>
           ))}
@@ -1154,31 +1154,31 @@ function App() {
           <p>Assistências: {player.totalAssists}</p>
         </div>
         <div>
-          Ligas:
+          Ligas: {player.leagues.lenght}
           {player.leagues.map((l) => (
             <p>{l}</p>
           ))}
         </div>
         <div>
-          Copas Nacionais:
+          Copas Nacionais: {player.nationalCup.length}
           {player.nationalCup.map((nc) => (
             <p>{nc}</p>
           ))}
         </div>
         <div>
-          Champions League:
+          Champions League: {player.champions.length}
           {player.champions.map((ch) => (
             <p>{ch}</p>
           ))}
         </div>
         <div>
-          Europa League:
+          Europa League: {player.europa.length}
           {player.europa.map((el) => (
             <p>{el}</p>
           ))}
         </div>
         <div>
-          Premiações:
+          Premiações: {player.goldenAwards.length}
           {player.goldenAwards.map((b) => (
             <p>{b}</p>
           ))}
