@@ -1154,7 +1154,7 @@ function App() {
           <p>Assistências: {player.totalAssists}</p>
         </div>
         <div>
-          Ligas: {player.leagues.lenght}
+          Ligas: {player.leagues.length}
           {player.leagues.map((l) => (
             <p>{l}</p>
           ))}
