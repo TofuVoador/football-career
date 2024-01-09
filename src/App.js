@@ -481,6 +481,7 @@ function App() {
           let op = GetRandomOpponent();
           while (
             op.power < 4.5 ||
+            op.power > 8.5 ||
             op.name == newPlayer.team.name ||
             opponents.includes(op) ||
             (phase <= 2 && (op1.name == op.name || op2.name == op.name))
@@ -492,6 +493,7 @@ function App() {
         opponents.sort((a, b) => {
           return a.power - b.power + RandomNumber(-2, 2) / 2;
         });
+        console.log(opponents);
         end = false;
         while (!end) {
           let game = GetGameResult(
