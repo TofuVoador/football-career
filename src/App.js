@@ -177,7 +177,7 @@ function App() {
 
     //giving the performance, set how many games did they were the starter player
     let starting = Math.floor(
-      (newPlayer.overall - (68 + newPlayer.team.power)) / 0.1 +
+      (newPlayer.overall - (67 + newPlayer.team.power)) / 0.1 +
         RandomNumber(-10, 10)
     );
     if (starting > 100) starting = 100;
@@ -247,7 +247,7 @@ function App() {
         (1.0 + newSeason.performance / 10.0)
     );
 
-    newSeason.awardPoints = newSeason.performance * 1.5; //max = 3.0
+    newSeason.awardPoints = newSeason.performance * 2.0; //max = 4.0
 
     let med = 0;
     for (let i = 0; i < generalPerformance.length; i++) {
@@ -280,7 +280,7 @@ function App() {
     if (leaguePosition == 1)
       newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
 
-    newSeason.awardPoints += (7 - leaguePosition) / 2; //max = 3.0
+    newSeason.awardPoints += (5 - leaguePosition) / 2; //max = 2.0
     newSeason.leaguePosition = leaguePosition;
     newSeason.titles.push(`Liga: ${newSeason.leaguePosition}º lugar ${topSix}`);
 
@@ -375,11 +375,19 @@ function App() {
 
       opponents = [];
       for (let i = 0; i < TournamentPath.length; i++) {
-        let op = group.table[RandomNumber(0, 3 + i)];
-        while (op.name == newPlayer.team.name || opponents.includes(op)) {
-          op = group.table[RandomNumber(0, 3 + i)];
+        let availableOpponents = group.table.filter(
+          (op) => op.name !== newPlayer.team.name && !opponents.includes(op)
+        );
+
+        if (availableOpponents.length > 0) {
+          let randomIndex = RandomNumber(0, 4);
+          let chosenOpponent = availableOpponents[randomIndex];
+          opponents.push(chosenOpponent);
+
+          group.table = group.table.filter((op) => op !== chosenOpponent);
+        } else {
+          break;
         }
-        opponents.push(op);
       }
       opponents.sort((a, b) => {
         return a.power - b.power + RandomNumber(-2, 2) / 2;
@@ -414,11 +422,11 @@ function App() {
 
           if (game.result) {
             phase++;
-            newSeason.awardPoints += 1.0; //max 0.8 x 5 = 4.0
+            newSeason.awardPoints += 0.8; //max 0.8 x 5 = 4.0
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
-              newPlayer.fame += 30;
+              newPlayer.fame += 40;
             }
           } else {
             end = true;
@@ -493,7 +501,6 @@ function App() {
         opponents.sort((a, b) => {
           return a.power - b.power + RandomNumber(-2, 2) / 2;
         });
-        console.log(opponents);
         end = false;
         while (!end) {
           let game = GetGameResult(
@@ -643,7 +650,7 @@ function App() {
                 (med > 0 && newPlayer.age < 36)
               ) {
                 newPlayer.worldCup.push(`${year}`);
-                newPlayer.fame += 30;
+                newPlayer.fame += 40;
               }
             }
           } else {
@@ -699,13 +706,13 @@ function App() {
       newPlayer.goldenAwards.push(
         `Ballon D'or ${year} (${newPlayer.team.name})`
       );
-      newPlayer.fame += 60;
+      newPlayer.fame += 80;
       position = 1;
 
       newSeason.titles.push(`Ballon D'Or: 1º lugar`);
     } else if (newSeason.awardPoints + newPlayer.overall >= 91) {
       let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 91);
-      newPlayer.fame += pts * 3;
+      newPlayer.fame += pts * 4;
       position = 10 - pts;
       newSeason.titles.push(`Ballon D'Or: ${position}º lugar`);
     }
@@ -733,6 +740,7 @@ function App() {
       let renewValue =
         Math.floor(
           (newPlayer.overall +
+            newPlayer.team.power / 2 +
             newPlayer.potential +
             newPlayer.fame / 20 +
             med * 5 +
@@ -903,12 +911,12 @@ function App() {
 
   function GetMatch(team1, team2, bonus) {
     let team1Points =
-      team1.power / 4 +
+      team1.power / 3 +
       RandomNumber(0, team1.power * 2) / 2 -
       RandomNumber(0, team2.power * 2) / 2;
 
     let team2Points =
-      team2.power / 4 +
+      team2.power / 3 +
       RandomNumber(0, team2.power * 2) / 2 -
       RandomNumber(0, team1.power * 2) / 2;
 
@@ -1054,7 +1062,7 @@ function App() {
   }
 
   function GetOverall(potential, age) {
-    return 88 + potential / 2 - (30 - age) ** 2 / 10;
+    return 87 + potential / 2 - (30 - age) ** 2 / 10;
   }
 
   function Retire() {
