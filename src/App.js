@@ -273,7 +273,7 @@ function App() {
     if (leaguePosition == 1)
       newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
 
-    newSeason.awardPoints += (5 - leaguePosition) / 2; //max = 2.0
+    newSeason.awardPoints += (7 - leaguePosition) / 2; //max = 3.0
     newSeason.leaguePosition = leaguePosition;
     newSeason.titles.push(`Liga: ${newSeason.leaguePosition}º lugar ${topSix}`);
 
