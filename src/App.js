@@ -753,11 +753,7 @@ function App() {
         let home = i;
         let away = i + teams.length / 2;
 
-        let game = GetMatch(
-          teams[home],
-          teams[away],
-          teams[home] === playerTeam ? bonus : 0
-        );
+        let game = GetMatch(teams[home], teams[away], 0);
 
         if (game[0] > game[1]) {
           points[home] += 3;
@@ -804,7 +800,7 @@ function App() {
           let game = GetMatch(
             teams[home],
             teams[away],
-            teams[home] === playerTeam ? bonus : 0.5
+            0.5 + teams[home] === playerTeam ? bonus : 0
           );
 
           if (game[0] > game[1]) {
