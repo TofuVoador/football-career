@@ -278,7 +278,7 @@ function App() {
     newSeason.titles.push(`Liga: ${newSeason.leaguePosition}º lugar ${topSix}`);
 
     //national cup
-    let opponentsLeft = league.teams;
+    let opponentsLeft = [...league.teams];
     let opponents = [];
     for (let i = 0; i < 5; i++) {
       let randomIndex = RandomNumber(0, 3);
@@ -498,10 +498,10 @@ function App() {
 
     //World Cup
     if ((year + 2) % 4 == 0) {
-      newSeason.awardPoints -= 1.0;
+      newSeason.awardPoints -= 2.0;
       phase = 0;
 
-      let nationsLeft = Nations;
+      let nationsLeft = [...Nations];
 
       let pot1 = nationsLeft.slice(0, nationsLeft.length / 4);
       let pot2 = nationsLeft.slice(
@@ -514,35 +514,19 @@ function App() {
       );
       let pot4 = nationsLeft.slice((3 * nationsLeft.length) / 4);
 
-      let groups = [];
+      let playerGroup = [newPlayer.nation];
 
-      for (let group = 0; group < 8; group++) {
-        let team1 = pot1.splice(RandomNumber(0, pot1.length - 1), 1)[0];
-        let team2 = pot2.splice(RandomNumber(0, pot2.length - 1), 1)[0];
-        let team3 = pot3.splice(RandomNumber(0, pot3.length - 1), 1)[0];
-        let team4 = pot4.splice(RandomNumber(0, pot4.length - 1), 1)[0];
+      if (!pot1.includes(newPlayer.nation))
+        playerGroup.push(pot1.splice(RandomNumber(0, pot1.length - 1), 1)[0]);
 
-        groups.push([team1, team2, team3, team4]);
-      }
+      if (!pot2.includes(newPlayer.nation))
+        playerGroup.push(pot2.splice(RandomNumber(0, pot2.length - 1), 1)[0]);
 
-      for (let group = 0; group < 8; group++) {
-        let wcmed = 0;
-        console.log(groups[group]);
-        for (let i = 0; i < groups[group].length; i++) {
-          wcmed += groups[group][i].power;
-        }
-        wcmed /= groups[group].length;
-        console.log(wcmed);
-      }
+      if (!pot3.includes(newPlayer.nation))
+        playerGroup.push(pot3.splice(RandomNumber(0, pot3.length - 1), 1)[0]);
 
-      let playerGroup;
-
-      for (let i = 0; i < groups.length; i++) {
-        let group = groups[i];
-        if (group.includes(newPlayer.nation)) {
-          playerGroup = group;
-        }
-      }
+      if (!pot4.includes(newPlayer.nation))
+        playerGroup.push(pot4.splice(RandomNumber(0, pot4.length - 1), 1)[0]);
 
       let group = GetLeaguePosition(
         playerGroup,
@@ -586,12 +570,12 @@ function App() {
               newPlayer.overall > 75 + newPlayer.nation.power ||
               (med > 0 && newPlayer.age <= 36 && newPlayer.age >= 20)
             )
-              newSeason.awardPoints += 0.8; //max 0.8 x 5 - 1.0 = 3.0
+              newSeason.awardPoints += 0.8; //max 0.8 x 5 - 2.0 = 2.0
             if (phase >= TournamentPath.length - 1) {
               end = true;
               if (
                 newPlayer.overall > 75 + newPlayer.nation.power ||
-                (med > 0 && newPlayer.age < 36)
+                (med > 0 && newPlayer.age < 36 && newPlayer.age >= 20)
               ) {
                 newPlayer.worldCup.push(`${year}`);
                 newPlayer.fame += 40;
@@ -1124,7 +1108,7 @@ function App() {
         <div>
           Copa do Mundo: {player.worldCup.length}
           {player.worldCup.map((wc) => (
-            <p>{wc}</p>
+            <p key={wc}>{wc}</p>
           ))}
         </div>
         <div>
@@ -1134,31 +1118,31 @@ function App() {
         <div>
           Ligas: {player.leagues.length}
           {player.leagues.map((l) => (
-            <p>{l}</p>
+            <p key={l}>{l}</p>
           ))}
         </div>
         <div>
           Copas Nacionais: {player.nationalCup.length}
           {player.nationalCup.map((nc) => (
-            <p>{nc}</p>
+            <p key={nc}>{nc}</p>
           ))}
         </div>
         <div>
           Champions League: {player.champions.length}
           {player.champions.map((ch) => (
-            <p>{ch}</p>
+            <p key={ch}>{ch}</p>
           ))}
         </div>
         <div>
           Europa League: {player.europa.length}
           {player.europa.map((el) => (
-            <p>{el}</p>
+            <p key={el}>{el}</p>
           ))}
         </div>
         <div>
           Premiações: {player.goldenAwards.length}
           {player.goldenAwards.map((b) => (
-            <p>{b}</p>
+            <p key={b}>{b}</p>
           ))}
         </div>
       </div>
