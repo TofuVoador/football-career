@@ -215,7 +215,6 @@ function App() {
     setContract(newContract);
     setPlayer(newPlayer);
     setGeneralPerformance(newGeneralPerformance);
-    setAllTeams(newAllTeams);
   }
 
   function Continue() {
@@ -336,29 +335,12 @@ function App() {
       let qualified = [newPlayer.team];
 
       for (let l = 0; l < newAllTeams.length; l++) {
-        for (
-          let i = 0;
-          i <
-          newAllTeams[l].championsSpots * 1.5 -
-            (newPlayer.team.league == newAllTeams[l].name ? 1 : 0);
-          i++
-        ) {
-          let t =
-            newAllTeams[l].teams[
-              RandomNumber(0, newAllTeams[l].championsSpots * 2)
-            ];
+        for (let i = 0; i < newAllTeams[l].championsSpots * 1.5; i++) {
+          let t = newAllTeams[l].teams[i];
 
-          let count = 0;
           while (qualified.includes(t)) {
-            t =
-              newAllTeams[l].teams[
-                RandomNumber(0, newAllTeams[l].championsSpots * 2)
-              ];
-
-            count++;
-            if (count >= 20) {
-              throw new Error("Limite de Loop atingido");
-            }
+            i++;
+            t = newAllTeams[l].teams[i];
           }
 
           qualified.push(t);
@@ -380,7 +362,7 @@ function App() {
         );
 
         if (availableOpponents.length > 0) {
-          let randomIndex = RandomNumber(0, 4);
+          let randomIndex = RandomNumber(0, 3);
           let chosenOpponent = availableOpponents[randomIndex];
           opponents.push(chosenOpponent);
 
@@ -814,8 +796,10 @@ function App() {
   function GetChampionsPosition(teams, playerTeam, bonus) {
     //sort by power
     teams.sort((a, b) => {
-      return a.power - b.power + RandomNumber(-2, 2);
+      return a.power - b.power + RandomNumber(-2, 2) / 2;
     });
+
+    console.log(teams);
 
     let points = new Array(teams.length).fill(0);
     for (let round = 0; round < 8; round++) {
@@ -828,7 +812,17 @@ function App() {
         let game = GetMatch(
           teams[home],
           teams[away],
-          teams[home] === playerTeam ? bonus : 0.5
+          teams[home] === playerTeam ? bonus : 0
+        );
+
+        console.log(
+          teams[home].name +
+            " " +
+            game[0] +
+            " : " +
+            game[1] +
+            " " +
+            teams[away].name
         );
 
         if (game[0] > game[1]) {
@@ -861,6 +855,8 @@ function App() {
     );
 
     let table = teamPositions.map((position) => teams[position - 1]);
+
+    console.log(table);
 
     return {
       pos: playerPosition + 1,
