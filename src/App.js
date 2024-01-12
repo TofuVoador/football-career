@@ -799,8 +799,6 @@ function App() {
       return a.power - b.power + RandomNumber(-2, 2) / 2;
     });
 
-    console.log(teams);
-
     let points = new Array(teams.length).fill(0);
     for (let round = 0; round < 8; round++) {
       let newOrderTeams = [];
@@ -813,16 +811,6 @@ function App() {
           teams[home],
           teams[away],
           teams[home] === playerTeam ? bonus : 0
-        );
-
-        console.log(
-          teams[home].name +
-            " " +
-            game[0] +
-            " : " +
-            game[1] +
-            " " +
-            teams[away].name
         );
 
         if (game[0] > game[1]) {
@@ -855,8 +843,6 @@ function App() {
     );
 
     let table = teamPositions.map((position) => teams[position - 1]);
-
-    console.log(table);
 
     return {
       pos: playerPosition + 1,
