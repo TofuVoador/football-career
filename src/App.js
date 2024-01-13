@@ -56,7 +56,12 @@ function App() {
   });
 
   const [player, setPlayer] = useState({
-    potential: RandomNumber(0, 5) + RandomNumber(0, 5) + RandomNumber(0, 5),
+    potential:
+      (RandomNumber(0, 5) +
+        RandomNumber(0, 5) +
+        RandomNumber(0, 5) +
+        RandomNumber(0, 5)) /
+      2,
     age: 17,
     nation: Nations[RandomNumber(0, Nations.length - 1)],
     team: null,
@@ -1034,7 +1039,7 @@ function App() {
   }
 
   function GetOverall(potential, age) {
-    return 87.5 + potential / 3 - (30 - age) ** 2 / 11;
+    return 87.5 + potential / 2 - (30 - age) ** 2 / 10;
   }
 
   function Retire() {
