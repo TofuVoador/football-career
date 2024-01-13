@@ -849,7 +849,7 @@ function App() {
   }
 
   function GetMatch(team1, team2, bonus, important) {
-    let importance = important ? 1.5 : 1;
+    let importance = important ? 1 : 1.5;
 
     let team1Points =
       (team1.power / importance +
