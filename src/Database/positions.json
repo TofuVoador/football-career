@@ -73,8 +73,8 @@
   },
   {
     "title": "GK",
-    "goalsBonus": 2,
-    "assistsBonus": 1,
+    "goalsBonus": 4,
+    "assistsBonus": 2,
     "value": 1
   }
 ]

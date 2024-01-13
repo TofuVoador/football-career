@@ -56,7 +56,7 @@ function App() {
   });
 
   const [player, setPlayer] = useState({
-    potential: RandomNumber(0, 5) + RandomNumber(0, 5),
+    potential: RandomNumber(0, 5) + RandomNumber(0, 5) + RandomNumber(0, 5),
     age: 17,
     nation: Nations[RandomNumber(0, Nations.length - 1)],
     team: null,
@@ -423,23 +423,23 @@ function App() {
       //Europa league
       phase = 0;
 
-      let op1 = GetRandomOpponent(4.5, 7.5);
+      let op1 = GetRandomOpponent(3.5, 6.5);
       while (newPlayer.team.league == op1.league) {
-        op1 = GetRandomOpponent(4.5, 7.5);
+        op1 = GetRandomOpponent(3.5, 6.5);
       }
 
-      let op2 = GetRandomOpponent(4.5, 7.5);
+      let op2 = GetRandomOpponent(3.5, 6.5);
       while (newPlayer.team.league == op2.league || op1.league == op2.league) {
-        op2 = GetRandomOpponent(4.5, 7.5);
+        op2 = GetRandomOpponent(3.5, 6.5);
       }
 
-      let op3 = GetRandomOpponent(4.5, 7.5);
+      let op3 = GetRandomOpponent(3.5, 6.5);
       while (
         newPlayer.team.league == op3.league ||
         op1.league == op3.league ||
         op2.league == op3.league
       ) {
-        op3 = GetRandomOpponent(4.5, 7.5);
+        op3 = GetRandomOpponent(3.5, 6.5);
       }
 
       let group = GetLeaguePosition(
@@ -804,7 +804,7 @@ function App() {
           let game = GetMatch(
             teams[home],
             teams[away],
-            0.5 + teams[home] === playerTeam ? bonus : 0
+            0.5 + teams[home] === playerTeam ? bonus : 0.5
           );
 
           if (game[0] > game[1]) {
@@ -839,20 +839,26 @@ function App() {
 
   function GetMatch(team1, team2, bonus) {
     let team1Points =
-      team1.power / 3 +
-      RandomNumber(0, team1.power * 2) / 2 -
-      RandomNumber(0, team2.power * 2) / 2;
+      (team1.power / 1.5 +
+        (RandomNumber(0, team1.power) + RandomNumber(0, team1.power)) -
+        (RandomNumber(0, team2.power) + RandomNumber(0, team2.power))) /
+      2;
 
     let team2Points =
-      team2.power / 3 +
-      RandomNumber(0, team2.power * 2) / 2 -
-      RandomNumber(0, team1.power * 2) / 2;
+      (team2.power / 1.5 +
+        (RandomNumber(0, team2.power) + RandomNumber(0, team2.power)) -
+        (RandomNumber(0, team1.power) + RandomNumber(0, team1.power))) /
+      2;
 
-    let team1Score = Math.floor((team1Points + bonus) / 3);
-    let team2Score = Math.floor(team2Points / 3);
+    let team1Score = Math.floor((team1Points + bonus) / 2.5);
+    let team2Score = Math.floor(team2Points / 2.5);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
+
+    console.log(
+      team1.name + " " + team1Score + " : " + team2Score + " " + team2.name
+    );
 
     return [team1Score, team2Score];
   }
@@ -1014,7 +1020,7 @@ function App() {
   }
 
   function GetOverall(potential, age) {
-    return 87 + potential / 2 - (30 - age) ** 2 / 10;
+    return 87.5 + potential / 3 - (30 - age) ** 2 / 11;
   }
 
   function Retire() {
