@@ -32,6 +32,7 @@ const TournamentPath = [
 ];
 
 function App() {
+  const [teams, setTeams] = useState([...Teams]);
   const [seasons, setSeasons] = useState([]);
 
   const [currentSeason, setCurrentSeason] = useState({
@@ -131,13 +132,13 @@ function App() {
           ) + 1; //get the new team's position
       } else {
         let nationalTeams =
-          Teams.find((league) => league.name === newPlayer.team.league)
+          teams.find((league) => league.name === newPlayer.team.league)
             ?.teams || []; //find the new team league
         lp = GetLeaguePosition(nationalTeams, newPlayer.team, 0.5).pos; //simulate the past season
       }
 
       //get players league
-      let league = Teams.find(
+      let league = teams.find(
         (league) => league.name === newPlayer.team.league
       );
 
@@ -256,7 +257,7 @@ function App() {
     med /= generalPerformance.length;
 
     //national tournaments
-    let league = Teams.find((league) => league.name === newPlayer.team.league);
+    let league = teams.find((league) => league.name === newPlayer.team.league);
 
     //national league
     let leagueResults = GetLeaguePosition(
@@ -340,9 +341,9 @@ function App() {
 
       let qualified = [newPlayer.team];
 
-      for (let l = 0; l < Teams.length; l++) {
-        for (let i = 0; i < Teams[l].championsSpots * 1.5; i++) {
-          let t = Teams[l].teams[i];
+      for (let l = 0; l < teams.length; l++) {
+        for (let i = 0; i < teams[l].championsSpots * 1.5; i++) {
+          let t = teams[l].teams[i];
 
           if (!qualified.includes(t)) {
             qualified.push(t);
@@ -746,6 +747,8 @@ function App() {
     const newSeasons = [...seasons, newSeason];
     setSeasons(newSeasons);
 
+    UpdateTeamsStats();
+
     //continue
     if (contract > 1) ChooseTeam();
   }
@@ -869,10 +872,6 @@ function App() {
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
 
-    console.log(
-      team1.name + " " + team1Score + " : " + team2Score + " " + team2.name
-    );
-
     return [team1Score, team2Score];
   }
 
@@ -947,13 +946,13 @@ function App() {
   }
 
   function GetRandomOpponent(minPower = null, maxPower = null) {
-    let leagueID = RandomNumber(0, Teams.length - 1);
-    let league = Teams[leagueID];
+    let leagueID = RandomNumber(0, teams.length - 1);
+    let league = teams[leagueID];
     let team;
 
     do {
-      leagueID = RandomNumber(0, Teams.length - 1);
-      league = Teams[leagueID];
+      leagueID = RandomNumber(0, teams.length - 1);
+      league = teams[leagueID];
       team = league.teams[RandomNumber(0, league.teams.length - 1)];
     } while (
       (minPower !== null && team.power < minPower) ||
@@ -979,8 +978,8 @@ function App() {
   }
 
   function GetNewTeam(currentPlayer = null) {
-    let leagueID = RandomNumber(0, Teams.length - 1);
-    let league = Teams[leagueID];
+    let leagueID = RandomNumber(0, teams.length - 1);
+    let league = teams[leagueID];
     let team = league.teams[RandomNumber(0, 10)];
     let contractDuration = 3;
     let contractValue = Math.floor((70 + team.power) ** 2 / 60) / 10;
@@ -994,8 +993,8 @@ function App() {
           currentPlayer.age < 34) ||
         (currentPlayer.overall < 82 + team.power / 2 && currentPlayer.age >= 34)
       ) {
-        leagueID = RandomNumber(0, Teams.length - 1);
-        league = Teams[leagueID];
+        leagueID = RandomNumber(0, teams.length - 1);
+        league = teams[leagueID];
         team = league.teams[RandomNumber(0, 8)];
 
         count++;
@@ -1048,6 +1047,31 @@ function App() {
     document.getElementById("chart").style.display = "flex";
   }
 
+  function UpdateTeamsStats() {
+    let newTeams = teams;
+
+    for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
+      for (let teamID = 0; teamID < newTeams[leagueID].teams.length; teamID++) {
+        let change = (RandomNumber(0, 4) - RandomNumber(0, 4)) / 5;
+        newTeams[leagueID].teams[teamID].power += change;
+
+        newTeams[leagueID].teams[teamID].power =
+          Math.round(newTeams[leagueID].teams[teamID].power * 10) / 10;
+
+        if (newTeams[leagueID].teams[teamID].power > 10)
+          newTeams[leagueID].teams[teamID].power = 10;
+        else if (newTeams[leagueID].teams[teamID].power < 1)
+          newTeams[leagueID].teams[teamID].power = 1;
+      }
+
+      newTeams[leagueID].teams.sort((a, b) => {
+        return b.power - a.power;
+      });
+    }
+
+    setTeams(newTeams);
+  }
+
   return (
     <>
       <header>
@@ -1078,7 +1102,8 @@ function App() {
           <p>Continuar em {player.team == null ? "" : player.team.name}</p>
           <p>
             (${renew.value}M |{" "}
-            {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")})
+            {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")} |{" "}
+            Elenco: {player.team == null ? "" : player.team.power})
           </p>
         </a>
         <a
@@ -1088,7 +1113,8 @@ function App() {
         >
           <p>Transferir para {transfer1.team.name}</p>{" "}
           <p>
-            (${transfer1.contract.value}M | {transfer1.contract.duration} anos)
+            (${transfer1.contract.value}M | {transfer1.contract.duration} anos |{" "}
+            Elenco: {transfer1.team.power})
           </p>
         </a>
         <a
@@ -1098,7 +1124,8 @@ function App() {
         >
           <p>Transferir para {transfer2.team.name}</p>{" "}
           <p>
-            (${transfer2.contract.value}M | {transfer2.contract.duration} anos)
+            (${transfer2.contract.value}M | {transfer2.contract.duration} anos |{" "}
+            Elenco: {transfer2.team.power})
           </p>
         </a>
         <a
