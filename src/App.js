@@ -306,7 +306,8 @@ function App() {
         newPlayer.team,
         opponents[phase],
         newSeason.performance,
-        phase >= TournamentPath.length - 2 ? 1 : 2
+        phase >= TournamentPath.length - 2 ? 1 : 2,
+        false
       );
 
       description += `-> ${TournamentPath[phase + 1]}: ${game.game}`;
@@ -378,7 +379,8 @@ function App() {
           newPlayer.team,
           opponents[0],
           newSeason.performance,
-          2
+          2,
+          true
         );
 
         description += `-> Playoff: ${game.game}`;
@@ -394,7 +396,8 @@ function App() {
             newPlayer.team,
             opponents[phase],
             newSeason.performance,
-            phase >= TournamentPath.length - 2 ? 1 : 2
+            phase >= TournamentPath.length - 2 ? 1 : 2,
+            true
           );
 
           description += `-> ${TournamentPath[phase]}: ${game.game}`;
@@ -473,7 +476,8 @@ function App() {
             newPlayer.team,
             opponents[phase],
             newSeason.performance,
-            phase >= TournamentPath.length - 2 ? 1 : 2
+            phase >= TournamentPath.length - 2 ? 1 : 2,
+            false
           );
 
           description += `-> ${TournamentPath[phase]}: ${game.game}`;
@@ -559,7 +563,8 @@ function App() {
             newPlayer.nation,
             opponents[phase],
             newSeason.performance,
-            1
+            1,
+            true
           );
 
           description += `-> ${TournamentPath[phase]}: ${game.game}`;
@@ -665,6 +670,7 @@ function App() {
 
     if (contract <= 1) {
       let renewDuration = RandomNumber(1, 3);
+      if (newPlayer.age < 30) renewDuration += RandomNumber(0, 2);
       let renewValue =
         Math.floor(
           (newPlayer.overall +
@@ -837,18 +843,20 @@ function App() {
     };
   }
 
-  function GetMatch(team1, team2, bonus) {
+  function GetMatch(team1, team2, bonus, important) {
+    let importance = important ? 1.5 : 1;
+
     let team1Points =
-      (team1.power / 1.5 +
+      (team1.power / importance +
         (RandomNumber(0, team1.power) + RandomNumber(0, team1.power)) -
         (RandomNumber(0, team2.power) + RandomNumber(0, team2.power))) /
-      2;
+      (3 / importance);
 
     let team2Points =
-      (team2.power / 1.5 +
+      (team2.power / importance +
         (RandomNumber(0, team2.power) + RandomNumber(0, team2.power)) -
         (RandomNumber(0, team1.power) + RandomNumber(0, team1.power))) /
-      2;
+      (3 / importance);
 
     let team1Score = Math.floor((team1Points + bonus) / 2.5);
     let team2Score = Math.floor(team2Points / 2.5);
@@ -894,19 +902,25 @@ function App() {
     return [team1goals, team2goals];
   }
 
-  function GetGameResult(team1, team2, bonus, numberOfGames = 1) {
+  function GetGameResult(
+    team1,
+    team2,
+    bonus,
+    numberOfGames = 1,
+    important = true
+  ) {
     let gameDesc = "";
     let teamGoals1 = 0;
     let teamGoals2 = 0;
 
     for (let i = 0; i < numberOfGames; i++) {
-      let game = GetMatch(team1, team2, bonus);
+      let game = GetMatch(team1, team2, bonus, important);
       teamGoals1 += game[0];
       teamGoals2 += game[1];
     }
 
     if (teamGoals1 == teamGoals2) {
-      let extra = GetMatch(team1, team2, bonus);
+      let extra = GetMatch(team1, team2, bonus, important);
       teamGoals1 += extra[0];
       teamGoals2 += extra[1];
 
@@ -977,7 +991,7 @@ function App() {
       ) {
         leagueID = RandomNumber(0, Teams.length - 1);
         league = Teams[leagueID];
-        team = league.teams[RandomNumber(0, 10)];
+        team = league.teams[RandomNumber(0, 8)];
 
         count++;
 
@@ -985,7 +999,7 @@ function App() {
       }
 
       contractDuration = RandomNumber(1, 3);
-      if (currentPlayer.age < 30) contractDuration += RandomNumber(1, 2);
+      if (currentPlayer.age < 30) contractDuration += RandomNumber(0, 2);
 
       contractValue =
         Math.floor(
@@ -999,7 +1013,7 @@ function App() {
             60
         ) / 10;
       transferValue = Math.floor(
-        ((currentPlayer.overall / 5.0) ** 2 / 10) *
+        ((currentPlayer.overall / 4.0) ** 2 / 10) *
           currentPlayer.position.value *
           (1 + currentPlayer.performance / 20.0) *
           (1 + RandomNumber(-10, 10) / 100.0)
