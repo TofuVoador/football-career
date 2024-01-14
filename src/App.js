@@ -531,32 +531,33 @@ function App() {
       newSeason.awardPoints -= 2.0;
       phase = 0;
 
-      let nationsLeft = deepClone(nations);
+      let nationsLeft = nations;
 
-      let pot1 = nationsLeft.slice(0, nationsLeft.length / 4);
-      let pot2 = nationsLeft.slice(
-        nationsLeft.length / 4,
-        nationsLeft.length / 2
-      );
-      let pot3 = nationsLeft.slice(
-        nationsLeft.length / 2,
-        (3 * nationsLeft.length) / 4
-      );
-      let pot4 = nationsLeft.slice((3 * nationsLeft.length) / 4);
+      let pots = [];
+      for (let potID = 0; potID < 4; potID++) {
+        let p = [];
+        for (let i = 0; i < 8; i++) {
+          p.push(nationsLeft[i + potID * 8]);
+        }
+        pots.push(p);
+      }
 
-      let playerGroup = [newPlayer.nation];
+      let playerGroup = [];
 
-      if (!pot1.includes(newPlayer.nation))
-        playerGroup.push(pot1.splice(RandomNumber(0, pot1.length - 1), 1)[0]);
+      for (let potID = 0; potID < pots.length; potID++) {
+        let foundPLayer = false;
+        for (let nationID = 0; nationID < pots[potID].length; nationID++) {
+          let n = pots[potID][nationID];
+          if (n.name == newPlayer.nation.name) foundPLayer = true;
+        }
 
-      if (!pot2.includes(newPlayer.nation))
-        playerGroup.push(pot2.splice(RandomNumber(0, pot2.length - 1), 1)[0]);
+        if (!foundPLayer)
+          playerGroup.push(
+            pots[potID][RandomNumber(0, pots[potID].length - 1)]
+          );
+      }
 
-      if (!pot3.includes(newPlayer.nation))
-        playerGroup.push(pot3.splice(RandomNumber(0, pot3.length - 1), 1)[0]);
-
-      if (!pot4.includes(newPlayer.nation))
-        playerGroup.push(pot4.splice(RandomNumber(0, pot4.length - 1), 1)[0]);
+      playerGroup.push(newPlayer.nation);
 
       let group = GetLeaguePosition(
         playerGroup,
@@ -754,7 +755,7 @@ function App() {
       newPlayer.europaQualification = false;
     }
 
-    //set pleyer
+    //set ayer
     setPlayer(newPlayer);
 
     if (newPlayer.fame < 0) newPlayer.fame = 0;
