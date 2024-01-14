@@ -33,6 +33,8 @@ const TournamentPath = [
 
 function App() {
   const [teams, setTeams] = useState([...Teams]);
+  const [nations, setNations] = useState([...Nations]);
+
   const [seasons, setSeasons] = useState([]);
 
   const [currentSeason, setCurrentSeason] = useState({
@@ -189,10 +191,27 @@ function App() {
     newPlayer.fame +=
       (starting / 100 + newPlayer.performance) * newPlayer.team.power;
 
+    let newTeams = deepClone(UpdateTeamsStats());
+    let allTeams = [];
+    for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
+      allTeams = allTeams.concat([...newTeams[leagueID].teams]);
+    }
+    allTeams.sort((a, b) => {
+      return b.power - a.power;
+    });
+    let top10 = allTeams.slice(0, 10);
+
+    let allNations = deepClone(UpdateNationsStats());
+    allNations.sort((a, b) => {
+      return b.power - a.power;
+    });
+    let topNations = allNations.slice(0, 10);
+
     //set season start
     let newSeason = {
       year: year + 1,
-      top10: [],
+      top10: top10,
+      topNations: topNations,
       age: newPlayer.age,
       team: newPlayer.team,
       wage: newPlayer.wage,
@@ -512,7 +531,7 @@ function App() {
       newSeason.awardPoints -= 2.0;
       phase = 0;
 
-      let nationsLeft = [...Nations];
+      let nationsLeft = deepClone(nations);
 
       let pot1 = nationsLeft.slice(0, nationsLeft.length / 4);
       let pot2 = nationsLeft.slice(
@@ -551,13 +570,13 @@ function App() {
         phase++;
         opponents = [];
         for (let i = 0; i < TournamentPath.length; i++) {
-          let op = GetRandomNation(4.5, null);
+          let op = GetRandomNation(5.5, null);
           while (
             op.name == player.nation.name ||
             opponents.includes(op) ||
             (i <= 7 && playerGroup.includes(op))
           ) {
-            op = GetRandomNation(4.5, null);
+            op = GetRandomNation(5.5, null);
           }
           opponents.push(op);
         }
@@ -734,19 +753,6 @@ function App() {
       newPlayer.championsQualification = false;
       newPlayer.europaQualification = false;
     }
-
-    let newTeams = deepClone(UpdateTeamsStats());
-    let allTeams = [];
-
-    for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
-      allTeams = allTeams.concat([...newTeams[leagueID].teams]);
-    }
-
-    allTeams.sort((a, b) => {
-      return b.power - a.power;
-    });
-
-    newSeason.top10 = allTeams.slice(0, 10);
 
     //set pleyer
     setPlayer(newPlayer);
@@ -975,12 +981,12 @@ function App() {
   }
 
   function GetRandomNation(minPower = null, maxPower = null) {
-    let nationID = RandomNumber(0, Nations.length - 1);
-    let nation = Nations[nationID];
+    let nationID = RandomNumber(0, nations.length - 1);
+    let nation = nations[nationID];
 
     do {
-      nationID = RandomNumber(0, Nations.length - 1);
-      nation = Nations[nationID];
+      nationID = RandomNumber(0, nations.length - 1);
+      nation = nations[nationID];
     } while (
       (minPower !== null && nation.power < minPower) ||
       (maxPower !== null && nation.power > maxPower)
@@ -1083,6 +1089,27 @@ function App() {
 
     setTeams(newTeams);
     return newTeams;
+  }
+
+  function UpdateNationsStats() {
+    let newNations = [...nations];
+
+    for (let nationID = 0; nationID < newNations.length; nationID++) {
+      let change = (RandomNumber(0, 5) - RandomNumber(0, 5)) / 10;
+      newNations[nationID].power += change;
+
+      newNations[nationID].power =
+        Math.round(newNations[nationID].power * 10) / 10;
+
+      if (newNations[nationID].power > 10) newNations[nationID].power = 10;
+      else if (newNations[nationID].power < 1) newNations[nationID].power = 1;
+    }
+
+    newNations.sort((a, b) => {
+      return b.power - a.power;
+    });
+    setNations(newNations);
+    return newNations;
   }
 
   function deepClone(obj) {
