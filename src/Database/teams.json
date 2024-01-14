@@ -213,17 +213,17 @@
       {
         "name": "Barcelona",
         "league": "La Liga",
-        "power": 10
+        "power": 9
       },
       {
         "name": "Atlético Madrid",
         "league": "La Liga",
-        "power": 9
+        "power": 8
       },
       {
         "name": "Sevilla",
         "league": "La Liga",
-        "power": 8
+        "power": 7
       },
       {
         "name": "Real Sociedad",
@@ -345,14 +345,14 @@
         "power": 10
       },
       {
-        "name": "Liverpool",
+        "name": "Arsenal",
         "league": "Premier League",
         "power": 9
       },
       {
-        "name": "Arsenal",
+        "name": "Liverpool",
         "league": "Premier League",
-        "power": 9
+        "power": 8
       },
       {
         "name": "Tottenham Hotspur",

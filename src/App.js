@@ -192,6 +192,7 @@ function App() {
     //set season start
     let newSeason = {
       year: year + 1,
+      top10: [],
       age: newPlayer.age,
       team: newPlayer.team,
       wage: newPlayer.wage,
@@ -734,6 +735,19 @@ function App() {
       newPlayer.europaQualification = false;
     }
 
+    let newTeams = deepClone(UpdateTeamsStats());
+    let allTeams = [];
+
+    for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
+      allTeams = allTeams.concat([...newTeams[leagueID].teams]);
+    }
+
+    allTeams.sort((a, b) => {
+      return b.power - a.power;
+    });
+
+    newSeason.top10 = allTeams.slice(0, 10);
+
     //set pleyer
     setPlayer(newPlayer);
 
@@ -746,8 +760,6 @@ function App() {
     //set Seasons
     const newSeasons = [...seasons, newSeason];
     setSeasons(newSeasons);
-
-    UpdateTeamsStats();
 
     //continue
     if (contract > 1) ChooseTeam();
@@ -1048,11 +1060,11 @@ function App() {
   }
 
   function UpdateTeamsStats() {
-    let newTeams = teams;
+    let newTeams = [...teams];
 
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
       for (let teamID = 0; teamID < newTeams[leagueID].teams.length; teamID++) {
-        let change = (RandomNumber(0, 4) - RandomNumber(0, 4)) / 5;
+        let change = (RandomNumber(0, 5) - RandomNumber(0, 5)) / 10;
         newTeams[leagueID].teams[teamID].power += change;
 
         newTeams[leagueID].teams[teamID].power =
@@ -1070,6 +1082,30 @@ function App() {
     }
 
     setTeams(newTeams);
+    return newTeams;
+  }
+
+  function deepClone(obj) {
+    if (obj === null || typeof obj !== "object") {
+      return obj;
+    }
+
+    if (Array.isArray(obj)) {
+      const newArray = [];
+      for (let i = 0; i < obj.length; i++) {
+        newArray[i] = deepClone(obj[i]);
+      }
+      return newArray;
+    }
+
+    const newObj = {};
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        newObj[key] = deepClone(obj[key]);
+      }
+    }
+
+    return newObj;
   }
 
   return (
@@ -1157,45 +1193,55 @@ function App() {
           <p>Posição: {player.position.title}</p>
           <p>Seleção: {player.nation.name}</p>
         </div>
-        <div>
-          Copa do Mundo: {player.worldCup.length}
+        <details>
+          <summary>Copa do Mundo: {player.worldCup.length}</summary>
           {player.worldCup.map((wc) => (
             <p key={wc}>{wc}</p>
           ))}
-        </div>
+        </details>
         <div>
           <p>Gols: {player.totalGoals}</p>
           <p>Assistências: {player.totalAssists}</p>
         </div>
         <div>
-          Ligas: {player.leagues.length}
-          {player.leagues.map((l) => (
-            <p key={l}>{l}</p>
-          ))}
+          <details>
+            <summary>Ligas: {player.leagues.length}</summary>
+            {player.leagues.map((l) => (
+              <p key={l}>{l}</p>
+            ))}
+          </details>
         </div>
         <div>
-          Copas Nacionais: {player.nationalCup.length}
-          {player.nationalCup.map((nc) => (
-            <p key={nc}>{nc}</p>
-          ))}
+          <details>
+            <summary>Copas Nacionais: {player.nationalCup.length}</summary>
+            {player.nationalCup.map((nc) => (
+              <p key={nc}>{nc}</p>
+            ))}
+          </details>
         </div>
         <div>
-          Champions League: {player.champions.length}
-          {player.champions.map((ch) => (
-            <p key={ch}>{ch}</p>
-          ))}
+          <details>
+            <summary>Champions League: {player.champions.length}</summary>
+            {player.champions.map((ch) => (
+              <p key={ch}>{ch}</p>
+            ))}
+          </details>
         </div>
         <div>
-          Europa League: {player.europa.length}
-          {player.europa.map((el) => (
-            <p key={el}>{el}</p>
-          ))}
+          <details>
+            <summary>Europa League: {player.europa.length}</summary>
+            {player.europa.map((el) => (
+              <p key={el}>{el}</p>
+            ))}
+          </details>
         </div>
         <div>
-          Premiações: {player.goldenAwards.length}
-          {player.goldenAwards.map((b) => (
-            <p key={b}>{b}</p>
-          ))}
+          <details>
+            <summary>Premiações: {player.goldenAwards.length}</summary>
+            {player.goldenAwards.map((b) => (
+              <p key={b}>{b}</p>
+            ))}
+          </details>
         </div>
       </div>
     </>

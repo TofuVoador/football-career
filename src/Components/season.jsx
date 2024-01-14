@@ -24,6 +24,14 @@ const Season = (props) => {
       </div>
       <div className="season-titles">
         <div className="season-titles-list">
+          <details>
+            <summary>Top 10</summary>
+            {season.top10.map((team, index) => (
+              <p key={team + "top" + index}>
+                {team.name} ({team.power})
+              </p>
+            ))}
+          </details>
           {season.titles.map((t) => {
             let titleDesc = t.split("->");
             if (titleDesc.length > 1) {
