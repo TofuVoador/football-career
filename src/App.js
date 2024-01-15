@@ -320,7 +320,7 @@ function App() {
     }
 
     opponents.sort((a, b) => {
-      return a.power - b.power + RandomNumber(-2, 2) / 2;
+      return a.power - b.power + RandomNumber(-5, 5) / 5;
     });
 
     let description = "";
@@ -396,7 +396,7 @@ function App() {
         }
       }
       opponents.sort((a, b) => {
-        return a.power - b.power + RandomNumber(-2, 2) / 2;
+        return a.power - b.power + RandomNumber(-5, 5) / 5;
       });
 
       let playoffs = false;
@@ -494,7 +494,7 @@ function App() {
           opponents.push(op);
         }
         opponents.sort((a, b) => {
-          return a.power - b.power + RandomNumber(-2, 2) / 2;
+          return a.power - b.power + RandomNumber(-5, 5) / 5;
         });
         end = false;
         while (!end) {
@@ -531,30 +531,23 @@ function App() {
       newSeason.awardPoints -= 2.0;
       phase = 0;
 
-      let nationsLeft = nations;
+      let nationsLeft = [...nations];
 
-      let pots = [];
-      for (let potID = 0; potID < 4; potID++) {
-        let p = [];
-        for (let i = 0; i < 8; i++) {
-          p.push(nationsLeft[i + potID * 8]);
-        }
-        pots.push(p);
-      }
+      let pots = Array.from({ length: 4 }, (_, potID) =>
+        nationsLeft.slice(potID * 8, (potID + 1) * 8)
+      );
 
       let playerGroup = [];
 
       for (let potID = 0; potID < pots.length; potID++) {
-        let foundPLayer = false;
-        for (let nationID = 0; nationID < pots[potID].length; nationID++) {
-          let n = pots[potID][nationID];
-          if (n.name == newPlayer.nation.name) foundPLayer = true;
-        }
+        let foundPlayer = pots[potID].some(
+          (n) => n.name === newPlayer.nation.name
+        );
 
-        if (!foundPLayer)
-          playerGroup.push(
-            pots[potID][RandomNumber(0, pots[potID].length - 1)]
-          );
+        if (!foundPlayer) {
+          let randomIndex = RandomNumber(0, pots[potID].length - 1);
+          playerGroup.push(pots[potID][randomIndex]);
+        }
       }
 
       playerGroup.push(newPlayer.nation);
@@ -571,18 +564,18 @@ function App() {
         phase++;
         opponents = [];
         for (let i = 0; i < TournamentPath.length; i++) {
-          let op = GetRandomNation(5.5, null);
+          let op = GetRandomNation(6.5, null);
           while (
             op.name == player.nation.name ||
             opponents.includes(op) ||
             (i <= 7 && playerGroup.includes(op))
           ) {
-            op = GetRandomNation(5.5, null);
+            op = GetRandomNation(6.5, null);
           }
           opponents.push(op);
         }
         opponents.sort((a, b) => {
-          return a.power - b.power + RandomNumber(-2, 2) / 2;
+          return a.power - b.power + RandomNumber(-5, 5) / 5;
         });
         end = false;
         while (!end) {
@@ -775,7 +768,7 @@ function App() {
   function GetChampionsPosition(teams, playerTeam, bonus) {
     //sort by power
     teams.sort((a, b) => {
-      return a.power - b.power + RandomNumber(-2, 2) / 2;
+      return a.power - b.power + RandomNumber(-5, 5) / 5;
     });
 
     let points = new Array(teams.length).fill(0);
