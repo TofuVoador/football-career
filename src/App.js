@@ -320,7 +320,7 @@ function App() {
     }
 
     opponents.sort((a, b) => {
-      return a.power - b.power + RandomNumber(-5, 5) / 5;
+      return a.power - b.power + (RandomNumber(0, 5) - RandomNumber(0, 5)) / 5;
     });
 
     let description = "";
@@ -396,7 +396,9 @@ function App() {
         }
       }
       opponents.sort((a, b) => {
-        return a.power - b.power + RandomNumber(-5, 5) / 5;
+        return (
+          a.power - b.power + (RandomNumber(0, 5) - RandomNumber(0, 5)) / 5
+        );
       });
 
       let playoffs = false;
@@ -494,7 +496,9 @@ function App() {
           opponents.push(op);
         }
         opponents.sort((a, b) => {
-          return a.power - b.power + RandomNumber(-5, 5) / 5;
+          return (
+            a.power - b.power + (RandomNumber(0, 5) - RandomNumber(0, 5)) / 5
+          );
         });
         end = false;
         while (!end) {
@@ -564,18 +568,20 @@ function App() {
         phase++;
         opponents = [];
         for (let i = 0; i < TournamentPath.length; i++) {
-          let op = GetRandomNation(6.5, null);
+          let op = nations[RandomNumber(0, 12)];
           while (
             op.name == player.nation.name ||
             opponents.includes(op) ||
             (i <= 7 && playerGroup.includes(op))
           ) {
-            op = GetRandomNation(6.5, null);
+            op = nations[RandomNumber(0, 12)];
           }
           opponents.push(op);
         }
         opponents.sort((a, b) => {
-          return a.power - b.power + RandomNumber(-5, 5) / 5;
+          return (
+            a.power - b.power + (RandomNumber(0, 5) - RandomNumber(0, 5)) / 5
+          );
         });
         end = false;
         while (!end) {
@@ -768,7 +774,7 @@ function App() {
   function GetChampionsPosition(teams, playerTeam, bonus) {
     //sort by power
     teams.sort((a, b) => {
-      return a.power - b.power + RandomNumber(-5, 5) / 5;
+      return a.power - b.power + (RandomNumber(0, 5) - RandomNumber(0, 5)) / 5;
     });
 
     let points = new Array(teams.length).fill(0);
@@ -972,21 +978,6 @@ function App() {
     );
 
     return team;
-  }
-
-  function GetRandomNation(minPower = null, maxPower = null) {
-    let nationID = RandomNumber(0, nations.length - 1);
-    let nation = nations[nationID];
-
-    do {
-      nationID = RandomNumber(0, nations.length - 1);
-      nation = nations[nationID];
-    } while (
-      (minPower !== null && nation.power < minPower) ||
-      (maxPower !== null && nation.power > maxPower)
-    );
-
-    return nation;
   }
 
   function GetNewTeam(currentPlayer = null) {
