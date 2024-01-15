@@ -454,23 +454,23 @@ function App() {
       //Europa league
       phase = 0;
 
-      let op1 = GetRandomOpponent(3.5, 6.5);
+      let op1 = GetRandomOpponent(3.0, 7.0);
       while (newPlayer.team.league == op1.league) {
-        op1 = GetRandomOpponent(3.5, 6.5);
+        op1 = GetRandomOpponent(3.0, 7.0);
       }
 
-      let op2 = GetRandomOpponent(3.5, 6.5);
+      let op2 = GetRandomOpponent(3.0, 7.0);
       while (newPlayer.team.league == op2.league || op1.league == op2.league) {
-        op2 = GetRandomOpponent(3.5, 6.5);
+        op2 = GetRandomOpponent(3.0, 7.0);
       }
 
-      let op3 = GetRandomOpponent(3.5, 6.5);
+      let op3 = GetRandomOpponent(3.0, 7.0);
       while (
         newPlayer.team.league == op3.league ||
         op1.league == op3.league ||
         op2.league == op3.league
       ) {
-        op3 = GetRandomOpponent(3.5, 6.5);
+        op3 = GetRandomOpponent(3.0, 7.0);
       }
 
       let group = GetLeaguePosition(
@@ -485,13 +485,13 @@ function App() {
         phase++;
         opponents = [];
         for (let i = 0; i < TournamentPath.length; i++) {
-          let op = GetRandomOpponent(4.5, 8.5);
+          let op = GetRandomOpponent(4.0, 8.0);
           while (
             op.name == newPlayer.team.name ||
             opponents.includes(op) ||
             (i <= 2 && (op1.name == op.name || op2.name == op.name))
           ) {
-            op = GetRandomOpponent(4.5, 8.5);
+            op = GetRandomOpponent(4.0, 8.0);
           }
           opponents.push(op);
         }
@@ -968,10 +968,13 @@ function App() {
     let league = teams[leagueID];
     let team;
 
+    let count = 0;
     do {
       leagueID = RandomNumber(0, teams.length - 1);
       league = teams[leagueID];
       team = league.teams[RandomNumber(0, league.teams.length - 1)];
+      count++;
+      if (count >= 100) throw new Error("Limite atingido");
     } while (
       (minPower !== null && team.power < minPower) ||
       (maxPower !== null && team.power > maxPower)
