@@ -800,7 +800,7 @@ function App() {
         let game = GetMatch(
           teams[home],
           teams[away],
-          teams[home] === playerTeam ? bonus : 0
+          teams[home].name == playerTeam.name ? bonus : 0
         );
 
         if (game[0] > game[1]) {
@@ -829,7 +829,7 @@ function App() {
     teamPositions.sort((a, b) => points[b - 1] - points[a - 1]);
 
     let playerPosition = teamPositions.findIndex(
-      (position) => teams[position - 1] === playerTeam
+      (position) => teams[position - 1].name == playerTeam.name
     );
 
     let table = teamPositions.map((position) => teams[position - 1]);
