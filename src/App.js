@@ -172,7 +172,7 @@ function App() {
 
     //calcule the player's performance
 
-    newPlayer.performance = (RandomNumber(0, 20) - RandomNumber(0, 20)) / 10;
+    newPlayer.performance = 100; //(RandomNumber(0, 20) - RandomNumber(0, 20)) / 10;
 
     newPlayer.overall =
       GetOverall(newPlayer.potential, newPlayer.age) + newPlayer.performance;
@@ -283,7 +283,7 @@ function App() {
     let leagueResults = GetLeaguePosition(
       league.teams,
       newPlayer.team,
-      newSeason.performance / 2
+      newSeason.performance
     );
 
     let leaguePosition = leagueResults.pos;
@@ -359,15 +359,27 @@ function App() {
       //Champions League
       phase = 0;
 
-      let qualified = [newPlayer.team];
+      let qualified = [];
 
-      for (let l = 0; l < teams.length; l++) {
-        for (let i = 0; i < teams[l].championsSpots * 1.5; i++) {
-          let t = teams[l].teams[i];
+      for (let leagueID = 0; leagueID < teams.length; leagueID++) {
+        let championsSpots = teams[leagueID].championsSpots * 1.5;
+        let remainingTeams = deepClone([...teams[leagueID].teams]);
+        let selected = remainingTeams.splice(0, championsSpots);
 
-          if (!qualified.includes(t)) {
-            qualified.push(t);
+        if (newPlayer.team.league == teams[leagueID].name) {
+          let playerTeamSelected = selected.find(
+            (team) => team.name == newPlayer.team.name
+          );
+
+          if (!playerTeamSelected) {
+            let weakestTeamIndex = selected.length - 1;
+
+            selected[weakestTeamIndex] = newPlayer.team;
           }
+        }
+
+        for (let i = 0; i < selected.length; i++) {
+          qualified.push(selected[i]);
         }
       }
 
@@ -454,23 +466,23 @@ function App() {
       //Europa league
       phase = 0;
 
-      let op1 = GetRandomOpponent(3.0, 7.0);
+      let op1 = GetEuropaOpponent();
       while (newPlayer.team.league == op1.league) {
-        op1 = GetRandomOpponent(3.0, 7.0);
+        op1 = GetEuropaOpponent();
       }
 
-      let op2 = GetRandomOpponent(3.0, 7.0);
+      let op2 = GetEuropaOpponent();
       while (newPlayer.team.league == op2.league || op1.league == op2.league) {
-        op2 = GetRandomOpponent(3.0, 7.0);
+        op2 = GetEuropaOpponent();
       }
 
-      let op3 = GetRandomOpponent(3.0, 7.0);
+      let op3 = GetEuropaOpponent();
       while (
         newPlayer.team.league == op3.league ||
         op1.league == op3.league ||
         op2.league == op3.league
       ) {
-        op3 = GetRandomOpponent(3.0, 7.0);
+        op3 = GetEuropaOpponent();
       }
 
       let group = GetLeaguePosition(
@@ -485,13 +497,13 @@ function App() {
         phase++;
         opponents = [];
         for (let i = 0; i < TournamentPath.length; i++) {
-          let op = GetRandomOpponent(4.0, 8.0);
+          let op = GetEuropaOpponent();
           while (
             op.name == newPlayer.team.name ||
             opponents.includes(op) ||
             (i <= 2 && (op1.name == op.name || op2.name == op.name))
           ) {
-            op = GetRandomOpponent(4.0, 8.0);
+            op = GetEuropaOpponent();
           }
           opponents.push(op);
         }
@@ -836,7 +848,7 @@ function App() {
           let game = GetMatch(
             teams[home],
             teams[away],
-            0.5 + teams[home] === playerTeam ? bonus : 0.5
+            teams[home].name == playerTeam.name ? bonus : 0.5
           );
 
           if (game[0] > game[1]) {
@@ -963,22 +975,13 @@ function App() {
     return { result: result, game: gameDesc };
   }
 
-  function GetRandomOpponent(minPower = null, maxPower = null) {
+  function GetEuropaOpponent() {
     let leagueID = RandomNumber(0, teams.length - 1);
     let league = teams[leagueID];
-    let team;
-
-    let count = 0;
-    do {
-      leagueID = RandomNumber(0, teams.length - 1);
-      league = teams[leagueID];
-      team = league.teams[RandomNumber(0, league.teams.length - 1)];
-      count++;
-      if (count >= 100) throw new Error("Limite atingido");
-    } while (
-      (minPower !== null && team.power < minPower) ||
-      (maxPower !== null && team.power > maxPower)
-    );
+    let team =
+      league.teams[
+        league.championsSpots + RandomNumber(1, league.europaSpots * 2)
+      ];
 
     return team;
   }
