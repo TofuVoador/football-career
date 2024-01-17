@@ -172,7 +172,7 @@ function App() {
 
     //calcule the player's performance
 
-    newPlayer.performance = 100; //(RandomNumber(0, 20) - RandomNumber(0, 20)) / 10;
+    newPlayer.performance = (RandomNumber(0, 20) - RandomNumber(0, 20)) / 10;
 
     newPlayer.overall =
       GetOverall(newPlayer.potential, newPlayer.age) + newPlayer.performance;
