@@ -118,13 +118,10 @@ function App() {
       //if they change team
       let oldTeamLeague = newPlayer.team == null ? "" : newPlayer.team.league; //store old league table results
       newGeneralPerformance = [];
-      newPlayer.fame -= newPlayer.team == null ? 0 : newPlayer.team.power * 20; //remove fame buff
-      if (newPlayer.fame < 0) newPlayer.fame = 0;
       newPlayer.team = newTeam.team;
       newContract = newTeam.contract.duration;
       newPlayer.marketValue = newTeam.transferValue;
       newPlayer.wage = newTeam.contract.value;
-      newPlayer.fame += newPlayer.team.power * 20; //add fame buff
       let lp = 99;
       //if the new team is in the same league as the old
       if (oldTeamLeague == newPlayer.team.league) {
@@ -268,7 +265,7 @@ function App() {
         (1.0 + newSeason.performance / 10.0)
     );
 
-    newSeason.awardPoints = newSeason.performance * 2.0; //max = 4.0
+    newSeason.awardPoints = newSeason.performance * 2.0; //min = -4.0 | max = 4.0
 
     let med = 0;
     for (let i = 0; i < generalPerformance.length; i++) {
@@ -340,7 +337,7 @@ function App() {
 
       if (game.result) {
         phase++;
-        newSeason.awardPoints += 0.4; //max 0.4 x 5 = 2.0
+        newSeason.awardPoints += 0.6; //max 0.6 x 5 = 3.0
         if (phase >= TournamentPath.length - 2) {
           end = true;
           newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
@@ -670,6 +667,8 @@ function App() {
 
     newPlayer.fame += newSeason.awardPoints;
 
+    console.log(newSeason.awardPoints);
+
     let position = -1;
 
     if (newSeason.awardPoints + newPlayer.overall >= 100) {
@@ -677,13 +676,13 @@ function App() {
       newPlayer.goldenAwards.push(
         `Ballon D'or ${year} (${newPlayer.team.name})`
       );
-      newPlayer.fame += 80;
+      newPlayer.fame += 100;
       position = 1;
 
       newSeason.titles.push(`Ballon D'Or: 1º lugar`);
     } else if (newSeason.awardPoints + newPlayer.overall >= 91) {
       let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 91);
-      newPlayer.fame += pts * 4;
+      newPlayer.fame += pts * 5;
       position = 10 - pts;
       newSeason.titles.push(`Ballon D'Or: ${position}º lugar`);
     }
