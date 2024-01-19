@@ -581,13 +581,13 @@ function App() {
         phase++;
         opponents = [];
         for (let i = 0; i < TournamentPath.length; i++) {
-          let op = nations[RandomNumber(0, 12)];
+          let op = nations[RandomNumber(0, 5 + i)];
           while (
             op.name == player.nation.name ||
             opponents.includes(op) ||
             (i <= 7 && playerGroup.includes(op))
           ) {
-            op = nations[RandomNumber(0, 12)];
+            op = nations[RandomNumber(0, 5 + i)];
           }
           opponents.push(op);
         }
@@ -625,10 +625,7 @@ function App() {
       }
 
       description = `World Cup: ${TournamentPath[phase]} ${
-        newPlayer.overall > 75 + newPlayer.nation.power ||
-        (med > 0 && newPlayer.age < 36)
-          ? ""
-          : " (Não Convocado)"
+        playedWorldCup ? "" : " (Não Convocado)"
       } ${description}`;
 
       newSeason.worldCupPhase = phase;
@@ -663,8 +660,6 @@ function App() {
     }
 
     newPlayer.fame += newSeason.awardPoints;
-
-    console.log(newSeason.awardPoints);
 
     let position = -1;
 
