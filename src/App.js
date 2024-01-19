@@ -544,6 +544,10 @@ function App() {
       newSeason.awardPoints -= 2.0;
       phase = 0;
 
+      let playedWorldCup =
+        newPlayer.overall > 75 + newPlayer.nation.power ||
+        (med > 0 && newPlayer.age <= 36 && newPlayer.age >= 24);
+
       let nationsLeft = [...nations];
 
       let pots = Array.from({ length: 4 }, (_, potID) =>
@@ -568,7 +572,7 @@ function App() {
       let group = GetLeaguePosition(
         playerGroup,
         newPlayer.nation,
-        newSeason.performance
+        playedWorldCup ? newSeason.performance : 0
       );
 
       description = `-> ${TournamentPath[phase]}: ${group.table[0].name} / ${group.table[1].name} / ${group.table[2].name} / ${group.table[3].name}`;
@@ -597,7 +601,7 @@ function App() {
           let game = GetGameResult(
             newPlayer.nation,
             opponents[phase],
-            newSeason.performance,
+            playedWorldCup ? newSeason.performance : 0,
             1,
             true
           );
@@ -606,17 +610,10 @@ function App() {
 
           if (game.result) {
             phase++;
-            if (
-              newPlayer.overall > 75 + newPlayer.nation.power ||
-              (med > 0 && newPlayer.age <= 36 && newPlayer.age >= 20)
-            )
-              newSeason.awardPoints += 0.8; //max 0.8 x 5 - 2.0 = 2.0
+            if (playedWorldCup) newSeason.awardPoints += 0.8; //max 0.8 x 5 - 2.0 = 2.0
             if (phase >= TournamentPath.length - 1) {
               end = true;
-              if (
-                newPlayer.overall > 75 + newPlayer.nation.power ||
-                (med > 0 && newPlayer.age < 36 && newPlayer.age >= 20)
-              ) {
+              if (playedWorldCup) {
                 newPlayer.worldCup.push(`${year}`);
                 newPlayer.fame += 40;
               }
