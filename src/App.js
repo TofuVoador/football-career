@@ -564,10 +564,10 @@ function App() {
         if (!foundPlayer) {
           let randomIndex = RandomNumber(0, pots[potID].length - 1);
           playerGroup.push(pots[potID][randomIndex]);
+        } else {
+          playerGroup.push(newPlayer.nation);
         }
       }
-
-      playerGroup.push(newPlayer.nation);
 
       let group = GetLeaguePosition(
         playerGroup,
@@ -587,7 +587,7 @@ function App() {
             opponents.includes(op) ||
             (i <= 7 && playerGroup.includes(op))
           ) {
-            op = nations[RandomNumber(0, 5 + i)];
+            op = nations[RandomNumber(0, 2 + i)];
           }
           opponents.push(op);
         }
