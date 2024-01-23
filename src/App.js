@@ -199,9 +199,6 @@ function App() {
     let top10 = allTeams.slice(0, 10);
 
     let allNations = deepClone(UpdateNationsStats());
-    allNations.sort((a, b) => {
-      return b.power - a.power;
-    });
     let topNations = allNations.slice(0, 10);
 
     //set season start
@@ -580,14 +577,16 @@ function App() {
       if (group.pos <= 2) {
         phase++;
         opponents = [];
-        for (let i = 0; i < TournamentPath.length; i++) {
-          let op = nations[RandomNumber(0, 5 + i)];
+        let index = 0;
+        for (let i = 0; i < TournamentPath.length - 1; i++) {
+          let op = nations[index];
+          index += RandomNumber(1, 2);
           while (
             op.name == player.nation.name ||
-            opponents.includes(op) ||
             (i <= 7 && playerGroup.includes(op))
           ) {
-            op = nations[RandomNumber(0, 2 + i)];
+            op = nations[index];
+            index++;
           }
           opponents.push(op);
         }
@@ -596,6 +595,8 @@ function App() {
             a.power - b.power + (RandomNumber(0, 5) - RandomNumber(0, 5)) / 5
           );
         });
+        console.log(opponents);
+
         end = false;
         while (!end) {
           let game = GetGameResult(
@@ -1074,7 +1075,7 @@ function App() {
   }
 
   function UpdateNationsStats() {
-    let newNations = [...nations];
+    let newNations = deepClone([...nations]);
 
     for (let nationID = 0; nationID < newNations.length; nationID++) {
       let change = (RandomNumber(0, 5) - RandomNumber(0, 5)) / 10;
