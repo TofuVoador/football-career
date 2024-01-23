@@ -543,20 +543,55 @@ function App() {
 
       let allNations = deepClone([...nations]);
 
-      //filtrar apenas as top 32 nações
-      let nationsClassif = allNations.slice(0, 32);
+      let playedWorldCup =
+        newPlayer.overall > 75 + newPlayer.nation.power ||
+        (med > 0 && newPlayer.age <= 36 && newPlayer.age >= 24);
 
-      if (nationsClassif.some((n) => n.name == newPlayer.nation.name)) {
-        let playedWorldCup =
-          newPlayer.overall > 75 + newPlayer.nation.power ||
-          (med > 0 && newPlayer.age <= 36 && newPlayer.age >= 24);
+      let pots = Array.from({ length: 4 }, (_, potID) =>
+        allNations.slice(potID * 12, (potID + 1) * 12)
+      );
 
-        let pots = Array.from({ length: 4 }, (_, potID) =>
-          nationsClassif.slice(potID * 8, (potID + 1) * 8)
+      let playerGroup = [newPlayer.nation];
+
+      let potIndices = Array.from({ length: pots.length }, (_, index) => index);
+
+      for (let i = potIndices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [potIndices[i], potIndices[j]] = [potIndices[j], potIndices[i]];
+      }
+
+      for (let i = 0; i < potIndices.length; i++) {
+        let potID = potIndices[i];
+
+        let foundPlayer = pots[potID].some(
+          (n) => n.name === newPlayer.nation.name
         );
 
-        let playerGroup = [newPlayer.nation];
+        if (!foundPlayer) {
+          let validNations = pots[potID].filter(
+            (n) => !playerGroup.some((opp) => opp.continent == n.continent)
+          );
 
+          if (validNations.length > 0) {
+            let randomIndex = RandomNumber(0, validNations.length - 1);
+            playerGroup.push(validNations[randomIndex]);
+          } else {
+            validNations = pots[potID].filter((n) => n.continent == "Europa");
+            if (validNations.length > 0) {
+              let randomIndex = RandomNumber(0, validNations.length - 1);
+              playerGroup.push(validNations[randomIndex]);
+            } else {
+              console.log(playerGroup);
+              console.log("Não foi possível formar um grupo.");
+              playerGroup = [];
+            }
+          }
+        }
+      }
+
+      //tenta de novo
+      if (playerGroup.length == 0) {
+        console.log("Tentando de Novo...");
         let potIndices = Array.from(
           { length: pots.length },
           (_, index) => index
@@ -588,129 +623,78 @@ function App() {
                 let randomIndex = RandomNumber(0, validNations.length - 1);
                 playerGroup.push(validNations[randomIndex]);
               } else {
-                console.log(playerGroup);
-                console.log("Não foi possível formar um grupo.");
-                playerGroup = [];
+                throw new Error("Não foi possível formar um grupo.");
               }
             }
           }
         }
+      }
 
-        //tenta de novo
-        if (playerGroup.length == 0) {
-          console.log("Tentando de Novo...");
-          let potIndices = Array.from(
-            { length: pots.length },
-            (_, index) => index
+      let group = GetLeaguePosition(
+        playerGroup,
+        newPlayer.nation,
+        playedWorldCup ? newSeason.performance : 0
+      );
+
+      description = `-> ${TournamentPath[phase]}: ${group.table[0].name} / ${group.table[1].name} / ${group.table[2].name} / ${group.table[3].name}`;
+
+      if (group.pos <= 2) {
+        phase++;
+        opponents = [];
+        let index = 0;
+        for (let i = 0; i < TournamentPath.length - 1; i++) {
+          let op = nations[index];
+          index += RandomNumber(1, 2);
+          while (
+            op.name == player.nation.name ||
+            (i <= 7 && playerGroup.includes(op))
+          ) {
+            op = nations[index];
+            index++;
+          }
+          opponents.push(op);
+        }
+        opponents.sort((a, b) => {
+          return (
+            a.power - b.power + (RandomNumber(0, 5) - RandomNumber(0, 5)) / 5
+          );
+        });
+        console.log(opponents);
+
+        end = false;
+        while (!end) {
+          let game = GetGameResult(
+            newPlayer.nation,
+            opponents[phase],
+            playedWorldCup ? newSeason.performance : 0,
+            1,
+            true
           );
 
-          for (let i = potIndices.length - 1; i > 0; i--) {
-            const j = Math.floor(Math.random() * (i + 1));
-            [potIndices[i], potIndices[j]] = [potIndices[j], potIndices[i]];
-          }
+          description += `-> ${TournamentPath[phase]}: ${game.game}`;
 
-          for (let i = 0; i < potIndices.length; i++) {
-            let potID = potIndices[i];
-
-            let foundPlayer = pots[potID].some(
-              (n) => n.name === newPlayer.nation.name
-            );
-
-            if (!foundPlayer) {
-              let validNations = pots[potID].filter(
-                (n) => !playerGroup.some((opp) => opp.continent == n.continent)
-              );
-
-              if (validNations.length > 0) {
-                let randomIndex = RandomNumber(0, validNations.length - 1);
-                playerGroup.push(validNations[randomIndex]);
-              } else {
-                validNations = pots[potID].filter(
-                  (n) => n.continent == "Europa"
-                );
-                if (validNations.length > 0) {
-                  let randomIndex = RandomNumber(0, validNations.length - 1);
-                  playerGroup.push(validNations[randomIndex]);
-                } else {
-                  throw new Error("Não foi possível formar um grupo.");
-                }
-              }
-            }
-          }
-        }
-
-        let group = GetLeaguePosition(
-          playerGroup,
-          newPlayer.nation,
-          playedWorldCup ? newSeason.performance : 0
-        );
-
-        description = `-> ${TournamentPath[phase]}: ${group.table[0].name} / ${group.table[1].name} / ${group.table[2].name} / ${group.table[3].name}`;
-
-        if (group.pos <= 2) {
-          phase++;
-          opponents = [];
-          let index = 0;
-          for (let i = 0; i < TournamentPath.length - 1; i++) {
-            let op = nations[index];
-            index += RandomNumber(1, 2);
-            while (
-              op.name == player.nation.name ||
-              (i <= 7 && playerGroup.includes(op))
-            ) {
-              op = nations[index];
-              index++;
-            }
-            opponents.push(op);
-          }
-          opponents.sort((a, b) => {
-            return (
-              a.power - b.power + (RandomNumber(0, 5) - RandomNumber(0, 5)) / 5
-            );
-          });
-          console.log(opponents);
-
-          end = false;
-          while (!end) {
-            let game = GetGameResult(
-              newPlayer.nation,
-              opponents[phase],
-              playedWorldCup ? newSeason.performance : 0,
-              1,
-              true
-            );
-
-            description += `-> ${TournamentPath[phase]}: ${game.game}`;
-
-            if (game.result) {
-              phase++;
-              if (playedWorldCup) newSeason.awardPoints += 0.8; //max 0.8 x 5 - 2.0 = 2.0
-              if (phase >= TournamentPath.length - 1) {
-                end = true;
-                if (playedWorldCup) {
-                  newPlayer.worldCup.push(`${year}`);
-                  newPlayer.fame += 40;
-                }
-              }
-            } else {
+          if (game.result) {
+            phase++;
+            if (playedWorldCup) newSeason.awardPoints += 0.8; //max 0.8 x 5 - 2.0 = 2.0
+            if (phase >= TournamentPath.length - 1) {
               end = true;
+              if (playedWorldCup) {
+                newPlayer.worldCup.push(`${year}`);
+                newPlayer.fame += 40;
+              }
             }
+          } else {
+            end = true;
           }
         }
-
-        description = `World Cup: ${TournamentPath[phase]} ${
-          playedWorldCup ? "" : " (Não Convocado)"
-        } ${description}`;
-
-        newSeason.worldCupPhase = phase;
-        newSeason.titles.push(description);
-      } else {
-        let playerNationRank =
-          allNations.findIndex((n) => n.name === newPlayer.nation.name) + 1;
-
-        description = `World Cup (Seleção não classificada)->${playerNationRank}º lugar`;
-        newSeason.titles.push(description);
       }
+
+      description = `World Cup: ${TournamentPath[phase]} ${
+        playedWorldCup ? "" : " (Não Convocado)"
+      } ${description}`;
+
+      newSeason.worldCupPhase = phase;
+      newSeason.titles.push(description);
     }
 
     //add goals to the carrer summary

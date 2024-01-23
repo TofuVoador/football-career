@@ -120,7 +120,22 @@
     "power": 4
   },
   {
+    "name": "Argélia",
+    "continent": "África",
+    "power": 3.5
+  },
+  {
+    "name": "Colômbia",
+    "continent": "América do Sul",
+    "power": 3.5
+  },
+  {
     "name": "Costa do Marfim",
+    "continent": "África",
+    "power": 3.5
+  },
+  {
+    "name": "Egito",
     "continent": "África",
     "power": 3.5
   },
@@ -130,19 +145,39 @@
     "power": 3.5
   },
   {
-    "name": "Colômbia",
+    "name": "Sérvia",
+    "continent": "Europa",
+    "power": 3.5
+  },
+  {
+    "name": "Áustria",
+    "continent": "Europa",
+    "power": 3
+  },
+  {
+    "name": "Canadá",
+    "continent": "América do Norte",
+    "power": 3
+  },
+  {
+    "name": "Chile",
     "continent": "América do Sul",
     "power": 3
   },
   {
-    "name": "Egito",
+    "name": "Coréia do Sul",
+    "continent": "Ásia",
+    "power": 3
+  },
+  {
+    "name": "Tunísia",
     "continent": "África",
     "power": 3
   },
   {
-    "name": "Argélia",
-    "continent": "África",
-    "power": 2.5
+    "name": "Turquia",
+    "continent": "Europa",
+    "power": 3
   },
   {
     "name": "Austrália",
@@ -150,8 +185,8 @@
     "power": 2.5
   },
   {
-    "name": "Chile",
-    "continent": "América do Sul",
+    "name": "Camarões",
+    "continent": "África",
     "power": 2.5
   },
   {
@@ -165,38 +200,43 @@
     "power": 2.5
   },
   {
-    "name": "República Tcheca",
-    "continent": "Europa",
-    "power": 2.5
-  },
-  {
-    "name": "Camarões",
-    "continent": "África",
-    "power": 2.5
-  },
-  {
-    "name": "Áustria",
-    "continent": "Europa",
-    "power": 2.5
-  },
-  {
     "name": "Paraguai",
     "continent": "América do Sul",
     "power": 2.5
   },
   {
-    "name": "Canadá",
-    "continent": "América do Norte",
-    "power": 2.5
-  },
-  {
-    "name": "Sérvia",
+    "name": "Ucrânia",
     "continent": "Europa",
     "power": 2.5
   },
   {
-    "name": "Coréia do Sul",
+    "name": "China",
     "continent": "Ásia",
-    "power": 2.5
+    "power": 2
+  },
+  {
+    "name": "Emirados Árabes Unidos",
+    "continent": "Ásia",
+    "power": 2
+  },
+  {
+    "name": "Honduras",
+    "continent": "América do Norte",
+    "power": 2
+  },
+  {
+    "name": "Jamaica",
+    "continent": "América do Norte",
+    "power": 2
+  },
+  {
+    "name": "Nova Zelândia",
+    "continent": "Ásia",
+    "power": 2
+  },
+  {
+    "name": "Uzbequistão",
+    "continent": "Ásia",
+    "power": 2
   }
 ]
