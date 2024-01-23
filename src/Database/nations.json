@@ -152,11 +152,51 @@
   {
     "name": "Chile",
     "continent": "América do Sul",
-    "power": 2
+    "power": 2.5
   },
   {
     "name": "Costa Rica",
     "continent": "América do Norte",
-    "power": 2
+    "power": 2.5
+  },
+  {
+    "name": "Gana",
+    "continent": "África",
+    "power": 2.5
+  },
+  {
+    "name": "República Tcheca",
+    "continent": "Europa",
+    "power": 2.5
+  },
+  {
+    "name": "Camarões",
+    "continent": "África",
+    "power": 2.5
+  },
+  {
+    "name": "Áustria",
+    "continent": "Europa",
+    "power": 2.5
+  },
+  {
+    "name": "Paraguai",
+    "continent": "América do Sul",
+    "power": 2.5
+  },
+  {
+    "name": "Canadá",
+    "continent": "América do Norte",
+    "power": 2.5
+  },
+  {
+    "name": "Sérvia",
+    "continent": "Europa",
+    "power": 2.5
+  },
+  {
+    "name": "Coréia do Sul",
+    "continent": "Ásia",
+    "power": 2.5
   }
 ]
