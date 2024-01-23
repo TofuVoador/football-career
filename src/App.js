@@ -647,7 +647,7 @@ function App() {
           index += RandomNumber(1, 2);
           while (
             op.name == player.nation.name ||
-            (i <= 7 && playerGroup.includes(op))
+            (i <= 7 && playerGroup.some((n) => n.name == op.name))
           ) {
             op = nations[index];
             index++;
