@@ -545,24 +545,88 @@ function App() {
         newPlayer.overall > 75 + newPlayer.nation.power ||
         (med > 0 && newPlayer.age <= 36 && newPlayer.age >= 24);
 
-      let nationsLeft = [...nations];
+      let nationsLeft = deepClone([...nations]);
 
       let pots = Array.from({ length: 4 }, (_, potID) =>
         nationsLeft.slice(potID * 8, (potID + 1) * 8)
       );
 
-      let playerGroup = [];
+      let playerGroup = [newPlayer.nation];
 
-      for (let potID = 0; potID < pots.length; potID++) {
+      let potIndices = Array.from({ length: pots.length }, (_, index) => index);
+
+      for (let i = potIndices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [potIndices[i], potIndices[j]] = [potIndices[j], potIndices[i]];
+      }
+
+      for (let i = 0; i < potIndices.length; i++) {
+        let potID = potIndices[i];
+
         let foundPlayer = pots[potID].some(
           (n) => n.name === newPlayer.nation.name
         );
 
         if (!foundPlayer) {
-          let randomIndex = RandomNumber(0, pots[potID].length - 1);
-          playerGroup.push(pots[potID][randomIndex]);
-        } else {
-          playerGroup.push(newPlayer.nation);
+          let validNations = pots[potID].filter(
+            (n) => !playerGroup.some((opp) => opp.continent == n.continent)
+          );
+
+          if (validNations.length > 0) {
+            let randomIndex = RandomNumber(0, validNations.length - 1);
+            playerGroup.push(validNations[randomIndex]);
+          } else {
+            validNations = pots[potID].filter((n) => n.continent == "Europa");
+            if (validNations.length > 0) {
+              let randomIndex = RandomNumber(0, validNations.length - 1);
+              playerGroup.push(validNations[randomIndex]);
+            } else {
+              console.log(playerGroup);
+              console.log("Não foi possível formar um grupo.");
+              playerGroup = [];
+            }
+          }
+        }
+      }
+
+      //tenta de novo
+      if (playerGroup.length == 0) {
+        console.log("Tentando de Novo...");
+        let potIndices = Array.from(
+          { length: pots.length },
+          (_, index) => index
+        );
+
+        for (let i = potIndices.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [potIndices[i], potIndices[j]] = [potIndices[j], potIndices[i]];
+        }
+
+        for (let i = 0; i < potIndices.length; i++) {
+          let potID = potIndices[i];
+
+          let foundPlayer = pots[potID].some(
+            (n) => n.name === newPlayer.nation.name
+          );
+
+          if (!foundPlayer) {
+            let validNations = pots[potID].filter(
+              (n) => !playerGroup.some((opp) => opp.continent == n.continent)
+            );
+
+            if (validNations.length > 0) {
+              let randomIndex = RandomNumber(0, validNations.length - 1);
+              playerGroup.push(validNations[randomIndex]);
+            } else {
+              validNations = pots[potID].filter((n) => n.continent == "Europa");
+              if (validNations.length > 0) {
+                let randomIndex = RandomNumber(0, validNations.length - 1);
+                playerGroup.push(validNations[randomIndex]);
+              } else {
+                throw new Error("Não foi possível formar um grupo.");
+              }
+            }
+          }
         }
       }
 
