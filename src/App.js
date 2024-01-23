@@ -582,49 +582,7 @@ function App() {
               playerGroup.push(validNations[randomIndex]);
             } else {
               console.log(playerGroup);
-              console.log("Não foi possível formar um grupo.");
-              playerGroup = [];
-            }
-          }
-        }
-      }
-
-      //tenta de novo
-      if (playerGroup.length == 0) {
-        console.log("Tentando de Novo...");
-        let potIndices = Array.from(
-          { length: pots.length },
-          (_, index) => index
-        );
-
-        for (let i = potIndices.length - 1; i > 0; i--) {
-          const j = Math.floor(Math.random() * (i + 1));
-          [potIndices[i], potIndices[j]] = [potIndices[j], potIndices[i]];
-        }
-
-        for (let i = 0; i < potIndices.length; i++) {
-          let potID = potIndices[i];
-
-          let foundPlayer = pots[potID].some(
-            (n) => n.name === newPlayer.nation.name
-          );
-
-          if (!foundPlayer) {
-            let validNations = pots[potID].filter(
-              (n) => !playerGroup.some((opp) => opp.continent == n.continent)
-            );
-
-            if (validNations.length > 0) {
-              let randomIndex = RandomNumber(0, validNations.length - 1);
-              playerGroup.push(validNations[randomIndex]);
-            } else {
-              validNations = pots[potID].filter((n) => n.continent == "Europa");
-              if (validNations.length > 0) {
-                let randomIndex = RandomNumber(0, validNations.length - 1);
-                playerGroup.push(validNations[randomIndex]);
-              } else {
-                throw new Error("Não foi possível formar um grupo.");
-              }
+              throw new Error("Não foi possível gerar o grupo para a copa");
             }
           }
         }
