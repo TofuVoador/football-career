@@ -49,11 +49,6 @@ function App() {
     overall: null,
     performance: null,
     leagueTable: null,
-    leaguePosition: null,
-    nationalCupPhase: null,
-    championsPhase: null,
-    europaPhase: null,
-    worldCupPhase: null,
     fame: null,
     marketValue: null,
   });
@@ -66,9 +61,9 @@ function App() {
         RandomNumber(0, 5)) /
       2,
     age: 17,
-    nation: Nations[RandomNumber(0, Nations.length - 1)],
+    nation: null,
     team: null,
-    position: GetNewPosition(),
+    position: null,
     wage: 1,
     overall: 70,
     performance: 0,
@@ -98,7 +93,33 @@ function App() {
 
   const [transfer2, setTransfer2] = useState(GetNewTeam());
 
+  const initStat1 = {
+    pos: GetNewPosition(),
+    nat: Nations[RandomNumber(0, Nations.length - 1)],
+  };
+
+  const initStat2 = {
+    pos: GetNewPosition(),
+    nat: Nations[RandomNumber(0, Nations.length - 1)],
+  };
+
+  const initStat3 = {
+    pos: GetNewPosition(),
+    nat: Nations[RandomNumber(0, Nations.length - 1)],
+  };
+
   const [renew, setRenew] = useState({ value: 0, duration: 0 });
+
+  function ChooseInitStats(initStat) {
+    document.getElementById("team-choice").style.display = "flex";
+    document.getElementById("init-choice").style.display = "none";
+
+    let newPlayer = player;
+    newPlayer.position = initStat.pos;
+    newPlayer.nation = initStat.nat;
+
+    setPlayer(newPlayer);
+  }
 
   function ChooseTeam(newTeam = null) {
     //next season
@@ -188,7 +209,7 @@ function App() {
     newPlayer.fame +=
       (starting / 100 + newPlayer.performance) * newPlayer.team.power;
 
-    let newTeams = deepClone(UpdateTeamsStats());
+    let newTeams = UpdateTeamsStats();
     let allTeams = [];
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
       allTeams = allTeams.concat([...newTeams[leagueID].teams]);
@@ -198,8 +219,11 @@ function App() {
     });
     let top10 = allTeams.slice(0, 10);
 
-    let allNations = deepClone(UpdateNationsStats());
+    let allNations = UpdateNationsStats();
     let topNations = allNations.slice(0, 12);
+
+    newPlayer.team = allTeams.find((t) => t.name == newPlayer.team.name); //find player's team by name and update
+    newPlayer.nation = allNations.find((n) => n.name == newPlayer.nation.name); //find player's nation by name and update
 
     //set season start
     let newSeason = {
@@ -217,11 +241,6 @@ function App() {
       performance: newPlayer.performance,
       awardPoints: 0,
       leagueTable: [],
-      leaguePosition: 1,
-      nationalCupPhase: 0,
-      championsPhase: 0,
-      europaPhase: 0,
-      worldCupPhase: 0,
       fame: newPlayer.fame,
       marketValue: newPlayer.marketValue,
     };
@@ -294,8 +313,8 @@ function App() {
       newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
 
     newSeason.awardPoints += (7 - leaguePosition) / 2; //max = 3.0
-    newSeason.leaguePosition = leaguePosition;
-    newSeason.titles.push(`Liga: ${newSeason.leaguePosition}º lugar ${topSix}`);
+
+    newSeason.titles.push(`Liga: ${leaguePosition}º lugar ${topSix}`);
 
     //national cup
     let opponentsLeft = [...league.teams];
@@ -345,7 +364,6 @@ function App() {
 
     description = `National Cup: ${TournamentPath[phase + 1]} ${description}`;
 
-    newSeason.nationalCupPhase = phase;
     newSeason.titles.push(description);
 
     if (newPlayer.championsQualification) {
@@ -449,7 +467,6 @@ function App() {
 
       description = `Champions League: ${TournamentPath[phase]} ${description}`;
 
-      newSeason.championsPhase = phase;
       newSeason.titles.push(description);
     }
 
@@ -528,7 +545,6 @@ function App() {
 
       description = `Europa League: ${TournamentPath[phase]} ${description}`;
 
-      newSeason.europaPhase = phase;
       newSeason.titles.push(description);
     }
 
@@ -613,7 +629,6 @@ function App() {
             a.power - b.power + (RandomNumber(0, 5) - RandomNumber(0, 5)) / 5
           );
         });
-        console.log(opponents);
 
         end = false;
         while (!end) {
@@ -646,7 +661,6 @@ function App() {
         playedWorldCup ? "" : " (Não Convocado)"
       } ${description}`;
 
-      newSeason.worldCupPhase = phase;
       newSeason.titles.push(description);
     }
 
@@ -1090,7 +1104,6 @@ function App() {
         return b.power - a.power;
       });
     }
-    console.log(newTeams);
     setTeams(newTeams);
     return newTeams;
   }
@@ -1121,7 +1134,6 @@ function App() {
     newNations.sort((a, b) => {
       return b.power - a.power;
     });
-    console.log(newNations);
     setNations(newNations);
     return newNations;
   }
@@ -1155,7 +1167,8 @@ function App() {
         <h1>Football Career Simulator</h1>
         <h3 style={{ marginTop: "1rem" }}>Como Jogar</h3>
         <ol style={{ marginLeft: "2rem" }}>
-          <li>Escolha entre ficar ou transferir para outro time.</li>
+          <li>Escolha seus dados iniciais.</li>
+          <li>Escolha qual proposta você aceitará.</li>
           <li>O jogo simulará a partir do que você escolheu</li>
           <li>
             Você pode recarregar a página para alterar os atributos iniciais do
@@ -1169,7 +1182,24 @@ function App() {
           <Season key={index} season={s} open={index >= seasons.length - 1} />
         ))}
       </div>
-      <div className="choices" id="team-choice">
+      <div className="choices" id="init-choice">
+        <a className="d-alert" onClick={() => ChooseInitStats(initStat1)}>
+          <p>
+            {initStat1.pos.title} | {initStat1.nat.name}
+          </p>
+        </a>
+        <a className="d-alert" onClick={() => ChooseInitStats(initStat2)}>
+          <p>
+            {initStat2.pos.title} | {initStat2.nat.name}
+          </p>
+        </a>
+        <a className="d-alert" onClick={() => ChooseInitStats(initStat3)}>
+          <p>
+            {initStat3.pos.title} | {initStat3.nat.name}
+          </p>
+        </a>
+      </div>
+      <div className="choices" id="team-choice" style={{ display: "none" }}>
         <a
           className="d-stay"
           id="decision-stay"
@@ -1178,7 +1208,7 @@ function App() {
         >
           <p>Continuar em {player.team == null ? "" : player.team.name}</p>
           <p>
-            (${renew.value}M |{" "}
+            (${renew.value}M/ano |{" "}
             {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")} |{" "}
             Elenco: {player.team == null ? "" : player.team.power})
           </p>
@@ -1190,8 +1220,8 @@ function App() {
         >
           <p>Transferir para {transfer1.team.name}</p>{" "}
           <p>
-            (${transfer1.contract.value}M | {transfer1.contract.duration} anos |{" "}
-            Elenco: {transfer1.team.power})
+            (${transfer1.contract.value}M/ano | {transfer1.contract.duration}{" "}
+            anos | Elenco: {transfer1.team.power})
           </p>
         </a>
         <a
@@ -1201,8 +1231,8 @@ function App() {
         >
           <p>Transferir para {transfer2.team.name}</p>{" "}
           <p>
-            (${transfer2.contract.value}M | {transfer2.contract.duration} anos |{" "}
-            Elenco: {transfer2.team.power})
+            (${transfer2.contract.value}M/ano | {transfer2.contract.duration}{" "}
+            anos | Elenco: {transfer2.team.power})
           </p>
         </a>
         <a
@@ -1231,8 +1261,13 @@ function App() {
             {StarPath[Math.min(Math.floor(maxFame / 100), StarPath.length - 1)]}
             )
           </p>
-          <p>Posição: {player.position.title}</p>
-          <p>Seleção: {player.nation.name}</p>
+          <p>
+            Posição:{" "}
+            {player.position == null ? "A definir" : player.position.title}
+          </p>
+          <p>
+            Seleção: {player.nation == null ? "A definir" : player.nation.name}
+          </p>
         </div>
         <details>
           <summary>Copa do Mundo: {player.worldCup.length}</summary>
