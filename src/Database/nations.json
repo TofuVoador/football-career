@@ -2,241 +2,289 @@
   {
     "name": "Argentina",
     "continent": "América do Sul",
+    "squad": 9.5,
     "power": 9.5
   },
   {
     "name": "França",
     "continent": "Europa",
+    "squad": 9.5,
     "power": 9.5
   },
   {
     "name": "Brasil",
     "continent": "América do Sul",
+    "squad": 9,
     "power": 9
   },
   {
     "name": "Inglaterra",
     "continent": "Europa",
+    "squad": 9,
     "power": 9
   },
   {
     "name": "Espanha",
     "continent": "Europa",
+    "squad": 8.5,
     "power": 8.5
   },
   {
     "name": "Países Baixos",
     "continent": "Europa",
+    "squad": 8.5,
     "power": 8.5
   },
   {
     "name": "Alemanha",
     "continent": "Europa",
+    "squad": 8,
     "power": 8
   },
   {
     "name": "Portugal",
     "continent": "Europa",
+    "squad": 8,
     "power": 8
   },
   {
     "name": "Croácia",
     "continent": "Europa",
+    "squad": 7.5,
     "power": 7.5
   },
   {
     "name": "Itália",
     "continent": "Europa",
+    "squad": 7.5,
     "power": 7.5
   },
   {
     "name": "Japão",
     "continent": "Ásia",
+    "squad": 7,
     "power": 7
   },
   {
     "name": "Uruguai",
     "continent": "América do Sul",
+    "squad": 7,
     "power": 7
   },
   {
     "name": "Bélgica",
     "continent": "Europa",
+    "squad": 6.5,
     "power": 6.5
   },
   {
     "name": "Marrocos",
     "continent": "África",
+    "squad": 6.5,
     "power": 6.5
   },
   {
     "name": "Dinamarca",
     "continent": "Europa",
+    "squad": 6,
     "power": 6
   },
   {
     "name": "Estados Unidos",
     "continent": "América do Norte",
+    "squad": 6,
     "power": 6
   },
   {
     "name": "México",
     "continent": "América do Norte",
+    "squad": 5.5,
     "power": 5.5
   },
   {
     "name": "Suíça",
     "continent": "Europa",
+    "squad": 5.5,
     "power": 5.5
   },
   {
     "name": "Arábia Saudita",
     "continent": "Ásia",
+    "squad": 5,
     "power": 5
   },
   {
     "name": "Nigéria",
     "continent": "África",
+    "squad": 5,
     "power": 5
   },
   {
     "name": "Polônia",
     "continent": "Europa",
+    "squad": 4.5,
     "power": 4.5
   },
   {
     "name": "Senegal",
     "continent": "África",
+    "squad": 4.5,
     "power": 4.5
   },
   {
     "name": "Noruega",
     "continent": "Europa",
+    "squad": 4,
     "power": 4
   },
   {
     "name": "Suécia",
     "continent": "Europa",
+    "squad": 4,
     "power": 4
   },
   {
     "name": "Argélia",
     "continent": "África",
+    "squad": 3.5,
     "power": 3.5
   },
   {
     "name": "Colômbia",
     "continent": "América do Sul",
+    "squad": 3.5,
     "power": 3.5
   },
   {
     "name": "Costa do Marfim",
     "continent": "África",
+    "squad": 3.5,
     "power": 3.5
   },
   {
     "name": "Egito",
     "continent": "África",
+    "squad": 3.5,
     "power": 3.5
   },
   {
     "name": "Irã",
     "continent": "Ásia",
+    "squad": 3.5,
     "power": 3.5
   },
   {
     "name": "Sérvia",
     "continent": "Europa",
+    "squad": 3.5,
     "power": 3.5
   },
   {
     "name": "Áustria",
     "continent": "Europa",
+    "squad": 3,
     "power": 3
   },
   {
     "name": "Canadá",
     "continent": "América do Norte",
+    "squad": 3,
     "power": 3
   },
   {
     "name": "Chile",
     "continent": "América do Sul",
+    "squad": 3,
     "power": 3
   },
   {
     "name": "Coréia do Sul",
     "continent": "Ásia",
+    "squad": 3,
     "power": 3
   },
   {
     "name": "Tunísia",
     "continent": "África",
+    "squad": 3,
     "power": 3
   },
   {
     "name": "Turquia",
     "continent": "Europa",
+    "squad": 3,
     "power": 3
   },
   {
     "name": "Austrália",
     "continent": "Ásia",
+    "squad": 2.5,
     "power": 2.5
   },
   {
     "name": "Camarões",
     "continent": "África",
+    "squad": 2.5,
     "power": 2.5
   },
   {
     "name": "Costa Rica",
     "continent": "América do Norte",
+    "squad": 2.5,
     "power": 2.5
   },
   {
     "name": "Gana",
     "continent": "África",
+    "squad": 2.5,
     "power": 2.5
   },
   {
     "name": "Paraguai",
     "continent": "América do Sul",
+    "squad": 2.5,
     "power": 2.5
   },
   {
     "name": "Ucrânia",
     "continent": "Europa",
+    "squad": 2.5,
     "power": 2.5
   },
   {
     "name": "China",
     "continent": "Ásia",
+    "squad": 2,
     "power": 2
   },
   {
     "name": "Emirados Árabes Unidos",
     "continent": "Ásia",
+    "squad": 2,
     "power": 2
   },
   {
     "name": "Honduras",
     "continent": "América do Norte",
+    "squad": 2,
     "power": 2
   },
   {
     "name": "Jamaica",
     "continent": "América do Norte",
+    "squad": 2,
     "power": 2
   },
   {
     "name": "Nova Zelândia",
     "continent": "Ásia",
+    "squad": 2,
     "power": 2
   },
   {
     "name": "Uzbequistão",
     "continent": "Ásia",
+    "squad": 2,
     "power": 2
   }
 ]

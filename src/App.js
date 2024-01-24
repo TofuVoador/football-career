@@ -199,7 +199,7 @@ function App() {
     let top10 = allTeams.slice(0, 10);
 
     let allNations = deepClone(UpdateNationsStats());
-    let topNations = allNations.slice(0, 10);
+    let topNations = allNations.slice(0, 12);
 
     //set season start
     let newSeason = {
@@ -326,8 +326,7 @@ function App() {
         newPlayer.team,
         opponents[phase],
         newSeason.performance,
-        phase >= TournamentPath.length - 2 ? 1 : 2,
-        false
+        phase >= TournamentPath.length - 2 ? 1 : 2
       );
 
       description += `-> ${TournamentPath[phase + 1]}: ${game.game}`;
@@ -413,8 +412,7 @@ function App() {
           newPlayer.team,
           opponents[0],
           newSeason.performance,
-          2,
-          true
+          2
         );
 
         description += `-> Playoff: ${game.game}`;
@@ -430,8 +428,7 @@ function App() {
             newPlayer.team,
             opponents[phase],
             newSeason.performance,
-            phase >= TournamentPath.length - 2 ? 1 : 2,
-            true
+            phase >= TournamentPath.length - 2 ? 1 : 2
           );
 
           description += `-> ${TournamentPath[phase]}: ${game.game}`;
@@ -512,8 +509,7 @@ function App() {
             newPlayer.team,
             opponents[phase],
             newSeason.performance,
-            phase >= TournamentPath.length - 2 ? 1 : 2,
-            false
+            phase >= TournamentPath.length - 2 ? 1 : 2
           );
 
           description += `-> ${TournamentPath[phase]}: ${game.game}`;
@@ -625,8 +621,7 @@ function App() {
             newPlayer.nation,
             opponents[phase],
             playedWorldCup ? newSeason.performance : 0,
-            1,
-            true
+            1
           );
 
           description += `-> ${TournamentPath[phase]}: ${game.game}`;
@@ -884,7 +879,7 @@ function App() {
     teamPositions.sort((a, b) => points[b - 1] - points[a - 1]);
 
     let playerPosition = teamPositions.findIndex(
-      (position) => teams[position - 1] === playerTeam
+      (position) => teams[position - 1].name == playerTeam.name
     );
 
     let table = teamPositions.map((position) => teams[position - 1]);
@@ -895,20 +890,18 @@ function App() {
     };
   }
 
-  function GetMatch(team1, team2, bonus, important) {
-    let importance = important ? 1 : 1.5;
-
+  function GetMatch(team1, team2, bonus) {
     let team1Points =
-      (team1.power / importance +
+      (team1.power +
         (RandomNumber(0, team1.power) + RandomNumber(0, team1.power)) -
         (RandomNumber(0, team2.power) + RandomNumber(0, team2.power))) /
-      (3 / importance);
+      3;
 
     let team2Points =
-      (team2.power / importance +
+      (team2.power +
         (RandomNumber(0, team2.power) + RandomNumber(0, team2.power)) -
         (RandomNumber(0, team1.power) + RandomNumber(0, team1.power))) /
-      (3 / importance);
+      3;
 
     let team1Score = Math.floor((team1Points + bonus) / 2.5);
     let team2Score = Math.floor(team2Points / 2.5);
@@ -950,25 +943,19 @@ function App() {
     return [team1goals, team2goals];
   }
 
-  function GetGameResult(
-    team1,
-    team2,
-    bonus,
-    numberOfGames = 1,
-    important = true
-  ) {
+  function GetGameResult(team1, team2, bonus, numberOfGames = 1) {
     let gameDesc = "";
     let teamGoals1 = 0;
     let teamGoals2 = 0;
 
     for (let i = 0; i < numberOfGames; i++) {
-      let game = GetMatch(team1, team2, bonus, important);
+      let game = GetMatch(team1, team2, bonus);
       teamGoals1 += game[0];
       teamGoals2 += game[1];
     }
 
     if (teamGoals1 == teamGoals2) {
-      let extra = GetMatch(team1, team2, bonus, important);
+      let extra = GetMatch(team1, team2, bonus);
       teamGoals1 += extra[0];
       teamGoals2 += extra[1];
 
@@ -1071,27 +1058,39 @@ function App() {
   }
 
   function UpdateTeamsStats() {
-    let newTeams = [...teams];
+    let newTeams = deepClone([...teams]);
 
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
       for (let teamID = 0; teamID < newTeams[leagueID].teams.length; teamID++) {
         let change = (RandomNumber(0, 5) - RandomNumber(0, 5)) / 10;
-        newTeams[leagueID].teams[teamID].power += change;
+
+        newTeams[leagueID].teams[teamID].power =
+          newTeams[leagueID].teams[teamID].squad + change * 2;
+
+        newTeams[leagueID].teams[teamID].squad += change;
 
         newTeams[leagueID].teams[teamID].power =
           Math.round(newTeams[leagueID].teams[teamID].power * 10) / 10;
+
+        newTeams[leagueID].teams[teamID].squad =
+          Math.round(newTeams[leagueID].teams[teamID].squad * 10) / 10;
 
         if (newTeams[leagueID].teams[teamID].power > 10)
           newTeams[leagueID].teams[teamID].power = 10;
         else if (newTeams[leagueID].teams[teamID].power < 1)
           newTeams[leagueID].teams[teamID].power = 1;
+
+        if (newTeams[leagueID].teams[teamID].squad > 10)
+          newTeams[leagueID].teams[teamID].squad = 10;
+        else if (newTeams[leagueID].teams[teamID].squad < 1)
+          newTeams[leagueID].teams[teamID].squad = 1;
       }
 
       newTeams[leagueID].teams.sort((a, b) => {
         return b.power - a.power;
       });
     }
-
+    console.log(newTeams);
     setTeams(newTeams);
     return newTeams;
   }
@@ -1101,18 +1100,28 @@ function App() {
 
     for (let nationID = 0; nationID < newNations.length; nationID++) {
       let change = (RandomNumber(0, 5) - RandomNumber(0, 5)) / 10;
-      newNations[nationID].power += change;
+
+      newNations[nationID].power = newNations[nationID].squad + change * 2;
+
+      newNations[nationID].squad += change;
 
       newNations[nationID].power =
         Math.round(newNations[nationID].power * 10) / 10;
 
+      newNations[nationID].squad =
+        Math.round(newNations[nationID].squad * 10) / 10;
+
       if (newNations[nationID].power > 10) newNations[nationID].power = 10;
       else if (newNations[nationID].power < 1) newNations[nationID].power = 1;
+
+      if (newNations[nationID].squad > 10) newNations[nationID].squad = 10;
+      else if (newNations[nationID].squad < 1) newNations[nationID].squad = 1;
     }
 
     newNations.sort((a, b) => {
       return b.power - a.power;
     });
+    console.log(newNations);
     setNations(newNations);
     return newNations;
   }
