@@ -1076,7 +1076,7 @@ function App() {
 
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
       for (let teamID = 0; teamID < newTeams[leagueID].teams.length; teamID++) {
-        let change = (RandomNumber(0, 5) - RandomNumber(0, 5)) / 10;
+        let change = (RandomNumber(0, 4) - RandomNumber(0, 4)) / 10;
 
         newTeams[leagueID].teams[teamID].power =
           newTeams[leagueID].teams[teamID].squad + change * 2;
@@ -1112,7 +1112,7 @@ function App() {
     let newNations = deepClone([...nations]);
 
     for (let nationID = 0; nationID < newNations.length; nationID++) {
-      let change = (RandomNumber(0, 5) - RandomNumber(0, 5)) / 10;
+      let change = (RandomNumber(0, 4) - RandomNumber(0, 4)) / 10;
 
       newNations[nationID].power = newNations[nationID].squad + change * 2;
 
