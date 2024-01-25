@@ -54,12 +54,7 @@ function App() {
   });
 
   const [player, setPlayer] = useState({
-    potential:
-      (RandomNumber(0, 5) +
-        RandomNumber(0, 5) +
-        RandomNumber(0, 5) +
-        RandomNumber(0, 5)) /
-      2,
+    potential: RandomNumber(0, 6) + RandomNumber(0, 6),
     age: 17,
     nation: null,
     team: null,
@@ -206,9 +201,6 @@ function App() {
     if (starting > 100) starting = 100;
     else if (starting < 0) starting = 0;
 
-    newPlayer.fame +=
-      (starting / 100 + newPlayer.performance) * newPlayer.team.power;
-
     let newTeams = UpdateTeamsStats();
     let allTeams = [];
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
@@ -281,7 +273,7 @@ function App() {
         (1.0 + newSeason.performance / 10.0)
     );
 
-    newSeason.awardPoints = newSeason.performance * 2.0; //min = -4.0 | max = 4.0
+    newSeason.awardPoints = newSeason.performance; //min = -2.0 | max = 2.0
 
     let med = 0;
     for (let i = 0; i < generalPerformance.length; i++) {
@@ -309,10 +301,14 @@ function App() {
       topSix += `-> ${p + 1}º: ${leagueResults.table[p].name}`;
     }
 
-    if (leaguePosition == 1)
-      newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
+    newSeason.awardPoints += (5 - leaguePosition) / 2; //max = 2.0
 
-    newSeason.awardPoints += (7 - leaguePosition) / 2; //max = 3.0
+    newPlayer.fame += (6 - leaguePosition) * league.championsSpots;
+
+    if (leaguePosition == 1) {
+      newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
+      newSeason.awardPoints += 1.0; //max 0.2 + 1.0 = 3.0
+    }
 
     newSeason.titles.push(`Liga: ${leaguePosition}º lugar ${topSix}`);
 
@@ -352,10 +348,11 @@ function App() {
 
       if (game.result) {
         phase++;
-        newSeason.awardPoints += 0.6; //max 0.6 x 5 = 3.0
+        newSeason.awardPoints += 0.3; //max 0.3 x 5 = 1.5
         if (phase >= TournamentPath.length - 2) {
           end = true;
           newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
+          newSeason.awardPoints += 1.5; //max 0.3 x 5 + 1.5 = 3.0
         }
       } else {
         end = true;
@@ -409,7 +406,7 @@ function App() {
         );
 
         if (availableOpponents.length > 0) {
-          let randomIndex = RandomNumber(0, 3);
+          let randomIndex = RandomNumber(0, 2);
           let chosenOpponent = availableOpponents[randomIndex];
           opponents.push(chosenOpponent);
 
@@ -453,11 +450,12 @@ function App() {
 
           if (game.result) {
             phase++;
-            newSeason.awardPoints += 0.8; //max 0.8 x 5 = 4.0
+            newSeason.awardPoints += 0.5; //max 0.5 x 5 = 2.5
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
               newPlayer.fame += 40;
+              newSeason.awardPoints += 2.5; //max 0.5 x 5 + 2.5 = 5.0
             }
           } else {
             end = true;
@@ -643,7 +641,7 @@ function App() {
 
           if (game.result) {
             phase++;
-            if (playedWorldCup) newSeason.awardPoints += 0.8; //max 0.8 x 5 - 2.0 = 2.0
+            if (playedWorldCup) newSeason.awardPoints += 1.0; //max 1.0 x 5 - 2.5 = 2.5
             if (phase >= TournamentPath.length - 1) {
               end = true;
               if (playedWorldCup) {
@@ -676,7 +674,7 @@ function App() {
       newPlayer.goldenAwards.push(
         `Chuteiras de Ouro ${year} (${newPlayer.team.name})`
       );
-      newSeason.awardPoints += 1;
+      newSeason.awardPoints += 1.0;
       newPlayer.fame += 20;
       newSeason.titles.push("Chuteira de Ouro");
     } else if (
@@ -686,12 +684,14 @@ function App() {
       newPlayer.goldenAwards.push(
         `Luvas de Ouro ${year} (${newPlayer.team.name})`
       );
-      newSeason.awardPoints += 1;
+      newSeason.awardPoints += 1.0;
       newPlayer.fame += 20;
       newSeason.titles.push("Luva de Ouro");
     }
 
-    newPlayer.fame += newSeason.awardPoints;
+    newPlayer.fame += newSeason.performance * 5;
+
+    console.log(newSeason.awardPoints);
 
     let position = -1;
 
@@ -706,7 +706,7 @@ function App() {
       newSeason.titles.push(`Ballon D'Or: 1º lugar`);
     } else if (newSeason.awardPoints + newPlayer.overall >= 91) {
       let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 91);
-      newPlayer.fame += pts * 5;
+      newPlayer.fame += pts * 10;
       position = 10 - pts;
       newSeason.titles.push(`Ballon D'Or: ${position}º lugar`);
     }
@@ -906,16 +906,16 @@ function App() {
 
   function GetMatch(team1, team2, bonus) {
     let team1Points =
-      (team1.power +
+      (team1.power / 2 +
         (RandomNumber(0, team1.power) + RandomNumber(0, team1.power)) -
         (RandomNumber(0, team2.power) + RandomNumber(0, team2.power))) /
-      3;
+      2;
 
     let team2Points =
-      (team2.power +
+      (team2.power / 2 +
         (RandomNumber(0, team2.power) + RandomNumber(0, team2.power)) -
         (RandomNumber(0, team1.power) + RandomNumber(0, team1.power))) /
-      3;
+      2;
 
     let team1Score = Math.floor((team1Points + bonus) / 2.5);
     let team2Score = Math.floor(team2Points / 2.5);
@@ -1005,7 +1005,7 @@ function App() {
     let leagueID = RandomNumber(0, teams.length - 1);
     let league = teams[leagueID];
     let team = league.teams[RandomNumber(0, 10)];
-    let contractDuration = 3;
+    let contractDuration = RandomNumber(2, 4);
     let contractValue = Math.floor((70 + team.power) ** 2 / 60) / 10;
     let transferValue = 18 + RandomNumber(0, 4);
 
@@ -1034,8 +1034,7 @@ function App() {
           (currentPlayer.overall +
             team.power +
             currentPlayer.potential +
-            currentPlayer.fame / 20 -
-            count +
+            currentPlayer.fame / 20 +
             contractDuration) **
             2 /
             60
@@ -1062,7 +1061,7 @@ function App() {
   }
 
   function GetOverall(potential, age) {
-    return 87.5 + potential / 2 - (30 - age) ** 2 / 10;
+    return 88 + potential / 3 - (30 - age) ** 2 / 10;
   }
 
   function Retire() {
