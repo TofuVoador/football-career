@@ -185,7 +185,11 @@ function App() {
 
     //calcule the player's performance
 
-    newPlayer.performance = (RandomNumber(0, 20) - RandomNumber(0, 20)) / 10;
+    newPlayer.performance =
+      (RandomNumber(0, 10) +
+        RandomNumber(0, 10) -
+        (RandomNumber(0, 10) + RandomNumber(0, 10))) /
+      10;
 
     newPlayer.overall =
       GetOverall(newPlayer.potential, newPlayer.age) + newPlayer.performance;
@@ -254,22 +258,22 @@ function App() {
 
     //giving the starting rate, randomize how many goals/assists did they score
     let goalsOppostunities =
-      (newSeason.starting / 90.0) *
+      (newSeason.starting / 80.0) *
       newPlayer.position.goalsBonus *
       (newPlayer.team.power / 8.0);
     let assistsOppostunities =
-      (newSeason.starting / 90.0) *
+      (newSeason.starting / 80.0) *
       newPlayer.position.assistsBonus *
       (newPlayer.team.power / 8.0);
 
     newSeason.goals = Math.floor(
       goalsOppostunities *
-        (newPlayer.overall / 90.0) *
+        (newPlayer.overall / 80.0) *
         (1.0 + newSeason.performance / 10.0)
     );
     newSeason.assists = Math.floor(
       assistsOppostunities *
-        (newPlayer.overall / 90.0) *
+        (newPlayer.overall / 80.0) *
         (1.0 + newSeason.performance / 10.0)
     );
 
@@ -301,13 +305,10 @@ function App() {
       topSix += `-> ${p + 1}º: ${leagueResults.table[p].name}`;
     }
 
-    newSeason.awardPoints += (5 - leaguePosition) / 2; //max = 2.0
-
-    newPlayer.fame += (6 - leaguePosition) * league.championsSpots;
+    newSeason.awardPoints += (7 - leaguePosition) / 2; //max = 3.0
 
     if (leaguePosition == 1) {
       newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
-      newSeason.awardPoints += 1.0; //max 0.2 + 1.0 = 3.0
     }
 
     newSeason.titles.push(`Liga: ${leaguePosition}º lugar ${topSix}`);
@@ -348,11 +349,11 @@ function App() {
 
       if (game.result) {
         phase++;
-        newSeason.awardPoints += 0.3; //max 0.3 x 5 = 1.5
+        newSeason.awardPoints += 0.3; //max 0.4 x 5 = 1.5
         if (phase >= TournamentPath.length - 2) {
           end = true;
           newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
-          newSeason.awardPoints += 1.5; //max 0.3 x 5 + 1.5 = 3.0
+          newSeason.awardPoints += 1.5; //max 0.4 x 5 + 1.5 = 3.0
         }
       } else {
         end = true;
@@ -674,7 +675,7 @@ function App() {
       newPlayer.goldenAwards.push(
         `Chuteiras de Ouro ${year} (${newPlayer.team.name})`
       );
-      newSeason.awardPoints += 1.0;
+      newSeason.awardPoints += 0.5;
       newPlayer.fame += 20;
       newSeason.titles.push("Chuteira de Ouro");
     } else if (
@@ -684,7 +685,7 @@ function App() {
       newPlayer.goldenAwards.push(
         `Luvas de Ouro ${year} (${newPlayer.team.name})`
       );
-      newSeason.awardPoints += 1.0;
+      newSeason.awardPoints += 0.5;
       newPlayer.fame += 20;
       newSeason.titles.push("Luva de Ouro");
     }
@@ -706,7 +707,7 @@ function App() {
       newSeason.titles.push(`Ballon D'Or: 1º lugar`);
     } else if (newSeason.awardPoints + newPlayer.overall >= 91) {
       let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 91);
-      newPlayer.fame += pts * 10;
+      newPlayer.fame += pts * 8;
       position = 10 - pts;
       newSeason.titles.push(`Ballon D'Or: ${position}º lugar`);
     }
@@ -906,22 +907,30 @@ function App() {
 
   function GetMatch(team1, team2, bonus) {
     let team1Points =
-      (team1.power / 2 +
-        (RandomNumber(0, team1.power) + RandomNumber(0, team1.power)) -
+      team1.power / 3 +
+      (RandomNumber(0, team1.power) +
+        RandomNumber(0, team1.power) -
         (RandomNumber(0, team2.power) + RandomNumber(0, team2.power))) /
-      2;
+        2;
 
     let team2Points =
-      (team2.power / 2 +
-        (RandomNumber(0, team2.power) + RandomNumber(0, team2.power)) -
+      team2.power / 3 +
+      (RandomNumber(0, team2.power) +
+        RandomNumber(0, team2.power) -
         (RandomNumber(0, team1.power) + RandomNumber(0, team1.power))) /
-      2;
+        2;
 
     let team1Score = Math.floor((team1Points + bonus) / 2.5);
     let team2Score = Math.floor(team2Points / 2.5);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
+
+    console.log(
+      team1.power,
+      team1Score > team2Score ? ">" : team1Score < team2Score ? "<" : "=",
+      team2.power
+    );
 
     return [team1Score, team2Score];
   }
@@ -1061,7 +1070,7 @@ function App() {
   }
 
   function GetOverall(potential, age) {
-    return 88 + potential / 3 - (30 - age) ** 2 / 10;
+    return 87 + potential / 2 - (30 - age) ** 2 / 10;
   }
 
   function Retire() {
