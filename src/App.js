@@ -106,6 +106,7 @@ function App() {
   const [renew, setRenew] = useState({ value: 0, duration: 0 });
 
   function ChooseInitStats(initStat) {
+    //change display
     document.getElementById("team-choice").style.display = "flex";
     document.getElementById("init-choice").style.display = "none";
 
@@ -117,11 +118,11 @@ function App() {
   }
 
   function ChooseTeam(newTeam = null) {
-    //next season
+    //change display
     document.getElementById("team-choice").style.display = "none";
     document.getElementById("continue").style.display = "flex";
 
-    //load all player's stats
+    //load
     let newPlayer = player;
     let newGeneralPerformance = generalPerformance;
 
@@ -184,7 +185,6 @@ function App() {
     }
 
     //calcule the player's performance
-
     newPlayer.performance =
       (RandomNumber(0, 10) +
         RandomNumber(0, 10) -
@@ -194,6 +194,7 @@ function App() {
     newPlayer.overall =
       GetOverall(newPlayer.potential, newPlayer.age) + newPlayer.performance;
 
+    //set performance over time
     newGeneralPerformance.push(newPlayer.performance);
     if (newGeneralPerformance.length > 3) newGeneralPerformance.shift();
 
@@ -205,7 +206,10 @@ function App() {
     if (starting > 100) starting = 100;
     else if (starting < 0) starting = 0;
 
+    //change teams power on each season
     let newTeams = UpdateTeamsStats();
+
+    //creates a list of top 10 teams
     let allTeams = [];
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
       allTeams = allTeams.concat([...newTeams[leagueID].teams]);
@@ -215,7 +219,9 @@ function App() {
     });
     let top10 = allTeams.slice(0, 10);
 
+    //change nations power on each season
     let allNations = UpdateNationsStats();
+    //creates a list of top 12 nations
     let topNations = allNations.slice(0, 12);
 
     newPlayer.team = allTeams.find((t) => t.name == newPlayer.team.name); //find player's team by name and update
@@ -250,20 +256,22 @@ function App() {
   }
 
   function Continue() {
+    //change display
     document.getElementById("team-choice").style.display = "flex";
     document.getElementById("continue").style.display = "none";
 
+    //load
     let newPlayer = player;
     let newSeason = currentSeason;
 
-    //giving the starting rate, randomize how many goals/assists did they score
+    //randomize how many goals/assists did they score
     let goalsOppostunities =
-      (newSeason.starting / 80.0) *
       newPlayer.position.goalsBonus *
+      (newSeason.starting / 80.0) *
       (newPlayer.team.power / 8.0);
     let assistsOppostunities =
-      (newSeason.starting / 80.0) *
       newPlayer.position.assistsBonus *
+      (newSeason.starting / 80.0) *
       (newPlayer.team.power / 8.0);
 
     newSeason.goals = Math.floor(
@@ -295,8 +303,6 @@ function App() {
       newSeason.performance
     );
 
-    let leaguePosition = leagueResults.pos;
-
     newSeason.leagueTable = leagueResults.table;
 
     //top six from the league
@@ -305,15 +311,17 @@ function App() {
       topSix += `-> ${p + 1}º: ${leagueResults.table[p].name}`;
     }
 
-    newSeason.awardPoints += (7 - leaguePosition) / 2; //max = 3.0
+    newSeason.awardPoints += (7 - leagueResults.pos) / 2; //max = 3.0
 
-    if (leaguePosition == 1) {
+    //if fist place, then won trophy
+    if (leagueResults.pos == 1) {
       newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
+      newPlayer.fame += 20;
     }
 
-    newSeason.titles.push(`Liga: ${leaguePosition}º lugar ${topSix}`);
+    newSeason.titles.push(`Liga: ${leagueResults.pos}º lugar ${topSix}`);
 
-    //national cup
+    //randomize opponents for national cup
     let opponentsLeft = [...league.teams];
     let opponents = [];
     for (let i = 0; i < 5; i++) {
@@ -347,13 +355,15 @@ function App() {
 
       description += `-> ${TournamentPath[phase + 1]}: ${game.game}`;
 
+      //if won
       if (game.result) {
         phase++;
-        newSeason.awardPoints += 0.3; //max 0.4 x 5 = 1.5
+        newSeason.awardPoints += 0.3; //max 0.3 x 5 = 1.5
         if (phase >= TournamentPath.length - 2) {
           end = true;
           newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
-          newSeason.awardPoints += 1.5; //max 0.4 x 5 + 1.5 = 3.0
+          newSeason.awardPoints += 1.5; //max 0.3 x 5 + 1.5 = 3.0
+          newPlayer.fame += 20;
         }
       } else {
         end = true;
@@ -361,7 +371,6 @@ function App() {
     }
 
     description = `National Cup: ${TournamentPath[phase + 1]} ${description}`;
-
     newSeason.titles.push(description);
 
     if (newPlayer.championsQualification) {
@@ -370,6 +379,7 @@ function App() {
 
       let qualified = [];
 
+      //get top teams in each league
       for (let leagueID = 0; leagueID < teams.length; leagueID++) {
         let championsSpots = teams[leagueID].championsSpots * 1.5;
         let remainingTeams = deepClone([...teams[leagueID].teams]);
@@ -400,77 +410,80 @@ function App() {
 
       description = `-> ${TournamentPath[phase]}: ${group.pos}º lugar`;
 
-      opponents = [];
-      for (let i = 0; i < TournamentPath.length; i++) {
-        let availableOpponents = group.table.filter(
-          (op) => op.name !== newPlayer.team.name && !opponents.includes(op)
-        );
-
-        if (availableOpponents.length > 0) {
-          let randomIndex = RandomNumber(0, 2);
-          let chosenOpponent = availableOpponents[randomIndex];
-          opponents.push(chosenOpponent);
-
-          group.table = group.table.filter((op) => op !== chosenOpponent);
-        } else {
-          break;
-        }
-      }
-      opponents.sort((a, b) => {
-        return (
-          a.power - b.power + (RandomNumber(0, 5) - RandomNumber(0, 5)) / 5
-        );
-      });
-
-      let playoffs = false;
-      if (group.pos > 8 && group.pos <= 24) {
-        let game = GetGameResult(
-          newPlayer.team,
-          opponents[0],
-          newSeason.performance,
-          2
-        );
-
-        description += `-> Playoff: ${game.game}`;
-
-        if (game.result) playoffs = true;
-      }
-
-      if (group.pos <= 8 || playoffs) {
-        phase++;
-        end = false;
-        while (!end) {
-          let game = GetGameResult(
-            newPlayer.team,
-            opponents[phase],
-            newSeason.performance,
-            phase >= TournamentPath.length - 2 ? 1 : 2
+      if (group.pos <= 24) {
+        opponents = [];
+        for (let i = 0; i < TournamentPath.length; i++) {
+          let availableOpponents = group.table.filter(
+            (op) => op.name !== newPlayer.team.name && !opponents.includes(op)
           );
 
-          description += `-> ${TournamentPath[phase]}: ${game.game}`;
+          if (availableOpponents.length > 0) {
+            let randomIndex = RandomNumber(0, 2);
+            let chosenOpponent = availableOpponents[randomIndex];
+            opponents.push(chosenOpponent);
 
-          if (game.result) {
-            phase++;
-            newSeason.awardPoints += 0.5; //max 0.5 x 5 = 2.5
-            if (phase >= TournamentPath.length - 1) {
-              end = true;
-              newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
-              newPlayer.fame += 40;
-              newSeason.awardPoints += 2.5; //max 0.5 x 5 + 2.5 = 5.0
-            }
+            group.table = group.table.filter((op) => op !== chosenOpponent);
           } else {
-            end = true;
+            throw new Error(
+              "Não foi possível criar um grupo para o mata-mata da champions"
+            );
+          }
+        }
+        opponents.sort((a, b) => {
+          return (
+            a.power - b.power + (RandomNumber(0, 5) - RandomNumber(0, 5)) / 5
+          );
+        });
+
+        let playoffs = false;
+        if (group.pos > 8) {
+          let game = GetGameResult(
+            newPlayer.team,
+            opponents[0],
+            newSeason.performance,
+            2
+          );
+
+          description += `-> Playoff: ${game.game}`;
+
+          if (game.result) playoffs = true;
+        }
+
+        if (group.pos <= 8 || playoffs) {
+          phase++;
+          end = false;
+          while (!end) {
+            let game = GetGameResult(
+              newPlayer.team,
+              opponents[phase],
+              newSeason.performance,
+              phase >= TournamentPath.length - 2 ? 1 : 2
+            );
+
+            description += `-> ${TournamentPath[phase]}: ${game.game}`;
+
+            if (game.result) {
+              phase++;
+              newSeason.awardPoints += 0.5; //max 0.5 x 5 = 2.5
+              if (phase >= TournamentPath.length - 1) {
+                end = true;
+                newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
+                newPlayer.fame += 40;
+                newSeason.awardPoints += 2.5; //max 0.5 x 5 + 2.5 = 5.0
+              }
+            } else {
+              end = true;
+            }
           }
         }
       }
 
       description = `Champions League: ${TournamentPath[phase]} ${description}`;
-
       newSeason.titles.push(description);
     }
 
     if (newPlayer.europaQualification) {
-      //Europa league
+      //Randomizing teams for Europa league
       phase = 0;
 
       let op1 = GetEuropaOpponent();
@@ -554,18 +567,20 @@ function App() {
 
       let allNations = deepClone([...nations]);
 
+      //was called by the manager
       let playedWorldCup =
         newPlayer.overall > 75 + newPlayer.nation.power ||
         (med > 0 && newPlayer.age <= 36 && newPlayer.age >= 24);
 
+      //create four pots to the group draw
       let pots = Array.from({ length: 4 }, (_, potID) =>
         allNations.slice(potID * 12, (potID + 1) * 12)
       );
 
       let playerGroup = [newPlayer.nation];
 
+      //randomize pots draw sequence
       let potIndices = Array.from({ length: pots.length }, (_, index) => index);
-
       for (let i = potIndices.length - 1; i > 0; i--) {
         const j = Math.floor(Math.random() * (i + 1));
         [potIndices[i], potIndices[j]] = [potIndices[j], potIndices[i]];
@@ -579,6 +594,7 @@ function App() {
         );
 
         if (!foundPlayer) {
+          //try not to repeat continents
           let validNations = pots[potID].filter(
             (n) => !playerGroup.some((opp) => opp.continent == n.continent)
           );
@@ -587,11 +603,13 @@ function App() {
             let randomIndex = RandomNumber(0, validNations.length - 1);
             playerGroup.push(validNations[randomIndex]);
           } else {
+            //if there is no other nation available, try repeating Europe
             validNations = pots[potID].filter((n) => n.continent == "Europa");
             if (validNations.length > 0) {
               let randomIndex = RandomNumber(0, validNations.length - 1);
               playerGroup.push(validNations[randomIndex]);
             } else {
+              //if can't make a group
               console.log(playerGroup);
               throw new Error("Não foi possível gerar o grupo para a copa");
             }
@@ -642,11 +660,12 @@ function App() {
 
           if (game.result) {
             phase++;
-            if (playedWorldCup) newSeason.awardPoints += 1.0; //max 1.0 x 5 - 2.5 = 2.5
+            if (playedWorldCup) newSeason.awardPoints += 0.8; //max 0.8 x 5 - 2.0 = 2.0
             if (phase >= TournamentPath.length - 1) {
               end = true;
               if (playedWorldCup) {
                 newPlayer.worldCup.push(`${year}`);
+                newSeason.awardPoints += 1.0; //max 0.8 x 5 - 2.0 + 1.0 = 3.0
                 newPlayer.fame += 40;
               }
             }
@@ -659,7 +678,6 @@ function App() {
       description = `World Cup: ${TournamentPath[phase]} ${
         playedWorldCup ? "" : " (Não Convocado)"
       } ${description}`;
-
       newSeason.titles.push(description);
     }
 
@@ -682,6 +700,7 @@ function App() {
       player.position.title == "GK" &&
       newSeason.performance * 2.5 + (newPlayer.overall - 75) / 2 > 10
     ) {
+      //Golden Gloves
       newPlayer.goldenAwards.push(
         `Luvas de Ouro ${year} (${newPlayer.team.name})`
       );
@@ -691,8 +710,6 @@ function App() {
     }
 
     newPlayer.fame += newSeason.performance * 5;
-
-    console.log(newSeason.awardPoints);
 
     let position = -1;
 
@@ -778,11 +795,15 @@ function App() {
       document.getElementById("retire").style.display = "flex";
     }
 
-    if (leaguePosition <= league.championsSpots) {
+    //setup next season
+    if (leagueResults.pos <= league.championsSpots) {
       newPlayer.championsQualification = true;
       newPlayer.europaQualification = false;
-      newPlayer.lastLeaguePosition = leaguePosition;
-    } else if (leaguePosition <= league.championsSpots + league.europaSpots) {
+      newPlayer.lastLeaguePosition = leagueResults.pos;
+    } else if (
+      leagueResults.pos <=
+      league.championsSpots + league.europaSpots
+    ) {
       newPlayer.championsQualification = false;
       newPlayer.europaQualification = true;
     } else {
@@ -925,12 +946,6 @@ function App() {
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
-
-    console.log(
-      team1.power,
-      team1Score > team2Score ? ">" : team1Score < team2Score ? "<" : "=",
-      team2.power
-    );
 
     return [team1Score, team2Score];
   }
