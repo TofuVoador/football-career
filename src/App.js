@@ -316,7 +316,7 @@ function App() {
     //if fist place, then won trophy
     if (leagueResults.pos == 1) {
       newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
-      newPlayer.fame += 20;
+      newPlayer.fame += 10;
     }
 
     newSeason.titles.push(`Liga: ${leagueResults.pos}º lugar ${topSix}`);
@@ -363,7 +363,7 @@ function App() {
           end = true;
           newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
           newSeason.awardPoints += 1.5; //max 0.3 x 5 + 1.5 = 3.0
-          newPlayer.fame += 20;
+          newPlayer.fame += 10;
         }
       } else {
         end = true;
@@ -468,7 +468,7 @@ function App() {
               if (phase >= TournamentPath.length - 1) {
                 end = true;
                 newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
-                newPlayer.fame += 40;
+                newPlayer.fame += 60;
                 newSeason.awardPoints += 2.5; //max 0.5 x 5 + 2.5 = 5.0
               }
             } else {
@@ -548,6 +548,7 @@ function App() {
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.europa.push(`${year} (${newPlayer.team.name})`);
+              newPlayer.fame += 20;
             }
           } else {
             end = true;
@@ -666,7 +667,7 @@ function App() {
               if (playedWorldCup) {
                 newPlayer.worldCup.push(`${year}`);
                 newSeason.awardPoints += 1.0; //max 0.8 x 5 - 2.0 + 1.0 = 3.0
-                newPlayer.fame += 40;
+                newPlayer.fame += 80;
               }
             }
           } else {
@@ -688,7 +689,7 @@ function App() {
     //post season results
     if (RandomNumber(0, 100) < 1) newSeason.titles.push("Puskás"); //Puskás
 
-    if (40 + RandomNumber(0, 10) < newSeason.goals) {
+    if (40 + RandomNumber(0, 10) + RandomNumber(0, 5) < newSeason.goals) {
       //Golden Shoes
       newPlayer.goldenAwards.push(
         `Chuteiras de Ouro ${year} (${newPlayer.team.name})`
@@ -718,7 +719,7 @@ function App() {
       newPlayer.goldenAwards.push(
         `Ballon D'or ${year} (${newPlayer.team.name})`
       );
-      newPlayer.fame += 100;
+      newPlayer.fame += 120;
       position = 1;
 
       newSeason.titles.push(`Ballon D'Or: 1º lugar`);
@@ -928,18 +929,20 @@ function App() {
 
   function GetMatch(team1, team2, bonus) {
     let team1Points =
-      team1.power / 3 +
-      (RandomNumber(0, team1.power) +
-        RandomNumber(0, team1.power) -
-        (RandomNumber(0, team2.power) + RandomNumber(0, team2.power))) /
-        2;
+      team1.power / 2.5 +
+      (RandomNumber(0, team1.power * 4.0) +
+        RandomNumber(0, team1.power * 4.0) -
+        (RandomNumber(0, team2.power * 4.0) +
+          RandomNumber(0, team2.power * 4.0))) /
+        10.0;
 
     let team2Points =
-      team2.power / 3 +
-      (RandomNumber(0, team2.power) +
-        RandomNumber(0, team2.power) -
-        (RandomNumber(0, team1.power) + RandomNumber(0, team1.power))) /
-        2;
+      team2.power / 2 +
+      (RandomNumber(0, team2.power * 4.0) +
+        RandomNumber(0, team2.power * 4.0) -
+        (RandomNumber(0, team1.power * 4.0) +
+          RandomNumber(0, team1.power * 4.0))) /
+        10.0;
 
     let team1Score = Math.floor((team1Points + bonus) / 2.5);
     let team2Score = Math.floor(team2Points / 2.5);
@@ -1233,7 +1236,7 @@ function App() {
           <p>
             (${renew.value}M/ano |{" "}
             {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")} |{" "}
-            Elenco: {player.team == null ? "" : player.team.power})
+            Elenco: {player.team == null ? "" : player.team.squad})
           </p>
         </a>
         <a
@@ -1244,7 +1247,7 @@ function App() {
           <p>Transferir para {transfer1.team.name}</p>{" "}
           <p>
             (${transfer1.contract.value}M/ano | {transfer1.contract.duration}{" "}
-            anos | Elenco: {transfer1.team.power})
+            anos | Elenco: {transfer1.team.squad})
           </p>
         </a>
         <a
@@ -1255,7 +1258,7 @@ function App() {
           <p>Transferir para {transfer2.team.name}</p>{" "}
           <p>
             (${transfer2.contract.value}M/ano | {transfer2.contract.duration}{" "}
-            anos | Elenco: {transfer2.team.power})
+            anos | Elenco: {transfer2.team.squad})
           </p>
         </a>
         <a
