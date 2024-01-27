@@ -412,6 +412,7 @@ function App() {
 
       if (group.pos <= 24) {
         opponents = [];
+
         for (let i = 0; i < TournamentPath.length; i++) {
           let availableOpponents = group.table.filter(
             (op) => op.name !== newPlayer.team.name && !opponents.includes(op)
@@ -419,6 +420,7 @@ function App() {
 
           if (availableOpponents.length > 0) {
             let randomIndex = RandomNumber(0, 2);
+
             let chosenOpponent = availableOpponents[randomIndex];
             opponents.push(chosenOpponent);
 
@@ -440,8 +442,7 @@ function App() {
           let game = GetGameResult(
             newPlayer.team,
             opponents[0],
-            newSeason.performance,
-            2
+            newSeason.performance
           );
 
           description += `-> Playoff: ${game.game}`;
@@ -611,14 +612,16 @@ function App() {
               playerGroup.push(validNations[randomIndex]);
             } else {
               //if can't make a group
-              console.log(playerGroup);
-              throw new Error("Não foi possível gerar o grupo para a copa");
+              throw new Error(
+                "Não foi possível gerar o grupo para a copa",
+                playerGroup
+              );
             }
           }
         }
       }
 
-      let group = GetLeaguePosition(
+      let group = GetWorldCupPosition(
         playerGroup,
         newPlayer.nation,
         playedWorldCup ? newSeason.performance : 0
@@ -653,8 +656,7 @@ function App() {
           let game = GetGameResult(
             newPlayer.nation,
             opponents[phase],
-            playedWorldCup ? newSeason.performance : 0,
-            1
+            playedWorldCup ? newSeason.performance : 0
           );
 
           description += `-> ${TournamentPath[phase]}: ${game.game}`;
@@ -927,25 +929,82 @@ function App() {
     };
   }
 
+  function GetWorldCupPosition(teams, playerTeam, bonus) {
+    let points = new Array(teams.length).fill(0);
+    for (let home = 0; home < teams.length; home++) {
+      for (let away = 0; away < home; away++) {
+        if (teams[home] !== teams[away]) {
+          let game = GetMatch(
+            teams[home],
+            teams[away],
+            teams[home].name == playerTeam.name ? bonus : 0.5
+          );
+
+          if (game[0] > game[1]) {
+            points[home] += 3;
+          } else if (game[1] > game[0]) {
+            points[away] += 3;
+          } else {
+            points[away] += 1;
+            points[home] += 1;
+          }
+        }
+      }
+    }
+
+    let teamPositions = [...Array(teams.length).keys()].map(
+      (position) => position + 1
+    );
+
+    teamPositions.sort((a, b) => points[b - 1] - points[a - 1]);
+
+    let playerPosition = teamPositions.findIndex(
+      (position) => teams[position - 1].name == playerTeam.name
+    );
+
+    let table = teamPositions.map((position) => teams[position - 1]);
+
+    return {
+      pos: playerPosition + 1,
+      table: table,
+    };
+  }
+
   function GetMatch(team1, team2, bonus) {
-    let team1Points =
-      team1.power / 2.5 +
-      (RandomNumber(0, team1.power * 4.0) +
-        RandomNumber(0, team1.power * 4.0) -
-        (RandomNumber(0, team2.power * 4.0) +
-          RandomNumber(0, team2.power * 4.0))) /
-        10.0;
+    let team1Power = RandomNumber(0, team1.power * 5.0);
+    let team1Attack = team1Power + RandomNumber(0, team1.power * 2.5);
+    let team1Defence = team1Power + RandomNumber(0, team1.power * 2.5);
 
-    let team2Points =
-      team2.power / 2 +
-      (RandomNumber(0, team2.power * 4.0) +
-        RandomNumber(0, team2.power * 4.0) -
-        (RandomNumber(0, team1.power * 4.0) +
-          RandomNumber(0, team1.power * 4.0))) /
-        10.0;
+    let team2Power = RandomNumber(0, team1.power * 5.0);
+    let team2Attack = team2Power + RandomNumber(0, team2.power * 2.5);
+    let team2Defence = team2Power + RandomNumber(0, team2.power * 2.5);
 
-    let team1Score = Math.floor((team1Points + bonus) / 2.5);
-    let team2Score = Math.floor(team2Points / 2.5);
+    let team1Points = team1.power * 2.5 + team1Attack - team1Defence;
+    let team2Points = team2.power * 2.5 + team2Attack - team2Defence;
+
+    let team1Score = Math.floor((team1Points + bonus) / 10);
+    let team2Score = Math.floor(team2Points / 10);
+
+    if (team1Score < 0) team1Score = 0;
+    if (team2Score < 0) team2Score = 0;
+
+    return [team1Score, team2Score];
+  }
+
+  function GetExtraTime(team1, team2, bonus) {
+    let team1Power = RandomNumber(0, team1.power * 2.5);
+    let team1Attack = team1Power + RandomNumber(0, team1.power * 2.5);
+    let team1Defence = team1Power + RandomNumber(0, team1.power * 2.5);
+
+    let team2Power = RandomNumber(0, team1.power * 2.5);
+    let team2Attack = team2Power + RandomNumber(0, team2.power * 2.5);
+    let team2Defence = team2Power + RandomNumber(0, team2.power * 2.5);
+
+    let team1Points = team1.power * 5.0 + team1Attack - team1Defence;
+    let team2Points = team2.power * 5.0 + team2Attack - team2Defence;
+
+    let team1Score = Math.floor((team1Points + bonus) / 20);
+    let team2Score = Math.floor(team2Points / 20);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
@@ -984,19 +1043,15 @@ function App() {
     return [team1goals, team2goals];
   }
 
-  function GetGameResult(team1, team2, bonus, numberOfGames = 1) {
+  function GetGameResult(team1, team2, bonus) {
     let gameDesc = "";
-    let teamGoals1 = 0;
-    let teamGoals2 = 0;
 
-    for (let i = 0; i < numberOfGames; i++) {
-      let game = GetMatch(team1, team2, bonus);
-      teamGoals1 += game[0];
-      teamGoals2 += game[1];
-    }
+    let game = GetMatch(team1, team2, bonus);
+    let teamGoals1 = game[0];
+    let teamGoals2 = game[1];
 
     if (teamGoals1 == teamGoals2) {
-      let extra = GetMatch(team1, team2, bonus);
+      let extra = GetExtraTime(team1, team2, bonus);
       teamGoals1 += extra[0];
       teamGoals2 += extra[1];
 
