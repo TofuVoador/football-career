@@ -270,22 +270,24 @@ function App() {
     //randomize how many goals/assists did they score
     let goalsOppostunities =
       newPlayer.position.goalsBonus *
-      (newSeason.starting / 80.0) *
-      (newPlayer.team.power / 8.0);
+      (newSeason.starting / 100.0) *
+      (newPlayer.team.power / 10.0);
     let assistsOppostunities =
       newPlayer.position.assistsBonus *
-      (newSeason.starting / 80.0) *
-      (newPlayer.team.power / 8.0);
+      (newSeason.starting / 100.0) *
+      (newPlayer.team.power / 10.0);
 
     newSeason.goals = Math.floor(
       goalsOppostunities *
-        (newPlayer.overall / 80.0) *
-        (1.0 + newSeason.performance / 10.0)
+        (newPlayer.overall / 90.0) *
+        (1.0 + newSeason.performance / 8.0) *
+        (1.0 + (RandomNumber(0, 10) - RandomNumber(0, 10)) / 100.0)
     );
     newSeason.assists = Math.floor(
       assistsOppostunities *
-        (newPlayer.overall / 80.0) *
-        (1.0 + newSeason.performance / 10.0)
+        (newPlayer.overall / 90.0) *
+        (1.0 + newSeason.performance / 8.0) *
+        (1.0 + (RandomNumber(0, 10) - RandomNumber(0, 10)) / 100.0)
     );
 
     newSeason.awardPoints = newSeason.performance; //min = -2.0 | max = 2.0
@@ -314,7 +316,7 @@ function App() {
       topSix += `-> ${p + 1}º: ${leagueResults.table[p].name}`;
     }
 
-    newSeason.awardPoints += (7 - leagueResults.pos) / 2; //max = 3.0
+    newSeason.awardPoints += (6 - leagueResults.pos) / 2; //max = 2.5
 
     //if fist place, then won trophy
     if (leagueResults.pos == 1) {
@@ -365,7 +367,7 @@ function App() {
         if (phase >= TournamentPath.length - 2) {
           end = true;
           newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
-          newSeason.awardPoints += 1.5; //max 0.3 x 5 + 1.5 = 3.0
+          newSeason.awardPoints += 1.0; //max 0.3 x 5 + 1.5 = 2.5
           newPlayer.fame += 10;
         }
       } else {
@@ -666,12 +668,12 @@ function App() {
 
           if (game.result) {
             phase++;
-            if (playedWorldCup) newSeason.awardPoints += 0.8; //max 0.8 x 5 - 2.0 = 2.0
+            if (playedWorldCup) newSeason.awardPoints += 1.0; //max 1.0 x 5 - 2.0 = 3.0
             if (phase >= TournamentPath.length - 1) {
               end = true;
               if (playedWorldCup) {
                 newPlayer.worldCup.push(`${year}`);
-                newSeason.awardPoints += 1.0; //max 0.8 x 5 - 2.0 + 1.0 = 3.0
+                newSeason.awardPoints += 2.0; //max 0.8 x 5 - 2.0 + 2.0 = 5.0
                 newPlayer.fame += 80;
               }
             }
@@ -694,7 +696,7 @@ function App() {
     //post season results
     if (RandomNumber(0, 100) < 1) newSeason.titles.push("Puskás"); //Puskás
 
-    if (40 + RandomNumber(0, 10) + RandomNumber(0, 5) < newSeason.goals) {
+    if (45 + RandomNumber(0, 5) + RandomNumber(0, 5) < newSeason.goals) {
       //Golden Shoes
       newPlayer.goldenAwards.push(
         `Chuteiras de Ouro ${year} (${newPlayer.team.name})`
