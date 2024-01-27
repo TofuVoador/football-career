@@ -974,19 +974,21 @@ function App() {
   }
 
   function GetMatch(team1, team2, bonus) {
-    let team1Power = RandomNumber(0, team1.power * 4.0);
-    let team1Attack = team1Power + RandomNumber(0, team1.power * 2.0);
-    let team1Defence = team1Power + RandomNumber(0, team1.power * 2.0);
+    let team1Power = team1.power / (team1.power + team2.power);
+    let team2Power = team2.power / (team1.power + team2.power);
 
-    let team2Power = RandomNumber(0, team1.power * 4.0);
-    let team2Attack = team2Power + RandomNumber(0, team2.power * 2.0);
-    let team2Defence = team2Power + RandomNumber(0, team2.power * 2.0);
+    let team1Points =
+      (RandomNumber(0, team1Power * 100.0) +
+        RandomNumber(0, team1Power * 100.0)) /
+        10.0 +
+      bonus;
+    let team2Points =
+      (RandomNumber(0, team2Power * 100.0) +
+        RandomNumber(0, team2Power * 100.0)) /
+      10.0;
 
-    let team1Points = team1.power * 4.0 + team1Attack - team1Defence;
-    let team2Points = team2.power * 4.0 + team2Attack - team2Defence;
-
-    let team1Score = Math.floor((team1Points + bonus) / 10);
-    let team2Score = Math.floor(team2Points / 10);
+    let team1Score = Math.floor(team1Points / 2.5);
+    let team2Score = Math.floor(team2Points / 2.5);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
@@ -995,19 +997,21 @@ function App() {
   }
 
   function GetExtraTime(team1, team2, bonus) {
-    let team1Power = RandomNumber(0, team1.power * 2.5);
-    let team1Attack = team1Power + RandomNumber(0, team1.power * 2.5);
-    let team1Defence = team1Power + RandomNumber(0, team1.power * 2.5);
+    let team1Power = team1.power / (team1.power + team2.power);
+    let team2Power = team2.power / (team1.power + team2.power);
 
-    let team2Power = RandomNumber(0, team1.power * 2.5);
-    let team2Attack = team2Power + RandomNumber(0, team2.power * 2.5);
-    let team2Defence = team2Power + RandomNumber(0, team2.power * 2.5);
+    let team1Points =
+      (RandomNumber(0, team1Power * 100.0) +
+        RandomNumber(0, team1Power * 100.0)) /
+        10.0 +
+      bonus;
+    let team2Points =
+      (RandomNumber(0, team2Power * 100.0) +
+        RandomNumber(0, team2Power * 100.0)) /
+      10.0;
 
-    let team1Points = team1.power * 5.0 + team1Attack - team1Defence;
-    let team2Points = team2.power * 5.0 + team2Attack - team2Defence;
-
-    let team1Score = Math.floor((team1Points + bonus) / 20);
-    let team2Score = Math.floor(team2Points / 20);
+    let team1Score = Math.floor(team1Points / 5);
+    let team2Score = Math.floor(team2Points / 5);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
@@ -1164,7 +1168,7 @@ function App() {
 
         let newPower =
           newTeams[leagueID].teams[teamID].squad +
-          change * (1.0 + RandomNumber(0, 20) / 10.0);
+          change * (1.0 + (RandomNumber(0, 10) + RandomNumber(0, 10)) / 10.0);
 
         newTeams[leagueID].teams[teamID].power =
           Math.round(10.0 * newPower) / 10;
@@ -1202,9 +1206,11 @@ function App() {
     for (let nationID = 0; nationID < newNations.length; nationID++) {
       let change = Math.round(RandomNumber(0, 5) - RandomNumber(0, 5)) / 10;
 
-      newNations[nationID].power =
+      let newPower =
         newNations[nationID].squad +
         change * (1.0 + (RandomNumber(0, 10) + RandomNumber(0, 10)) / 10.0);
+
+      newNations[nationID].power = Math.round(10.0 * newPower) / 10.0;
 
       newNations[nationID].squad += change;
 
