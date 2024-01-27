@@ -215,12 +215,15 @@ function App() {
       allTeams = allTeams.concat([...newTeams[leagueID].teams]);
     }
     allTeams.sort((a, b) => {
-      return b.power - a.power;
+      return b.squad - a.squad;
     });
     let top10 = allTeams.slice(0, 10);
 
     //change nations power on each season
     let allNations = UpdateNationsStats();
+    allNations.sort((a, b) => {
+      return b.squad - a.squad;
+    });
     //creates a list of top 12 nations
     let topNations = allNations.slice(0, 12);
 
@@ -971,16 +974,16 @@ function App() {
   }
 
   function GetMatch(team1, team2, bonus) {
-    let team1Power = RandomNumber(0, team1.power * 5.0);
-    let team1Attack = team1Power + RandomNumber(0, team1.power * 2.5);
-    let team1Defence = team1Power + RandomNumber(0, team1.power * 2.5);
+    let team1Power = RandomNumber(0, team1.power * 4.0);
+    let team1Attack = team1Power + RandomNumber(0, team1.power * 2.0);
+    let team1Defence = team1Power + RandomNumber(0, team1.power * 2.0);
 
-    let team2Power = RandomNumber(0, team1.power * 5.0);
-    let team2Attack = team2Power + RandomNumber(0, team2.power * 2.5);
-    let team2Defence = team2Power + RandomNumber(0, team2.power * 2.5);
+    let team2Power = RandomNumber(0, team1.power * 4.0);
+    let team2Attack = team2Power + RandomNumber(0, team2.power * 2.0);
+    let team2Defence = team2Power + RandomNumber(0, team2.power * 2.0);
 
-    let team1Points = team1.power * 2.5 + team1Attack - team1Defence;
-    let team2Points = team2.power * 2.5 + team2Attack - team2Defence;
+    let team1Points = team1.power * 4.0 + team1Attack - team1Defence;
+    let team2Points = team2.power * 4.0 + team2Attack - team2Defence;
 
     let team1Score = Math.floor((team1Points + bonus) / 10);
     let team2Score = Math.floor(team2Points / 10);
@@ -1157,10 +1160,14 @@ function App() {
 
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
       for (let teamID = 0; teamID < newTeams[leagueID].teams.length; teamID++) {
-        let change = (RandomNumber(0, 4) - RandomNumber(0, 4)) / 10;
+        let change = Math.round(RandomNumber(0, 5) - RandomNumber(0, 5)) / 10;
+
+        let newPower =
+          newTeams[leagueID].teams[teamID].squad +
+          change * (1.0 + RandomNumber(0, 20) / 10.0);
 
         newTeams[leagueID].teams[teamID].power =
-          newTeams[leagueID].teams[teamID].squad + change * 2;
+          Math.round(10.0 * newPower) / 10;
 
         newTeams[leagueID].teams[teamID].squad += change;
 
@@ -1193,9 +1200,11 @@ function App() {
     let newNations = deepClone([...nations]);
 
     for (let nationID = 0; nationID < newNations.length; nationID++) {
-      let change = (RandomNumber(0, 4) - RandomNumber(0, 4)) / 10;
+      let change = Math.round(RandomNumber(0, 5) - RandomNumber(0, 5)) / 10;
 
-      newNations[nationID].power = newNations[nationID].squad + change * 2;
+      newNations[nationID].power =
+        newNations[nationID].squad +
+        change * (1.0 + (RandomNumber(0, 10) + RandomNumber(0, 10)) / 10.0);
 
       newNations[nationID].squad += change;
 
