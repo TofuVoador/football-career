@@ -54,7 +54,7 @@ function App() {
   });
 
   const [player, setPlayer] = useState({
-    potential: RandomNumber(0, 6) + RandomNumber(0, 6),
+    potential: RandomNumber(1, 10) + RandomNumber(1, 10),
     age: 17,
     nation: null,
     team: null,
@@ -321,7 +321,7 @@ function App() {
     //if fist place, then won trophy
     if (leagueResults.pos == 1) {
       newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
-      newPlayer.fame += 10;
+      newPlayer.fame += 20;
     }
 
     newSeason.titles.push(`Liga: ${leagueResults.pos}º lugar ${topSix}`);
@@ -368,7 +368,7 @@ function App() {
           end = true;
           newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
           newSeason.awardPoints += 1.0; //max 0.3 x 5 + 1.5 = 2.5
-          newPlayer.fame += 10;
+          newPlayer.fame += 20;
         }
       } else {
         end = true;
@@ -702,7 +702,7 @@ function App() {
         `Chuteiras de Ouro ${year} (${newPlayer.team.name})`
       );
       newSeason.awardPoints += 0.5;
-      newPlayer.fame += 20;
+      newPlayer.fame += 30;
       newSeason.titles.push("Chuteira de Ouro");
     } else if (
       player.position.title == "GK" &&
@@ -713,11 +713,13 @@ function App() {
         `Luvas de Ouro ${year} (${newPlayer.team.name})`
       );
       newSeason.awardPoints += 0.5;
-      newPlayer.fame += 20;
+      newPlayer.fame += 30;
       newSeason.titles.push("Luva de Ouro");
     }
 
     newPlayer.fame += newSeason.performance * 5;
+
+    newPlayer.fame += newSeason.goals / 10.0;
 
     let position = -1;
 
@@ -1152,7 +1154,7 @@ function App() {
   }
 
   function GetOverall(potential, age) {
-    return 87 + potential / 2 - (30 - age) ** 2 / 10;
+    return 88 + potential / 5 - (30 - age) ** 2 / 10;
   }
 
   function Retire() {
@@ -1168,9 +1170,7 @@ function App() {
       for (let teamID = 0; teamID < newTeams[leagueID].teams.length; teamID++) {
         let change = Math.round(RandomNumber(0, 5) - RandomNumber(0, 5)) / 10;
 
-        let newPower =
-          newTeams[leagueID].teams[teamID].squad +
-          change * (1.0 + (RandomNumber(0, 10) + RandomNumber(0, 10)) / 10.0);
+        let newPower = newTeams[leagueID].teams[teamID].squad + change * 2;
 
         newTeams[leagueID].teams[teamID].power =
           Math.round(10.0 * newPower) / 10;
@@ -1208,9 +1208,7 @@ function App() {
     for (let nationID = 0; nationID < newNations.length; nationID++) {
       let change = Math.round(RandomNumber(0, 5) - RandomNumber(0, 5)) / 10;
 
-      let newPower =
-        newNations[nationID].squad +
-        change * (1.0 + (RandomNumber(0, 10) + RandomNumber(0, 10)) / 10.0);
+      let newPower = newNations[nationID].squad + change * 2;
 
       newNations[nationID].power = Math.round(10.0 * newPower) / 10.0;
 
