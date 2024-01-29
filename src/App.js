@@ -445,8 +445,6 @@ function App() {
           return a.power - b.power + Math.random();
         });
 
-        console.log(opponents);
-
         let playoffs = false;
         if (group.pos > 8) {
           let game = GetGameResult(
@@ -849,7 +847,6 @@ function App() {
     let points = new Array(newTeams.length).fill(0);
 
     for (let round = 0; round < 8; round++) {
-      console.log("Round: " + round);
       let newOrderTeams = [];
       let newOrderPoints = [];
       for (let i = 0; i < newTeams.length / 2; i++) {
@@ -922,13 +919,13 @@ function App() {
       }
     }
 
-    let table = newTeams.sort((a, b) => {
-      const indexA = points.indexOf(points[newTeams.indexOf(a)]);
-      const indexB = points.indexOf(points[newTeams.indexOf(b)]);
-      return indexA - indexB;
+    let table = [...newTeams];
+
+    table.sort((a, b) => {
+      return points[table.indexOf(b)] - points[table.indexOf(a)];
     });
 
-    const playerPosition = newTeams.findIndex(
+    const playerPosition = table.findIndex(
       (time) => time.name == playerTeam.name
     );
 
@@ -962,13 +959,13 @@ function App() {
       }
     }
 
-    let table = newTeams.sort((a, b) => {
-      const indexA = points.indexOf(points[newTeams.indexOf(a)]);
-      const indexB = points.indexOf(points[newTeams.indexOf(b)]);
-      return indexA - indexB;
+    let table = [...newTeams];
+
+    table.sort((a, b) => {
+      return points[table.indexOf(b)] - points[table.indexOf(a)];
     });
 
-    const playerPosition = newTeams.findIndex(
+    const playerPosition = table.findIndex(
       (time) => time.name == playerTeam.name
     );
 
@@ -989,8 +986,6 @@ function App() {
 
     let team1Score = Math.round(goals * team1Luck * team1Power + bonus / 2);
     let team2Score = Math.round(goals * team2Luck * team2Power);
-
-    console.log(team1.name, team1Score + " | " + team2Score, team2.name);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
