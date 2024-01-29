@@ -7,8 +7,8 @@
       {
         "name": "Bayern München",
         "league": "Bundesliga",
-        "squad": 9.5,
-        "power": 9.5
+        "squad": 9,
+        "power": 9
       },
       {
         "name": "Borussia Dortmund",
@@ -98,8 +98,8 @@
       {
         "name": "Ajax",
         "league": "Eredivisie",
-        "squad": 6,
-        "power": 6
+        "squad": 6.5,
+        "power": 6.5
       },
       {
         "name": "AZ Alkmaar",
@@ -126,16 +126,16 @@
         "power": 3.5
       },
       {
-        "name": "FC Utrecht",
+        "name": "SC Heerenveen",
         "league": "Eredivisie",
         "squad": 3,
         "power": 3
       },
       {
-        "name": "SC Heerenveen",
+        "name": "FC Utrecht",
         "league": "Eredivisie",
-        "squad": 3,
-        "power": 3
+        "squad": 2.5,
+        "power": 2.5
       },
       {
         "name": "Sparta Rotterdam",
@@ -181,16 +181,16 @@
         "power": 5
       },
       {
-        "name": "Anderlecht",
+        "name": "Antwerp",
         "league": "Jupiler Pro League",
         "squad": 4.5,
         "power": 4.5
       },
       {
-        "name": "Antwerp",
+        "name": "Anderlecht",
         "league": "Jupiler Pro League",
-        "squad": 4.5,
-        "power": 4.5
+        "squad": 4,
+        "power": 4
       },
       {
         "name": "Gent",
@@ -207,8 +207,8 @@
       {
         "name": "Standard Liège",
         "league": "Jupiler Pro League",
-        "squad": 3.5,
-        "power": 3.5
+        "squad": 3,
+        "power": 3
       },
       {
         "name": "STVV",
@@ -244,26 +244,26 @@
       {
         "name": "Real Madrid",
         "league": "La Liga",
-        "squad": 10,
-        "power": 10
-      },
-      {
-        "name": "Barcelona",
-        "league": "La Liga",
         "squad": 9.5,
         "power": 9.5
       },
       {
+        "name": "Barcelona",
+        "league": "La Liga",
+        "squad": 9,
+        "power": 9
+      },
+      {
         "name": "Atlético Madrid",
         "league": "La Liga",
-        "squad": 8.5,
-        "power": 8.5
+        "squad": 8,
+        "power": 8
       },
       {
         "name": "Sevilla",
         "league": "La Liga",
-        "squad": 7.5,
-        "power": 7.5
+        "squad": 7,
+        "power": 7
       },
       {
         "name": "Real Sociedad",
@@ -323,8 +323,8 @@
       {
         "name": "Paris Saint-Germain",
         "league": "Ligue 1",
-        "squad": 8,
-        "power": 8
+        "squad": 7.5,
+        "power": 7.5
       },
       {
         "name": "Monaco",
@@ -402,20 +402,20 @@
       {
         "name": "Manchester City",
         "league": "Premier League",
-        "squad": 10,
-        "power": 10
-      },
-      {
-        "name": "Arsenal",
-        "league": "Premier League",
-        "squad": 9,
-        "power": 9
+        "squad": 9.5,
+        "power": 9.5
       },
       {
         "name": "Liverpool",
         "league": "Premier League",
         "squad": 8.5,
         "power": 8.5
+      },
+      {
+        "name": "Arsenal",
+        "league": "Premier League",
+        "squad": 8,
+        "power": 8
       },
       {
         "name": "Tottenham Hotspur",
@@ -426,8 +426,8 @@
       {
         "name": "Manchester United",
         "league": "Premier League",
-        "squad": 6,
-        "power": 6
+        "squad": 6.5,
+        "power": 6.5
       },
       {
         "name": "Chelsea",
@@ -560,14 +560,14 @@
       {
         "name": "Internazionale Milano",
         "league": "Serie A",
-        "squad": 9,
-        "power": 9
+        "squad": 8.5,
+        "power": 8.5
       },
       {
         "name": "Milan",
         "league": "Serie A",
-        "squad": 8,
-        "power": 8
+        "squad": 8.5,
+        "power": 8.5
       },
       {
         "name": "Napoli",
