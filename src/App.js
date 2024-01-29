@@ -186,12 +186,11 @@ function App() {
 
     //calcule the player's performance
     newPlayer.performance =
-      Math.round(
-        10.0 * Math.random() + Math.random() - (Math.random() + Math.random())
-      ) / 10.0;
+      Math.round(10.0 * (Math.random() - Math.random())) / 10.0;
 
     newPlayer.overall =
-      GetOverall(newPlayer.potential, newPlayer.age) + newPlayer.performance;
+      GetOverall(newPlayer.potential, newPlayer.age) +
+      newPlayer.performance * 2;
 
     //set performance over time
     newGeneralPerformance.push(newPlayer.performance);
@@ -200,7 +199,7 @@ function App() {
     //giving the performance, set how many games did they were the starter player
     let starting = Math.floor(
       (newPlayer.overall - (67 + newPlayer.team.power)) / 0.1 +
-        RandomNumber(-10, 10)
+        (Math.random() - Math.random()) * 10
     );
     if (starting > 100) starting = 100;
     else if (starting < 0) starting = 0;
@@ -279,13 +278,13 @@ function App() {
     newSeason.goals = Math.floor(
       goalsOppostunities *
         (newPlayer.overall / 90.0) *
-        (1.0 + newSeason.performance / 8.0) *
+        (1.0 + newSeason.performance / 4.0) *
         (1.0 + (Math.random() - Math.random()) / 10.0)
     );
     newSeason.assists = Math.floor(
       assistsOppostunities *
         (newPlayer.overall / 90.0) *
-        (1.0 + newSeason.performance / 8.0) *
+        (1.0 + newSeason.performance / 4.0) *
         (1.0 + (Math.random() - Math.random()) / 10.0)
     );
 
@@ -320,7 +319,7 @@ function App() {
     //if fist place, then won trophy
     if (leagueResults.pos == 1) {
       newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
-      newPlayer.fame += 20;
+      newPlayer.fame += 15;
     }
 
     newSeason.titles.push(`Liga: ${leagueResults.pos}º lugar ${topSix}`);
@@ -366,7 +365,7 @@ function App() {
           end = true;
           newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
           newSeason.awardPoints += 1.0; //max 0.3 x 5 + 1.5 = 2.5
-          newPlayer.fame += 20;
+          newPlayer.fame += 15;
         }
       } else {
         end = true;
@@ -552,7 +551,7 @@ function App() {
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.europa.push(`${year} (${newPlayer.team.name})`);
-              newPlayer.fame += 20;
+              newPlayer.fame += 25;
             }
           } else {
             end = true;
@@ -698,22 +697,22 @@ function App() {
         `Chuteiras de Ouro ${year} (${newPlayer.team.name})`
       );
       newSeason.awardPoints += 0.5;
-      newPlayer.fame += 20;
+      newPlayer.fame += 25;
       newSeason.titles.push("Chuteira de Ouro");
     } else if (
       player.position.title == "GK" &&
-      newSeason.performance * 2.5 + (newPlayer.overall - 75) / 2 > 10
+      newSeason.performance * 5 + (newPlayer.overall - 75) / 2 > 10
     ) {
       //Golden Gloves
       newPlayer.goldenAwards.push(
         `Luvas de Ouro ${year} (${newPlayer.team.name})`
       );
       newSeason.awardPoints += 0.5;
-      newPlayer.fame += 20;
+      newPlayer.fame += 25;
       newSeason.titles.push("Luva de Ouro");
     }
 
-    newPlayer.fame += newSeason.performance * 5;
+    newPlayer.fame += newSeason.performance * 10;
 
     newPlayer.fame += newSeason.goals / 10.0;
 
@@ -730,7 +729,7 @@ function App() {
       newSeason.titles.push(`Ballon D'Or: 1º lugar`);
     } else if (newSeason.awardPoints + newPlayer.overall >= 91) {
       let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 91);
-      newPlayer.fame += pts * 6;
+      newPlayer.fame += pts * 5;
       position = 10 - pts;
       newSeason.titles.push(`Ballon D'Or: ${position}º lugar`);
     }
@@ -981,7 +980,7 @@ function App() {
     let team1Luck = Math.random() + Math.random() + Math.random();
     let team2Luck = Math.random() + Math.random() + Math.random();
 
-    let team1Score = Math.round(goals * team1Luck * team1Power + bonus / 2);
+    let team1Score = Math.round(goals * team1Luck * team1Power + bonus);
     let team2Score = Math.round(goals * team2Luck * team2Power);
 
     if (team1Score < 0) team1Score = 0;
@@ -1120,7 +1119,7 @@ function App() {
       transferValue = Math.floor(
         ((currentPlayer.overall / 4.0) ** 2 / 10) *
           currentPlayer.position.value *
-          (1 + currentPlayer.performance / 20.0) *
+          (1 + currentPlayer.performance / 5.0) *
           (1 + (Math.random() - Math.random()) / 10.0)
       );
 
