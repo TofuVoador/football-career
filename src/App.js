@@ -208,20 +208,20 @@ function App() {
     //change teams power on each season
     let newTeams = UpdateTeamsStats();
 
-    //creates a list of top 10 teams
     let allTeams = [];
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
       allTeams = allTeams.concat([...newTeams[leagueID].teams]);
     }
     allTeams.sort((a, b) => {
-      return b.squad - a.squad;
+      return b.power - a.power;
     });
+    //creates a list of top 10 teams
     let top10 = allTeams.slice(0, 10);
 
     //change nations power on each season
     let allNations = UpdateNationsStats();
     allNations.sort((a, b) => {
-      return b.squad - a.squad;
+      return b.power - a.power;
     });
     //creates a list of top 12 nations
     let topNations = allNations.slice(0, 12);
@@ -353,8 +353,7 @@ function App() {
       let game = GetGameResult(
         newPlayer.team,
         opponents[phase],
-        newSeason.performance,
-        phase >= TournamentPath.length - 2 ? 1 : 2
+        newSeason.performance
       );
 
       description += `-> ${TournamentPath[phase + 1]}: ${game.game}`;
@@ -465,8 +464,7 @@ function App() {
             let game = GetGameResult(
               newPlayer.team,
               opponents[phase],
-              newSeason.performance,
-              phase >= TournamentPath.length - 2 ? 1 : 2
+              newSeason.performance
             );
 
             description += `-> ${TournamentPath[phase]}: ${game.game}`;
@@ -544,8 +542,7 @@ function App() {
           let game = GetGameResult(
             newPlayer.team,
             opponents[phase],
-            newSeason.performance,
-            phase >= TournamentPath.length - 2 ? 1 : 2
+            newSeason.performance
           );
 
           description += `-> ${TournamentPath[phase]}: ${game.game}`;
