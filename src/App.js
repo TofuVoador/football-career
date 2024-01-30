@@ -288,7 +288,7 @@ function App() {
         (1.0 + (Math.random() - Math.random()) / 10.0)
     );
 
-    newSeason.awardPoints = newSeason.performance; //min = -2.0 | max = 2.0
+    newSeason.awardPoints = newSeason.performance * 1.5; //min = -1.5 | max = 1.5
 
     let med = 0;
     for (let i = 0; i < generalPerformance.length; i++) {
