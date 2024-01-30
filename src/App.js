@@ -257,6 +257,7 @@ function App() {
   }
 
   function Continue() {
+    console.clear();
     //change display
     document.getElementById("team-choice").style.display = "flex";
     document.getElementById("continue").style.display = "none";
@@ -311,6 +312,7 @@ function App() {
     //top six from the league
     let topSix = "";
     for (let p = 0; p < 6; p++) {
+      console.log(leagueResults.table[p]);
       topSix += `-> ${p + 1}º: ${leagueResults.table[p].name}`;
     }
 
@@ -404,11 +406,7 @@ function App() {
         }
       }
 
-      let group = GetChampionsPosition(
-        qualified,
-        newPlayer.team,
-        newSeason.performance
-      );
+      let group = GetChampionsPosition(qualified, newPlayer.team);
 
       description = `-> ${TournamentPath[phase]}: ${group.pos}º lugar`;
 
@@ -833,7 +831,7 @@ function App() {
     if (contract > 1) ChooseTeam();
   }
 
-  function GetChampionsPosition(teams, playerTeam, bonus) {
+  function GetChampionsPosition(teams, playerTeam) {
     let newTeams = deepClone(teams);
     //sort by power
     newTeams.sort((a, b) => {
@@ -849,11 +847,7 @@ function App() {
         let home = i;
         let away = i + newTeams.length / 2;
 
-        let game = GetMatch(
-          newTeams[home],
-          newTeams[away],
-          newTeams[home].name == playerTeam.name ? bonus : 0
-        );
+        let game = GetMatch(newTeams[home], newTeams[away], 0);
 
         if (game[0] > game[1]) {
           points[home] += 3;
@@ -895,13 +889,14 @@ function App() {
 
     let points = new Array(newTeams.length).fill(0);
     for (let home = 0; home < newTeams.length; home++) {
+      let newBonus =
+        newTeams[home].name == playerTeam.name
+          ? bonus
+          : Math.round(10.0 * (Math.random() - Math.random())) / 10;
+      console.log(newTeams[home].name + ": " + newBonus);
       for (let away = 0; away < newTeams.length; away++) {
         if (newTeams[home] !== newTeams[away]) {
-          let game = GetMatch(
-            newTeams[home],
-            newTeams[away],
-            newTeams[home].name == playerTeam.name ? bonus : 0.5
-          );
+          let game = GetMatch(newTeams[home], newTeams[away], newBonus);
 
           if (game[0] > game[1]) {
             points[home] += 3;
@@ -935,13 +930,13 @@ function App() {
     let newTeams = deepClone([...teams]);
     let points = new Array(teams.length).fill(0);
     for (let home = 0; home < teams.length; home++) {
+      let newBonus =
+        newTeams[home].name == playerTeam.name
+          ? bonus
+          : Math.random() - Math.random();
       for (let away = 0; away < home; away++) {
         if (teams[home] !== teams[away]) {
-          let game = GetMatch(
-            teams[home],
-            teams[away],
-            teams[home].name == playerTeam.name ? bonus : 0.5
-          );
+          let game = GetMatch(teams[home], teams[away], newBonus);
 
           if (game[0] > game[1]) {
             points[home] += 3;
@@ -980,7 +975,7 @@ function App() {
     let team1Luck = Math.random() + Math.random() + Math.random();
     let team2Luck = Math.random() + Math.random() + Math.random();
 
-    let team1Score = Math.round(goals * team1Luck * team1Power + bonus);
+    let team1Score = Math.round(goals * team1Luck * team1Power + bonus / 2);
     let team2Score = Math.round(goals * team2Luck * team2Power);
 
     if (team1Score < 0) team1Score = 0;
@@ -1161,39 +1156,22 @@ function App() {
         [teamIndices[i], teamIndices[j]] = [teamIndices[j], teamIndices[i]];
       }
 
-      let count = 0;
-
       for (let i = 0; i < newTeams[leagueID].teams.length; i++) {
         let teamID = teamIndices[i];
 
         let current = Math.random();
-        let change = Math.round(5 * (last - current)) / 10.0;
+        let change = Math.round(4 * (last - current)) / 10.0;
         last = current;
 
-        count += change;
-
-        let newPower = newTeams[leagueID].teams[teamID].squad + change * 2;
+        let newPower = newTeams[leagueID].teams[teamID].power + change;
 
         newTeams[leagueID].teams[teamID].power =
           Math.round(10.0 * newPower) / 10;
-
-        newTeams[leagueID].teams[teamID].squad += change;
-
-        newTeams[leagueID].teams[teamID].power =
-          Math.round(newTeams[leagueID].teams[teamID].power * 10) / 10;
-
-        newTeams[leagueID].teams[teamID].squad =
-          Math.round(newTeams[leagueID].teams[teamID].squad * 10) / 10;
 
         if (newTeams[leagueID].teams[teamID].power > 10)
           newTeams[leagueID].teams[teamID].power = 10;
         else if (newTeams[leagueID].teams[teamID].power < 1)
           newTeams[leagueID].teams[teamID].power = 1;
-
-        if (newTeams[leagueID].teams[teamID].squad > 10)
-          newTeams[leagueID].teams[teamID].squad = 10;
-        else if (newTeams[leagueID].teams[teamID].squad < 1)
-          newTeams[leagueID].teams[teamID].squad = 1;
       }
 
       newTeams[leagueID].teams.sort((a, b) => {
@@ -1207,26 +1185,35 @@ function App() {
   function UpdateNationsStats() {
     let newNations = deepClone([...nations]);
 
-    for (let nationID = 0; nationID < newNations.length; nationID++) {
-      let change = Math.round(5 * (Math.random() - Math.random())) / 10.0;
+    let last = Math.random();
+    let nationIndices = Array.from(
+      { length: newNations.length },
+      (_, index) => index
+    );
+    for (let i = nationIndices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [nationIndices[i], nationIndices[j]] = [
+        nationIndices[j],
+        nationIndices[i],
+      ];
+    }
 
-      let newPower = newNations[nationID].squad + change * 2;
+    for (let i = 0; i < newNations.length; i++) {
+      let nationID = nationIndices[i];
+
+      let current = Math.random();
+      let change = Math.round(4 * (last - current)) / 10.0;
+      last = current;
+
+      let newPower = newNations[nationID].power + change;
 
       newNations[nationID].power = Math.round(10.0 * newPower) / 10.0;
-
-      newNations[nationID].squad += change;
 
       newNations[nationID].power =
         Math.round(newNations[nationID].power * 10) / 10;
 
-      newNations[nationID].squad =
-        Math.round(newNations[nationID].squad * 10) / 10;
-
       if (newNations[nationID].power > 10) newNations[nationID].power = 10;
       else if (newNations[nationID].power < 1) newNations[nationID].power = 1;
-
-      if (newNations[nationID].squad > 10) newNations[nationID].squad = 10;
-      else if (newNations[nationID].squad < 1) newNations[nationID].squad = 1;
     }
 
     newNations.sort((a, b) => {
@@ -1308,7 +1295,7 @@ function App() {
           <p>
             (${renew.value}M/ano |{" "}
             {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")} |{" "}
-            Elenco: {player.team == null ? "" : player.team.squad})
+            Elenco: {player.team == null ? "" : player.team.power})
           </p>
         </a>
         <a
@@ -1319,7 +1306,7 @@ function App() {
           <p>Transferir para {transfer1.team.name}</p>{" "}
           <p>
             (${transfer1.contract.value}M/ano | {transfer1.contract.duration}{" "}
-            anos | Elenco: {transfer1.team.squad})
+            anos | Elenco: {transfer1.team.power})
           </p>
         </a>
         <a
@@ -1330,7 +1317,7 @@ function App() {
           <p>Transferir para {transfer2.team.name}</p>{" "}
           <p>
             (${transfer2.contract.value}M/ano | {transfer2.contract.duration}{" "}
-            anos | Elenco: {transfer2.team.squad})
+            anos | Elenco: {transfer2.team.power})
           </p>
         </a>
         <a
