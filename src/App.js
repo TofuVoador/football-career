@@ -257,7 +257,6 @@ function App() {
   }
 
   function Continue() {
-    console.clear();
     //change display
     document.getElementById("team-choice").style.display = "flex";
     document.getElementById("continue").style.display = "none";
@@ -312,7 +311,6 @@ function App() {
     //top six from the league
     let topSix = "";
     for (let p = 0; p < 6; p++) {
-      console.log(leagueResults.table[p]);
       topSix += `-> ${p + 1}º: ${leagueResults.table[p].name}`;
     }
 
@@ -893,7 +891,6 @@ function App() {
         newTeams[home].name == playerTeam.name
           ? bonus
           : Math.round(10.0 * (Math.random() - Math.random())) / 10;
-      console.log(newTeams[home].name + ": " + newBonus);
       for (let away = 0; away < newTeams.length; away++) {
         if (newTeams[home] !== newTeams[away]) {
           let game = GetMatch(newTeams[home], newTeams[away], newBonus);
