@@ -189,7 +189,7 @@ function App() {
       Math.round(10.0 * (Math.random() - Math.random())) / 10.0;
 
     newPlayer.overall =
-      GetOverall(newPlayer.potential, newPlayer.age) +
+      GetOverall(newPlayer.potential, newPlayer.age, newPlayer.team.power) +
       newPlayer.performance * 2;
 
     //set performance over time
@@ -267,25 +267,25 @@ function App() {
 
     //randomize how many goals/assists did they score
     let goalsOppostunities =
-      newPlayer.position.goalsBonus *
-      (newSeason.starting / 100.0) *
-      (newPlayer.team.power / 10.0);
+      (newPlayer.position.goalsBonus *
+        (Math.pow(newPlayer.team.power, 1.69897) + newSeason.starting / 2)) /
+      100.0;
     let assistsOppostunities =
-      newPlayer.position.assistsBonus *
-      (newSeason.starting / 100.0) *
-      (newPlayer.team.power / 10.0);
+      (newPlayer.position.assistsBonus *
+        (Math.pow(newPlayer.team.power, 1.69897) + newSeason.starting / 2)) /
+      100.0;
 
     newSeason.goals = Math.floor(
       goalsOppostunities *
-        (newPlayer.overall / 90.0) *
+        (Math.pow(newPlayer.overall, 2.55853) / 100000.0) *
         (1.0 + newSeason.performance / 4.0) *
-        (1.0 + (Math.random() - Math.random()) / 10.0)
+        (1.0 + (Math.random() - Math.random()) / 4.0)
     );
     newSeason.assists = Math.floor(
       assistsOppostunities *
-        (newPlayer.overall / 90.0) *
+        (Math.pow(newPlayer.overall, 2.55853) / 100000.0) *
         (1.0 + newSeason.performance / 4.0) *
-        (1.0 + (Math.random() - Math.random()) / 10.0)
+        (1.0 + (Math.random() - Math.random()) / 4.0)
     );
 
     newSeason.awardPoints = newSeason.performance * 1.5; //min = -1.5 | max = 1.5
@@ -737,7 +737,7 @@ function App() {
       contract <= 1 &&
       ((newPlayer.overall <= 82 + newPlayer.team.power / 2 &&
         newPlayer.age > 32) ||
-        med <= -0.35)
+        med <= -0.25)
     ) {
       document.getElementById("decision-stay").style.display = "none";
     } else {
@@ -757,7 +757,7 @@ function App() {
             newPlayer.team.power / 2 +
             newPlayer.potential +
             newPlayer.fame / 20 +
-            med * 5 +
+            med * 10 +
             renewDuration) **
             2 /
             60
@@ -1083,8 +1083,8 @@ function App() {
       while (
         currentPlayer.team.name == team.name ||
         (team.power < currentPlayer.team.power - count / 2 &&
-          currentPlayer.age < 34) ||
-        (currentPlayer.overall < 82 + team.power / 2 && currentPlayer.age >= 34)
+          currentPlayer.age < 35) ||
+        (currentPlayer.overall < 82 + team.power / 2 && currentPlayer.age >= 35)
       ) {
         leagueID = RandomNumber(0, teams.length - 1);
         league = teams[leagueID];
@@ -1096,7 +1096,7 @@ function App() {
       }
 
       contractDuration = RandomNumber(1, 3);
-      if (currentPlayer.age < 30) contractDuration += RandomNumber(0, 2);
+      if (currentPlayer.age < 30) contractDuration++;
 
       contractValue =
         Math.floor(
@@ -1129,8 +1129,10 @@ function App() {
     return pos;
   }
 
-  function GetOverall(potential, age) {
-    return 88 + potential / 5 - (30 - age) ** 2 / 10;
+  function GetOverall(potential, age, teamPower) {
+    return (
+      88 + potential / 5 + Math.round(teamPower) / 10 - (30 - age) ** 2 / 10
+    );
   }
 
   function Retire() {
