@@ -213,12 +213,12 @@
       {
         "name": "Barcelona",
         "league": "La Liga",
-        "power": 9
+        "power": 8.5
       },
       {
         "name": "Atlético Madrid",
         "league": "La Liga",
-        "power": 8
+        "power": 8.5
       },
       {
         "name": "Sevilla",
@@ -283,22 +283,22 @@
         "power": 6
       },
       {
-        "name": "Olympique de Marseille",
-        "league": "Ligue 1",
-        "power": 5.5
-      },
-      {
         "name": "Lille",
         "league": "Ligue 1",
         "power": 5.5
       },
       {
-        "name": "Nice",
+        "name": "Olympique de Marseille",
+        "league": "Ligue 1",
+        "power": 5.5
+      },
+      {
+        "name": "Lens",
         "league": "Ligue 1",
         "power": 5
       },
       {
-        "name": "Lens",
+        "name": "Nice",
         "league": "Ligue 1",
         "power": 5
       },
@@ -345,12 +345,12 @@
         "power": 9.5
       },
       {
-        "name": "Liverpool",
+        "name": "Arsenal",
         "league": "Premier League",
-        "power": 8.5
+        "power": 9
       },
       {
-        "name": "Arsenal",
+        "name": "Liverpool",
         "league": "Premier League",
         "power": 8
       },
@@ -481,7 +481,7 @@
       {
         "name": "Milan",
         "league": "Serie A",
-        "power": 8.5
+        "power": 8
       },
       {
         "name": "Napoli",
@@ -489,12 +489,12 @@
         "power": 7
       },
       {
-        "name": "Fiorentina",
+        "name": "Juventus",
         "league": "Serie A",
         "power": 6.5
       },
       {
-        "name": "Juventus",
+        "name": "Fiorentina",
         "league": "Serie A",
         "power": 5.5
       },
