@@ -25,17 +25,17 @@
         "power": 6.5
       },
       {
-        "name": "Union Berlin",
-        "league": "Bundesliga",
-        "power": 6
-      },
-      {
         "name": "Eintracht Frankfurt",
         "league": "Bundesliga",
         "power": 5.5
       },
       {
-        "name": "Mainz 05",
+        "name": "Union Berlin",
+        "league": "Bundesliga",
+        "power": 5
+      },
+      {
+        "name": "Bor. Mönchengladbach",
         "league": "Bundesliga",
         "power": 4.5
       },
@@ -50,12 +50,12 @@
         "power": 3.5
       },
       {
-        "name": "Bor. Mönchengladbach",
+        "name": "Freiburg",
         "league": "Bundesliga",
         "power": 2.5
       },
       {
-        "name": "Freiburg",
+        "name": "Mainz 05",
         "league": "Bundesliga",
         "power": 2
       },
@@ -87,17 +87,17 @@
         "power": 6.5
       },
       {
-        "name": "AZ Alkmaar",
+        "name": "AZ",
         "league": "Eredivisie",
         "power": 5
       },
       {
-        "name": "Vitesse",
+        "name": "Twente",
         "league": "Eredivisie",
         "power": 4.5
       },
       {
-        "name": "FC Groningen",
+        "name": "Heerenveen",
         "league": "Eredivisie",
         "power": 3.5
       },
@@ -107,17 +107,17 @@
         "power": 3.5
       },
       {
-        "name": "SC Heerenveen",
+        "name": "NED",
         "league": "Eredivisie",
         "power": 3
       },
       {
-        "name": "FC Utrecht",
+        "name": "Sparta Rotterdã",
         "league": "Eredivisie",
         "power": 2.5
       },
       {
-        "name": "Sparta Rotterdam",
+        "name": "Utrecht",
         "league": "Eredivisie",
         "power": 2.5
       },
@@ -127,7 +127,7 @@
         "power": 2
       },
       {
-        "name": "VVV-Venlo",
+        "name": "Vitesse",
         "league": "Eredivisie",
         "power": 2
       }
@@ -154,17 +154,17 @@
         "power": 5
       },
       {
-        "name": "Antwerp",
+        "name": "Anderlecht",
         "league": "Jupiler Pro League",
         "power": 4.5
       },
       {
-        "name": "Anderlecht",
+        "name": "Gent",
         "league": "Jupiler Pro League",
-        "power": 4
+        "power": 4.5
       },
       {
-        "name": "Gent",
+        "name": "Antwerp",
         "league": "Jupiler Pro League",
         "power": 4
       },
@@ -189,7 +189,7 @@
         "power": 2.5
       },
       {
-        "name": "KV Kortrijk",
+        "name": "Kortrijk",
         "league": "Jupiler Pro League",
         "power": 2
       },
@@ -221,17 +221,17 @@
         "power": 8.5
       },
       {
-        "name": "Sevilla",
+        "name": "Real Sociedad",
         "league": "La Liga",
         "power": 7
       },
       {
-        "name": "Real Sociedad",
+        "name": "Villarreal",
         "league": "La Liga",
         "power": 6
       },
       {
-        "name": "Villarreal",
+        "name": "Sevilla",
         "league": "La Liga",
         "power": 5.5
       },
@@ -241,27 +241,27 @@
         "power": 4.5
       },
       {
-        "name": "Athletic Club Bilbao",
+        "name": "Athletic Bilbao",
         "league": "La Liga",
         "power": 4
       },
       {
-        "name": "Valencia",
+        "name": "Girona",
         "league": "La Liga",
         "power": 3
       },
       {
-        "name": "Celta Vigo",
+        "name": "Valencia",
         "league": "La Liga",
         "power": 2.5
       },
       {
-        "name": "Espanyol",
+        "name": "Celta Vigo",
         "league": "La Liga",
         "power": 2
       },
       {
-        "name": "Rayo Vallecano",
+        "name": "Getafe",
         "league": "La Liga",
         "power": 2
       }
@@ -278,14 +278,14 @@
         "power": 7.5
       },
       {
-        "name": "Monaco",
+        "name": "LOSC",
         "league": "Ligue 1",
         "power": 6
       },
       {
-        "name": "Lille",
+        "name": "Monaco",
         "league": "Ligue 1",
-        "power": 5.5
+        "power": 6
       },
       {
         "name": "Olympique de Marseille",
@@ -300,11 +300,6 @@
       {
         "name": "Nice",
         "league": "Ligue 1",
-        "power": 5
-      },
-      {
-        "name": "Olympique Lyonnais",
-        "league": "Ligue 1",
         "power": 4.5
       },
       {
@@ -313,7 +308,12 @@
         "power": 4
       },
       {
-        "name": "Angers",
+        "name": "Lyon",
+        "league": "Ligue 1",
+        "power": 3.5
+      },
+      {
+        "name": "Stade Brestois",
         "league": "Ligue 1",
         "power": 3
       },
@@ -355,7 +355,7 @@
         "power": 8
       },
       {
-        "name": "Tottenham Hotspur",
+        "name": "Tottenham",
         "league": "Premier League",
         "power": 7
       },
@@ -370,7 +370,7 @@
         "power": 5.5
       },
       {
-        "name": "Newcastle United",
+        "name": "Newcastle",
         "league": "Premier League",
         "power": 5
       },
@@ -380,12 +380,12 @@
         "power": 4.5
       },
       {
-        "name": "West Ham United",
+        "name": "West Ham",
         "league": "Premier League",
         "power": 3
       },
       {
-        "name": "Everton",
+        "name": "Brighton",
         "league": "Premier League",
         "power": 2.5
       },
@@ -395,7 +395,7 @@
         "power": 2
       },
       {
-        "name": "Leicester City",
+        "name": "Everton",
         "league": "Premier League",
         "power": 2
       }
@@ -417,14 +417,14 @@
         "power": 7.5
       },
       {
-        "name": "Sporting CP",
+        "name": "Sporting",
         "league": "Primeira Liga",
         "power": 6
       },
       {
         "name": "Braga",
         "league": "Primeira Liga",
-        "power": 4.5
+        "power": 5
       },
       {
         "name": "Vitória Guimarães",
@@ -437,19 +437,14 @@
         "power": 3.5
       },
       {
-        "name": "Santa Clara",
+        "name": "Famalicão",
         "league": "Primeira Liga",
         "power": 3.5
       },
       {
-        "name": "Paços de Ferreira",
+        "name": "Arouca",
         "league": "Primeira Liga",
         "power": 3
-      },
-      {
-        "name": "Famalicão",
-        "league": "Primeira Liga",
-        "power": 2.5
       },
       {
         "name": "Gil Vicente",
@@ -457,12 +452,17 @@
         "power": 2.5
       },
       {
-        "name": "Marítimo",
+        "name": "Portimonense",
+        "league": "Primeira Liga",
+        "power": 2.5
+      },
+      {
+        "name": "Casa Pia",
         "league": "Primeira Liga",
         "power": 2
       },
       {
-        "name": "Portimonense",
+        "name": "Marítimo",
         "league": "Primeira Liga",
         "power": 2
       }
@@ -474,7 +474,7 @@
     "europaSpots": 2,
     "teams": [
       {
-        "name": "Internazionale Milano",
+        "name": "Inter Milan",
         "league": "Serie A",
         "power": 8.5
       },
@@ -484,17 +484,22 @@
         "power": 8
       },
       {
-        "name": "Napoli",
+        "name": "Juventus",
         "league": "Serie A",
         "power": 7
       },
       {
-        "name": "Juventus",
+        "name": "Napoli",
         "league": "Serie A",
         "power": 6.5
       },
       {
-        "name": "Fiorentina",
+        "name": "Atalanta",
+        "league": "Serie A",
+        "power": 5.5
+      },
+      {
+        "name": "Roma",
         "league": "Serie A",
         "power": 5.5
       },
@@ -504,12 +509,7 @@
         "power": 5
       },
       {
-        "name": "Roma",
-        "league": "Serie A",
-        "power": 5
-      },
-      {
-        "name": "Atalanta Bergamo",
+        "name": "Fiorentina",
         "league": "Serie A",
         "power": 4
       },
@@ -524,12 +524,12 @@
         "power": 2.5
       },
       {
-        "name": "Cagliari",
+        "name": "Genoa",
         "league": "Serie A",
         "power": 2
       },
       {
-        "name": "Empoli",
+        "name": "Sassuolo",
         "league": "Serie A",
         "power": 2
       }
