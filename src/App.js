@@ -408,7 +408,7 @@ function App() {
 
       description = `-> ${TournamentPath[phase]}: ${group.pos}º lugar`;
 
-      let bestFromGroup = deepClone([...group.table]).splice(0, 16);
+      let bestFromGroup = deepClone([...group.table]).splice(0, 12);
 
       bestFromGroup.sort((a, b) => {
         return b.power - a.power + Math.random();
