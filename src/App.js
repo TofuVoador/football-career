@@ -710,7 +710,7 @@ function App() {
 
     newPlayer.fame += newSeason.performance * 10;
 
-    newPlayer.fame += newSeason.goals / 10.0;
+    newPlayer.fame += newSeason.goals / 5.0;
 
     let position = -1;
 
