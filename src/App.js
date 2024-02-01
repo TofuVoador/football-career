@@ -268,11 +268,13 @@ function App() {
     //randomize how many goals/assists did they score
     let goalsOppostunities =
       (newPlayer.position.goalsBonus *
-        (Math.pow(newPlayer.team.power, 1.69897) + newSeason.starting / 2)) /
+        (Math.pow(newPlayer.team.power, Math.log10(50)) +
+          newSeason.starting / 2)) /
       100.0;
     let assistsOppostunities =
       (newPlayer.position.assistsBonus *
-        (Math.pow(newPlayer.team.power, 1.69897) + newSeason.starting / 2)) /
+        (Math.pow(newPlayer.team.power, Math.log10(50)) +
+          newSeason.starting / 2)) /
       100.0;
 
     newSeason.goals = Math.floor(
@@ -360,11 +362,11 @@ function App() {
       //if won
       if (game.result) {
         phase++;
-        newSeason.awardPoints += 0.3; //max 0.3 x 5 = 1.5
+        newSeason.awardPoints += 0.4; //max 0.4 x 5 = 2.0
         if (phase >= TournamentPath.length - 2) {
           end = true;
           newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
-          newSeason.awardPoints += 1.0; //max 0.3 x 5 + 1.5 = 2.5
+          newSeason.awardPoints += 0.5; //max 0.4 x 5 + 0.5 = 2.5
           newPlayer.fame += 15;
         }
       } else {
@@ -890,7 +892,7 @@ function App() {
       let newBonus =
         newTeams[home].name == playerTeam.name
           ? bonus
-          : Math.round(5.0 * (Math.random() - Math.random())) / 10;
+          : Math.round(10.0 * (Math.random() - Math.random())) / 10;
       for (let away = 0; away < newTeams.length; away++) {
         if (newTeams[home] !== newTeams[away]) {
           let game = GetMatch(newTeams[home], newTeams[away], newBonus);
@@ -930,7 +932,7 @@ function App() {
       let newBonus =
         newTeams[home].name == playerTeam.name
           ? bonus
-          : Math.round(5.0 * (Math.random() - Math.random())) / 10;
+          : Math.round(10.0 * (Math.random() - Math.random())) / 10;
       for (let away = 0; away < home; away++) {
         if (teams[home] !== teams[away]) {
           let game = GetMatch(teams[home], teams[away], newBonus);
@@ -964,8 +966,11 @@ function App() {
   }
 
   function GetMatch(team1, team2, bonus) {
-    let team1Power = team1.power / (team1.power + team2.power);
-    let team2Power = team2.power / (team1.power + team2.power);
+    let base =
+      Math.pow(team1.power, Math.log10(20)) +
+      Math.pow(team2.power, Math.log10(20));
+    let team1Power = Math.pow(team1.power, Math.log10(20)) / base;
+    let team2Power = Math.pow(team2.power, Math.log10(20)) / base;
 
     let goals = (Math.random() + Math.random()) * 2;
 
@@ -982,8 +987,11 @@ function App() {
   }
 
   function GetExtraTime(team1, team2) {
-    let team1Power = team1.power / (team1.power + team2.power);
-    let team2Power = team2.power / (team1.power + team2.power);
+    let base =
+      Math.pow(team1.power, Math.log10(30)) +
+      Math.pow(team2.power, Math.log10(30));
+    let team1Power = Math.pow(team1.power, Math.log10(30)) / base;
+    let team2Power = Math.pow(team2.power, Math.log10(30)) / base;
 
     let goals = Math.random() + Math.random();
 
