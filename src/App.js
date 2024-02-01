@@ -1081,7 +1081,7 @@ function App() {
   function GetNewTeam(currentPlayer = null) {
     let leagueID = RandomNumber(0, teams.length - 1);
     let league = teams[leagueID];
-    let team = league.teams[RandomNumber(0, 10)];
+    let team = league.teams[Math.round(Math.random() * 9)];
     let contractDuration = RandomNumber(2, 4);
     let contractValue = Math.floor((70 + team.power) ** 2 / 60) / 10;
     let transferValue = 18 + RandomNumber(0, 4);
@@ -1096,7 +1096,7 @@ function App() {
       ) {
         leagueID = RandomNumber(0, teams.length - 1);
         league = teams[leagueID];
-        team = league.teams[RandomNumber(0, 8)];
+        team = league.teams[Math.round(Math.random() * 9)];
 
         count++;
 
