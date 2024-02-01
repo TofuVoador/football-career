@@ -288,7 +288,7 @@ function App() {
         (1.0 + (Math.random() - Math.random()) / 4.0)
     );
 
-    newSeason.awardPoints = newSeason.performance * 1.5; //min = -1.5 | max = 1.5
+    newSeason.awardPoints = newSeason.performance * 2.5; //min = -2.5 | max = 2.5
 
     let med = 0;
     for (let i = 0; i < generalPerformance.length; i++) {
@@ -466,12 +466,12 @@ function App() {
 
             if (game.result) {
               phase++;
-              newSeason.awardPoints += 0.5; //max 0.5 x 5 = 2.5
+              newSeason.awardPoints += 0.6; //max 0.6 x 5 = 3.0
               if (phase >= TournamentPath.length - 1) {
                 end = true;
                 newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
                 newPlayer.fame += 50;
-                newSeason.awardPoints += 2.5; //max 0.5 x 5 + 2.5 = 5.0
+                newSeason.awardPoints += 2.0; //max 0.6 x 5 + 2.0 = 5.0
               }
             } else {
               end = true;
@@ -664,7 +664,7 @@ function App() {
               end = true;
               if (playedWorldCup) {
                 newPlayer.worldCup.push(`${year}`);
-                newSeason.awardPoints += 2.0; //max 0.8 x 5 - 2.0 + 2.0 = 5.0
+                newSeason.awardPoints += 2.0; //max 1.0 x 5 - 2.0 + 2.0 = 5.0
                 newPlayer.fame += 50;
               }
             }
@@ -887,10 +887,7 @@ function App() {
 
     let points = new Array(newTeams.length).fill(0);
     for (let home = 0; home < newTeams.length; home++) {
-      let newBonus =
-        newTeams[home].name == playerTeam.name
-          ? bonus
-          : Math.round(10.0 * (Math.random() - Math.random())) / 10;
+      let newBonus = newTeams[home].name == playerTeam.name ? bonus : 0;
       for (let away = 0; away < newTeams.length; away++) {
         if (newTeams[home] !== newTeams[away]) {
           let game = GetMatch(newTeams[home], newTeams[away], newBonus);
