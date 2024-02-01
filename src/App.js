@@ -887,7 +887,10 @@ function App() {
 
     let points = new Array(newTeams.length).fill(0);
     for (let home = 0; home < newTeams.length; home++) {
-      let newBonus = newTeams[home].name == playerTeam.name ? bonus : 0;
+      let newBonus =
+        newTeams[home].name == playerTeam.name
+          ? bonus
+          : Math.round(5.0 * (Math.random() - Math.random())) / 10;
       for (let away = 0; away < newTeams.length; away++) {
         if (newTeams[home] !== newTeams[away]) {
           let game = GetMatch(newTeams[home], newTeams[away], newBonus);
@@ -927,7 +930,7 @@ function App() {
       let newBonus =
         newTeams[home].name == playerTeam.name
           ? bonus
-          : Math.random() - Math.random();
+          : Math.round(5.0 * (Math.random() - Math.random())) / 10;
       for (let away = 0; away < home; away++) {
         if (teams[home] !== teams[away]) {
           let game = GetMatch(teams[home], teams[away], newBonus);
