@@ -278,7 +278,7 @@
         "power": 7.5
       },
       {
-        "name": "LOSC",
+        "name": "Lille",
         "league": "Ligue 1",
         "power": 6
       },
@@ -474,7 +474,7 @@
     "europaSpots": 2,
     "teams": [
       {
-        "name": "Inter Milan",
+        "name": "Inter",
         "league": "Serie A",
         "power": 8.5
       },
