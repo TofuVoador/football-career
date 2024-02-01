@@ -468,12 +468,12 @@ function App() {
 
             if (game.result) {
               phase++;
-              newSeason.awardPoints += 0.6; //max 0.6 x 5 = 3.0
+              newSeason.awardPoints += 0.8; //max 0.8 x 5 = 4.0
               if (phase >= TournamentPath.length - 1) {
                 end = true;
                 newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
                 newPlayer.fame += 50;
-                newSeason.awardPoints += 2.0; //max 0.6 x 5 + 2.0 = 5.0
+                newSeason.awardPoints += 1.0; //max 0.6 x 5 + 2.0 = 5.0
               }
             } else {
               end = true;
@@ -1139,7 +1139,10 @@ function App() {
 
   function GetOverall(potential, age, teamPower) {
     return (
-      88 + potential / 5 + Math.round(teamPower) / 10 - (30 - age) ** 2 / 10
+      88 +
+      potential / 5 +
+      Math.round(10 * teamPower) / 100 -
+      (28 - age) ** 2 / 10
     );
   }
 
