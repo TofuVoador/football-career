@@ -5,7 +5,6 @@ const ChartComponent = ({ data }) => {
   const chartRef1 = useRef(null);
   const chartRef2 = useRef(null);
   const chartRef3 = useRef(null);
-  const chartRef4 = useRef(null);
 
   useEffect(() => {
     const chartOptions = {
@@ -62,28 +61,6 @@ const ChartComponent = ({ data }) => {
         labels: data.map((item) => item.age), // x-axis labels
         datasets: [
           {
-            label: "Salário Anual",
-            data: data.map((item) => item.wage), // y-axis data
-            backgroundColor: "rgba(234, 231, 177, 1)", // Set background color
-            borderColor: "rgba(234, 231, 177, 1)", // Set border color
-          },
-          {
-            label: "Valor de Mercado",
-            data: data.map((item) => item.marketValue), // y-axis data
-            backgroundColor: "rgba(166, 187, 141, 1)", // Set background color
-            borderColor: "rgba(166, 187, 141, 1)", // Set border color
-          },
-        ],
-      },
-      options: chartOptions,
-    });
-
-    const chart3 = new Chart(chartRef3.current, {
-      type: "line", // specify chart type, e.g. line, bar, pie, etc.
-      data: {
-        labels: data.map((item) => item.age), // x-axis labels
-        datasets: [
-          {
             label: "Fama",
             data: data.map((item) => item.fame), // y-axis data
             backgroundColor: "rgba(234, 231, 177, 1)", // Set background color
@@ -94,7 +71,7 @@ const ChartComponent = ({ data }) => {
       options: chartOptions,
     });
 
-    const chart4 = new Chart(chartRef4.current, {
+    const chart3 = new Chart(chartRef3.current, {
       type: "line", // specify chart type, e.g. line, bar, pie, etc.
       data: {
         labels: data.map((item) => item.year), // x-axis labels
@@ -121,7 +98,6 @@ const ChartComponent = ({ data }) => {
       chart1.destroy();
       chart2.destroy();
       chart3.destroy();
-      chart4.destroy();
     };
   }, [data]);
 
@@ -130,7 +106,6 @@ const ChartComponent = ({ data }) => {
       <canvas ref={chartRef1} />
       <canvas ref={chartRef2} />
       <canvas ref={chartRef3} />
-      <canvas ref={chartRef4} />
     </div>
   );
 };

@@ -1091,8 +1091,8 @@ function App() {
       while (
         currentPlayer.team.name == team.name ||
         (team.power < currentPlayer.team.power - count / 2 &&
-          currentPlayer.age < 35) ||
-        (currentPlayer.overall < 82 + team.power / 2 && currentPlayer.age >= 35)
+          currentPlayer.age < 32) ||
+        (currentPlayer.overall < 82 + team.power / 2 && currentPlayer.age >= 32)
       ) {
         leagueID = RandomNumber(0, teams.length - 1);
         league = teams[leagueID];
@@ -1139,7 +1139,7 @@ function App() {
 
   function GetOverall(potential, age, teamPower) {
     return (
-      88 +
+      89 +
       potential / 5 +
       Math.round(10 * teamPower) / 100 -
       (28 - age) ** 2 / 10
