@@ -1090,8 +1090,8 @@ function App() {
       while (
         currentPlayer.team.name == team.name ||
         (team.power < currentPlayer.team.power - count / 2 &&
-          currentPlayer.age < 32) ||
-        (currentPlayer.overall < 82 + team.power / 2 && currentPlayer.age >= 32)
+          currentPlayer.age < 34) ||
+        (currentPlayer.overall < 82 + team.power / 2 && currentPlayer.age >= 34)
       ) {
         leagueID = RandomNumber(0, teams.length - 1);
         league = teams[leagueID];
