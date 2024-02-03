@@ -14,8 +14,8 @@ const Season = (props) => {
         <p>Valor de Mercado: {season.marketValue}M</p>
         <p>Salário Anual: {season.wage}M</p>
         <p>
-          Desempenho: {season.performance > 0 ? "+" : ""}
-          {season.performance}
+          Desempenho: {season.performance.toFixed(2) > 0 ? "+" : ""}
+          {season.performance.toFixed(2)}
         </p>
         <p>Fama: {Math.floor(season.fame)}</p>
         <p>Titular: {season.starting}%</p>

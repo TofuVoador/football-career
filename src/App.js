@@ -186,7 +186,7 @@ function App() {
 
     //calcule the player's performance
     newPlayer.performance =
-      Math.round(10.0 * (Math.random() - Math.random())) / 10.0;
+      Math.round(50.0 * (Math.random() - Math.random())) / 50.0;
 
     newPlayer.overall =
       GetOverall(newPlayer.potential, newPlayer.age, newPlayer.team.power) +
