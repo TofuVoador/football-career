@@ -290,7 +290,7 @@ function App() {
         (1.0 + (Math.random() - Math.random()) / 4.0)
     );
 
-    newSeason.awardPoints = newSeason.performance * 2.5; //min = -2.5 | max = 2.5
+    newSeason.awardPoints = newSeason.performance * 2; //min = -2.0 | max = 2.0
 
     let med = 0;
     for (let i = 0; i < generalPerformance.length; i++) {
@@ -316,7 +316,7 @@ function App() {
       topSix += `-> ${p + 1}º: ${leagueResults.table[p].name}`;
     }
 
-    newSeason.awardPoints += (6 - leagueResults.pos) / 2; //max = 2.5
+    newSeason.awardPoints += (5 - leagueResults.pos) / 2; //max = 2.0
 
     //if fist place, then won trophy
     if (leagueResults.pos == 1) {
@@ -366,7 +366,6 @@ function App() {
         if (phase >= TournamentPath.length - 2) {
           end = true;
           newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
-          newSeason.awardPoints += 0.5; //max 0.4 x 5 + 0.5 = 2.5
           newPlayer.fame += 15;
         }
       } else {
@@ -468,12 +467,12 @@ function App() {
 
             if (game.result) {
               phase++;
-              newSeason.awardPoints += 0.8; //max 0.8 x 5 = 4.0
+              newSeason.awardPoints += 1.0; //max 1.0 x 5 = 5.0
               if (phase >= TournamentPath.length - 1) {
                 end = true;
                 newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
                 newPlayer.fame += 50;
-                newSeason.awardPoints += 1.0; //max 0.6 x 5 + 2.0 = 5.0
+                newSeason.awardPoints += 1.0; //max 1.0 x 5 + 1.0 = 6.0
               }
             } else {
               end = true;
@@ -666,7 +665,7 @@ function App() {
               end = true;
               if (playedWorldCup) {
                 newPlayer.worldCup.push(`${year}`);
-                newSeason.awardPoints += 2.0; //max 1.0 x 5 - 2.0 + 2.0 = 5.0
+                newSeason.awardPoints += 1.0; //max 1.0 x 5 - 2.0 + 1.0 = 4.0
                 newPlayer.fame += 50;
               }
             }
@@ -694,7 +693,7 @@ function App() {
       newPlayer.goldenAwards.push(
         `Chuteiras de Ouro ${year} (${newPlayer.team.name})`
       );
-      newSeason.awardPoints += 0.5;
+      newSeason.awardPoints += 1.0;
       newPlayer.fame += 25;
       newSeason.titles.push("Chuteira de Ouro");
     } else if (
@@ -705,7 +704,7 @@ function App() {
       newPlayer.goldenAwards.push(
         `Luvas de Ouro ${year} (${newPlayer.team.name})`
       );
-      newSeason.awardPoints += 0.5;
+      newSeason.awardPoints += 1.0;
       newPlayer.fame += 25;
       newSeason.titles.push("Luva de Ouro");
     }
