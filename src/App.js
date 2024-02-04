@@ -373,7 +373,7 @@ function App() {
       }
     }
 
-    description = `National Cup: ${TournamentPath[phase + 1]} ${description}`;
+    description = `Copa Nacional: ${TournamentPath[phase + 1]} ${description}`;
     newSeason.titles.push(description);
 
     if (newPlayer.championsQualification) {

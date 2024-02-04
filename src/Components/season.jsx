@@ -11,16 +11,19 @@ const Season = (props) => {
       </summary>
       <div className="season-stats">
         <p>Idade: {season.age}</p>
-        <p>Valor de Mercado: {season.marketValue}M</p>
-        <p>Salário Anual: {season.wage}M</p>
+        <p>
+          Valor de Mercado: {season.marketValue}M | Salário Anual: {season.wage}
+          M
+        </p>
         <p>
           Desempenho: {season.performance.toFixed(2) > 0 ? "+" : ""}
           {season.performance.toFixed(2)}
         </p>
         <p>Fama: {Math.floor(season.fame)}</p>
         <p>Titular: {season.starting}%</p>
-        <p>Gols: {season.goals}</p>
-        <p>Assistências: {season.assists}</p>
+        <p>
+          Gols: {season.goals} | Assistências: {season.assists}
+        </p>
       </div>
       <div className="season-titles">
         <div className="season-titles-list">
