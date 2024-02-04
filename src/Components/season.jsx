@@ -12,8 +12,7 @@ const Season = (props) => {
       <div className="season-stats">
         <p>Idade: {season.age}</p>
         <p>
-          Valor de Mercado: {season.marketValue}M | Salário Anual: {season.wage}
-          M
+          Valor: {season.marketValue}M | Salário Anual: {season.wage}M
         </p>
         <p>
           Desempenho: {season.performance.toFixed(2) > 0 ? "+" : ""}
