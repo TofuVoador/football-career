@@ -1035,14 +1035,19 @@ function App() {
   }
 
   function GetPenalties(team1, team2) {
+    let base = Math.pow(team1.power, Math.log10(60)) + Math.pow(team2.power, 2);
+    let team1Power = Math.pow(team1.power, Math.log10(60)) / base;
+    let team2Power = Math.pow(team2.power, Math.log10(60)) / base;
+
     let winner = false;
     let team1goals = 0;
     let team2goals = 0;
     let count = 0;
     while (!winner) {
       count++;
-      let team1shooter = RandomNumber(0, (team1.power + 1) * 2);
-      let team2keeper = RandomNumber(0, team2.power * 2);
+      let team1shooter = RandomNumber(0, team1Power * 100);
+      let team2keeper = RandomNumber(0, team2Power * 100);
+
       if (team1shooter > team2keeper) team1goals++;
 
       if (count <= 5 && Math.abs(team1goals - team2goals) > 6 - count) {
@@ -1050,8 +1055,9 @@ function App() {
         break;
       }
 
-      let team2shooter = RandomNumber(0, (team2.power + 1) * 2);
-      let team1keeper = RandomNumber(0, team1.power * 2);
+      let team2shooter = RandomNumber(0, team2Power * 100);
+      let team1keeper = RandomNumber(0, team1Power * 100);
+
       if (team2shooter > team1keeper) team2goals++;
 
       if (
