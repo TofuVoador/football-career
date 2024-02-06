@@ -610,9 +610,9 @@ function App() {
       }
 
       let playerGroup = null;
-      let classif = [];
+      let firstPlaces = [];
+      let secondPlaces = [];
       let thirdPlaces = [];
-      let playoffs = false;
 
       for (let groupID = 0; groupID < groups.length; groupID++) {
         let thisGroup = GetWorldCupPosition(
@@ -624,12 +624,10 @@ function App() {
         if (groups[groupID].some((n) => n.name == newPlayer.nation.name)) {
           playerGroup = thisGroup;
           description = `-> ${TournamentPath[phase]}: ${playerGroup.table[0].name} / ${playerGroup.table[1].name} / ${playerGroup.table[2].name} / ${playerGroup.table[3].name}`;
-
-          if (thisGroup.pos <= 2) playoffs = true;
         }
 
-        classif.push(thisGroup.table[0]);
-        classif.push(thisGroup.table[1]);
+        firstPlaces.push(thisGroup.table[0]);
+        secondPlaces.push(thisGroup.table[1]);
         thirdPlaces.push(thisGroup.table[2]);
       }
 
@@ -637,57 +635,58 @@ function App() {
         return b.power - a.power + Math.random() / 2;
       });
 
-      for (let id = 0; id < 8; id++) {
-        classif.push(thirdPlaces[id]);
-      }
+      let classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 8));
+      let playerPhase = phase;
+      phase++;
 
-      if (playoffs) {
-        phase++;
-        let end = false;
-        while (!end) {
-          let newClassif = [];
-          for (let matchID = 0; matchID < classif.length / 2; matchID++) {
-            let team1 = classif[matchID];
-            let team2 = classif[classif.length - (matchID + 1)];
+      let end = false;
+      while (!end) {
+        let newClassif = [];
+        for (let matchID = 0; matchID < classif.length / 2; matchID++) {
+          let team1 = classif[matchID];
+          let team2 = classif[classif.length - (matchID + 1)];
+          let game = GetGameResult(team1, team2, 0);
 
-            let game = GetGameResult(team1, team2, 0);
+          if (
+            team1.name == player.nation.name ||
+            team2.name == player.nation.name
+          ) {
+            playerPhase++;
+            description += `-> ${TournamentPath[playerPhase]}: ${game.game}`;
 
             if (
-              team1.name == player.nation.name ||
-              team2.name == player.nation.name
+              (game.result && team1.name == player.nation.name) ||
+              (!game.result && team2.name == player.nation.name)
             ) {
-              description += `-> ${TournamentPath[phase]}: ${game.game}`;
-
-              if (
-                (game.result && team1.name == player.nation.name) ||
-                (!game.result && team2.name == player.nation.name)
-              ) {
-                phase++;
-                if (playedWorldCup) newSeason.awardPoints += 0.9; //max 0.9 x 5 - 2.0 = 2.5
-                if (phase >= TournamentPath.length - 1) {
-                  end = true;
-                  if (playedWorldCup) {
-                    newPlayer.worldCup.push(`${year}`);
-                    newSeason.awardPoints += 1.5; //max 0.9 x 5 - 2.0 + 1.5 = 4.0
-                    newPlayer.fame += 50;
-                  }
+              if (playedWorldCup) newSeason.awardPoints += 0.9; //max 0.9 x 5 - 2.0 = 2.5
+              if (playerPhase >= TournamentPath.length - 1) {
+                if (playedWorldCup) {
+                  newPlayer.worldCup.push(`${year}`);
+                  newSeason.awardPoints += 1.5; //max 0.9 x 5 - 2.0 + 1.5 = 4.0
+                  newPlayer.fame += 50;
                 }
-              } else {
-                end = true;
               }
             }
-
-            if (game.result) {
-              newClassif.push(team1);
-            } else {
-              newClassif.push(team2);
-            }
           }
-          classif = newClassif;
+
+          if (game.result) {
+            newClassif.push(team1);
+          } else {
+            newClassif.push(team2);
+          }
         }
+
+        phase++;
+
+        if (phase >= TournamentPath.length - 1) {
+          end = true;
+          description += `-> Vencedor: ${newClassif[0].name}`;
+        }
+
+        classif = newClassif;
       }
 
-      description = `World Cup: ${TournamentPath[phase]} ${
+      description = `World Cup: ${TournamentPath[playerPhase]} ${
         playedWorldCup ? "" : " (Não Convocado)"
       } ${description}`;
       newSeason.titles.push(description);
