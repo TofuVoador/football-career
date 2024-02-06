@@ -63,6 +63,26 @@
         "name": "Stuttgart",
         "league": "Bundesliga",
         "power": 2
+      },
+      {
+        "name": "Werder Bremen",
+        "league": "Bundesliga",
+        "power": 1.5
+      },
+      {
+        "name": "Augsburg",
+        "league": "Bundesliga",
+        "power": 1.5
+      },
+      {
+        "name": "Bochum",
+        "league": "Bundesliga",
+        "power": 1.5
+      },
+      {
+        "name": "Heidenhiem",
+        "league": "Bundesliga",
+        "power": 1.5
       }
     ]
   },
@@ -130,6 +150,26 @@
         "name": "Vitesse",
         "league": "Eredivisie",
         "power": 2
+      },
+      {
+        "name": "Go Ahead Eagles",
+        "league": "Eredivisie",
+        "power": 1.5
+      },
+      {
+        "name": "Zwolle",
+        "league": "Eredivisie",
+        "power": 1.5
+      },
+      {
+        "name": "Almere",
+        "league": "Eredivisie",
+        "power": 1.5
+      },
+      {
+        "name": "Excelsior",
+        "league": "Eredivisie",
+        "power": 1.5
       }
     ]
   },
@@ -197,6 +237,26 @@
         "name": "Mechelen",
         "league": "Jupiler Pro League",
         "power": 2
+      },
+      {
+        "name": "Westerlo",
+        "league": "Jupiler Pro League",
+        "power": 1.5
+      },
+      {
+        "name": "Leuven",
+        "league": "Jupiler Pro League",
+        "power": 1.5
+      },
+      {
+        "name": "RWDM",
+        "league": "Jupiler Pro League",
+        "power": 1.5
+      },
+      {
+        "name": "KAS Eupen",
+        "league": "Jupiler Pro League",
+        "power": 1.5
       }
     ]
   },
@@ -264,6 +324,26 @@
         "name": "Getafe",
         "league": "La Liga",
         "power": 2
+      },
+      {
+        "name": "Alavés",
+        "league": "La Liga",
+        "power": 1.5
+      },
+      {
+        "name": "Osasuna",
+        "league": "La Liga",
+        "power": 1.5
+      },
+      {
+        "name": "Mallorca",
+        "league": "La Liga",
+        "power": 1.5
+      },
+      {
+        "name": "Las Palmas",
+        "league": "La Liga",
+        "power": 1.5
       }
     ]
   },
@@ -331,6 +411,26 @@
         "name": "Reims",
         "league": "Ligue 1",
         "power": 2
+      },
+      {
+        "name": "Strasbourg",
+        "league": "Ligue 1",
+        "power": 1.5
+      },
+      {
+        "name": "Le Havre",
+        "league": "Ligue 1",
+        "power": 1.5
+      },
+      {
+        "name": "Toulouse",
+        "league": "Ligue 1",
+        "power": 1.5
+      },
+      {
+        "name": "Metz",
+        "league": "Ligue 1",
+        "power": 1.5
       }
     ]
   },
@@ -398,6 +498,26 @@
         "name": "Everton",
         "league": "Premier League",
         "power": 2
+      },
+      {
+        "name": "Fulham",
+        "league": "Premier League",
+        "power": 1.5
+      },
+      {
+        "name": "Brentford",
+        "league": "Premier League",
+        "power": 1.5
+      },
+      {
+        "name": "Nottinham Forest",
+        "league": "Premier League",
+        "power": 1.5
+      },
+      {
+        "name": "Bournemouth",
+        "league": "Premier League",
+        "power": 1.5
       }
     ]
   },
@@ -465,6 +585,26 @@
         "name": "Marítimo",
         "league": "Primeira Liga",
         "power": 2
+      },
+      {
+        "name": "Rio Ave",
+        "league": "Primeira Liga",
+        "power": 1.5
+      },
+      {
+        "name": "Estoril",
+        "league": "Primeira Liga",
+        "power": 1.5
+      },
+      {
+        "name": "Farense",
+        "league": "Primeira Liga",
+        "power": 1.5
+      },
+      {
+        "name": "Chaves",
+        "league": "Primeira Liga",
+        "power": 1.5
       }
     ]
   },
@@ -532,6 +672,26 @@
         "name": "Sassuolo",
         "league": "Serie A",
         "power": 2
+      },
+      {
+        "name": "Empoli",
+        "league": "Serie A",
+        "power": 1.5
+      },
+      {
+        "name": "Cagliari",
+        "league": "Serie A",
+        "power": 1.5
+      },
+      {
+        "name": "Udinese",
+        "league": "Serie A",
+        "power": 1.5
+      },
+      {
+        "name": "Lecce",
+        "league": "Serie A",
+        "power": 1.5
       }
     ]
   }

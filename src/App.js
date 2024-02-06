@@ -69,7 +69,7 @@ function App() {
     europa: [],
     champions: [],
     worldCup: [],
-    goldenAwards: [],
+    awards: [],
     championsQualification: false,
     lastLeaguePosition: 0,
     europaQualification: false,
@@ -302,6 +302,8 @@ function App() {
     //national tournaments
     let league = teams.find((league) => league.name === newPlayer.team.league);
 
+    let triplice = 0;
+
     //national league
     let leagueResults = GetLeaguePosition(
       league.teams,
@@ -324,51 +326,72 @@ function App() {
     if (leagueResults.pos == 1) {
       newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
       newPlayer.fame += 15;
+      triplice++;
     }
 
     newSeason.titles.push(`Liga: ${leagueResults.pos}º lugar ${topSix}`);
 
-    //randomize opponents for national cup
-    let opponentsLeft = [...league.teams];
-    opponentsLeft.sort((a, b) => {
-      return a.power - b.power + Math.random() / 2;
-    });
-
-    let opponents = [];
     let description = "";
     let end = false;
-    let phase = 0;
+    let phase = 2;
+    let playerPhase = 2;
+
+    //get opponents for national cup
+    let classif = [...league.teams];
+    classif.sort((a, b) => {
+      return b.power - a.power + Math.random() / 2;
+    });
 
     while (!end) {
-      let randomIndex = Math.round(Math.random());
-      let op = opponentsLeft[randomIndex];
+      let newOpponentsLeft = [];
+      for (let matchID = 0; matchID < classif.length / 2; matchID++) {
+        let team1 = classif[matchID];
+        let team2 = classif[classif.length - (matchID + 1)];
+        let game = GetGameResult(
+          team1,
+          team2,
+          team1.name == newPlayer.team.name
+            ? newSeason.performance
+            : team2.name == newPlayer.team.name
+            ? -newSeason.performance
+            : 0
+        );
 
-      if (op.name == newPlayer.team.name) {
-        op = opponentsLeft[1 - randomIndex];
+        if (
+          team1.name == newPlayer.team.name ||
+          team2.name == newPlayer.team.name
+        ) {
+          description += `-> ${TournamentPath[playerPhase]}: ${game.game}`;
+          if (
+            (game.result && team1.name == newPlayer.team.name) ||
+            (!game.result && team2.name == newPlayer.team.name)
+          ) {
+            playerPhase++;
+            if (playerPhase >= TournamentPath.length - 1) {
+              newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
+              newPlayer.fame += 5;
+              triplice++;
+            }
+          }
+        }
+
+        if (game.result) {
+          newOpponentsLeft.push(team1);
+        } else {
+          newOpponentsLeft.push(team2);
+        }
       }
 
-      opponentsLeft.splice(0, 2);
-      opponents.push(op);
+      phase++;
+      classif = newOpponentsLeft;
 
-      let game = GetGameResult(newPlayer.team, op, newSeason.performance);
-
-      description += `-> ${TournamentPath[phase + 1]}: ${game.game}`;
-
-      //if won
-      if (game.result) {
-        phase++;
-        newSeason.awardPoints += league.championsSpots / 10.0; //max 0.4 x 5 = 2.0
-        if (phase >= TournamentPath.length - 2) {
-          end = true;
-          newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
-          newPlayer.fame += 15;
-        }
-      } else {
+      if (phase >= TournamentPath.length - 1) {
         end = true;
+        description += `-> Vencedor: ${newOpponentsLeft[0].name}`;
       }
     }
 
-    description = `Copa Nacional: ${TournamentPath[phase + 1]} ${description}`;
+    description = `Copa Nacional: ${TournamentPath[playerPhase]} ${description}`;
     newSeason.titles.push(description);
 
     if (newPlayer.championsQualification) {
@@ -419,7 +442,15 @@ function App() {
       for (let matchID = 0; matchID < playoffsClassif.length / 2; matchID++) {
         let team1 = playoffsClassif[matchID];
         let team2 = playoffsClassif[playoffsClassif.length - (matchID + 1)];
-        let game = GetGameResult(team1, team2, 0);
+        let game = GetGameResult(
+          team1,
+          team2,
+          team1.name == newPlayer.team.name
+            ? newSeason.performance
+            : team2.name == newPlayer.team.name
+            ? -newSeason.performance
+            : 0
+        );
 
         if (
           team1.name == newPlayer.team.name ||
@@ -442,14 +473,19 @@ function App() {
       phase++;
       end = false;
       while (!end) {
-        console.log(TournamentPath[phase]);
         let newClassif = [];
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
           let team2 = classif[classif.length - (matchID + 1)];
-          let game = GetGameResult(team1, team2, 0);
-
-          console.log(game.game);
+          let game = GetGameResult(
+            team1,
+            team2,
+            team1.name == newPlayer.team.name
+              ? newSeason.performance
+              : team2.name == newPlayer.team.name
+              ? -newSeason.performance
+              : 0
+          );
 
           if (
             team1.name == newPlayer.team.name ||
@@ -463,10 +499,11 @@ function App() {
             ) {
               playerPhase++;
               newSeason.awardPoints += 0.9; //max 0.9 x 5 = 4.5
-              if (phase >= TournamentPath.length - 1) {
+              if (playerPhase >= TournamentPath.length - 1) {
                 newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
-                newPlayer.fame += 50;
+                newPlayer.fame += 45;
                 newSeason.awardPoints += 1.5; //max 0.9 x 5 + 1.5 = 6.0
+                triplice++;
               }
             }
           }
@@ -524,7 +561,7 @@ function App() {
 
       if (group.pos <= 2) {
         phase++;
-        opponents = [];
+        let opponents = [];
         for (let i = 0; i < TournamentPath.length; i++) {
           let op = GetEuropaOpponent();
           while (
@@ -554,7 +591,7 @@ function App() {
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.europa.push(`${year} (${newPlayer.team.name})`);
-              newPlayer.fame += 25;
+              newPlayer.fame += 15;
             }
           } else {
             end = true;
@@ -664,7 +701,15 @@ function App() {
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
           let team2 = classif[classif.length - (matchID + 1)];
-          let game = GetGameResult(team1, team2, 0);
+          let game = GetGameResult(
+            team1,
+            team2,
+            team1.name == player.nation.name
+              ? newSeason.performance
+              : team2.name == player.nation.name
+              ? -newSeason.performance
+              : 0
+          );
 
           if (
             team1.name == player.nation.name ||
@@ -682,7 +727,7 @@ function App() {
                 if (playedWorldCup) {
                   newPlayer.worldCup.push(`${year}`);
                   newSeason.awardPoints += 1.5; //max 0.9 x 5 - 2.0 + 1.5 = 4.0
-                  newPlayer.fame += 50;
+                  newPlayer.fame += 60;
                 }
               }
             }
@@ -716,30 +761,39 @@ function App() {
     newPlayer.totalAssists += newSeason.assists;
 
     //post season results
-    if (RandomNumber(0, 100) < 1) newSeason.titles.push("Puskás"); //Puskás
+    if (RandomNumber(1, 1000) <= 5) {
+      //Puskás
+      newPlayer.awards.push(`Puskás ${year} (${newPlayer.team.name})`);
+      newSeason.titles.push("Puskás");
+    }
+
+    if (triplice >= 3) {
+      newPlayer.awards.push(`Tríplice Coroa ${year} (${newPlayer.team.name})`);
+      newSeason.titles.push("Tríplice Coroa");
+      newPlayer.fame += 30;
+      newSeason.awardPoints += 1.0;
+    }
 
     if (45 + RandomNumber(0, 5) + RandomNumber(0, 5) < newSeason.goals) {
       //Golden Shoes
-      newPlayer.goldenAwards.push(
+      newPlayer.awards.push(
         `Chuteiras de Ouro ${year} (${newPlayer.team.name})`
       );
       newSeason.awardPoints += 1.0;
-      newPlayer.fame += 25;
+      newPlayer.fame += 30;
       newSeason.titles.push("Chuteira de Ouro");
     } else if (
       player.position.title == "GK" &&
       newSeason.performance * 5 + (newPlayer.overall - 75) / 2 > 10
     ) {
       //Golden Gloves
-      newPlayer.goldenAwards.push(
-        `Luvas de Ouro ${year} (${newPlayer.team.name})`
-      );
+      newPlayer.awards.push(`Luvas de Ouro ${year} (${newPlayer.team.name})`);
       newSeason.awardPoints += 1.0;
-      newPlayer.fame += 25;
+      newPlayer.fame += 30;
       newSeason.titles.push("Luva de Ouro");
     }
 
-    newPlayer.fame += newSeason.performance * 10;
+    newPlayer.fame += newSeason.performance * 15;
 
     newPlayer.fame += newSeason.goals / 5.0;
 
@@ -747,10 +801,8 @@ function App() {
 
     if (newSeason.awardPoints + newPlayer.overall >= 100) {
       //Ballon D'or
-      newPlayer.goldenAwards.push(
-        `Ballon D'or ${year} (${newPlayer.team.name})`
-      );
-      newPlayer.fame += 100;
+      newPlayer.awards.push(`Ballon D'or ${year} (${newPlayer.team.name})`);
+      newPlayer.fame += 90;
       position = 1;
 
       newSeason.titles.push(`Ballon D'Or: 1º lugar`);
@@ -1016,7 +1068,9 @@ function App() {
   }
 
   function GetExtraTime(team1, team2) {
-    let base = Math.pow(team1.power, Math.log10(60)) + Math.pow(team2.power, 2);
+    let base =
+      Math.pow(team1.power, Math.log10(60)) +
+      Math.pow(team2.power, Math.log10(60));
     let team1Power = Math.pow(team1.power, Math.log10(60)) / base;
     let team2Power = Math.pow(team2.power, Math.log10(60)) / base;
 
@@ -1035,7 +1089,9 @@ function App() {
   }
 
   function GetPenalties(team1, team2) {
-    let base = Math.pow(team1.power, Math.log10(60)) + Math.pow(team2.power, 2);
+    let base =
+      Math.pow(team1.power, Math.log10(60)) +
+      Math.pow(team2.power, Math.log10(60));
     let team1Power = Math.pow(team1.power, Math.log10(60)) / base;
     let team2Power = Math.pow(team2.power, Math.log10(60)) / base;
 
@@ -1114,7 +1170,7 @@ function App() {
   function GetNewTeam(currentPlayer = null) {
     let leagueID = RandomNumber(0, teams.length - 1);
     let league = teams[leagueID];
-    let team = league.teams[Math.round(Math.random() * 9)];
+    let team = league.teams[Math.round(Math.random() * 7)];
     let contractDuration = RandomNumber(2, 4);
     let contractValue = Math.floor((70 + team.power) ** 2 / 60) / 10;
     let transferValue = 18 + RandomNumber(0, 4);
@@ -1129,7 +1185,7 @@ function App() {
       ) {
         leagueID = RandomNumber(0, teams.length - 1);
         league = teams[leagueID];
-        team = league.teams[Math.round(Math.random() * 9)];
+        team = league.teams[Math.round(Math.random() * 7)];
 
         count++;
 
@@ -1441,8 +1497,8 @@ function App() {
         </div>
         <div>
           <details>
-            <summary>Premiações: {player.goldenAwards.length}</summary>
-            {player.goldenAwards.map((b) => (
+            <summary>Premiações: {player.awards.length}</summary>
+            {player.awards.map((b) => (
               <p key={b}>{b}</p>
             ))}
           </details>
