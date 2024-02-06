@@ -180,7 +180,7 @@ function App() {
         transfer2.transferValue
       );
 
-      newContract = renew.duration; //new contrat lenght
+      newContract = renew.duration; //new contrat length
       newPlayer.wage = renew.value; //new contrat value
     }
 
@@ -257,6 +257,7 @@ function App() {
   }
 
   function Continue() {
+    console.clear();
     //change display
     document.getElementById("team-choice").style.display = "flex";
     document.getElementById("continue").style.display = "none";
@@ -374,6 +375,8 @@ function App() {
       //Champions League
       phase = 0;
 
+      let playerPhase = 0;
+
       let qualified = [];
 
       //get top teams in each league
@@ -403,72 +406,88 @@ function App() {
 
       description = `-> ${TournamentPath[phase]}: ${group.pos}º lugar`;
 
-      let bestFromGroup = deepClone([...group.table]).splice(0, 12);
-      bestFromGroup.sort((a, b) => {
-        return a.power - b.power + Math.random() / 2;
+      let playoffsClassif = deepClone([...group.table]).splice(0, 24);
+
+      let classif = playoffsClassif.splice(0, 8);
+
+      playoffsClassif.sort((a, b) => {
+        return b.power - a.power + Math.random() / 2;
       });
 
-      if (group.pos <= 24) {
-        let playoffs = false;
-        if (group.pos > 8) {
-          let randomIndex = Math.round(Math.random());
-          let chosenOpponent = bestFromGroup[randomIndex];
+      phase++;
 
-          if (chosenOpponent.name !== newPlayer.team.name) {
-            chosenOpponent = bestFromGroup[2 - randomIndex];
-          }
+      for (let matchID = 0; matchID < playoffsClassif.length / 2; matchID++) {
+        let team1 = playoffsClassif[matchID];
+        let team2 = playoffsClassif[playoffsClassif.length - (matchID + 1)];
+        let game = GetGameResult(team1, team2, 0);
 
-          let game = GetGameResult(
-            newPlayer.team,
-            chosenOpponent,
-            newSeason.performance
-          );
-
+        if (
+          team1.name == newPlayer.team.name ||
+          team2.name == newPlayer.team.name
+        ) {
           description += `-> Playoff: ${game.game}`;
-
-          if (game.result) playoffs = true;
         }
 
-        bestFromGroup.splice(0, 2);
+        if (game.result) {
+          classif.push(team1);
+        } else {
+          classif.push(team2);
+        }
+      }
 
-        if (group.pos <= 8 || playoffs) {
-          phase++;
-          end = false;
-          while (!end) {
-            let randomIndex = Math.round(Math.random());
-            let chosenOpponent = bestFromGroup[randomIndex];
+      if (classif.some((t) => t.name == newPlayer.team.name)) {
+        playerPhase += 2;
+      }
 
-            if (chosenOpponent.name !== newPlayer.team.name) {
-              chosenOpponent = bestFromGroup[1 - randomIndex];
-            }
+      phase++;
+      end = false;
+      while (!end) {
+        console.log(TournamentPath[phase]);
+        let newClassif = [];
+        for (let matchID = 0; matchID < classif.length / 2; matchID++) {
+          let team1 = classif[matchID];
+          let team2 = classif[classif.length - (matchID + 1)];
+          let game = GetGameResult(team1, team2, 0);
 
-            bestFromGroup.splice(0, 2);
+          console.log(game.game);
 
-            let game = GetGameResult(
-              newPlayer.team,
-              chosenOpponent,
-              newSeason.performance
-            );
+          if (
+            team1.name == newPlayer.team.name ||
+            team2.name == newPlayer.team.name
+          ) {
+            description += `-> ${TournamentPath[playerPhase]}: ${game.game}`;
 
-            description += `-> ${TournamentPath[phase]}: ${game.game}`;
-
-            if (game.result) {
-              phase++;
+            if (
+              (game.result && team1.name == newPlayer.team.name) ||
+              (!game.result && team2.name == newPlayer.team.name)
+            ) {
+              playerPhase++;
               newSeason.awardPoints += 0.9; //max 0.9 x 5 = 4.5
               if (phase >= TournamentPath.length - 1) {
-                end = true;
                 newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
                 newPlayer.fame += 50;
                 newSeason.awardPoints += 1.5; //max 0.9 x 5 + 1.5 = 6.0
               }
-            } else {
-              end = true;
             }
           }
+
+          if (game.result) {
+            newClassif.push(team1);
+          } else {
+            newClassif.push(team2);
+          }
+        }
+
+        phase++;
+        classif = newClassif;
+
+        if (phase >= TournamentPath.length - 1) {
+          end = true;
+          description += `-> Vencedor: ${newClassif[0].name}`;
         }
       }
 
-      description = `Champions League: ${TournamentPath[phase]} ${description}`;
+      description = `Champions League: ${TournamentPath[playerPhase]} ${description}`;
       newSeason.titles.push(description);
     }
 
