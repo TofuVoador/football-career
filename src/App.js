@@ -692,8 +692,8 @@ function App() {
       });
 
       let classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 8));
-      let playerPhase = phase;
       phase++;
+      let playerPhase = phase;
 
       let end = false;
       while (!end) {
@@ -715,13 +715,13 @@ function App() {
             team1.name == player.nation.name ||
             team2.name == player.nation.name
           ) {
-            playerPhase++;
             description += `-> ${TournamentPath[playerPhase]}: ${game.game}`;
 
             if (
               (game.result && team1.name == player.nation.name) ||
               (!game.result && team2.name == player.nation.name)
             ) {
+              playerPhase++;
               if (playedWorldCup) newSeason.awardPoints += 0.9; //max 0.9 x 5 - 2.0 = 2.5
               if (playerPhase >= TournamentPath.length - 1) {
                 if (playedWorldCup) {
