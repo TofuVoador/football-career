@@ -1259,7 +1259,7 @@ function App() {
         let teamID = teamIndices[i];
 
         let current = Math.random();
-        let change = Math.round(4 * (last - current)) / 10.0;
+        let change = Math.round(5 * (last - current)) / 10.0;
         last = current;
 
         let newPower = newTeams[leagueID].teams[teamID].power + change;
@@ -1301,7 +1301,7 @@ function App() {
       let nationID = nationIndices[i];
 
       let current = Math.random();
-      let change = Math.round(4 * (last - current)) / 10.0;
+      let change = Math.round(5 * (last - current)) / 10.0;
       last = current;
 
       let newPower = newNations[nationID].power + change;
