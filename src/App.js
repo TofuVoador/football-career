@@ -397,8 +397,7 @@ function App() {
     if (newPlayer.championsQualification) {
       //Champions League
       phase = 0;
-
-      let playerPhase = 0;
+      playerPhase = 0;
 
       let qualified = [];
 
@@ -427,7 +426,7 @@ function App() {
 
       let group = GetChampionsPosition(qualified, newPlayer.team);
 
-      description = `-> ${TournamentPath[phase]}: ${group.pos}º lugar`;
+      description = `-> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
 
       let playoffsClassif = deepClone([...group.table]).splice(0, 24);
 
@@ -436,8 +435,6 @@ function App() {
       playoffsClassif.sort((a, b) => {
         return b.power - a.power + Math.random() / 2;
       });
-
-      phase++;
 
       for (let matchID = 0; matchID < playoffsClassif.length / 2; matchID++) {
         let team1 = playoffsClassif[matchID];
@@ -470,7 +467,7 @@ function App() {
         playerPhase += 2;
       }
 
-      phase++;
+      phase += 2;
       end = false;
       while (!end) {
         let newClassif = [];
@@ -608,6 +605,7 @@ function App() {
     if ((year + 2) % 4 == 0) {
       newSeason.awardPoints -= 2.0;
       phase = 0;
+      playerPhase = 0;
 
       let allNations = deepClone([...nations]);
 
@@ -693,7 +691,10 @@ function App() {
 
       let classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 8));
       phase++;
-      let playerPhase = phase;
+
+      if (classif.some((t) => t.name == newPlayer.team.name)) {
+        playerPhase++;
+      }
 
       let end = false;
       while (!end) {
@@ -741,13 +742,12 @@ function App() {
         }
 
         phase++;
+        classif = newClassif;
 
         if (phase >= TournamentPath.length - 1) {
           end = true;
           description += `-> Vencedor: ${newClassif[0].name}`;
         }
-
-        classif = newClassif;
       }
 
       description = `World Cup: ${TournamentPath[playerPhase]} ${
@@ -832,19 +832,14 @@ function App() {
     let newTransfer2 = GetNewTeam(newPlayer);
 
     if (contract <= 1) {
-      let renewDuration = RandomNumber(1, 3);
-      if (newPlayer.age < 30) renewDuration += RandomNumber(0, 2);
+      let renewDuration = RandomNumber(1, 4);
+
       let renewValue =
         Math.floor(
-          (newPlayer.overall +
-            newPlayer.team.power / 2 +
-            newPlayer.potential +
-            newPlayer.fame / 20 +
-            med * 10 +
-            renewDuration) **
-            2 /
-            60
-        ) / 10;
+          newPlayer.position.value *
+            (newPlayer.overall ** 4 / 1000000) *
+            (1 + (Math.random() - Math.random()) / 10.0)
+        ) / 10.0;
       setRenew({ value: renewValue, duration: renewDuration });
     }
 
@@ -1171,9 +1166,19 @@ function App() {
     let leagueID = RandomNumber(0, teams.length - 1);
     let league = teams[leagueID];
     let team = league.teams[Math.round(Math.random() * 7)];
-    let contractDuration = RandomNumber(2, 4);
-    let contractValue = Math.floor((70 + team.power) ** 2 / 60) / 10;
-    let transferValue = 18 + RandomNumber(0, 4);
+    let contractDuration = RandomNumber(2, 5);
+    let contractValue =
+      Math.floor(
+        (70 ** 4 / 1000000) *
+          (1 + (Math.random() - Math.random()) / 10.0) *
+          (1 + team.power / 100.0)
+      ) / 10.0;
+    let transferValue =
+      Math.floor(
+        1680 *
+          (1 + (Math.random() - Math.random()) / 10.0) *
+          (1 + team.power / 100.0)
+      ) / 100.0;
 
     if (currentPlayer) {
       let count = 0;
@@ -1192,27 +1197,32 @@ function App() {
         if (count >= 15) return null;
       }
 
-      contractDuration = RandomNumber(1, 3);
-      if (currentPlayer.age < 30) contractDuration++;
+      contractDuration = RandomNumber(1, 4);
+      if (currentPlayer.age < 32) contractDuration++;
+
+      let expectedOverall =
+        GetOverall(
+          currentPlayer.potential,
+          currentPlayer.age + Math.round(contractDuration / 2),
+          team.power
+        ) + currentPlayer.performance;
 
       contractValue =
         Math.floor(
-          (currentPlayer.overall +
-            team.power +
-            currentPlayer.potential +
-            currentPlayer.fame / 20 +
-            contractDuration) **
-            2 /
-            60
-        ) / 10;
-      transferValue = Math.floor(
-        ((currentPlayer.overall / 4.0) ** 2 / 10) *
           currentPlayer.position.value *
-          (1 + currentPlayer.performance / 5.0) *
-          (1 + (Math.random() - Math.random()) / 10.0)
-      );
+            (expectedOverall ** 4 / 1000000) *
+            (1 + (Math.random() - Math.random()) / 10.0) *
+            (1 + team.power / 100.0)
+        ) / 10.0;
 
-      if (transferValue < 0) transferValue = 0;
+      transferValue =
+        Math.floor(
+          currentPlayer.position.value *
+            (currentPlayer.overall ** 5 / 1000000) *
+            (1 + (Math.random() - Math.random()) / 10.0) *
+            (1 + team.power / 100.0) +
+            currentPlayer.fame / 20
+        ) / 100.0;
     }
 
     let newContract = { value: contractValue, duration: contractDuration };
