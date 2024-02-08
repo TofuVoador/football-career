@@ -70,6 +70,7 @@ function App() {
     champions: [],
     worldCup: [],
     awards: [],
+    ballonDor: [],
     championsQualification: false,
     lastLeaguePosition: 0,
     europaQualification: false,
@@ -692,12 +693,13 @@ function App() {
       let classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 8));
       phase++;
 
-      if (classif.some((t) => t.name == newPlayer.team.name)) {
+      if (classif.some((t) => t.name == newPlayer.nation.name)) {
         playerPhase++;
       }
 
       let end = false;
       while (!end) {
+        console.log(TournamentPath[phase]);
         let newClassif = [];
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
@@ -711,6 +713,8 @@ function App() {
               ? -newSeason.performance
               : 0
           );
+
+          console.log(game.game);
 
           if (
             team1.name == player.nation.name ||
@@ -801,7 +805,7 @@ function App() {
 
     if (newSeason.awardPoints + newPlayer.overall >= 100) {
       //Ballon D'or
-      newPlayer.awards.push(`Ballon D'or ${year} (${newPlayer.team.name})`);
+      newPlayer.ballonDor.push(`Ballon D'or ${year} (${newPlayer.team.name})`);
       newPlayer.fame += 90;
       position = 1;
 
@@ -838,7 +842,8 @@ function App() {
         Math.floor(
           newPlayer.position.value *
             (newPlayer.overall ** 4 / 1000000) *
-            (1 + (Math.random() - Math.random()) / 10.0)
+            (1 + (Math.random() - Math.random()) / 10.0) *
+            (1 + newPlayer.team.power / 50.0)
         ) / 10.0;
       setRenew({ value: renewValue, duration: renewDuration });
     }
@@ -1169,15 +1174,15 @@ function App() {
     let contractDuration = RandomNumber(2, 5);
     let contractValue =
       Math.floor(
-        (70 ** 4 / 1000000) *
+        32 *
           (1 + (Math.random() - Math.random()) / 10.0) *
-          (1 + team.power / 100.0)
+          (1 + team.power / 50.0)
       ) / 10.0;
     let transferValue =
       Math.floor(
-        1680 *
+        2400 *
           (1 + (Math.random() - Math.random()) / 10.0) *
-          (1 + team.power / 100.0)
+          (1 + team.power / 50.0)
       ) / 100.0;
 
     if (currentPlayer) {
@@ -1212,7 +1217,7 @@ function App() {
           currentPlayer.position.value *
             (expectedOverall ** 4 / 1000000) *
             (1 + (Math.random() - Math.random()) / 10.0) *
-            (1 + team.power / 100.0)
+            (1 + team.power / 5.0)
         ) / 10.0;
 
       transferValue =
@@ -1220,7 +1225,7 @@ function App() {
           currentPlayer.position.value *
             (currentPlayer.overall ** 5 / 1000000) *
             (1 + (Math.random() - Math.random()) / 10.0) *
-            (1 + team.power / 100.0) +
+            (1 + team.power / 5.0) +
             currentPlayer.fame / 20
         ) / 100.0;
     }
