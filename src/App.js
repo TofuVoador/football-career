@@ -258,7 +258,6 @@ function App() {
   }
 
   function Continue() {
-    console.clear();
     //change display
     document.getElementById("team-choice").style.display = "flex";
     document.getElementById("continue").style.display = "none";
@@ -699,7 +698,6 @@ function App() {
 
       let end = false;
       while (!end) {
-        console.log(TournamentPath[phase]);
         let newClassif = [];
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
@@ -713,8 +711,6 @@ function App() {
               ? -newSeason.performance
               : 0
           );
-
-          console.log(game.game);
 
           if (
             team1.name == player.nation.name ||
