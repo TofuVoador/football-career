@@ -1213,7 +1213,7 @@ function App() {
           currentPlayer.position.value *
             (expectedOverall ** 4 / 1000000) *
             (1 + (Math.random() - Math.random()) / 10.0) *
-            (1 + team.power / 5.0)
+            (1 + team.power / 50.0)
         ) / 10.0;
 
       transferValue =
@@ -1221,8 +1221,8 @@ function App() {
           currentPlayer.position.value *
             (currentPlayer.overall ** 5 / 1000000) *
             (1 + (Math.random() - Math.random()) / 10.0) *
-            (1 + team.power / 5.0) +
-            currentPlayer.fame / 20
+            (1 + team.power / 50.0) +
+            currentPlayer.fame
         ) / 100.0;
     }
 
