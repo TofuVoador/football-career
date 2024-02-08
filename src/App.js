@@ -1509,7 +1509,15 @@ function App() {
         <div>
           <details>
             <summary>Premiações: {player.awards.length}</summary>
-            {player.awards.map((b) => (
+            {player.awards.map((a) => (
+              <p key={a}>{a}</p>
+            ))}
+          </details>
+        </div>
+        <div>
+          <details>
+            <summary>Bola de Ouro: {player.ballonDor.length}</summary>
+            {player.ballonDor.map((b) => (
               <p key={b}>{b}</p>
             ))}
           </details>
