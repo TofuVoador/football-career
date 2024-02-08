@@ -74,8 +74,8 @@
   }
 
   .season-titles {
-    margin: 0.2rem;
-    padding: 0.2rem;
+    margin-bottom: 0.2rem;
+    padding-top: 0.2rem;
   }
   .season {
     padding: 0 1rem;

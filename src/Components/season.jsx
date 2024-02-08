@@ -15,11 +15,11 @@ const Season = (props) => {
       <div className="season-stats">
         <div className="double-column">
           <div>
-            <div>Idade: {season.age}</div>
+            <div>{season.age} anos</div>
             <div>Fama: {Math.floor(season.fame)}</div>
           </div>
           <div>
-            <div>Valor: ${season.marketValue}M</div>
+            <div>${season.marketValue}M</div>
             <div>${season.wage}M/ano</div>
           </div>
         </div>
@@ -116,8 +116,8 @@ const Season = (props) => {
           </div>
         </div>
         <div className="double-column">
-          <div>Gols: {season.goals}</div>
-          <div>Assistências: {season.assists}</div>
+          <div>{season.goals} gols</div>
+          <div>{season.assists} assistências</div>
         </div>
       </div>
       <div className="season-titles">
