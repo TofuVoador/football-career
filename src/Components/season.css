@@ -57,7 +57,10 @@
 
 .double-column {
   display: flex;
-  justify-content: space-between;
+}
+
+.double-column div {
+  width: 50%;
 }
 
 @media (max-width: 900px) {

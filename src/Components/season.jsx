@@ -116,10 +116,8 @@ const Season = (props) => {
           </div>
         </div>
         <div className="double-column">
-          <div>
-            <p>Gols: {season.goals}</p>
-            <p>Assistências: {season.assists}</p>
-          </div>
+          <div>Gols: {season.goals}</div>
+          <div>Assistências: {season.assists}</div>
         </div>
       </div>
       <div className="season-titles">
