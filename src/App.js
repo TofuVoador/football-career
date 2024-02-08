@@ -199,7 +199,7 @@ function App() {
 
     //giving the performance, set how many games did they were the starter player
     let starting = Math.floor(
-      (newPlayer.overall - (67 + newPlayer.team.power)) / 0.1 +
+      (newPlayer.overall - (70 + newPlayer.team.power)) / 0.1 +
         (Math.random() - Math.random()) * 10
     );
     if (starting > 100) starting = 100;

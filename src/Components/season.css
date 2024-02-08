@@ -8,27 +8,36 @@
 }
 
 .season-title {
-  padding: 1rem;
+  padding: 0.5rem;
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
+  align-items: center;
   color: var(--color-light2);
   font-size: 1.5rem;
   font-weight: bold;
 }
 
+.oval {
+  border-radius: 2.5rem;
+  border: 1px var(--color-light2) solid;
+  height: 2.5rem;
+  width: 5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .season-titles {
+  display: flex;
+  color: var(--color-light2);
   margin: 0.5rem;
   padding: 0.5rem;
-  border-radius: 2rem;
-  display: flex;
-  gap: 0.5rem;
-  color: var(--color-light2);
 }
 
 .season-titles-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.2rem;
 }
 
 .season-titles-list details summary,
@@ -38,6 +47,17 @@
 
 .season-titles-list details p {
   color: var(--color-light);
+}
+
+.season-stats {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.double-column {
+  display: flex;
+  justify-content: space-between;
 }
 
 @media (max-width: 900px) {
