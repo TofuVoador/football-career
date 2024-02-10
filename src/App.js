@@ -78,6 +78,8 @@ function App() {
     marketValue: 1,
   });
 
+  const [history, setHistory] = useState([]);
+
   const [year, setYear] = useState(new Date().getFullYear());
 
   const [contract, setContract] = useState(0);
@@ -126,6 +128,7 @@ function App() {
     //load
     let newPlayer = player;
     let newGeneralPerformance = generalPerformance;
+    let newHistory = history;
 
     //age and contract
     newPlayer.age++;
@@ -134,6 +137,7 @@ function App() {
     //pre season setup
     if (newTeam) {
       //if they change team
+      newHistory.push(newTeam.team.name);
       let oldTeamLeague = newPlayer.team == null ? "" : newPlayer.team.league; //store old league table results
       newGeneralPerformance = [];
       newPlayer.team = newTeam.team;
@@ -255,6 +259,7 @@ function App() {
     setContract(newContract);
     setPlayer(newPlayer);
     setGeneralPerformance(newGeneralPerformance);
+    setHistory(newHistory);
   }
 
   function Continue() {
@@ -1065,10 +1070,10 @@ function App() {
 
   function GetExtraTime(team1, team2) {
     let base =
-      Math.pow(team1.power, Math.log10(60)) +
-      Math.pow(team2.power, Math.log10(60));
-    let team1Power = Math.pow(team1.power, Math.log10(60)) / base;
-    let team2Power = Math.pow(team2.power, Math.log10(60)) / base;
+      Math.pow(team1.power, Math.log10(50)) +
+      Math.pow(team2.power, Math.log10(50));
+    let team1Power = Math.pow(team1.power, Math.log10(50)) / base;
+    let team2Power = Math.pow(team2.power, Math.log10(50)) / base;
 
     let goals = Math.random() + Math.random();
 
@@ -1165,7 +1170,6 @@ function App() {
 
   function GetNewTeam(currentPlayer = null) {
     //randomize a play
-
     let leagueID = RandomNumber(0, teams.length - 1);
     let league = teams[leagueID];
     let team = league.teams[Math.round(Math.random() * 9)];
@@ -1196,7 +1200,7 @@ function App() {
       );
       let count = 0;
       while (
-        currentPlayer.team.name == team.name ||
+        history.some((t) => t == team.name) ||
         (team.power < currentPlayer.team.power - count / 3 &&
           currentPlayer.age < 34) ||
         (currentPlayer.overall < 82 + team.power / 2 && currentPlayer.age >= 34)
