@@ -1164,9 +1164,11 @@ function App() {
   }
 
   function GetNewTeam(currentPlayer = null) {
+    //randomize a play
+
     let leagueID = RandomNumber(0, teams.length - 1);
     let league = teams[leagueID];
-    let team = league.teams[Math.round(Math.random() * 7)];
+    let team = league.teams[Math.round(Math.random() * 9)];
     let contractDuration = RandomNumber(2, 5);
     let contractValue =
       Math.floor(
@@ -1182,21 +1184,36 @@ function App() {
       ) / 100.0;
 
     if (currentPlayer) {
+      //identificar de qual liga o jogador é
+      let playerLeague = teams.find(
+        (league) => league.name === currentPlayer.team.league
+      );
+      playerLeague.teams.sort((a, b) => {
+        return b.power - a.power;
+      });
+      let currentPlayerTeamRank = playerLeague.teams.findIndex(
+        (team) => team.name === currentPlayer.team.name
+      );
       let count = 0;
       while (
         currentPlayer.team.name == team.name ||
-        (team.power < currentPlayer.team.power - count / 2 &&
+        (team.power < currentPlayer.team.power - count / 3 &&
           currentPlayer.age < 34) ||
         (currentPlayer.overall < 82 + team.power / 2 && currentPlayer.age >= 34)
       ) {
         leagueID = RandomNumber(0, teams.length - 1);
         league = teams[leagueID];
-        team = league.teams[Math.round(Math.random() * 7)];
+        team =
+          league.teams[
+            Math.round(Math.random() * currentPlayerTeamRank + count / 3)
+          ];
 
         count++;
 
         if (count >= 15) return null;
       }
+
+      console.log(count, team);
 
       contractDuration = RandomNumber(1, 4);
       if (currentPlayer.age < 32) contractDuration++;
