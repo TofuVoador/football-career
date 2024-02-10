@@ -1213,10 +1213,8 @@ function App() {
         if (count >= 15) return null;
       }
 
-      console.log(count, team);
-
       contractDuration = RandomNumber(1, 4);
-      if (currentPlayer.age < 32) contractDuration++;
+      if (currentPlayer.age < 34) contractDuration++;
 
       let expectedOverall =
         GetOverall(
