@@ -203,7 +203,7 @@ function App() {
 
     //giving the performance, set how many games did they were the starter player
     let starting = Math.floor(
-      (newPlayer.overall - (70 + newPlayer.team.power)) / 0.1 +
+      (newPlayer.overall - (75 + newPlayer.team.power / 2)) / 0.1 +
         (Math.random() - Math.random()) * 10
     );
     if (starting > 100) starting = 100;
@@ -330,7 +330,7 @@ function App() {
     //if fist place, then won trophy
     if (leagueResults.pos == 1) {
       newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
-      newPlayer.fame += 15;
+      newPlayer.fame += 10;
       triplice++;
     }
 
@@ -374,7 +374,7 @@ function App() {
             playerPhase++;
             if (playerPhase >= TournamentPath.length - 1) {
               newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
-              newPlayer.fame += 5;
+              newPlayer.fame += 10;
               triplice++;
             }
           }
@@ -503,7 +503,7 @@ function App() {
               newSeason.awardPoints += 0.9; //max 0.9 x 5 = 4.5
               if (playerPhase >= TournamentPath.length - 1) {
                 newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
-                newPlayer.fame += 45;
+                newPlayer.fame += 50;
                 newSeason.awardPoints += 1.5; //max 0.9 x 5 + 1.5 = 6.0
                 triplice++;
               }
@@ -593,7 +593,7 @@ function App() {
             if (phase >= TournamentPath.length - 1) {
               end = true;
               newPlayer.europa.push(`${year} (${newPlayer.team.name})`);
-              newPlayer.fame += 15;
+              newPlayer.fame += 10;
             }
           } else {
             end = true;
@@ -733,7 +733,7 @@ function App() {
                 if (playedWorldCup) {
                   newPlayer.worldCup.push(`${year}`);
                   newSeason.awardPoints += 1.5; //max 0.9 x 5 - 2.0 + 1.5 = 4.0
-                  newPlayer.fame += 60;
+                  newPlayer.fame += 50;
                 }
               }
             }
@@ -775,17 +775,17 @@ function App() {
     if (triplice >= 3) {
       newPlayer.awards.push(`Tríplice Coroa ${year} (${newPlayer.team.name})`);
       newSeason.titles.push("Tríplice Coroa");
-      newPlayer.fame += 30;
+      newPlayer.fame += 20;
       newSeason.awardPoints += 1.0;
     }
 
-    if (45 + RandomNumber(0, 5) + RandomNumber(0, 5) < newSeason.goals) {
+    if (45 + RandomNumber(0, 3) + RandomNumber(0, 2) < newSeason.goals) {
       //Golden Shoes
       newPlayer.awards.push(
         `Chuteiras de Ouro ${year} (${newPlayer.team.name})`
       );
       newSeason.awardPoints += 1.0;
-      newPlayer.fame += 30;
+      newPlayer.fame += 20;
       newSeason.titles.push("Chuteira de Ouro");
     } else if (
       player.position.title == "GK" &&
@@ -794,20 +794,21 @@ function App() {
       //Golden Gloves
       newPlayer.awards.push(`Luvas de Ouro ${year} (${newPlayer.team.name})`);
       newSeason.awardPoints += 1.0;
-      newPlayer.fame += 30;
+      newPlayer.fame += 20;
       newSeason.titles.push("Luva de Ouro");
     }
 
-    newPlayer.fame += newSeason.performance * 15;
+    newPlayer.fame += newSeason.performance * 20;
 
-    newPlayer.fame += newSeason.goals / 5.0;
+    newPlayer.fame += newSeason.goals / 4.0;
+    newPlayer.fame += newSeason.assists / 4.0;
 
     let position = -1;
 
     if (newSeason.awardPoints + newPlayer.overall >= 100) {
       //Ballon D'or
       newPlayer.ballonDor.push(`Ballon D'or ${year} (${newPlayer.team.name})`);
-      newPlayer.fame += 90;
+      newPlayer.fame += 80;
       position = 1;
 
       newSeason.titles.push(`Ballon D'Or: 1º lugar`);
@@ -820,58 +821,55 @@ function App() {
 
     //trasnfer window
 
-    //fired
-    if (
-      contract <= 1 &&
-      ((newPlayer.overall <= 82 + newPlayer.team.power / 2 &&
-        newPlayer.age > 32) ||
-        med <= -0.25)
-    ) {
-      document.getElementById("decision-stay").style.display = "none";
-    } else {
-      document.getElementById("decision-stay").style.display = "flex";
-    }
-
-    //load option of transfer
-    let newTransfer1 = GetNewTeam(newPlayer);
-    let newTransfer2 = GetNewTeam(newPlayer);
-
     if (contract <= 1) {
-      let renewDuration = RandomNumber(1, 4);
-
-      let renewValue =
-        Math.floor(
-          newPlayer.position.value *
-            (newPlayer.overall ** 4 / 1000000) *
-            (1 + (Math.random() - Math.random()) / 10.0) *
-            (1 + newPlayer.team.power / 50.0)
-        ) / 10.0;
-      setRenew({ value: renewValue, duration: renewDuration });
-    }
-
-    if (newTransfer1 == null) {
-      document.getElementById("decision-transfer1").style.display = "none";
-    } else {
-      document.getElementById("decision-transfer1").style.display = "flex";
-      setTransfer1(newTransfer1);
-    }
-
-    if (newTransfer1 != null) {
+      //fired
       if (
-        newTransfer2 == null ||
-        newTransfer2.team.name == newTransfer1.team.name
+        (newPlayer.overall <= 82 + newPlayer.team.power / 2 &&
+          newPlayer.age > 34) ||
+        med <= -0.2
       ) {
-        document.getElementById("decision-transfer2").style.display = "none";
+        document.getElementById("decision-stay").style.display = "none";
       } else {
-        document.getElementById("decision-transfer2").style.display = "flex";
-        setTransfer2(newTransfer2);
+        document.getElementById("decision-stay").style.display = "flex";
+        let renewDuration = RandomNumber(1, 4);
+
+        let renewValue =
+          Math.floor(
+            newPlayer.position.value *
+              (newPlayer.overall ** 4 / 1000000) *
+              (1 + (Math.random() - Math.random()) / 10.0) *
+              (1 + newPlayer.team.power / 50.0)
+          ) / 10.0;
+        setRenew({ value: renewValue, duration: renewDuration });
       }
-    } else {
-      if (newTransfer2 == null) {
-        document.getElementById("decision-transfer2").style.display = "none";
-        document.getElementById("retire").style.display = "flex";
+
+      let newTransfer1 = GetNewTeam(newPlayer);
+      let newTransfer2 = GetNewTeam(newPlayer);
+
+      if (newTransfer1 == null) {
+        document.getElementById("decision-transfer1").style.display = "none";
       } else {
-        setTransfer2(newTransfer2);
+        document.getElementById("decision-transfer1").style.display = "flex";
+        setTransfer1(newTransfer1);
+      }
+
+      if (newTransfer1 != null) {
+        if (
+          newTransfer2 == null ||
+          newTransfer2.team.name == newTransfer1.team.name
+        ) {
+          document.getElementById("decision-transfer2").style.display = "none";
+        } else {
+          document.getElementById("decision-transfer2").style.display = "flex";
+          setTransfer2(newTransfer2);
+        }
+      } else {
+        if (newTransfer2 == null) {
+          document.getElementById("decision-transfer2").style.display = "none";
+          document.getElementById("retire").style.display = "flex";
+        } else {
+          setTransfer2(newTransfer2);
+        }
       }
     }
 
@@ -1420,11 +1418,15 @@ function App() {
           style={{ display: "none" }}
           onClick={() => ChooseTeam()}
         >
-          <p>Continuar em {player.team == null ? "" : player.team.name}</p>
           <p>
-            (${renew.value}M/ano |{" "}
-            {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")} |{" "}
-            Elenco: {player.team == null ? "" : player.team.power})
+            Continuar em {player.team == null ? "" : player.team.name} (
+            {1 +
+              Math.round(player.team == null ? 0 : player.team.power * 4) / 10}
+            ⭐)
+          </p>
+          <p>
+            ${renew.value}M/ano |
+            {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")}
           </p>
         </a>
         <a
@@ -1432,10 +1434,13 @@ function App() {
           id="decision-transfer1"
           onClick={() => ChooseTeam(transfer1)}
         >
-          <p>Transferir para {transfer1.team.name}</p>{" "}
           <p>
-            (${transfer1.contract.value}M/ano | {transfer1.contract.duration}{" "}
-            anos | Elenco: {transfer1.team.power})
+            Transferir para {transfer1.team.name} (
+            {1 + Math.round(transfer1.team.power * 4) / 10}⭐)
+          </p>
+          <p>
+            ${transfer1.contract.value}M/ano | {transfer1.contract.duration}{" "}
+            anos
           </p>
         </a>
         <a
@@ -1443,10 +1448,13 @@ function App() {
           id="decision-transfer2"
           onClick={() => ChooseTeam(transfer2)}
         >
-          <p>Transferir para {transfer2.team.name}</p>{" "}
           <p>
-            (${transfer2.contract.value}M/ano | {transfer2.contract.duration}{" "}
-            anos | Elenco: {transfer2.team.power})
+            Transferir para {transfer2.team.name} (
+            {1 + Math.round(transfer2.team.power * 4) / 10}⭐)
+          </p>
+          <p>
+            ${transfer2.contract.value}M/ano | {transfer2.contract.duration}{" "}
+            anos
           </p>
         </a>
         <a
