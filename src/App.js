@@ -93,17 +93,17 @@ function App() {
 
   const initStat1 = {
     pos: GetNewPosition(),
-    nat: Nations[RandomNumber(0, Nations.length - 1)],
+    nat: Nations[RandomNumber(0, 35)],
   };
 
   const initStat2 = {
     pos: GetNewPosition(),
-    nat: Nations[RandomNumber(0, Nations.length - 1)],
+    nat: Nations[RandomNumber(0, 35)],
   };
 
   const initStat3 = {
     pos: GetNewPosition(),
-    nat: Nations[RandomNumber(0, Nations.length - 1)],
+    nat: Nations[RandomNumber(0, 35)],
   };
 
   const [renew, setRenew] = useState({ value: 0, duration: 0 });
