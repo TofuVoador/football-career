@@ -72,12 +72,17 @@
       {
         "name": "Bochum",
         "league": "Bundesliga",
-        "power": 1.5
+        "power": 1
+      },
+      {
+        "name": "Hoffenheim",
+        "league": "Bundesliga",
+        "power": 1
       },
       {
         "name": "Werder Bremen",
         "league": "Bundesliga",
-        "power": 1.5
+        "power": 1
       }
     ]
   },
@@ -147,19 +152,24 @@
         "power": 2
       },
       {
-        "name": "Excelsior",
-        "league": "Eredivisie",
-        "power": 1.5
-      },
-      {
         "name": "Go Ahead Eagles",
         "league": "Eredivisie",
         "power": 1.5
       },
       {
+        "name": "Excelsior",
+        "league": "Eredivisie",
+        "power": 1
+      },
+      {
+        "name": "Groningen",
+        "league": "Eredivisie",
+        "power": 1
+      },
+      {
         "name": "Zwolle",
         "league": "Eredivisie",
-        "power": 1.5
+        "power": 1
       }
     ]
   },
@@ -234,14 +244,19 @@
         "power": 1.5
       },
       {
+        "name": "Beerschot",
+        "league": "Jupiler Pro League",
+        "power": 1
+      },
+      {
         "name": "Leuven",
         "league": "Jupiler Pro League",
-        "power": 1.5
+        "power": 1
       },
       {
         "name": "Westerlo",
         "league": "Jupiler Pro League",
-        "power": 1.5
+        "power": 1
       }
     ]
   },
@@ -316,14 +331,19 @@
         "power": 1.5
       },
       {
+        "name": "Espanyol",
+        "league": "La Liga",
+        "power": 1
+      },
+      {
         "name": "Mallorca",
         "league": "La Liga",
-        "power": 1.5
+        "power": 1
       },
       {
         "name": "Osasuna",
         "league": "La Liga",
-        "power": 1.5
+        "power": 1
       }
     ]
   },
@@ -393,19 +413,24 @@
         "power": 2
       },
       {
-        "name": "Metz",
-        "league": "Ligue 1",
-        "power": 1.5
-      },
-      {
         "name": "Strasbourg",
         "league": "Ligue 1",
         "power": 1.5
       },
       {
+        "name": "Bordeaux",
+        "league": "Ligue 1",
+        "power": 1
+      },
+      {
+        "name": "Metz",
+        "league": "Ligue 1",
+        "power": 1
+      },
+      {
         "name": "Toulouse",
         "league": "Ligue 1",
-        "power": 1.5
+        "power": 1
       }
     ]
   },
@@ -475,19 +500,24 @@
         "power": 2
       },
       {
-        "name": "Bournemouth",
+        "name": "Nottinham Forest",
         "league": "Premier League",
         "power": 1.5
+      },
+      {
+        "name": "Bournemouth",
+        "league": "Premier League",
+        "power": 1
       },
       {
         "name": "Fulham",
         "league": "Premier League",
-        "power": 1.5
+        "power": 1
       },
       {
-        "name": "Nottinham Forest",
+        "name": "Leeds",
         "league": "Premier League",
-        "power": 1.5
+        "power": 1
       }
     ]
   },
@@ -557,19 +587,24 @@
         "power": 2
       },
       {
-        "name": "Chaves",
+        "name": "Santa Clara",
         "league": "Primeira Liga",
         "power": 1.5
+      },
+      {
+        "name": "Chaves",
+        "league": "Primeira Liga",
+        "power": 1
       },
       {
         "name": "Estoril",
         "league": "Primeira Liga",
-        "power": 1.5
+        "power": 1
       },
       {
         "name": "Farense",
         "league": "Primeira Liga",
-        "power": 1.5
+        "power": 1
       }
     ]
   },
@@ -639,19 +674,24 @@
         "power": 2
       },
       {
-        "name": "Empoli",
-        "league": "Serie A",
-        "power": 1.5
-      },
-      {
         "name": "Cagliari",
         "league": "Serie A",
         "power": 1.5
       },
       {
+        "name": "Empoli",
+        "league": "Serie A",
+        "power": 1
+      },
+      {
         "name": "Udinese",
         "league": "Serie A",
-        "power": 1.5
+        "power": 1
+      },
+      {
+        "name": "Venezia",
+        "league": "Serie A",
+        "power": 1
       }
     ]
   }

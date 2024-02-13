@@ -263,6 +263,7 @@ function App() {
   }
 
   function Continue() {
+    console.clear();
     //change display
     document.getElementById("team-choice").style.display = "flex";
     document.getElementById("continue").style.display = "none";
@@ -352,7 +353,7 @@ function App() {
       for (let matchID = 0; matchID < classif.length / 2; matchID++) {
         let team1 = classif[matchID];
         let team2 = classif[classif.length - (matchID + 1)];
-        let game = GetGameResult(
+        let game = GetKnockoutResult(
           team1,
           team2,
           team1.name == newPlayer.team.name
@@ -386,6 +387,8 @@ function App() {
           newOpponentsLeft.push(team2);
         }
       }
+
+      console.log(newOpponentsLeft);
 
       phase++;
       classif = newOpponentsLeft;
@@ -444,7 +447,7 @@ function App() {
       for (let matchID = 0; matchID < playoffsClassif.length / 2; matchID++) {
         let team1 = playoffsClassif[matchID];
         let team2 = playoffsClassif[playoffsClassif.length - (matchID + 1)];
-        let game = GetGameResult(
+        let game = GetKnockoutResult(
           team1,
           team2,
           team1.name == newPlayer.team.name
@@ -468,6 +471,8 @@ function App() {
         }
       }
 
+      console.log(classif);
+
       if (classif.some((t) => t.name == newPlayer.team.name)) {
         playerPhase += 2;
       }
@@ -479,7 +484,7 @@ function App() {
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
           let team2 = classif[classif.length - (matchID + 1)];
-          let game = GetGameResult(
+          let game = GetKnockoutResult(
             team1,
             team2,
             team1.name == newPlayer.team.name
@@ -516,6 +521,8 @@ function App() {
             newClassif.push(team2);
           }
         }
+
+        console.log(newClassif);
 
         phase++;
         classif = newClassif;
@@ -580,7 +587,7 @@ function App() {
         });
         end = false;
         while (!end) {
-          let game = GetGameResult(
+          let game = GetKnockoutResult(
             newPlayer.team,
             opponents[phase],
             newSeason.performance
@@ -1047,15 +1054,15 @@ function App() {
 
   function GetMatch(team1, team2, bonus) {
     let base =
-      Math.pow(team1.power, Math.log10(40)) +
-      Math.pow(team2.power, Math.log10(40));
-    let team1Power = Math.pow(team1.power, Math.log10(40)) / base;
-    let team2Power = Math.pow(team2.power, Math.log10(40)) / base;
+      Math.pow(team1.power, Math.log10(50)) +
+      Math.pow(team2.power, Math.log10(50));
+    let team1Power = Math.pow(team1.power, Math.log10(50)) / base;
+    let team2Power = Math.pow(team2.power, Math.log10(50)) / base;
 
     let goals = (Math.random() + Math.random()) * 2;
 
-    let team1Luck = Math.random() + Math.random() + Math.random();
-    let team2Luck = Math.random() + Math.random() + Math.random();
+    let team1Luck = Math.random() + Math.random();
+    let team2Luck = Math.random() + Math.random();
 
     let team1Score = Math.round(goals * team1Luck * team1Power + bonus / 2);
     let team2Score = Math.round(goals * team2Luck * team2Power);
@@ -1089,10 +1096,10 @@ function App() {
 
   function GetPenalties(team1, team2) {
     let base =
-      Math.pow(team1.power, Math.log10(60)) +
-      Math.pow(team2.power, Math.log10(60));
-    let team1Power = Math.pow(team1.power, Math.log10(60)) / base;
-    let team2Power = Math.pow(team2.power, Math.log10(60)) / base;
+      Math.pow(team1.power, Math.log10(50)) +
+      Math.pow(team2.power, Math.log10(50));
+    let team1Power = Math.pow(team1.power, Math.log10(50)) / base;
+    let team2Power = Math.pow(team2.power, Math.log10(50)) / base;
 
     let winner = false;
     let team1goals = 0;
@@ -1101,7 +1108,7 @@ function App() {
     while (!winner) {
       count++;
       let team1shooter = RandomNumber(0, team1Power * 100);
-      let team2keeper = RandomNumber(0, team2Power * 100);
+      let team2keeper = RandomNumber(0, team2Power * 80);
 
       if (team1shooter > team2keeper) team1goals++;
 
@@ -1111,7 +1118,7 @@ function App() {
       }
 
       let team2shooter = RandomNumber(0, team2Power * 100);
-      let team1keeper = RandomNumber(0, team1Power * 100);
+      let team1keeper = RandomNumber(0, team1Power * 80);
 
       if (team2shooter > team1keeper) team2goals++;
 
@@ -1129,9 +1136,9 @@ function App() {
   function GetGameResult(team1, team2, bonus) {
     let gameDesc = "";
 
-    let game = GetMatch(team1, team2, bonus);
-    let teamGoals1 = game[0];
-    let teamGoals2 = game[1];
+    let game1 = GetMatch(team1, team2, bonus);
+    let teamGoals1 = game1[0];
+    let teamGoals2 = game1[1];
 
     if (teamGoals1 == teamGoals2) {
       let extra = GetExtraTime(team1, team2, bonus);
@@ -1151,6 +1158,41 @@ function App() {
     }
 
     let result = teamGoals1 > teamGoals2;
+
+    return { result: result, game: gameDesc };
+  }
+
+  function GetKnockoutResult(team1, team2, bonus) {
+    let gameDesc = "";
+
+    let game1 = GetMatch(team1, team2, bonus);
+    let teamGoals1 = game1[0];
+    let teamGoals2 = game1[1];
+
+    let game2 = GetMatch(team2, team1, -bonus);
+    teamGoals2 += game2[0];
+    teamGoals1 += game2[1];
+
+    if (teamGoals1 == teamGoals2) {
+      let extra = GetExtraTime(team1, team2, bonus);
+      teamGoals1 += extra[0];
+      teamGoals2 += extra[1];
+
+      if (teamGoals1 == teamGoals2) {
+        let penalties = GetPenalties(team1, team2);
+        gameDesc = `${team1.name} ${teamGoals1} (${penalties[0]}) x (${penalties[1]}) ${teamGoals2} ${team2.name} (Penaltis)`;
+        teamGoals1 += penalties[0];
+        teamGoals2 += penalties[1];
+      } else {
+        gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name} (Prorrogação)`;
+      }
+    } else {
+      gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name}`;
+    }
+
+    let result = teamGoals1 > teamGoals2;
+
+    console.log(gameDesc);
 
     return { result: result, game: gameDesc };
   }
