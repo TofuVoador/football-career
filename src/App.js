@@ -1421,8 +1421,7 @@ function App() {
           <p>
             Continuar em {player.team == null ? "" : player.team.name} (
             {(
-              1 +
-              Math.round(player.team == null ? 0 : player.team.power * 4) / 10
+              Math.round(player.team == null ? 0 : player.team.power * 5) / 10
             ).toFixed(1)}
             ⭐)
           </p>
@@ -1438,7 +1437,7 @@ function App() {
         >
           <p>
             Transferir para {transfer1.team.name} (
-            {(1 + Math.round(transfer1.team.power * 4) / 10).toFixed(1)}⭐)
+            {(Math.round(transfer1.team.power * 5) / 10).toFixed(1)}⭐)
           </p>
           <p>
             ${transfer1.contract.value}M/ano | {transfer1.contract.duration}{" "}
@@ -1452,7 +1451,7 @@ function App() {
         >
           <p>
             Transferir para {transfer2.team.name} (
-            {(1 + Math.round(transfer2.team.power * 4) / 10).toFixed(1)}⭐)
+            {(Math.round(transfer2.team.power * 5) / 10).toFixed(1)}⭐)
           </p>
           <p>
             ${transfer2.contract.value}M/ano | {transfer2.contract.duration}{" "}
