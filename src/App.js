@@ -798,10 +798,10 @@ function App() {
       newSeason.titles.push("Luva de Ouro");
     }
 
-    newPlayer.fame += newSeason.performance * 20;
+    newPlayer.fame += newSeason.performance * 10;
 
-    newPlayer.fame += newSeason.goals / 4.0;
-    newPlayer.fame += newSeason.assists / 4.0;
+    newPlayer.fame += newSeason.goals / 5.0;
+    newPlayer.fame += newSeason.assists / 5.0;
 
     let position = -1;
 
