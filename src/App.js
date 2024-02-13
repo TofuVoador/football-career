@@ -814,7 +814,7 @@ function App() {
       newSeason.titles.push(`Ballon D'Or: 1º lugar`);
     } else if (newSeason.awardPoints + newPlayer.overall >= 91) {
       let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 91);
-      newPlayer.fame += pts * 5;
+      newPlayer.fame += pts * 4;
       position = 10 - pts;
       newSeason.titles.push(`Ballon D'Or: ${position}º lugar`);
     }
