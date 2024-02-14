@@ -145,9 +145,22 @@ const Season = (props) => {
               return (
                 <details key={season.year + titleDesc[0]}>
                   <summary>{titleDesc[0]}</summary>
-                  {matches.map((match) => (
-                    <p key={season.year + match}>{match}</p>
-                  ))}
+                  {matches.map((match) => {
+                    let matchDetails = match.split("=>");
+                    if (matchDetails.length > 1) {
+                      let innerMatches = matchDetails.slice(1);
+                      return (
+                        <details key={season.year + matchDetails[0]}>
+                          <summary>{matchDetails[0]}</summary>
+                          {innerMatches.map((innerMatch) => (
+                            <p key={season.year + innerMatch}>{innerMatch}</p>
+                          ))}
+                        </details>
+                      );
+                    } else {
+                      return <p key={season.year + match}>{match}</p>;
+                    }
+                  })}
                 </details>
               );
             } else {

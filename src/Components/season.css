@@ -5,6 +5,7 @@
   background-color: var(--color-dark);
   width: 100%;
   max-width: 800px;
+  min-width: 300px;
 }
 
 .season-title {
@@ -37,16 +38,17 @@
 .season-titles-list {
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 0.2rem;
 }
 
-.season-titles-list details summary,
-.season-titles-list h1 {
+.season-titles-list details {
   font-size: 1.2rem;
 }
 
-.season-titles-list details p {
-  color: var(--color-light);
+.season-titles-list details > *:not(summary) {
+  font-size: 90%;
+  margin-left: 2rem;
 }
 
 .season-stats {

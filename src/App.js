@@ -350,6 +350,8 @@ function App() {
 
     while (!end) {
       let newOpponentsLeft = [];
+      let games = "";
+      let playerGame = "";
       for (let matchID = 0; matchID < classif.length / 2; matchID++) {
         let team1 = classif[matchID];
         let team2 = classif[classif.length - (matchID + 1)];
@@ -367,7 +369,7 @@ function App() {
           team1.name == newPlayer.team.name ||
           team2.name == newPlayer.team.name
         ) {
-          description += `-> ${TournamentPath[playerPhase]}: ${game.game}`;
+          playerGame += `: ${game.game}`;
           if (
             (game.result && team1.name == newPlayer.team.name) ||
             (!game.result && team2.name == newPlayer.team.name)
@@ -381,6 +383,8 @@ function App() {
           }
         }
 
+        games += `=> ${game.game}`;
+
         if (game.result) {
           newOpponentsLeft.push(team1);
         } else {
@@ -388,7 +392,12 @@ function App() {
         }
       }
 
-      console.log(newOpponentsLeft);
+      description += `-> ${TournamentPath[phase]}${
+        playerGame != "" && phase + 1 < TournamentPath.length - 1
+          ? playerGame
+          : ""
+      }`;
+      description += games;
 
       phase++;
       classif = newOpponentsLeft;
@@ -444,6 +453,9 @@ function App() {
         return b.power - a.power + Math.random() / 2;
       });
 
+      let games = "";
+      let playerGame = "";
+
       for (let matchID = 0; matchID < playoffsClassif.length / 2; matchID++) {
         let team1 = playoffsClassif[matchID];
         let team2 = playoffsClassif[playoffsClassif.length - (matchID + 1)];
@@ -461,8 +473,10 @@ function App() {
           team1.name == newPlayer.team.name ||
           team2.name == newPlayer.team.name
         ) {
-          description += `-> Playoff: ${game.game}`;
+          playerGame += `: ${game.game}`;
         }
+
+        games += `=> ${game.game}`;
 
         if (game.result) {
           classif.push(team1);
@@ -471,7 +485,12 @@ function App() {
         }
       }
 
-      console.log(classif);
+      description += `-> ${TournamentPath[phase]}${
+        playerGame != "" && phase + 1 < TournamentPath.length - 1
+          ? playerGame
+          : ""
+      }`;
+      description += games;
 
       if (classif.some((t) => t.name == newPlayer.team.name)) {
         playerPhase += 2;
@@ -480,6 +499,8 @@ function App() {
       phase += 2;
       end = false;
       while (!end) {
+        let games = "";
+        playerGame = "";
         let newClassif = [];
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
@@ -498,7 +519,7 @@ function App() {
             team1.name == newPlayer.team.name ||
             team2.name == newPlayer.team.name
           ) {
-            description += `-> ${TournamentPath[playerPhase]}: ${game.game}`;
+            playerGame += `: ${game.game}`;
 
             if (
               (game.result && team1.name == newPlayer.team.name) ||
@@ -515,6 +536,8 @@ function App() {
             }
           }
 
+          games += `=> ${game.game}`;
+
           if (game.result) {
             newClassif.push(team1);
           } else {
@@ -522,7 +545,12 @@ function App() {
           }
         }
 
-        console.log(newClassif);
+        description += `-> ${TournamentPath[phase]}${
+          playerGame != "" && phase + 1 < TournamentPath.length - 1
+            ? playerGame
+            : ""
+        }`;
+        description += games;
 
         phase++;
         classif = newClassif;
@@ -722,7 +750,9 @@ function App() {
 
       let end = false;
       while (!end) {
+        let games = "";
         let newClassif = [];
+        let playerGame = "";
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
           let team2 = classif[classif.length - (matchID + 1)];
@@ -740,7 +770,7 @@ function App() {
             team1.name == player.nation.name ||
             team2.name == player.nation.name
           ) {
-            description += `-> ${TournamentPath[playerPhase]}: ${game.game}`;
+            playerGame += `: ${game.game}`;
 
             if (
               (game.result && team1.name == player.nation.name) ||
@@ -758,6 +788,8 @@ function App() {
             }
           }
 
+          games += `=> ${game.game}`;
+
           if (game.result) {
             newClassif.push(team1);
           } else {
@@ -765,7 +797,12 @@ function App() {
           }
         }
 
-        console.log(newClassif);
+        description += `-> ${TournamentPath[phase]}${
+          playerGame != "" && phase + 1 < TournamentPath.length - 1
+            ? playerGame
+            : ""
+        }`;
+        description += games;
 
         phase++;
         classif = newClassif;
