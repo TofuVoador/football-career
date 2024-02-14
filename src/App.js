@@ -484,7 +484,7 @@ function App() {
         }
       }
 
-      description += `-> ${TournamentPath[phase]}${
+      description += `-> Playoffs${
         playerGame != "" && phase + 1 < TournamentPath.length - 1
           ? playerGame
           : ""
