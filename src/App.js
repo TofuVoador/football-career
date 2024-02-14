@@ -263,7 +263,6 @@ function App() {
   }
 
   function Continue() {
-    console.clear();
     //change display
     document.getElementById("team-choice").style.display = "flex";
     document.getElementById("continue").style.display = "none";
@@ -720,8 +719,6 @@ function App() {
           description = `-> ${TournamentPath[phase]}: ${playerGroup.table[0].name} / ${playerGroup.table[1].name} / ${playerGroup.table[2].name} / ${playerGroup.table[3].name}`;
         }
 
-        console.log(thisGroup.table);
-
         firstPlaces.push(thisGroup.table[0]);
         secondPlaces.push(thisGroup.table[1]);
         thirdPlaces.push(thisGroup.table[2]);
@@ -745,8 +742,6 @@ function App() {
       if (classif.some((t) => t.name == newPlayer.nation.name)) {
         playerPhase++;
       }
-
-      console.log(classif);
 
       let end = false;
       while (!end) {
@@ -1193,8 +1188,6 @@ function App() {
   function GetGameResult(team1, team2, bonus) {
     let gameDesc = "";
 
-    console.log(team1, team2);
-
     let game = GetMatch(team1, team2, bonus);
     let teamGoals1 = game[0];
     let teamGoals2 = game[1];
@@ -1218,15 +1211,11 @@ function App() {
 
     let result = teamGoals1 > teamGoals2;
 
-    console.log(gameDesc);
-
     return { result: result, game: gameDesc };
   }
 
   function GetKnockoutResult(team1, team2, bonus) {
     let gameDesc = "";
-
-    console.log(team1, team2);
 
     let game1 = GetMatch(team1, team2, bonus);
     let teamGoals1 = game1[0];
@@ -1254,8 +1243,6 @@ function App() {
     }
 
     let result = teamGoals1 > teamGoals2;
-
-    console.log(gameDesc);
 
     return { result: result, game: gameDesc };
   }
