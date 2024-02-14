@@ -692,10 +692,20 @@ function App() {
           description = `-> ${TournamentPath[phase]}: ${playerGroup.table[0].name} / ${playerGroup.table[1].name} / ${playerGroup.table[2].name} / ${playerGroup.table[3].name}`;
         }
 
+        console.log(thisGroup.table);
+
         firstPlaces.push(thisGroup.table[0]);
         secondPlaces.push(thisGroup.table[1]);
         thirdPlaces.push(thisGroup.table[2]);
       }
+
+      firstPlaces.sort((a, b) => {
+        return b.power - a.power + Math.random() / 2;
+      });
+
+      secondPlaces.sort((a, b) => {
+        return b.power - a.power + Math.random() / 2;
+      });
 
       thirdPlaces.sort((a, b) => {
         return b.power - a.power + Math.random() / 2;
@@ -707,6 +717,8 @@ function App() {
       if (classif.some((t) => t.name == newPlayer.nation.name)) {
         playerPhase++;
       }
+
+      console.log(classif);
 
       let end = false;
       while (!end) {
@@ -752,6 +764,8 @@ function App() {
             newClassif.push(team2);
           }
         }
+
+        console.log(newClassif);
 
         phase++;
         classif = newClassif;
@@ -1054,10 +1068,12 @@ function App() {
 
   function GetMatch(team1, team2, bonus) {
     let base =
-      Math.pow(team1.power, Math.log10(50)) +
-      Math.pow(team2.power, Math.log10(50));
-    let team1Power = Math.pow(team1.power, Math.log10(50)) / base;
-    let team2Power = Math.pow(team2.power, Math.log10(50)) / base;
+      Math.pow(team1.power, Math.log10(team1.power * team2.power)) +
+      Math.pow(team2.power, Math.log10(team1.power * team2.power));
+    let team1Power =
+      Math.pow(team1.power, Math.log10(team1.power * team2.power)) / base;
+    let team2Power =
+      Math.pow(team2.power, Math.log10(team1.power * team2.power)) / base;
 
     let goals = (Math.random() + Math.random()) * 2;
 
@@ -1075,10 +1091,12 @@ function App() {
 
   function GetExtraTime(team1, team2) {
     let base =
-      Math.pow(team1.power, Math.log10(50)) +
-      Math.pow(team2.power, Math.log10(50));
-    let team1Power = Math.pow(team1.power, Math.log10(50)) / base;
-    let team2Power = Math.pow(team2.power, Math.log10(50)) / base;
+      Math.pow(team1.power, Math.log10(2 * team1.power * team2.power)) +
+      Math.pow(team2.power, Math.log10(2 * team1.power * team2.power));
+    let team1Power =
+      Math.pow(team1.power, Math.log10(2 * team1.power * team2.power)) / base;
+    let team2Power =
+      Math.pow(team2.power, Math.log10(2 * team1.power * team2.power)) / base;
 
     let goals = Math.random() + Math.random();
 
@@ -1096,10 +1114,12 @@ function App() {
 
   function GetPenalties(team1, team2) {
     let base =
-      Math.pow(team1.power, Math.log10(50)) +
-      Math.pow(team2.power, Math.log10(50));
-    let team1Power = Math.pow(team1.power, Math.log10(50)) / base;
-    let team2Power = Math.pow(team2.power, Math.log10(50)) / base;
+      Math.pow(team1.power, Math.log10(3 * team1.power * team2.power)) +
+      Math.pow(team2.power, Math.log10(3 * team1.power * team2.power));
+    let team1Power =
+      Math.pow(team1.power, Math.log10(3 * team1.power * team2.power)) / base;
+    let team2Power =
+      Math.pow(team2.power, Math.log10(3 * team1.power * team2.power)) / base;
 
     let winner = false;
     let team1goals = 0;
@@ -1136,9 +1156,11 @@ function App() {
   function GetGameResult(team1, team2, bonus) {
     let gameDesc = "";
 
-    let game1 = GetMatch(team1, team2, bonus);
-    let teamGoals1 = game1[0];
-    let teamGoals2 = game1[1];
+    console.log(team1, team2);
+
+    let game = GetMatch(team1, team2, bonus);
+    let teamGoals1 = game[0];
+    let teamGoals2 = game[1];
 
     if (teamGoals1 == teamGoals2) {
       let extra = GetExtraTime(team1, team2, bonus);
@@ -1159,11 +1181,15 @@ function App() {
 
     let result = teamGoals1 > teamGoals2;
 
+    console.log(gameDesc);
+
     return { result: result, game: gameDesc };
   }
 
   function GetKnockoutResult(team1, team2, bonus) {
     let gameDesc = "";
+
+    console.log(team1, team2);
 
     let game1 = GetMatch(team1, team2, bonus);
     let teamGoals1 = game1[0];
