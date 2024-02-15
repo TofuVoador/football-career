@@ -39,16 +39,29 @@
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 0.4rem;
+  gap: 0.2rem;
+}
+
+summary {
+  cursor: pointer;
 }
 
 .season-titles-list details {
   font-size: 1.2rem;
 }
 
+.season-titles-list details summary {
+  border-radius: 1rem;
+  padding: 0.2rem 0.6rem;
+}
+
+.season-titles-list details summary:hover {
+  background-color: var(--color-light);
+}
+
 .season-titles-list details > *:not(summary) {
-  font-size: 90%;
-  margin-left: 1.5rem;
+  font-size: 80%;
+  margin-left: 2rem;
 }
 
 .season-stats {

@@ -5,12 +5,12 @@
     "europaSpots": 2,
     "teams": [
       {
-        "name": "Bayern München",
+        "name": "Bayern de Munique",
         "league": "Bundesliga",
         "power": 9
       },
       {
-        "name": "Bor. Dortmund",
+        "name": "Borussia Dortmund",
         "league": "Bundesliga",
         "power": 7.5
       },
@@ -368,7 +368,7 @@
         "power": 6
       },
       {
-        "name": "O. Marseille",
+        "name": "Ol. Marseille",
         "league": "Ligue 1",
         "power": 6
       },

@@ -1203,7 +1203,7 @@ function App() {
         teamGoals1 += penalties[0];
         teamGoals2 += penalties[1];
       } else {
-        gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name} (Prorrog)`;
+        gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name} (Pr)`;
       }
     } else {
       gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name}`;
@@ -1236,7 +1236,7 @@ function App() {
         teamGoals1 += penalties[0];
         teamGoals2 += penalties[1];
       } else {
-        gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name} (Prorrog)`;
+        gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name} (Pr)`;
       }
     } else {
       gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name}`;

@@ -4,6 +4,7 @@ import "./season.css";
 const Season = (props) => {
   let season = props.season;
   let open = props.open;
+
   return (
     <details className="season" key={season.year} open={open}>
       <summary className="season-title">
