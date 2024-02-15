@@ -10,7 +10,7 @@
         "power": 9
       },
       {
-        "name": "Borussia Dortmund",
+        "name": "Bor. Dortmund",
         "league": "Bundesliga",
         "power": 7.5
       },
@@ -20,7 +20,7 @@
         "power": 7
       },
       {
-        "name": "Bayer Leverkusen",
+        "name": "Leverkusen",
         "league": "Bundesliga",
         "power": 6.5
       },
@@ -97,7 +97,7 @@
         "power": 6.5
       },
       {
-        "name": "PSV Eindhoven",
+        "name": "PSV",
         "league": "Eredivisie",
         "power": 6.5
       },
@@ -271,7 +271,7 @@
         "power": 9.5
       },
       {
-        "name": "Atlético Madrid",
+        "name": "At Madrid",
         "league": "La Liga",
         "power": 8.5
       },
@@ -286,7 +286,7 @@
         "power": 7
       },
       {
-        "name": "Athletic Bilbao",
+        "name": "Ath Bilbao",
         "league": "La Liga",
         "power": 6
       },
@@ -353,7 +353,7 @@
     "europaSpots": 2,
     "teams": [
       {
-        "name": "Paris Saint-Germain",
+        "name": "PSG",
         "league": "Ligue 1",
         "power": 7.5
       },
@@ -368,7 +368,7 @@
         "power": 6
       },
       {
-        "name": "Olympique de Marseille",
+        "name": "O. Marseille",
         "league": "Ligue 1",
         "power": 6
       },
@@ -440,7 +440,7 @@
     "europaSpots": 2,
     "teams": [
       {
-        "name": "Manchester City",
+        "name": "Man City",
         "league": "Premier League",
         "power": 9.5
       },
@@ -460,7 +460,7 @@
         "power": 7
       },
       {
-        "name": "Manchester United",
+        "name": "Man United",
         "league": "Premier League",
         "power": 6
       },

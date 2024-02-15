@@ -22,7 +22,7 @@ const StarPath = [
 ];
 
 const TournamentPath = [
-  "Fase de Grupos",
+  "Grupos",
   "16 avos",
   "Oitavas",
   "Quartas",
@@ -1199,11 +1199,11 @@ function App() {
 
       if (teamGoals1 == teamGoals2) {
         let penalties = GetPenalties(team1, team2);
-        gameDesc = `${team1.name} ${teamGoals1} (${penalties[0]}) x (${penalties[1]}) ${teamGoals2} ${team2.name} (Penaltis)`;
+        gameDesc = `${team1.name} ${teamGoals1} (${penalties[0]}) x (${penalties[1]}) ${teamGoals2} ${team2.name}`;
         teamGoals1 += penalties[0];
         teamGoals2 += penalties[1];
       } else {
-        gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name} (Prorrogação)`;
+        gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name} (Prorrog)`;
       }
     } else {
       gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name}`;
@@ -1232,11 +1232,11 @@ function App() {
 
       if (teamGoals1 == teamGoals2) {
         let penalties = GetPenalties(team1, team2);
-        gameDesc = `${team1.name} ${teamGoals1} (${penalties[0]}) x (${penalties[1]}) ${teamGoals2} ${team2.name} (Penaltis)`;
+        gameDesc = `${team1.name} ${teamGoals1} (${penalties[0]}) x (${penalties[1]}) ${teamGoals2} ${team2.name}`;
         teamGoals1 += penalties[0];
         teamGoals2 += penalties[1];
       } else {
-        gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name} (Prorrogação)`;
+        gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name} (Prorrog)`;
       }
     } else {
       gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name}`;
