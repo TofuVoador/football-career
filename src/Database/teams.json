@@ -273,7 +273,7 @@
       {
         "name": "Atlético Madrid",
         "league": "La Liga",
-        "power": 9
+        "power": 8.5
       },
       {
         "name": "Barcelona",
@@ -298,7 +298,7 @@
       {
         "name": "Sevilla",
         "league": "La Liga",
-        "power": 5
+        "power": 5.5
       },
       {
         "name": "Real Betis",
@@ -447,7 +447,7 @@
       {
         "name": "Arsenal",
         "league": "Premier League",
-        "power": 8.5
+        "power": 9
       },
       {
         "name": "Liverpool",
@@ -472,7 +472,7 @@
       {
         "name": "Newcastle",
         "league": "Premier League",
-        "power": 5.5
+        "power": 5
       },
       {
         "name": "Aston Villa",
