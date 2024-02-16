@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "./App.css";
 import Teams from "./Database/teams.json";
+import ExtraTeams from "./Database/extrateams.json";
 import Nations from "./Database/nations.json";
 import Positions from "./Database/positions.json";
 import ChartComponent from "./Components/chartComponent";
@@ -33,6 +34,7 @@ const TournamentPath = [
 
 function App() {
   const [teams, setTeams] = useState([...Teams]);
+  const [extrateams, setExtraTeams] = useState([...ExtraTeams]);
   const [nations, setNations] = useState([...Nations]);
 
   const [seasons, setSeasons] = useState([]);
@@ -211,6 +213,7 @@ function App() {
 
     //change teams power on each season
     let newTeams = UpdateTeamsStats();
+    let newExtraTeams = UpdateExtraTeamsStats();
 
     let allTeams = [];
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
@@ -419,9 +422,8 @@ function App() {
 
       //get top teams in each league
       for (let leagueID = 0; leagueID < teams.length; leagueID++) {
-        let championsSpots = teams[leagueID].championsSpots * 1.5;
         let remainingTeams = deepClone([...teams[leagueID].teams]);
-        let selected = remainingTeams.splice(0, championsSpots);
+        let selected = remainingTeams.splice(0, teams[leagueID].championsSpots);
 
         if (newPlayer.team.league == teams[leagueID].name) {
           let playerTeamSelected = selected.find(
@@ -439,6 +441,12 @@ function App() {
           qualified.push(deepClone(selected[i]));
         }
       }
+
+      qualified = qualified.concat([...extrateams]);
+
+      qualified.sort((a, b) => {
+        return b.power - a.power + Math.random() / 2;
+      });
 
       let group = GetChampionsPosition(qualified, newPlayer.team);
 
@@ -1398,6 +1406,29 @@ function App() {
       });
     }
     setTeams(newTeams);
+    return newTeams;
+  }
+
+  function UpdateExtraTeamsStats() {
+    let newTeams = deepClone([...extrateams]);
+    let last = Math.random();
+
+    for (let teamID = 0; teamID < newTeams.length; teamID++) {
+      let current = Math.random();
+      let change = Math.round(5 * (last - current)) / 10.0;
+      last = current;
+
+      let newPower = newTeams[teamID].power + change;
+      newTeams[teamID].power = Math.round(10.0 * newPower) / 10;
+
+      if (newTeams[teamID].power > 10) newTeams[teamID].power = 10;
+      else if (newTeams[teamID].power < 1) newTeams[teamID].power = 1;
+    }
+
+    newTeams.sort((a, b) => {
+      return b.power - a.power;
+    });
+    setExtraTeams(newTeams);
     return newTeams;
   }
 
