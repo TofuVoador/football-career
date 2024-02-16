@@ -46,6 +46,10 @@ summary {
   cursor: pointer;
 }
 
+.single-title {
+  font-size: 1.5rem;
+}
+
 .season-titles-list details {
   font-size: 1.2rem;
 }

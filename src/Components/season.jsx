@@ -165,7 +165,11 @@ const Season = (props) => {
                 </details>
               );
             } else {
-              return <p key={season.year + titleDesc[0]}>{titleDesc[0]}</p>;
+              return (
+                <h1 className="single-title" key={season.year + titleDesc[0]}>
+                  {titleDesc[0]}
+                </h1>
+              );
             }
           })}
         </div>
