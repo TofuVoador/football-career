@@ -2,61 +2,61 @@
   {
     "name": "Shakhtar",
     "league": "Ukrainian PL",
-    "power": 5
+    "power": 6
   },
   {
     "name": "Zenit",
     "league": "Russian PL",
-    "power": 5
+    "power": 6
   },
   {
     "name": "Galatasaray",
     "league": "Süper Lig",
-    "power": 4.5
+    "power": 5.5
   },
   {
     "name": "RB Salzburg",
     "league": "Austrian Bundesliga",
-    "power": 4.5
+    "power": 5.5
   },
   {
     "name": "Celtic",
     "league": "Scottish Premiership",
-    "power": 4
+    "power": 5
   },
   {
     "name": "Copenhagen",
     "league": "Danish Superliga",
-    "power": 4
+    "power": 5
   },
   {
     "name": "Rangers",
     "league": "Scottish Premiership",
-    "power": 3.5
+    "power": 4.5
   },
   {
     "name": "Young Boys",
     "league": "Swiss Super League",
-    "power": 3.5
+    "power": 4.5
   },
   {
     "name": "CSKA",
     "league": "Russian PL",
-    "power": 3
+    "power": 4
   },
   {
     "name": "Fenerbahçe",
     "league": "Süper Lig",
-    "power": 3
+    "power": 4
   },
   {
     "name": "Dynamo Kyiv",
     "league": "Ukrainian PL",
-    "power": 2.5
+    "power": 3.5
   },
   {
     "name": "Basel",
     "league": "Swiss Super League",
-    "power": 2.5
+    "power": 3.5
   }
 ]
