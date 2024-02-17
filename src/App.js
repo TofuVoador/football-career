@@ -1356,9 +1356,9 @@ function App() {
 
   function GetOverall(potential, age, teamPower) {
     return (
-      90 +
-      potential / 5 +
-      Math.round(10 * teamPower) / 100 -
+      89 +
+      potential / 10 +
+      Math.round(10 * teamPower) / 50 -
       (28 - age) ** 2 / 10
     );
   }
