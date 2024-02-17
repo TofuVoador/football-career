@@ -1621,7 +1621,6 @@ function App() {
             Posição:{" "}
             {player.position == null ? "A definir" : player.position.title}
           </p>
-          <p>Potencial: {player.potential}</p>
           <p>
             Seleção: {player.nation == null ? "A definir" : player.nation.name}
           </p>
