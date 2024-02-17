@@ -40,17 +40,15 @@
   flex-direction: column;
   width: 100%;
   gap: 0.2rem;
+  margin-bottom: 0.5rem;
 }
 
 summary {
   cursor: pointer;
 }
 
+.season-titles-list details,
 .single-title {
-  font-size: 1.5rem;
-}
-
-.season-titles-list details {
   font-size: 1.2rem;
 }
 

@@ -536,7 +536,7 @@ function App() {
               newSeason.awardPoints += 0.9; //max 0.9 x 5 = 4.5
               if (playerPhase >= TournamentPath.length - 1) {
                 newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
-                newPlayer.fame += 50;
+                newPlayer.fame += 40;
                 newSeason.awardPoints += 1.5; //max 0.9 x 5 + 1.5 = 6.0
                 triplice++;
               }
@@ -785,7 +785,7 @@ function App() {
                 if (playedWorldCup) {
                   newPlayer.worldCup.push(`${year}`);
                   newSeason.awardPoints += 1.5; //max 0.9 x 5 - 2.0 + 1.5 = 4.0
-                  newPlayer.fame += 50;
+                  newPlayer.fame += 40;
                 }
               }
             }
@@ -1356,7 +1356,7 @@ function App() {
 
   function GetOverall(potential, age, teamPower) {
     return (
-      89 +
+      90 +
       potential / 5 +
       Math.round(10 * teamPower) / 100 -
       (28 - age) ** 2 / 10
@@ -1412,8 +1412,18 @@ function App() {
   function UpdateExtraTeamsStats() {
     let newTeams = deepClone([...extrateams]);
     let last = Math.random();
+    let teamIndices = Array.from(
+      { length: newTeams.length },
+      (_, index) => index
+    );
+    for (let i = teamIndices.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [teamIndices[i], teamIndices[j]] = [teamIndices[j], teamIndices[i]];
+    }
 
-    for (let teamID = 0; teamID < newTeams.length; teamID++) {
+    for (let i = 0; i < newTeams.length; i++) {
+      let teamID = teamIndices[i];
+
       let current = Math.random();
       let change = Math.round(5 * (last - current)) / 10.0;
       last = current;
@@ -1611,6 +1621,7 @@ function App() {
             Posição:{" "}
             {player.position == null ? "A definir" : player.position.title}
           </p>
+          <p>Potencial: {player.potential}</p>
           <p>
             Seleção: {player.nation == null ? "A definir" : player.nation.name}
           </p>
