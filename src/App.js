@@ -1270,7 +1270,7 @@ function App() {
     //randomize a play
     let leagueID = RandomNumber(0, teams.length - 1);
     let league = teams[leagueID];
-    let team = league.teams[Math.round(Math.random() * 9)];
+    let team = league.teams[Math.round(2 + Math.random() * 5)];
     let contractDuration = RandomNumber(2, 5);
     let contractValue =
       Math.floor(
