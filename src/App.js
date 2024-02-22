@@ -442,7 +442,7 @@ function App() {
         }
       }
 
-      qualified = qualified.concat([...extrateams]);
+      qualified = qualified.concat(extrateams.slice(0, 12));
 
       qualified.sort((a, b) => {
         return b.power - a.power + Math.random() / 2;
@@ -573,78 +573,115 @@ function App() {
     }
 
     if (newPlayer.europaQualification) {
-      //Randomizing teams for Europa league
       phase = 0;
+      playerPhase = 0;
+      description = "";
 
-      let op1 = GetEuropaOpponent();
-      while (newPlayer.team.league == op1.league) {
-        op1 = GetEuropaOpponent();
-      }
+      let qualified = [];
 
-      let op2 = GetEuropaOpponent();
-      while (newPlayer.team.league == op2.league || op1.league == op2.league) {
-        op2 = GetEuropaOpponent();
-      }
+      for (let leagueID = 0; leagueID < teams.length; leagueID++) {
+        let remainingTeams = deepClone([...teams[leagueID].teams]);
+        let selected = remainingTeams.splice(
+          teams[leagueID].championsSpots,
+          teams[leagueID].europaSpots
+        );
 
-      let op3 = GetEuropaOpponent();
-      while (
-        newPlayer.team.league == op3.league ||
-        op1.league == op3.league ||
-        op2.league == op3.league
-      ) {
-        op3 = GetEuropaOpponent();
-      }
-
-      let group = GetLeaguePosition(
-        [newPlayer.team, op1, op2, op3],
-        newPlayer.team,
-        newSeason.performance
-      );
-
-      description = `-> ${TournamentPath[phase]}: ${group.table[0].name} / ${group.table[1].name} / ${group.table[2].name} / ${group.table[3].name}`;
-
-      if (group.pos <= 2) {
-        phase++;
-        let opponents = [];
-        for (let i = 0; i < TournamentPath.length; i++) {
-          let op = GetEuropaOpponent();
-          while (
-            op.name == newPlayer.team.name ||
-            opponents.includes(op) ||
-            (i <= 2 && (op1.name == op.name || op2.name == op.name))
-          ) {
-            op = GetEuropaOpponent();
-          }
-          opponents.push(op);
-        }
-        opponents.sort((a, b) => {
-          return a.power - b.power + Math.random() / 2;
-        });
-        end = false;
-        while (!end) {
-          let game = GetKnockoutResult(
-            newPlayer.team,
-            opponents[phase],
-            newSeason.performance
+        if (newPlayer.team.league == teams[leagueID].name) {
+          let playerTeamSelected = selected.find(
+            (team) => team.name == newPlayer.team.name
           );
 
-          description += `-> ${TournamentPath[phase]}: ${game.game}`;
+          if (!playerTeamSelected) {
+            let weakestTeamIndex = selected.length - 1;
 
-          if (game.result) {
-            phase++;
-            if (phase >= TournamentPath.length - 1) {
-              end = true;
-              newPlayer.europa.push(`${year} (${newPlayer.team.name})`);
-              newPlayer.fame += 10;
-            }
-          } else {
-            end = true;
+            selected[weakestTeamIndex] = newPlayer.team;
           }
+        }
+
+        for (let i = 0; i < selected.length; i++) {
+          qualified.push(deepClone(selected[i]));
         }
       }
 
-      description = `Europa League: ${TournamentPath[phase]} ${description}`;
+      qualified = qualified.concat(extrateams.slice(8, extrateams.length));
 
+      qualified.sort((a, b) => {
+        return b.power - a.power + Math.random() / 2;
+      });
+
+      let group = GetChampionsPosition(qualified, newPlayer.team);
+
+      description = `-> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
+
+      let classif = deepClone([...group.table]).splice(0, 16);
+
+      if (classif.some((t) => t.name == newPlayer.team.name)) {
+        playerPhase += 2;
+      }
+
+      phase += 2;
+      end = false;
+      while (!end) {
+        let games = "";
+        let playerGame = "";
+        let newClassif = [];
+        for (let matchID = 0; matchID < classif.length / 2; matchID++) {
+          let team1 = classif[matchID];
+          let team2 = classif[classif.length - (matchID + 1)];
+          let game = GetKnockoutResult(
+            team1,
+            team2,
+            team1.name == newPlayer.team.name
+              ? newSeason.performance
+              : team2.name == newPlayer.team.name
+              ? -newSeason.performance
+              : 0
+          );
+
+          if (
+            team1.name == newPlayer.team.name ||
+            team2.name == newPlayer.team.name
+          ) {
+            playerGame += `: ${game.game}`;
+
+            if (
+              (game.result && team1.name == newPlayer.team.name) ||
+              (!game.result && team2.name == newPlayer.team.name)
+            ) {
+              playerPhase++;
+              if (playerPhase >= TournamentPath.length - 1) {
+                newPlayer.europa.push(`${year} (${newPlayer.team.name})`);
+                newPlayer.fame += 10;
+              }
+            }
+          }
+
+          games += `=> ${game.game}`;
+
+          if (game.result) {
+            newClassif.push(team1);
+          } else {
+            newClassif.push(team2);
+          }
+        }
+
+        description += `-> ${TournamentPath[phase]}${
+          playerGame != "" && phase + 1 < TournamentPath.length - 1
+            ? playerGame
+            : ""
+        }`;
+        description += games;
+
+        phase++;
+        classif = newClassif;
+
+        if (phase >= TournamentPath.length - 1) {
+          end = true;
+          description += `-> Vencedor: ${newClassif[0].name}`;
+        }
+      }
+
+      description = `Europa League: ${TournamentPath[playerPhase]} ${description}`;
       newSeason.titles.push(description);
     }
 
