@@ -345,10 +345,27 @@ function App() {
     let playerPhase = 2;
 
     //get opponents for national cup
-    let classif = [...league.teams];
-    classif.sort((a, b) => {
-      return b.power - a.power + Math.random() / 2;
-    });
+    let pot3 = deepClone([...league.teams]);
+    let pot1 = pot3.splice(0, pot3.length / 4);
+    let pot2 = pot3.splice(0, pot3.length / 3);
+
+    //embaralhar
+    for (let i = pot1.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pot1[i], pot1[j]] = [pot1[j], pot1[i]];
+    }
+
+    for (let i = pot2.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pot2[i], pot2[j]] = [pot2[j], pot2[i]];
+    }
+
+    for (let i = pot3.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pot3[i], pot3[j]] = [pot3[j], pot3[i]];
+    }
+
+    let classif = pot1.concat(pot2, pot3);
 
     while (!end) {
       let newOpponentsLeft = [];
