@@ -456,10 +456,6 @@ function App() {
 
       let classif = playoffsClassif.splice(0, 8);
 
-      playoffsClassif.sort((a, b) => {
-        return b.power - a.power + Math.random() / 2;
-      });
-
       let games = "";
       let playerGame = "";
 
