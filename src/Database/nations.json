@@ -1,36 +1,36 @@
 [
   {
-    "name": "Argentina",
-    "continent": "América do Sul",
-    "power": 9.5
-  },
-  {
     "name": "França",
     "continent": "Europa",
     "power": 9.5
   },
   {
-    "name": "Brasil",
-    "continent": "América do Sul",
-    "power": 9
-  },
-  {
     "name": "Inglaterra",
     "continent": "Europa",
+    "power": 9.5
+  },
+  {
+    "name": "Argentina",
+    "continent": "América do Sul",
     "power": 9
   },
   {
     "name": "Espanha",
     "continent": "Europa",
-    "power": 8.5
+    "power": 9
   },
   {
-    "name": "Países Baixos",
-    "continent": "Europa",
+    "name": "Brasil",
+    "continent": "América do Sul",
     "power": 8.5
   },
   {
     "name": "Alemanha",
+    "continent": "Europa",
+    "power": 8.5
+  },
+  {
+    "name": "Países Baixos",
     "continent": "Europa",
     "power": 8
   },

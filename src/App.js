@@ -1326,17 +1326,6 @@ function App() {
     return { result: result, game: gameDesc };
   }
 
-  function GetEuropaOpponent() {
-    let leagueID = RandomNumber(0, teams.length - 1);
-    let league = teams[leagueID];
-    let team =
-      league.teams[
-        league.championsSpots + RandomNumber(1, league.europaSpots * 2)
-      ];
-
-    return team;
-  }
-
   function GetNewTeam(currentPlayer = null) {
     //randomize a play
     let leagueID = RandomNumber(0, teams.length - 1);
