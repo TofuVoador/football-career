@@ -465,9 +465,10 @@ function App() {
         return b.power - a.power + Math.random() / 2;
       });
 
-      let group = GetChampionsPosition(qualified, newPlayer.team);
+      let group = GetRoundsPosition(qualified, newPlayer.team, 8);
 
       description = `-> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
+      description += group.desc;
 
       let playoffsClassif = deepClone([...group.table]).splice(0, 24);
 
@@ -622,9 +623,10 @@ function App() {
         return b.power - a.power + Math.random() / 2;
       });
 
-      let group = GetChampionsPosition(qualified, newPlayer.team);
+      let group = GetRoundsPosition(qualified, newPlayer.team, 6);
 
       description = `-> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
+      description += group.desc;
 
       let classif = deepClone([...group.table]).splice(0, 16);
 
@@ -775,6 +777,7 @@ function App() {
         if (groups[groupID].some((n) => n.name == newPlayer.nation.name)) {
           playerGroup = thisGroup;
           description = `-> ${TournamentPath[phase]}: ${playerGroup.table[0].name} / ${playerGroup.table[1].name} / ${playerGroup.table[2].name} / ${playerGroup.table[3].name}`;
+          description += thisGroup.desc;
         }
 
         firstPlaces.push(thisGroup.table[0]);
@@ -1022,7 +1025,8 @@ function App() {
     if (contract > 1) ChooseTeam();
   }
 
-  function GetChampionsPosition(teams, playerTeam) {
+  function GetRoundsPosition(teams, playerTeam, rounds) {
+    let desc = "";
     let newTeams = deepClone(teams);
     //sort by power
     newTeams.sort((a, b) => {
@@ -1031,7 +1035,7 @@ function App() {
 
     let points = new Array(newTeams.length).fill(0);
 
-    for (let round = 0; round < 8; round++) {
+    for (let round = 0; round < rounds; round++) {
       let newOrderTeams = [];
       let newOrderPoints = [];
       for (let i = 0; i < newTeams.length / 2; i++) {
@@ -1039,6 +1043,14 @@ function App() {
         let away = i + newTeams.length / 2;
 
         let game = GetMatch(newTeams[home], newTeams[away], 0);
+
+        if (
+          newTeams[home].name == playerTeam.name ||
+          newTeams[away].name == playerTeam.name
+        )
+          desc += `=> Rodada ${round + 1}: ${newTeams[home].name} ${
+            game[0]
+          } x ${game[1]} ${newTeams[away].name}`;
 
         if (game[0] > game[1]) {
           points[home] += 3;
@@ -1072,6 +1084,7 @@ function App() {
     return {
       pos: playerPosition + 1,
       table: table,
+      desc: desc,
     };
   }
 
@@ -1117,6 +1130,7 @@ function App() {
   }
 
   function GetWorldCupPosition(teams, playerTeam, bonus) {
+    let desc = "";
     let newTeams = deepClone([...teams]);
     let points = new Array(teams.length).fill(0);
     for (let home = 0; home < teams.length; home++) {
@@ -1136,6 +1150,12 @@ function App() {
             points[away] += 1;
             points[home] += 1;
           }
+
+          if (
+            teams[home].name == playerTeam.name ||
+            teams[away].name == playerTeam.name
+          )
+            desc += `=> Rodada ${home}: ${teams[home].name} ${game[0]} x ${game[1]} ${teams[away].name}`;
         }
       }
     }
@@ -1153,6 +1173,7 @@ function App() {
     return {
       pos: playerPosition + 1,
       table: table,
+      desc: desc,
     };
   }
 
