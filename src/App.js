@@ -6,7 +6,7 @@ import Nations from "./Database/nations.json";
 import Positions from "./Database/positions.json";
 import ChartComponent from "./Components/chartComponent";
 import Season from "./Components/season";
-import { RandomNumber } from "./Utils";
+import { RandomNumber, DeepClone } from "./Utils";
 
 const StarPath = [
   "Esquecido", //0
@@ -345,7 +345,7 @@ function App() {
     let playerPhase = 2;
 
     //get opponents for national cup
-    let pot3 = deepClone([...league.teams]);
+    let pot3 = DeepClone([...league.teams]);
     let pot1 = pot3.splice(0, pot3.length / 4);
     let pot2 = pot3.splice(0, pot3.length / 3);
 
@@ -374,7 +374,7 @@ function App() {
       for (let matchID = 0; matchID < classif.length / 2; matchID++) {
         let team1 = classif[matchID];
         let team2 = classif[classif.length - (matchID + 1)];
-        let game = GetKnockoutResult(
+        let game = GetDoubleKnockoutResult(
           team1,
           team2,
           team1.name == newPlayer.team.name
@@ -439,7 +439,7 @@ function App() {
 
       //get top teams in each league
       for (let leagueID = 0; leagueID < teams.length; leagueID++) {
-        let remainingTeams = deepClone([...teams[leagueID].teams]);
+        let remainingTeams = DeepClone([...teams[leagueID].teams]);
         let selected = remainingTeams.splice(0, teams[leagueID].championsSpots);
 
         if (newPlayer.team.league == teams[leagueID].name) {
@@ -455,7 +455,7 @@ function App() {
         }
 
         for (let i = 0; i < selected.length; i++) {
-          qualified.push(deepClone(selected[i]));
+          qualified.push(DeepClone(selected[i]));
         }
       }
 
@@ -470,7 +470,7 @@ function App() {
       description = `-> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
       description += group.desc;
 
-      let playoffsClassif = deepClone([...group.table]).splice(0, 24);
+      let playoffsClassif = DeepClone([...group.table]).splice(0, 24);
 
       let classif = playoffsClassif.splice(0, 8);
 
@@ -480,7 +480,7 @@ function App() {
       for (let matchID = 0; matchID < playoffsClassif.length / 2; matchID++) {
         let team1 = playoffsClassif[matchID];
         let team2 = playoffsClassif[playoffsClassif.length - (matchID + 1)];
-        let game = GetKnockoutResult(
+        let game = GetDoubleKnockoutResult(
           team1,
           team2,
           team1.name == newPlayer.team.name
@@ -526,7 +526,7 @@ function App() {
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
           let team2 = classif[classif.length - (matchID + 1)];
-          let game = GetKnockoutResult(
+          let game = GetDoubleKnockoutResult(
             team1,
             team2,
             team1.name == newPlayer.team.name
@@ -594,7 +594,7 @@ function App() {
       let qualified = [];
 
       for (let leagueID = 0; leagueID < teams.length; leagueID++) {
-        let remainingTeams = deepClone([...teams[leagueID].teams]);
+        let remainingTeams = DeepClone([...teams[leagueID].teams]);
         let selected = remainingTeams.splice(
           teams[leagueID].championsSpots,
           teams[leagueID].europaSpots
@@ -613,7 +613,7 @@ function App() {
         }
 
         for (let i = 0; i < selected.length; i++) {
-          qualified.push(deepClone(selected[i]));
+          qualified.push(DeepClone(selected[i]));
         }
       }
 
@@ -628,7 +628,7 @@ function App() {
       description = `-> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
       description += group.desc;
 
-      let classif = deepClone([...group.table]).splice(0, 16);
+      let classif = DeepClone([...group.table]).splice(0, 16);
 
       if (classif.some((t) => t.name == newPlayer.team.name)) {
         playerPhase += 2;
@@ -643,7 +643,7 @@ function App() {
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
           let team2 = classif[classif.length - (matchID + 1)];
-          let game = GetKnockoutResult(
+          let game = GetDoubleKnockoutResult(
             team1,
             team2,
             team1.name == newPlayer.team.name
@@ -706,7 +706,7 @@ function App() {
       phase = 0;
       playerPhase = 0;
 
-      let allNations = deepClone([...nations]);
+      let allNations = DeepClone([...nations]);
 
       //was called by the manager
       let playedWorldCup =
@@ -812,7 +812,7 @@ function App() {
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
           let team2 = classif[classif.length - (matchID + 1)];
-          let game = GetGameResult(
+          let game = GetSingleKnockoutResult(
             team1,
             team2,
             team1.name == player.nation.name
@@ -1027,7 +1027,7 @@ function App() {
 
   function GetRoundsPosition(teams, playerTeam, rounds) {
     let desc = "";
-    let newTeams = deepClone(teams);
+    let newTeams = DeepClone(teams);
     //sort by power
     newTeams.sort((a, b) => {
       return a.power - b.power + Math.random() / 2;
@@ -1089,7 +1089,7 @@ function App() {
   }
 
   function GetLeaguePosition(teams, playerTeam, bonus) {
-    let newTeams = deepClone(teams);
+    let newTeams = DeepClone(teams);
 
     let points = new Array(newTeams.length).fill(0);
     for (let home = 0; home < newTeams.length; home++) {
@@ -1131,7 +1131,7 @@ function App() {
 
   function GetWorldCupPosition(teams, playerTeam, bonus) {
     let desc = "";
-    let newTeams = deepClone([...teams]);
+    let newTeams = DeepClone([...teams]);
     let points = new Array(teams.length).fill(0);
     for (let home = 0; home < teams.length; home++) {
       let newBonus =
@@ -1178,18 +1178,14 @@ function App() {
   }
 
   function GetMatch(team1, team2, bonus) {
-    let base =
-      Math.pow(team1.power, Math.log10(team1.power * team2.power)) +
-      Math.pow(team2.power, Math.log10(team1.power * team2.power));
-    let team1Power =
-      Math.pow(team1.power, Math.log10(team1.power * team2.power)) / base;
-    let team2Power =
-      Math.pow(team2.power, Math.log10(team1.power * team2.power)) / base;
+    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
+    let team1Power = Math.pow(team1.power, 2) / base;
+    let team2Power = Math.pow(team2.power, 2) / base;
 
-    let goals = (Math.random() + Math.random()) * 2;
+    let goals = Math.random() + Math.random() * 2;
 
-    let team1Luck = Math.random() + Math.random();
-    let team2Luck = Math.random() + Math.random();
+    let team1Luck = Math.random() + Math.random() * 2;
+    let team2Luck = Math.random() + Math.random() * 2;
 
     let team1Score = Math.round(goals * team1Luck * team1Power + bonus / 2);
     let team2Score = Math.round(goals * team2Luck * team2Power);
@@ -1201,18 +1197,14 @@ function App() {
   }
 
   function GetExtraTime(team1, team2) {
-    let base =
-      Math.pow(team1.power, Math.log10(2 * team1.power * team2.power)) +
-      Math.pow(team2.power, Math.log10(2 * team1.power * team2.power));
-    let team1Power =
-      Math.pow(team1.power, Math.log10(2 * team1.power * team2.power)) / base;
-    let team2Power =
-      Math.pow(team2.power, Math.log10(2 * team1.power * team2.power)) / base;
+    let base = Math.pow(team1.power, 3) + Math.pow(team2.power, 3);
+    let team1Power = Math.pow(team1.power, 3) / base;
+    let team2Power = Math.pow(team2.power, 3) / base;
 
     let goals = Math.random() + Math.random();
 
-    let team1Luck = Math.random() + Math.random() + Math.random();
-    let team2Luck = Math.random() + Math.random() + Math.random();
+    let team1Luck = Math.random() + Math.random();
+    let team2Luck = Math.random() + Math.random();
 
     let team1Score = Math.round(goals * team1Luck * team1Power);
     let team2Score = Math.round(goals * team2Luck * team2Power);
@@ -1224,13 +1216,9 @@ function App() {
   }
 
   function GetPenalties(team1, team2) {
-    let base =
-      Math.pow(team1.power, Math.log10(3 * team1.power * team2.power)) +
-      Math.pow(team2.power, Math.log10(3 * team1.power * team2.power));
-    let team1Power =
-      Math.pow(team1.power, Math.log10(3 * team1.power * team2.power)) / base;
-    let team2Power =
-      Math.pow(team2.power, Math.log10(3 * team1.power * team2.power)) / base;
+    let base = Math.pow(team1.power, 3) + Math.pow(team2.power, 3);
+    let team1Power = Math.pow(team1.power, 3) / base;
+    let team2Power = Math.pow(team2.power, 3) / base;
 
     let winner = false;
     let team1goals = 0;
@@ -1264,7 +1252,7 @@ function App() {
     return [team1goals, team2goals];
   }
 
-  function GetGameResult(team1, team2, bonus) {
+  function GetSingleKnockoutResult(team1, team2, bonus) {
     let gameDesc = "";
 
     let game = GetMatch(team1, team2, bonus);
@@ -1293,7 +1281,7 @@ function App() {
     return { result: result, game: gameDesc };
   }
 
-  function GetKnockoutResult(team1, team2, bonus) {
+  function GetDoubleKnockoutResult(team1, team2, bonus) {
     let gameDesc = "";
 
     let game1 = GetMatch(team1, team2, bonus);
@@ -1430,7 +1418,7 @@ function App() {
   }
 
   function UpdateTeamsStats() {
-    let newTeams = deepClone([...teams]);
+    let newTeams = DeepClone([...teams]);
 
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
       let last = Math.random();
@@ -1457,8 +1445,8 @@ function App() {
 
         if (newTeams[leagueID].teams[teamID].power > 10)
           newTeams[leagueID].teams[teamID].power = 10;
-        else if (newTeams[leagueID].teams[teamID].power < 1)
-          newTeams[leagueID].teams[teamID].power = 1;
+        else if (newTeams[leagueID].teams[teamID].power < 2)
+          newTeams[leagueID].teams[teamID].power = 2;
       }
 
       newTeams[leagueID].teams.sort((a, b) => {
@@ -1470,7 +1458,7 @@ function App() {
   }
 
   function UpdateExtraTeamsStats() {
-    let newTeams = deepClone([...extrateams]);
+    let newTeams = DeepClone([...extrateams]);
     let last = Math.random();
     let teamIndices = Array.from(
       { length: newTeams.length },
@@ -1492,7 +1480,7 @@ function App() {
       newTeams[teamID].power = Math.round(10.0 * newPower) / 10;
 
       if (newTeams[teamID].power > 10) newTeams[teamID].power = 10;
-      else if (newTeams[teamID].power < 1) newTeams[teamID].power = 1;
+      else if (newTeams[teamID].power < 2) newTeams[teamID].power = 2;
     }
 
     newTeams.sort((a, b) => {
@@ -1503,7 +1491,7 @@ function App() {
   }
 
   function UpdateNationsStats() {
-    let newNations = deepClone([...nations]);
+    let newNations = DeepClone([...nations]);
 
     let last = Math.random();
     let nationIndices = Array.from(
@@ -1533,7 +1521,7 @@ function App() {
         Math.round(newNations[nationID].power * 10) / 10;
 
       if (newNations[nationID].power > 10) newNations[nationID].power = 10;
-      else if (newNations[nationID].power < 1) newNations[nationID].power = 1;
+      else if (newNations[nationID].power < 2) newNations[nationID].power = 2;
     }
 
     newNations.sort((a, b) => {
@@ -1541,29 +1529,6 @@ function App() {
     });
     setNations(newNations);
     return newNations;
-  }
-
-  function deepClone(obj) {
-    if (obj === null || typeof obj !== "object") {
-      return obj;
-    }
-
-    if (Array.isArray(obj)) {
-      const newArray = [];
-      for (let i = 0; i < obj.length; i++) {
-        newArray[i] = deepClone(obj[i]);
-      }
-      return newArray;
-    }
-
-    const newObj = {};
-    for (let key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        newObj[key] = deepClone(obj[key]);
-      }
-    }
-
-    return newObj;
   }
 
   return (
