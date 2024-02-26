@@ -1042,7 +1042,7 @@ function App() {
         let home = i;
         let away = i + newTeams.length / 2;
 
-        let game = GetMatch(newTeams[home], newTeams[away], 0, 2);
+        let game = GetMatch(newTeams[home], newTeams[away], 0);
 
         if (
           newTeams[home].name == playerTeam.name ||
@@ -1099,7 +1099,7 @@ function App() {
           : Math.round(10.0 * (Math.random() - Math.random())) / 10;
       for (let away = 0; away < newTeams.length; away++) {
         if (newTeams[home] !== newTeams[away]) {
-          let game = GetMatch(newTeams[home], newTeams[away], newBonus, 1);
+          let game = GetMatch(newTeams[home], newTeams[away], newBonus);
 
           if (game[0] > game[1]) {
             points[home] += 3;
@@ -1140,7 +1140,7 @@ function App() {
           : Math.round(10.0 * (Math.random() - Math.random())) / 10;
       for (let away = 0; away < home; away++) {
         if (teams[home] !== teams[away]) {
-          let game = GetMatch(teams[home], teams[away], newBonus, 1);
+          let game = GetMatch(teams[home], teams[away], newBonus);
 
           if (game[0] > game[1]) {
             points[home] += 3;
@@ -1177,11 +1177,11 @@ function App() {
     };
   }
 
-  function GetMatch(team1, team2, bonus, importance) {
+  function GetMatch(team1, team2, bonus) {
     let base =
-      Math.pow(team1.power, importance) + Math.pow(team2.power, importance);
-    let team1Power = Math.pow(team1.power, importance) / base;
-    let team2Power = Math.pow(team2.power, importance) / base;
+      Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
+    let team1Power = Math.pow(team1.power, 2) / base;
+    let team2Power = Math.pow(team2.power, 2) / base;
 
     let goals = Math.random() + Math.random() * 1.5;
 
@@ -1257,12 +1257,12 @@ function App() {
   function GetKnockoutResult(team1, team2, bonus) {
     let gameDesc = "";
 
-    let game = GetMatch(team1, team2, bonus, 2);
+    let game = GetMatch(team1, team2, bonus);
     let teamGoals1 = game[0];
     let teamGoals2 = game[1];
 
     if (teamGoals1 == teamGoals2) {
-      let extra = GetExtraTime(team1, team2, 2);
+      let extra = GetExtraTime(team1, team2);
       teamGoals1 += extra[0];
       teamGoals2 += extra[1];
 
