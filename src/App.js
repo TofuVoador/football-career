@@ -1178,8 +1178,7 @@ function App() {
   }
 
   function GetMatch(team1, team2, bonus) {
-    let base =
-      Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
+    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
     let team1Power = Math.pow(team1.power, 2) / base;
     let team2Power = Math.pow(team2.power, 2) / base;
 
@@ -1197,11 +1196,10 @@ function App() {
     return [team1Score, team2Score];
   }
 
-  function GetExtraTime(team1, team2, importance) {
-    let base =
-      Math.pow(team1.power, importance) + Math.pow(team2.power, importance);
-    let team1Power = Math.pow(team1.power, importance) / base;
-    let team2Power = Math.pow(team2.power, importance) / base;
+  function GetExtraTime(team1, team2) {
+    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
+    let team1Power = Math.pow(team1.power, 2) / base;
+    let team2Power = Math.pow(team2.power, 2) / base;
 
     let goals = Math.random() + Math.random();
 
