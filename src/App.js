@@ -1042,7 +1042,7 @@ function App() {
         let home = i;
         let away = i + newTeams.length / 2;
 
-        let game = GetMatch(newTeams[home], newTeams[away], 0, 3);
+        let game = GetMatch(newTeams[home], newTeams[away], 0, 2);
 
         if (
           newTeams[home].name == playerTeam.name ||
@@ -1140,7 +1140,7 @@ function App() {
           : Math.round(10.0 * (Math.random() - Math.random())) / 10;
       for (let away = 0; away < home; away++) {
         if (teams[home] !== teams[away]) {
-          let game = GetMatch(teams[home], teams[away], newBonus, 2);
+          let game = GetMatch(teams[home], teams[away], newBonus, 1.5);
 
           if (game[0] > game[1]) {
             points[home] += 3;
@@ -1257,12 +1257,12 @@ function App() {
   function GetKnockoutResult(team1, team2, bonus) {
     let gameDesc = "";
 
-    let game = GetMatch(team1, team2, bonus, 2);
+    let game = GetMatch(team1, team2, bonus, 1.5);
     let teamGoals1 = game[0];
     let teamGoals2 = game[1];
 
     if (teamGoals1 == teamGoals2) {
-      let extra = GetExtraTime(team1, team2, 2);
+      let extra = GetExtraTime(team1, team2, 1.5);
       teamGoals1 += extra[0];
       teamGoals2 += extra[1];
 
