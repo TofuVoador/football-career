@@ -374,7 +374,7 @@ function App() {
       for (let matchID = 0; matchID < classif.length / 2; matchID++) {
         let team1 = classif[matchID];
         let team2 = classif[classif.length - (matchID + 1)];
-        let game = GetDoubleKnockoutResult(
+        let game = GetKnockoutResult(
           team1,
           team2,
           team1.name == newPlayer.team.name
@@ -480,7 +480,7 @@ function App() {
       for (let matchID = 0; matchID < playoffsClassif.length / 2; matchID++) {
         let team1 = playoffsClassif[matchID];
         let team2 = playoffsClassif[playoffsClassif.length - (matchID + 1)];
-        let game = GetDoubleKnockoutResult(
+        let game = GetKnockoutResult(
           team1,
           team2,
           team1.name == newPlayer.team.name
@@ -526,7 +526,7 @@ function App() {
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
           let team2 = classif[classif.length - (matchID + 1)];
-          let game = GetDoubleKnockoutResult(
+          let game = GetKnockoutResult(
             team1,
             team2,
             team1.name == newPlayer.team.name
@@ -643,7 +643,7 @@ function App() {
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
           let team2 = classif[classif.length - (matchID + 1)];
-          let game = GetDoubleKnockoutResult(
+          let game = GetKnockoutResult(
             team1,
             team2,
             team1.name == newPlayer.team.name
@@ -812,7 +812,7 @@ function App() {
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
           let team2 = classif[classif.length - (matchID + 1)];
-          let game = GetSingleKnockoutResult(
+          let game = GetKnockoutResult(
             team1,
             team2,
             team1.name == player.nation.name
@@ -1178,14 +1178,14 @@ function App() {
   }
 
   function GetMatch(team1, team2, bonus) {
-    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
-    let team1Power = Math.pow(team1.power, 2) / base;
-    let team2Power = Math.pow(team2.power, 2) / base;
+    let base = team1.power + team2.power;
+    let team1Power = team1.power / base;
+    let team2Power = team2.power / base;
 
-    let goals = Math.random() + Math.random() * 2;
+    let goals = Math.random() + Math.random() + Math.random() / 2;
 
-    let team1Luck = Math.random() + Math.random() * 2;
-    let team2Luck = Math.random() + Math.random() * 2;
+    let team1Luck = (Math.random() + Math.random()) * 2;
+    let team2Luck = (Math.random() + Math.random()) * 2;
 
     let team1Score = Math.round(goals * team1Luck * team1Power + bonus / 2);
     let team2Score = Math.round(goals * team2Luck * team2Power);
@@ -1197,9 +1197,9 @@ function App() {
   }
 
   function GetExtraTime(team1, team2) {
-    let base = Math.pow(team1.power, 3) + Math.pow(team2.power, 3);
-    let team1Power = Math.pow(team1.power, 3) / base;
-    let team2Power = Math.pow(team2.power, 3) / base;
+    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
+    let team1Power = Math.pow(team1.power, 2) / base;
+    let team2Power = Math.pow(team2.power, 2) / base;
 
     let goals = Math.random() + Math.random();
 
@@ -1252,45 +1252,12 @@ function App() {
     return [team1goals, team2goals];
   }
 
-  function GetSingleKnockoutResult(team1, team2, bonus) {
+  function GetKnockoutResult(team1, team2, bonus) {
     let gameDesc = "";
 
     let game = GetMatch(team1, team2, bonus);
     let teamGoals1 = game[0];
     let teamGoals2 = game[1];
-
-    if (teamGoals1 == teamGoals2) {
-      let extra = GetExtraTime(team1, team2, bonus);
-      teamGoals1 += extra[0];
-      teamGoals2 += extra[1];
-
-      if (teamGoals1 == teamGoals2) {
-        let penalties = GetPenalties(team1, team2);
-        gameDesc = `${team1.name} ${teamGoals1} (${penalties[0]}) x (${penalties[1]}) ${teamGoals2} ${team2.name}`;
-        teamGoals1 += penalties[0];
-        teamGoals2 += penalties[1];
-      } else {
-        gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name} (Pr)`;
-      }
-    } else {
-      gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name}`;
-    }
-
-    let result = teamGoals1 > teamGoals2;
-
-    return { result: result, game: gameDesc };
-  }
-
-  function GetDoubleKnockoutResult(team1, team2, bonus) {
-    let gameDesc = "";
-
-    let game1 = GetMatch(team1, team2, bonus);
-    let teamGoals1 = game1[0];
-    let teamGoals2 = game1[1];
-
-    let game2 = GetMatch(team2, team1, -bonus);
-    teamGoals2 += game2[0];
-    teamGoals1 += game2[1];
 
     if (teamGoals1 == teamGoals2) {
       let extra = GetExtraTime(team1, team2, bonus);
