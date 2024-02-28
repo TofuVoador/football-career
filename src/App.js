@@ -394,9 +394,11 @@ function App() {
             (!game.result && team2.name == newPlayer.team.name)
           ) {
             playerPhase++;
+            newSeason.awardPoints += 0.3; //max 0.3 x 5 = 1.5
             if (playerPhase >= TournamentPath.length - 1) {
               newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
               newPlayer.fame += 10;
+              newSeason.awardPoints += 0.5; //max 0.3 x 5 + 0.5 = 2.0
               triplice++;
             }
           }
@@ -784,14 +786,6 @@ function App() {
         secondPlaces.push(thisGroup.table[1]);
         thirdPlaces.push(thisGroup.table[2]);
       }
-
-      firstPlaces.sort((a, b) => {
-        return b.power - a.power + Math.random() / 2;
-      });
-
-      secondPlaces.sort((a, b) => {
-        return b.power - a.power + Math.random() / 2;
-      });
 
       thirdPlaces.sort((a, b) => {
         return b.power - a.power + Math.random() / 2;
