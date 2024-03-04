@@ -38,8 +38,11 @@ const Season = (props) => {
             className="progress"
             style={{
               width: `${Math.abs(season.performance.toFixed(2)) * 50}%`,
-              height: "18px",
-              backgroundColor: `var(--color-contrast)`,
+              height: "20px",
+              backgroundColor:
+                season.performance.toFixed(2) >= 0
+                  ? "var(--color-contrast)"
+                  : "var(--color-light)",
               borderRadius:
                 season.performance.toFixed(2) >= 0
                   ? "0 10px 10px 0"
@@ -59,6 +62,10 @@ const Season = (props) => {
                 left: season.performance.toFixed(2) >= 0 ? "5px" : "auto",
                 right: season.performance.toFixed(2) >= 0 ? "auto" : "5px",
                 transform: "translateY(-50%)", // Centraliza verticalmente
+                color:
+                  season.performance.toFixed(2) >= 0
+                    ? "var(--color-dark)"
+                    : "var(--color-contrast)",
               }}
             >
               {season.performance.toFixed(2) > 0 ? "+" : ""}

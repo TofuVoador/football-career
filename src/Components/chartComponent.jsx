@@ -47,7 +47,7 @@ const ChartComponent = ({ data }) => {
           {
             label: "Overall",
             data: data.map((item) => item.overall), // y-axis data
-            backgroundColor: "rgba(13, 27, 42, 1)", // Set background color
+            backgroundColor: "rgba(224, 225, 221, 1)", // Set background color
             borderColor: "rgba(224, 225, 221, 1)", // Set border color
           },
         ],
@@ -63,7 +63,7 @@ const ChartComponent = ({ data }) => {
           {
             label: "Fama",
             data: data.map((item) => item.fame), // y-axis data
-            backgroundColor: "rgba(13, 27, 42, 1)", // Set background color
+            backgroundColor: "rgba(224, 225, 221, 1)", // Set background color
             borderColor: "rgba(224, 225, 221, 1)", // Set border color
           },
         ],
@@ -79,13 +79,13 @@ const ChartComponent = ({ data }) => {
           {
             label: "Gols",
             data: data.map((item) => item.goals), // y-axis data
-            backgroundColor: "rgba(13, 27, 42, 1)", // Set background color
+            backgroundColor: "rgba(224, 225, 221, 1)", // Set background color
             borderColor: "rgba(224, 225, 221, 1)", // Set border color
           },
           {
             label: "Assistências",
             data: data.map((item) => item.assists), // y-axis data
-            backgroundColor: "rgba(13, 27, 42, 1)", // Set background color
+            backgroundColor: "rgba(119, 141, 169, 1)", // Set background color
             borderColor: "rgba(119, 141, 169, 1)", // Set border color
           },
         ],
