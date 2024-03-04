@@ -55,18 +55,13 @@
     "power": 7
   },
   {
-    "name": "Uruguai",
-    "continent": "América do Sul",
+    "name": "Marrocos",
+    "continent": "África",
     "power": 7
   },
   {
     "name": "Bélgica",
     "continent": "Europa",
-    "power": 6.5
-  },
-  {
-    "name": "Marrocos",
-    "continent": "África",
     "power": 6.5
   },
   {
@@ -77,6 +72,11 @@
   {
     "name": "Estados Unidos",
     "continent": "América do Norte",
+    "power": 6.5
+  },
+  {
+    "name": "Uruguai",
+    "continent": "América do Sul",
     "power": 6.5
   },
   {
