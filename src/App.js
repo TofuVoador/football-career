@@ -1392,28 +1392,31 @@ function App() {
       return acumulador.concat(liga.teams);
     }, []);
 
-    let interestedTeams = [];
-
-    for (let i = 0; i < allTeams.length; i++) {
-      let chance = 60 / allTeams[i].power;
-
-      let r = RandomNumber(0, 100);
-      if (r < chance) {
-        interestedTeams.push(allTeams[i]);
-      }
-    }
-
-    interestedTeams.sort((a, b) => {
+    allTeams.sort((a, b) => {
       return b.power - a.power + Math.random() / 2;
     });
 
+    allTeams = allTeams.slice(0, allTeams.length / 2);
+
+    const randomIndices = [];
+    while (randomIndices.length < 3) {
+      const randomIndex = Math.floor(Math.random() * allTeams.length);
+      if (!randomIndices.includes(randomIndex)) {
+        randomIndices.push(randomIndex);
+      }
+    }
+
     //randomize a play
-    let teams = [interestedTeams[0], interestedTeams[1], interestedTeams[2]];
+    let teams = [
+      allTeams[randomIndices[0]],
+      allTeams[randomIndices[1]],
+      allTeams[randomIndices[2]],
+    ];
 
     let contractDurations = [
-      RandomNumber(1, 4),
-      RandomNumber(1, 4),
-      RandomNumber(1, 4),
+      RandomNumber(2, 5),
+      RandomNumber(2, 5),
+      RandomNumber(2, 5),
     ];
 
     let expectedOveralls = [
