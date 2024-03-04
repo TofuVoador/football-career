@@ -5,7 +5,7 @@
     "europaSpots": 2,
     "teams": [
       {
-        "name": "Bayern de Munique",
+        "name": "Bayern München",
         "league": "Bundesliga",
         "power": 9
       },
@@ -50,7 +50,7 @@
         "power": 4.5
       },
       {
-        "name": "Colônia",
+        "name": "Köln",
         "league": "Bundesliga",
         "power": 4
       },
@@ -122,7 +122,7 @@
         "power": 4.5
       },
       {
-        "name": "NEC",
+        "name": "NEC Nijmegen",
         "league": "Eredivisie",
         "power": 4.5
       },
@@ -132,7 +132,7 @@
         "power": 4
       },
       {
-        "name": "Sparta Rotterdã",
+        "name": "Sparta Rotterdam",
         "league": "Eredivisie",
         "power": 4
       },
@@ -189,7 +189,7 @@
         "power": 6
       },
       {
-        "name": "Union",
+        "name": "Union Saint-Gilloise",
         "league": "Jupiler Pro League",
         "power": 5.5
       },
@@ -224,7 +224,7 @@
         "power": 4
       },
       {
-        "name": "STVV",
+        "name": "Sint-Truidense VV",
         "league": "Jupiler Pro League",
         "power": 4
       },
@@ -316,7 +316,7 @@
         "power": 4
       },
       {
-        "name": "Valência",
+        "name": "Valencia",
         "league": "La Liga",
         "power": 4
       },
@@ -413,7 +413,7 @@
         "power": 3.5
       },
       {
-        "name": "Estrasburgo",
+        "name": "Strasbourg",
         "league": "Ligue 1",
         "power": 3
       },
@@ -614,12 +614,12 @@
     "europaSpots": 2,
     "teams": [
       {
-        "name": "Inter de Milão",
+        "name": "Inter Milan",
         "league": "Serie A",
         "power": 9
       },
       {
-        "name": "Milan",
+        "name": "AC Milan",
         "league": "Serie A",
         "power": 7.5
       },
@@ -664,7 +664,7 @@
         "power": 4
       },
       {
-        "name": "Génova",
+        "name": "Genoa",
         "league": "Serie A",
         "power": 3.5
       },

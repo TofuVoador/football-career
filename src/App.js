@@ -863,7 +863,7 @@ function App() {
         }
       }
 
-      description = `World Cup: ${TournamentPath[playerPhase]} ${
+      description = `Copa do Mundo: ${TournamentPath[playerPhase]} ${
         playedWorldCup ? "" : " (Não Convocado)"
       } ${description}`;
       newSeason.titles.push(description);
