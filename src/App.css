@@ -1,6 +1,6 @@
 header {
-  background-color: var(--color-medium);
-  color: var(--color-contrast);
+  background-color: var(--color-dark);
+  color: var(--color-light);
   width: 100%;
   padding: 1rem;
 }
@@ -13,13 +13,13 @@ header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: var(--color-contrast);
+  color: var(--color-light);
 }
 
 .choices a {
   margin-bottom: 1rem;
   padding: 1rem;
-  color: var(--color-contrast);
+  color: var(--color-light);
   border-radius: 2rem;
   width: 100%;
   max-width: 800px;
@@ -31,12 +31,11 @@ header {
 }
 
 .d-stay:hover {
-  background-color: var(--color-medium);
+  background-color: var(--color-dark);
 }
 
 .d-alert:hover {
-  background-color: var(--color-medium);
-  color: var(--color-contrast);
+  background-color: var(--color-contrast);
 }
 
 .chart {

@@ -30,10 +30,8 @@ const Season = (props) => {
           style={{
             width: "auto",
             height: "20px",
-            border: "1px var(--color-contrast) solid",
-            boxsizing: "border-box",
+            backgroundColor: "var(--color-medium)",
             borderRadius: "10px",
-            position: "relative",
           }}
         >
           <div
@@ -41,15 +39,7 @@ const Season = (props) => {
             style={{
               width: `${Math.abs(season.performance.toFixed(2)) * 50}%`,
               height: "18px",
-              backgroundColor: `${
-                season.performance.toFixed(2) >= 0
-                  ? season.performance.toFixed(2) >= 0.5
-                    ? "cyan"
-                    : "lime"
-                  : season.performance.toFixed(2) >= -0.5
-                  ? "orange"
-                  : "maroon"
-              }`,
+              backgroundColor: `var(--color-contrast)`,
               borderRadius:
                 season.performance.toFixed(2) >= 0
                   ? "0 10px 10px 0"
@@ -69,15 +59,6 @@ const Season = (props) => {
                 left: season.performance.toFixed(2) >= 0 ? "5px" : "auto",
                 right: season.performance.toFixed(2) >= 0 ? "auto" : "5px",
                 transform: "translateY(-50%)", // Centraliza verticalmente
-                color: `${
-                  season.performance.toFixed(2) >= 0
-                    ? season.performance.toFixed(2) >= 0.5
-                      ? "blue"
-                      : "green"
-                    : season.performance.toFixed(2) >= -0.5
-                    ? "yellow"
-                    : "red"
-                }`,
               }}
             >
               {season.performance.toFixed(2) > 0 ? "+" : ""}
@@ -90,7 +71,7 @@ const Season = (props) => {
           style={{
             width: "auto",
             height: "20px",
-            backgroundColor: "var(--color-dark)",
+            backgroundColor: "var(--color-medium)",
             borderRadius: "10px",
           }}
         >
