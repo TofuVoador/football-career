@@ -909,62 +909,6 @@ function App() {
       newSeason.titles.push(`Ballon D'Or: ${position}º lugar`);
     }
 
-    //trasnfer window
-
-    if (contract <= 1) {
-      //fired
-      if (
-        (newPlayer.overall <= 82 + newPlayer.team.power / 2 &&
-          newPlayer.age > 34) ||
-        med <= -0.2
-      ) {
-        document.getElementById("decision-stay").style.display = "none";
-      } else {
-        document.getElementById("decision-stay").style.display = "flex";
-        let renewDuration = RandomNumber(1, 4);
-
-        let renewValue =
-          Math.floor(
-            newPlayer.position.value *
-              (newPlayer.overall ** 4 / 1000000) *
-              (1 + (Math.random() - Math.random()) / 10.0) *
-              (1 + newPlayer.team.power / 50.0)
-          ) / 10.0;
-        setRenew({ value: renewValue, duration: renewDuration });
-      }
-
-      let newTransfers = GetNewTeams(newPlayer);
-      setTransfers(newTransfers);
-
-      if (newTransfers[0] == null) {
-        document.getElementById("decision-transfer1").style.display = "none";
-      } else {
-        document.getElementById("decision-transfer1").style.display = "flex";
-      }
-
-      if (newTransfers[1] == null) {
-        document.getElementById("decision-transfer2").style.display = "none";
-      } else {
-        document.getElementById("decision-transfer2").style.display = "flex";
-      }
-
-      if (newTransfers[2] == null) {
-        document.getElementById("decision-transfer3").style.display = "none";
-      } else {
-        document.getElementById("decision-transfer3").style.display = "flex";
-      }
-
-      if (newPlayer.age >= 32) {
-        document.getElementById("retire").style.display = "flex";
-      }
-
-      if (newPlayer.age >= 36) {
-        document.getElementById("decision-transfer1").style.display = "none";
-        document.getElementById("decision-transfer2").style.display = "none";
-        document.getElementById("decision-transfer3").style.display = "none";
-      }
-    }
-
     //setup next season
     if (leagueResults.pos <= league.championsSpots) {
       newPlayer.championsQualification = true;
@@ -994,8 +938,69 @@ function App() {
     const newSeasons = [...seasons, newSeason];
     setSeasons(newSeasons);
 
-    //continue
-    if (contract > 1) ChooseTeam();
+    //trasnfer window
+
+    if (
+      contract <= 1 ||
+      ((newPlayer.performance >= newPlayer.team.power / 10 ||
+        (newPlayer.performance <= -0.6 && med < -0.2)) &&
+        generalPerformance.length >= 2)
+    ) {
+      let newTransfers = GetNewTeams(newPlayer);
+      setTransfers(newTransfers);
+
+      if (newTransfers[0] == null) {
+        document.getElementById("decision-transfer1").style.display = "none";
+      } else {
+        document.getElementById("decision-transfer1").style.display = "flex";
+      }
+
+      if (newTransfers[1] == null) {
+        document.getElementById("decision-transfer2").style.display = "none";
+      } else {
+        document.getElementById("decision-transfer2").style.display = "flex";
+      }
+
+      if (newTransfers[2] == null) {
+        document.getElementById("decision-transfer3").style.display = "none";
+      } else {
+        document.getElementById("decision-transfer3").style.display = "flex";
+      }
+
+      if (newPlayer.age >= 32) {
+        document.getElementById("retire").style.display = "flex";
+      }
+
+      if (newPlayer.age >= 36 && newPlayer.overall <= 84) {
+        document.getElementById("decision-transfer1").style.display = "none";
+        document.getElementById("decision-transfer2").style.display = "none";
+        document.getElementById("decision-transfer3").style.display = "none";
+      }
+
+      //fired
+      if (
+        ((newPlayer.overall <= 82 + newPlayer.team.power / 2 &&
+          newPlayer.age > 34) ||
+          med <= -0.2) &&
+        newTransfers[0] != null
+      ) {
+        document.getElementById("decision-stay").style.display = "none";
+      } else {
+        document.getElementById("decision-stay").style.display = "flex";
+        let renewDuration = contract + RandomNumber(1, 3);
+
+        let renewValue =
+          Math.floor(
+            newPlayer.position.value *
+              (newPlayer.overall ** 4 / 1000000) *
+              (1 + (Math.random() - Math.random()) / 10.0) *
+              (1 + newPlayer.team.power / 50.0)
+          ) / 10.0;
+        setRenew({ value: renewValue, duration: renewDuration });
+      }
+    } else {
+      ChooseTeam();
+    }
   }
 
   function GetRoundsPosition(teams, playerTeam, rounds) {
@@ -1277,110 +1282,58 @@ function App() {
       let chance = currentPlayer.overall / allTeams[i].power;
 
       let r = RandomNumber(0, 100);
-      if (r < chance && !history.some((t) => t.name == allTeams[i].name)) {
+      if (
+        r < chance * (1 + currentPlayer.performance) &&
+        !history.some((t) => t == allTeams[i].name)
+      ) {
         interestedTeams.push(allTeams[i]);
       }
     }
 
-    //randomize a play
-    let teams = [interestedTeams[0], interestedTeams[1], interestedTeams[2]];
+    let contracts = [];
 
-    let contractDurations = [
-      RandomNumber(1, 4),
-      RandomNumber(1, 4),
-      RandomNumber(1, 4),
-    ];
+    for (let index = 0; index < 3; index++) {
+      let team = interestedTeams[index];
+      if (team) {
+        let contractDuration = RandomNumber(1, 4);
+        if (currentPlayer.age < 34) contractDuration++;
+        let expectedOverall =
+          GetOverall(
+            currentPlayer.potential,
+            currentPlayer.age + Math.round(contractDuration / 2),
+            team.power
+          ) + currentPlayer.performance;
+        let contractValue =
+          Math.floor(
+            currentPlayer.position.value *
+              (expectedOverall ** 4 / 1000000) *
+              (1 + (Math.random() - Math.random()) / 10.0) *
+              (1 + team.power / 50.0)
+          ) / 10.0;
+        let contract = {
+          value: contractValue,
+          duration: contractDuration,
+        };
+        let transferValue =
+          Math.floor(
+            currentPlayer.position.value *
+              (currentPlayer.overall ** 5 / 1000000) *
+              (1 + (Math.random() - Math.random()) / 10.0) *
+              (1 + team.power / 50.0) +
+              currentPlayer.fame
+          ) / 100.0;
 
-    if (currentPlayer.age < 34) {
-      contractDurations = contractDurations.map((numero) => numero + 1);
+        contracts.push({
+          team: team,
+          contract: contract,
+          transferValue: transferValue,
+        });
+      } else {
+        contracts.push(null);
+      }
     }
 
-    let expectedOveralls = [
-      GetOverall(
-        currentPlayer.potential,
-        currentPlayer.age + Math.round(contractDurations[0] / 2),
-        teams[0].power
-      ) + currentPlayer.performance,
-      GetOverall(
-        currentPlayer.potential,
-        currentPlayer.age + Math.round(contractDurations[1] / 2),
-        teams[1].power
-      ) + currentPlayer.performance,
-      GetOverall(
-        currentPlayer.potential,
-        currentPlayer.age + Math.round(contractDurations[2] / 2),
-        teams[2].power
-      ) + currentPlayer.performance,
-    ];
-
-    let contractValues = [
-      Math.floor(
-        currentPlayer.position.value *
-          (expectedOveralls[0] ** 4 / 1000000) *
-          (1 + (Math.random() - Math.random()) / 10.0) *
-          (1 + teams[0].power / 50.0)
-      ) / 10.0,
-      Math.floor(
-        currentPlayer.position.value *
-          (expectedOveralls[1] ** 4 / 1000000) *
-          (1 + (Math.random() - Math.random()) / 10.0) *
-          (1 + teams[1].power / 50.0)
-      ) / 10.0,
-      Math.floor(
-        currentPlayer.position.value *
-          (expectedOveralls[2] ** 4 / 1000000) *
-          (1 + (Math.random() - Math.random()) / 10.0) *
-          (1 + teams[2].power / 50.0)
-      ) / 10.0,
-    ];
-
-    let contracts = [
-      { value: contractValues[0], duration: contractDurations[0] },
-      { value: contractValues[1], duration: contractDurations[1] },
-      { value: contractValues[2], duration: contractDurations[2] },
-    ];
-
-    let transferValues = [
-      Math.floor(
-        currentPlayer.position.value *
-          (currentPlayer.overall ** 5 / 1000000) *
-          (1 + (Math.random() - Math.random()) / 10.0) *
-          (1 + teams[0].power / 50.0) +
-          currentPlayer.fame
-      ) / 100.0,
-      Math.floor(
-        currentPlayer.position.value *
-          (currentPlayer.overall ** 5 / 1000000) *
-          (1 + (Math.random() - Math.random()) / 10.0) *
-          (1 + teams[1].power / 50.0) +
-          currentPlayer.fame
-      ) / 100.0,
-      Math.floor(
-        currentPlayer.position.value *
-          (currentPlayer.overall ** 5 / 1000000) *
-          (1 + (Math.random() - Math.random()) / 10.0) *
-          (1 + teams[2].power / 50.0) +
-          currentPlayer.fame
-      ) / 100.0,
-    ];
-
-    return [
-      {
-        team: teams[0],
-        contract: contracts[0],
-        transferValue: transferValues[0],
-      },
-      {
-        team: teams[1],
-        contract: contracts[1],
-        transferValue: transferValues[1],
-      },
-      {
-        team: teams[2],
-        contract: contracts[2],
-        transferValue: transferValues[2],
-      },
-    ];
+    return contracts;
   }
 
   function GetInitTeams() {
@@ -1703,12 +1656,17 @@ function App() {
           onClick={() => ChooseTeam(transfers[0])}
         >
           <p>
-            Transferir para {transfers[0].team.name} (
-            {(Math.round(transfers[0].team.power * 5) / 10).toFixed(1)}⭐)
+            Transferir para{" "}
+            {transfers[0] == null ? "null" : transfers[0].team.name} (
+            {transfers[0] == null
+              ? "null"
+              : (Math.round(transfers[0].team.power * 5) / 10).toFixed(1)}
+            ⭐)
           </p>
           <p>
-            ${transfers[0].contract.value}M/ano |{" "}
-            {transfers[0].contract.duration} anos
+            ${transfers[0] == null ? "null" : transfers[0].contract.value}M/ano
+            | {transfers[0] == null ? "null" : transfers[0].contract.duration}{" "}
+            anos
           </p>
         </a>
         <a
@@ -1717,12 +1675,17 @@ function App() {
           onClick={() => ChooseTeam(transfers[1])}
         >
           <p>
-            Transferir para {transfers[1].team.name} (
-            {(Math.round(transfers[1].team.power * 5) / 10).toFixed(1)}⭐)
+            Transferir para{" "}
+            {transfers[1] == null ? "null" : transfers[1].team.name} (
+            {transfers[1] == null
+              ? "null"
+              : (Math.round(transfers[1].team.power * 5) / 10).toFixed(1)}
+            ⭐)
           </p>
           <p>
-            ${transfers[1].contract.value}M/ano |{" "}
-            {transfers[1].contract.duration} anos
+            ${transfers[1] == null ? "null" : transfers[1].contract.value}M/ano
+            | {transfers[1] == null ? "null" : transfers[1].contract.duration}{" "}
+            anos
           </p>
         </a>
         <a
@@ -1731,12 +1694,17 @@ function App() {
           onClick={() => ChooseTeam(transfers[2])}
         >
           <p>
-            Transferir para {transfers[2].team.name} (
-            {(Math.round(transfers[2].team.power * 5) / 10).toFixed(1)}⭐)
+            Transferir para{" "}
+            {transfers[2] == null ? "null" : transfers[2].team.name} (
+            {transfers[2] == null
+              ? "null"
+              : (Math.round(transfers[2].team.power * 5) / 10).toFixed(1)}
+            ⭐)
           </p>
           <p>
-            ${transfers[2].contract.value}M/ano |{" "}
-            {transfers[2].contract.duration} anos
+            ${transfers[2] == null ? "null" : transfers[2].contract.value}M/ano
+            | {transfers[2] == null ? "null" : transfers[2].contract.duration}{" "}
+            anos
           </p>
         </a>
         <a
