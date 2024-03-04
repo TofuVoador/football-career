@@ -30,7 +30,7 @@ const Season = (props) => {
           style={{
             width: "auto",
             height: "20px",
-            border: "1px var(--color-light2) solid",
+            border: "1px var(--color-contrast) solid",
             boxsizing: "border-box",
             borderRadius: "10px",
             position: "relative",
@@ -90,7 +90,7 @@ const Season = (props) => {
           style={{
             width: "auto",
             height: "20px",
-            backgroundColor: "var(--color-dark2)",
+            backgroundColor: "var(--color-dark)",
             borderRadius: "10px",
           }}
         >
@@ -98,7 +98,7 @@ const Season = (props) => {
             style={{
               width: `${season.starting}%`,
               height: "20px",
-              backgroundColor: "var(--color-light2)",
+              backgroundColor: "var(--color-contrast)",
               borderRadius: "10px",
               position: "relative",
             }}

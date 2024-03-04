@@ -2,7 +2,7 @@
   padding: 0 1rem;
   margin-bottom: 2rem;
   border-radius: 2rem;
-  background-color: var(--color-dark);
+  background-color: var(--color-medium);
   width: 100%;
   max-width: 800px;
   min-width: 300px;
@@ -13,14 +13,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: var(--color-light2);
+  color: var(--color-contrast);
   font-size: 1.5rem;
   font-weight: bold;
 }
 
 .oval {
   border-radius: 2.5rem;
-  border: 1px var(--color-light2) solid;
+  border: 1px var(--color-contrast) solid;
   height: 2.5rem;
   width: 5rem;
   display: flex;
@@ -30,7 +30,7 @@
 
 .season-titles {
   display: flex;
-  color: var(--color-light2);
+  color: var(--color-contrast);
   margin-bottom: 1%;
   padding-top: 0.5rem;
 }

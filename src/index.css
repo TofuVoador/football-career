@@ -1,8 +1,8 @@
 :root {
-  --color-dark2: #3c6255;
-  --color-dark: #61876e;
+  --color-dark: #3c6255;
+  --color-medium: #61876e;
   --color-light: #a6bb8d;
-  --color-light2: #eae7b1;
+  --color-contrast: #eae7b1;
 }
 
 * {
@@ -18,7 +18,7 @@ h1 {
 }
 
 body {
-  background-color: var(--color-dark2);
+  background-color: var(--color-dark);
   margin: 0;
   padding: 0;
 }
