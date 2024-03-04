@@ -11,29 +11,29 @@ const ChartComponent = ({ data }) => {
       scales: {
         x: {
           grid: {
-            color: "rgba(97, 135, 110, 0.2)", // Set color for x-axis grid lines
+            color: "rgba(27, 38, 59, 1)", // Set color for x-axis grid lines
           },
           ticks: {
-            color: "rgba(97, 135, 110, 1)", // Set color for x-axis labels
+            color: "rgba(65, 90, 119, 1)", // Set color for x-axis labels
           },
         },
         y: {
           grid: {
-            color: "rgba(97, 135, 110, 0.2)", // Set color for x-axis grid lines
+            color: "rgba(27, 38, 59, 1)", // Set color for x-axis grid lines
           },
           ticks: {
-            color: "rgba(97, 135, 110, 1)", // Set color for x-axis labels
+            color: "rgba(65, 90, 119, 1)", // Set color for x-axis labels
           },
         },
       },
       plugins: {
         title: {
           display: true,
-          color: "rgba(97, 135, 110, 1)", // Set color for chart title
+          color: "rgba(65, 90, 119, 1)", // Set color for chart title
         },
         legend: {
           labels: {
-            color: "rgba(97, 135, 110, 1)", // Set color for legend labels
+            color: "rgba(65, 90, 119, 1)", // Set color for legend labels
           },
         },
       },
@@ -47,8 +47,8 @@ const ChartComponent = ({ data }) => {
           {
             label: "Overall",
             data: data.map((item) => item.overall), // y-axis data
-            backgroundColor: "rgba(234, 231, 177, 1)", // Set background color
-            borderColor: "rgba(234, 231, 177, 1)", // Set border color
+            backgroundColor: "rgba(13, 27, 42, 1)", // Set background color
+            borderColor: "rgba(224, 225, 221, 1)", // Set border color
           },
         ],
       },
@@ -63,8 +63,8 @@ const ChartComponent = ({ data }) => {
           {
             label: "Fama",
             data: data.map((item) => item.fame), // y-axis data
-            backgroundColor: "rgba(234, 231, 177, 1)", // Set background color
-            borderColor: "rgba(234, 231, 177, 1)", // Set border color
+            backgroundColor: "rgba(13, 27, 42, 1)", // Set background color
+            borderColor: "rgba(224, 225, 221, 1)", // Set border color
           },
         ],
       },
@@ -79,14 +79,14 @@ const ChartComponent = ({ data }) => {
           {
             label: "Gols",
             data: data.map((item) => item.goals), // y-axis data
-            backgroundColor: "rgba(234, 231, 177, 1)", // Set background color
-            borderColor: "rgba(234, 231, 177, 1)", // Set border color
+            backgroundColor: "rgba(13, 27, 42, 1)", // Set background color
+            borderColor: "rgba(224, 225, 221, 1)", // Set border color
           },
           {
             label: "Assistências",
             data: data.map((item) => item.assists), // y-axis data
-            backgroundColor: "rgba(166, 187, 141, 1)", // Set background color
-            borderColor: "rgba(166, 187, 141, 1)", // Set border color
+            backgroundColor: "rgba(13, 27, 42, 1)", // Set background color
+            borderColor: "rgba(119, 141, 169, 1)", // Set border color
           },
         ],
       },

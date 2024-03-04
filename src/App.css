@@ -20,6 +20,7 @@ header {
   margin-bottom: 1rem;
   padding: 1rem;
   color: var(--color-light);
+  background-color: var(--color-dark);
   border-radius: 2rem;
   width: 100%;
   max-width: 800px;
@@ -30,12 +31,8 @@ header {
   transition: 0.2s;
 }
 
-.d-stay:hover {
-  background-color: var(--color-dark);
-}
-
-.d-alert:hover {
-  background-color: var(--color-contrast);
+.choices a:hover {
+  background-color: var(--color-medium);
 }
 
 .chart {
