@@ -125,10 +125,6 @@ function App() {
     if (newTeam) {
       //if they change team
       newHistory.push(newTeam.team.name);
-      if (newHistory.length > 3) {
-        newHistory.shift();
-      }
-
       let oldTeamLeague = newPlayer.team == null ? "" : newPlayer.team.league; //store old league table results
       newGeneralPerformance = [];
       newPlayer.team = newTeam.team;
