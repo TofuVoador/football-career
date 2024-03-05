@@ -166,12 +166,18 @@ function App() {
         newPlayer.europaQualification = false;
       }
     } else if (newContract <= 0) {
-      //else if contract expires
-      newPlayer.marketValue = Math.max(
-        transfers[0].transferValue,
-        transfers[1].transferValue,
-        transfers[2].transferValue
+      // Filtra os valores de transferValue que são números
+      const transferValues = transfers.map(
+        (transfer) => transfer?.transferValue
       );
+      const validTransferValues = transferValues.filter(
+        (value) => typeof value === "number" && !isNaN(value)
+      );
+
+      if (validTransferValues.length > 0) {
+        // Calcula o maior valor de transferValue
+        newPlayer.marketValue = Math.max(...validTransferValues);
+      }
 
       newContract = renew.duration; //new contrat length
       newPlayer.wage = renew.value; //new contrat value
@@ -1157,10 +1163,10 @@ function App() {
 
   function GetMatch(team1, team2, bonus) {
     let base =
-      Math.pow(team1.power, Math.log10(50)) +
-      Math.pow(team2.power, Math.log10(50));
-    let team1Power = Math.pow(team1.power, Math.log10(50)) / base;
-    let team2Power = Math.pow(team2.power, Math.log10(50)) / base;
+      Math.pow(team1.power, Math.log10(60)) +
+      Math.pow(team2.power, Math.log10(60));
+    let team1Power = Math.pow(team1.power, Math.log10(60)) / base;
+    let team2Power = Math.pow(team2.power, Math.log10(60)) / base;
 
     let goals = Math.random() + Math.random() * 1.5;
 
@@ -1178,10 +1184,10 @@ function App() {
 
   function GetExtraTime(team1, team2) {
     let base =
-      Math.pow(team1.power, Math.log10(50)) +
-      Math.pow(team2.power, Math.log10(50));
-    let team1Power = Math.pow(team1.power, Math.log10(50)) / base;
-    let team2Power = Math.pow(team2.power, Math.log10(50)) / base;
+      Math.pow(team1.power, Math.log10(60)) +
+      Math.pow(team2.power, Math.log10(60));
+    let team1Power = Math.pow(team1.power, Math.log10(60)) / base;
+    let team2Power = Math.pow(team2.power, Math.log10(60)) / base;
 
     let goals = Math.random() + Math.random();
 
@@ -1199,10 +1205,10 @@ function App() {
 
   function GetPenalties(team1, team2) {
     let base =
-      Math.pow(team1.power, Math.log10(50)) +
-      Math.pow(team2.power, Math.log10(50));
-    let team1Power = Math.pow(team1.power, Math.log10(50)) / base;
-    let team2Power = Math.pow(team2.power, Math.log10(50)) / base;
+      Math.pow(team1.power, Math.log10(60)) +
+      Math.pow(team2.power, Math.log10(60));
+    let team1Power = Math.pow(team1.power, Math.log10(60)) / base;
+    let team2Power = Math.pow(team2.power, Math.log10(60)) / base;
 
     let winner = false;
     let team1goals = 0;
