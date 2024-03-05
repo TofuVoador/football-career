@@ -24,13 +24,13 @@
     "value": 3
   },
   {
-    "title": "MA",
+    "title": "MAT",
     "goalsBonus": 28,
     "assistsBonus": 23,
     "value": 2.5
   },
   {
-    "title": "MLE",
+    "title": "ME",
     "goalsBonus": 25,
     "assistsBonus": 21,
     "value": 2
@@ -42,7 +42,7 @@
     "value": 2
   },
   {
-    "title": "MLD",
+    "title": "MD",
     "goalsBonus": 25,
     "assistsBonus": 21,
     "value": 2

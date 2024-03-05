@@ -166,21 +166,19 @@ function App() {
         newPlayer.europaQualification = false;
       }
     } else if (newContract <= 0) {
-      // Filtra os valores de transferValue que são números
-      const transferValues = transfers.map(
-        (transfer) => transfer?.transferValue
-      );
-      const validTransferValues = transferValues.filter(
-        (value) => typeof value === "number" && !isNaN(value)
-      );
-
-      if (validTransferValues.length > 0) {
-        // Calcula o maior valor de transferValue
-        newPlayer.marketValue = Math.max(...validTransferValues);
-      }
-
       newContract = renew.duration; //new contrat length
       newPlayer.wage = renew.value; //new contrat value
+    }
+
+    // Filtra os valores de transferValue que são números
+    const transferValues = transfers.map((transfer) => transfer?.transferValue);
+    const validTransferValues = transferValues.filter(
+      (value) => typeof value === "number" && !isNaN(value)
+    );
+
+    if (validTransferValues.length > 0) {
+      // Calcula o maior valor de transferValue
+      newPlayer.marketValue = Math.max(...validTransferValues);
     }
 
     //calcule the player's performance
@@ -609,8 +607,6 @@ function App() {
 
       qualified = qualified.concat(extrateams.slice(12, extrateams.length));
 
-      console.log(qualified);
-
       let group = GetEuropaPosition(qualified, newPlayer.team);
 
       description = `-> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
@@ -939,16 +935,48 @@ function App() {
     setSeasons(newSeasons);
 
     //trasnfer window
+    let newTransfers = GetNewTeams(newPlayer);
+    setTransfers(newTransfers);
 
     if (
-      contract <= 1 ||
-      ((newPlayer.performance >= newPlayer.team.power / 10 ||
+      ((newPlayer.performance >= newPlayer.team.power / 10 &&
+        newPlayer.age < 34) ||
         (newPlayer.performance <= -0.6 && med < -0.2)) &&
-        generalPerformance.length >= 2)
+      generalPerformance.length >= 2 &&
+      newTransfers[0] != null
     ) {
-      let newTransfers = GetNewTeams(newPlayer);
-      setTransfers(newTransfers);
+      document.getElementById("decision-transfer1").style.display = "flex";
 
+      if (newTransfers[1] == null) {
+        document.getElementById("decision-transfer2").style.display = "none";
+      } else {
+        document.getElementById("decision-transfer2").style.display = "flex";
+      }
+
+      if (newTransfers[2] == null) {
+        document.getElementById("decision-transfer3").style.display = "none";
+      } else {
+        document.getElementById("decision-transfer3").style.display = "flex";
+      }
+
+      if (med <= -0.2 && newTransfers[0] != null) {
+        document.getElementById("decision-stay").style.display = "none";
+      } else {
+        document.getElementById("decision-stay").style.display = "flex";
+        let renewDuration = contract + RandomNumber(1, 3);
+
+        let renewValue =
+          Math.floor(
+            newPlayer.position.value *
+              (newPlayer.overall ** 4 / 1000000) *
+              (1 + (Math.random() - Math.random()) / 10.0) *
+              (1 + newPlayer.team.power / 50.0)
+          ) / 10.0;
+        setRenew({ value: renewValue, duration: renewDuration });
+      }
+
+      document.getElementById("retire").style.display = "none";
+    } else if (contract <= 1) {
       if (newTransfers[0] == null) {
         document.getElementById("decision-transfer1").style.display = "none";
       } else {
@@ -967,23 +995,7 @@ function App() {
         document.getElementById("decision-transfer3").style.display = "flex";
       }
 
-      if (newPlayer.age >= 32) {
-        document.getElementById("retire").style.display = "flex";
-      }
-
-      if (newPlayer.age >= 36 && newPlayer.overall <= 84) {
-        document.getElementById("decision-transfer1").style.display = "none";
-        document.getElementById("decision-transfer2").style.display = "none";
-        document.getElementById("decision-transfer3").style.display = "none";
-      }
-
-      //fired
-      if (
-        ((newPlayer.overall <= 82 + newPlayer.team.power / 2 &&
-          newPlayer.age > 34) ||
-          med <= -0.2) &&
-        newTransfers[0] != null
-      ) {
+      if (med <= -0.2) {
         document.getElementById("decision-stay").style.display = "none";
       } else {
         document.getElementById("decision-stay").style.display = "flex";
@@ -997,6 +1009,17 @@ function App() {
               (1 + newPlayer.team.power / 50.0)
           ) / 10.0;
         setRenew({ value: renewValue, duration: renewDuration });
+      }
+
+      if (newPlayer.age >= 32) {
+        document.getElementById("retire").style.display = "flex";
+      }
+
+      if (newPlayer.age >= 36 && newPlayer.overall <= 84) {
+        document.getElementById("decision-stay").style.display = "none";
+        document.getElementById("decision-transfer1").style.display = "none";
+        document.getElementById("decision-transfer2").style.display = "none";
+        document.getElementById("decision-transfer3").style.display = "none";
       }
     } else {
       ChooseTeam();
@@ -1374,7 +1397,16 @@ function App() {
       return b.power - a.power + Math.random() / 2;
     });
 
-    allTeams = allTeams.slice(0, allTeams.length / 2);
+    let interestedCut = 1;
+    if (currentPlayer.overall > 90) {
+      interestedCut = 4;
+    } else if (currentPlayer.overall > 85) {
+      interestedCut = 3;
+    } else if (currentPlayer.overall > 80) {
+      interestedCut = 2;
+    }
+
+    allTeams = allTeams.slice(0, allTeams.length / interestedCut);
 
     let interestedTeams = [];
 
@@ -1382,10 +1414,7 @@ function App() {
       let chance = currentPlayer.overall / allTeams[i].power;
 
       let r = RandomNumber(0, 100);
-      if (
-        r < chance * (1 + currentPlayer.performance) &&
-        !history.some((t) => t == allTeams[i].name)
-      ) {
+      if (r < chance && !history.some((t) => t == allTeams[i].name)) {
         interestedTeams.push(allTeams[i]);
       }
     }
