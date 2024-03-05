@@ -2,7 +2,7 @@
   {
     "name": "Bundesliga",
     "championsSpots": 4,
-    "europaSpots": 2,
+    "europaSpots": 4,
     "teams": [
       {
         "name": "Bayern München",
@@ -263,7 +263,7 @@
   {
     "name": "La Liga",
     "championsSpots": 4,
-    "europaSpots": 2,
+    "europaSpots": 4,
     "teams": [
       {
         "name": "Real Madrid",
@@ -437,7 +437,7 @@
   {
     "name": "Premier League",
     "championsSpots": 4,
-    "europaSpots": 2,
+    "europaSpots": 4,
     "teams": [
       {
         "name": "Man. City",
@@ -611,7 +611,7 @@
   {
     "name": "Serie A",
     "championsSpots": 4,
-    "europaSpots": 2,
+    "europaSpots": 4,
     "teams": [
       {
         "name": "Inter Milan",

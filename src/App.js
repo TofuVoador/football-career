@@ -455,11 +455,7 @@ function App() {
 
       qualified = qualified.concat(extrateams.slice(0, 12));
 
-      qualified.sort((a, b) => {
-        return b.power - a.power + Math.random() / 2;
-      });
-
-      let group = GetRoundsPosition(qualified, newPlayer.team, 8);
+      let group = GetChampionsPosition(qualified, newPlayer.team);
 
       description = `-> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
       description += group.desc;
@@ -611,13 +607,11 @@ function App() {
         }
       }
 
-      qualified = qualified.concat(extrateams.slice(8, extrateams.length));
+      qualified = qualified.concat(extrateams.slice(12, extrateams.length));
 
-      qualified.sort((a, b) => {
-        return b.power - a.power + Math.random() / 2;
-      });
+      console.log(qualified);
 
-      let group = GetRoundsPosition(qualified, newPlayer.team, 6);
+      let group = GetEuropaPosition(qualified, newPlayer.team);
 
       description = `-> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
       description += group.desc;
@@ -1009,7 +1003,7 @@ function App() {
     }
   }
 
-  function GetRoundsPosition(teams, playerTeam, rounds) {
+  function GetEuropaPosition(teams, playerTeam) {
     let desc = "";
     let newTeams = DeepClone(teams);
     //sort by power
@@ -1019,7 +1013,7 @@ function App() {
 
     let points = new Array(newTeams.length).fill(0);
 
-    for (let round = 0; round < rounds; round++) {
+    for (let round = 0; round < 6; round++) {
       let newOrderTeams = [];
       let newOrderPoints = [];
       for (let i = 0; i < newTeams.length / 2; i++) {
@@ -1049,6 +1043,106 @@ function App() {
         newOrderTeams.push(newTeams[away]);
         newOrderPoints.push(points[home]);
         newOrderPoints.push(points[away]);
+      }
+
+      newTeams = newOrderTeams;
+      points = newOrderPoints;
+    }
+
+    let table = [...newTeams];
+
+    table.sort((a, b) => {
+      return points[table.indexOf(b)] - points[table.indexOf(a)];
+    });
+
+    const playerPosition = table.findIndex(
+      (time) => time.name == playerTeam.name
+    );
+
+    return {
+      pos: playerPosition + 1,
+      table: table,
+      desc: desc,
+    };
+  }
+
+  function GetChampionsPosition(teams, playerTeam) {
+    let desc = "";
+    let newTeams = DeepClone(teams);
+    //sort by power
+    newTeams.sort((a, b) => {
+      return b.power - a.power;
+    });
+
+    let pot1 = newTeams.splice(0, 9);
+    let pot2 = newTeams.splice(0, 9);
+    let pot3 = newTeams.splice(0, 9);
+    let pot4 = newTeams.splice(0, 9);
+
+    for (let i = pot1.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pot1[i], pot1[j]] = [pot1[j], pot1[i]];
+    }
+
+    for (let i = pot2.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pot2[i], pot2[j]] = [pot2[j], pot2[i]];
+    }
+
+    for (let i = pot3.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pot3[i], pot3[j]] = [pot3[j], pot3[i]];
+    }
+
+    for (let i = pot4.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [pot4[i], pot4[j]] = [pot4[j], pot4[i]];
+    }
+
+    newTeams = pot1.concat(pot2, pot3, pot4);
+
+    let points = new Array(newTeams.length).fill(0);
+
+    for (let round = 0; round < 8; round++) {
+      let newOrderTeams = Array(newTeams.length).fill(null);
+      let newOrderPoints = Array(newTeams.length).fill(0);
+      for (let i = 0; i < newTeams.length - 1; i += 2) {
+        let home = i;
+        let away = i + 1;
+
+        let game = GetMatch(newTeams[home], newTeams[away], 0);
+
+        if (
+          newTeams[home].name == playerTeam.name ||
+          newTeams[away].name == playerTeam.name
+        )
+          desc += `=> Rodada ${round + 1}: ${newTeams[home].name} ${
+            game[0]
+          } x ${game[1]} ${newTeams[away].name}`;
+
+        if (game[0] > game[1]) {
+          points[home] += 3;
+        } else if (game[1] > game[0]) {
+          points[away] += 3;
+        } else {
+          points[away] += 1;
+          points[home] += 1;
+        }
+
+        newOrderTeams[
+          ((i * 2) % newTeams.length) + Math.floor((2 * i) / newTeams.length)
+        ] = newTeams[home];
+        newOrderTeams[
+          (((i + 1) * 2) % newTeams.length) +
+            Math.floor((2 * i) / newTeams.length)
+        ] = newTeams[away];
+        newOrderPoints[
+          ((i * 2) % newTeams.length) + Math.floor((2 * i) / newTeams.length)
+        ] = points[home];
+        newOrderPoints[
+          (((i + 1) * 2) % newTeams.length) +
+            Math.floor((2 * i) / newTeams.length)
+        ] = points[away];
       }
 
       newTeams = newOrderTeams;
