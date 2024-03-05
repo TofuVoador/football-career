@@ -1446,7 +1446,7 @@ function App() {
         let transferValue =
           Math.floor(
             currentPlayer.position.value *
-              (currentPlayer.overall ** 5 / 1000000) *
+              (expectedOverall ** 5 / 1000000) *
               (1 + (Math.random() - Math.random()) / 10.0) *
               (1 + team.power / 50.0) +
               currentPlayer.fame
