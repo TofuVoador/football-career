@@ -60,6 +60,7 @@ function App() {
     age: 17,
     nation: null,
     team: null,
+    contractTeam: null,
     position: null,
     wage: 1,
     overall: 70,
@@ -120,17 +121,28 @@ function App() {
     //age and contract
     newPlayer.age++;
     let newContract = contract - 1;
-
     //pre season setup
-    if (newTeam) {
+    if (newTeam != null) {
       //if they change team
       newHistory.push(newTeam.team.name);
       let oldTeamLeague = newPlayer.team == null ? "" : newPlayer.team.league; //store old league table results
+      newPlayer.contractTeam = newTeam.loan
+        ? {
+            team: newPlayer.team,
+            contract: {
+              value: newTeam.contract.value,
+              duration: newTeam.contract.duration,
+            },
+            transferValue: newTeam.transferValue,
+            loan: false,
+          }
+        : null;
       newGeneralPerformance = [];
       newPlayer.team = newTeam.team;
       newContract = newTeam.contract.duration;
       newPlayer.marketValue = newTeam.transferValue;
       newPlayer.wage = newTeam.contract.value;
+
       let lp = 99;
       //if the new team is in the same league as the old
       if (oldTeamLeague == newPlayer.team.league) {
@@ -191,7 +203,7 @@ function App() {
 
     //set performance over time
     newGeneralPerformance.push(newPlayer.performance);
-    if (newGeneralPerformance.length > 3) newGeneralPerformance.shift();
+    if (newGeneralPerformance.length > 4) newGeneralPerformance.shift();
 
     //giving the performance, set how many games did they were the starter player
     let starting = Math.floor(
@@ -936,14 +948,16 @@ function App() {
 
     //trasnfer window
     let newTransfers = GetNewTeams(newPlayer);
-    setTransfers(newTransfers);
 
-    if (
-      ((newPlayer.performance >= newPlayer.team.power / 10 &&
-        newPlayer.age < 34) ||
-        (newPlayer.performance <= -0.6 && med < -0.2)) &&
+    if (newPlayer.contractTeam != null && contract <= 1) {
+      setContract(newPlayer.contractTeam.duration);
+      ChooseTeam(newPlayer.contractTeam);
+    } else if (
+      newPlayer.performance >= newPlayer.team.power / 10 &&
+      newPlayer.age < 32 &&
       generalPerformance.length >= 2 &&
-      newTransfers[0] != null
+      newTransfers[0] != null &&
+      contract > 2
     ) {
       document.getElementById("decision-transfer1").style.display = "flex";
 
@@ -959,22 +973,45 @@ function App() {
         document.getElementById("decision-transfer3").style.display = "flex";
       }
 
-      if (med <= -0.2 && newTransfers[0] != null) {
-        document.getElementById("decision-stay").style.display = "none";
-      } else {
-        document.getElementById("decision-stay").style.display = "flex";
-        let renewDuration = contract + RandomNumber(1, 3);
+      document.getElementById("decision-stay").style.display = "flex";
+      let renewValue =
+        Math.floor(
+          newPlayer.position.value *
+            (newPlayer.overall ** 4 / 1000000) *
+            (1 + (Math.random() - Math.random()) / 10.0) *
+            (1 + newPlayer.team.power / 50.0)
+        ) / 10.0;
+      setRenew({ value: renewValue, duration: contract });
 
-        let renewValue =
-          Math.floor(
-            newPlayer.position.value *
-              (newPlayer.overall ** 4 / 1000000) *
-              (1 + (Math.random() - Math.random()) / 10.0) *
-              (1 + newPlayer.team.power / 50.0)
-          ) / 10.0;
-        setRenew({ value: renewValue, duration: renewDuration });
+      document.getElementById("retire").style.display = "none";
+    } else if (
+      newPlayer.performance < -0.5 &&
+      med < 0 &&
+      generalPerformance.length >= 2 &&
+      newTransfers[0] != null &&
+      contract > 2
+    ) {
+      document.getElementById("decision-transfer1").style.display = "flex";
+      newTransfers[0].loan = true;
+      newTransfers[0].contract.duration = RandomNumber(1, 2);
+
+      if (newTransfers[1] == null) {
+        document.getElementById("decision-transfer2").style.display = "none";
+      } else {
+        document.getElementById("decision-transfer2").style.display = "flex";
+        newTransfers[1].loan = true;
+        newTransfers[1].contract.duration = RandomNumber(1, 2);
       }
 
+      if (newTransfers[2] == null) {
+        document.getElementById("decision-transfer3").style.display = "none";
+      } else {
+        document.getElementById("decision-transfer3").style.display = "flex";
+        newTransfers[2].loan = true;
+        newTransfers[2].contract.duration = RandomNumber(1, 2);
+      }
+
+      document.getElementById("decision-stay").style.display = "none";
       document.getElementById("retire").style.display = "none";
     } else if (contract <= 1) {
       if (newTransfers[0] == null) {
@@ -995,7 +1032,7 @@ function App() {
         document.getElementById("decision-transfer3").style.display = "flex";
       }
 
-      if (med <= -0.2) {
+      if (med <= -0.25) {
         document.getElementById("decision-stay").style.display = "none";
       } else {
         document.getElementById("decision-stay").style.display = "flex";
@@ -1024,6 +1061,7 @@ function App() {
     } else {
       ChooseTeam();
     }
+    setTransfers(newTransfers);
   }
 
   function GetEuropaPosition(teams, playerTeam) {
@@ -1424,8 +1462,8 @@ function App() {
     for (let index = 0; index < 3; index++) {
       let team = interestedTeams[index];
       if (team) {
-        let contractDuration = RandomNumber(1, 4);
-        if (currentPlayer.age < 34) contractDuration++;
+        let contractDuration = RandomNumber(1, 5);
+        if (currentPlayer.age < 34) contractDuration += RandomNumber(1, 3);
         let expectedOverall =
           GetOverall(
             currentPlayer.potential,
@@ -1456,6 +1494,7 @@ function App() {
           team: team,
           contract: contract,
           transferValue: transferValue,
+          loan: false,
         });
       } else {
         contracts.push(null);
@@ -1550,16 +1589,19 @@ function App() {
         team: teams[0],
         contract: contracts[0],
         transferValue: transferValues[0],
+        loan: false,
       },
       {
         team: teams[1],
         contract: contracts[1],
         transferValue: transferValues[1],
+        loan: false,
       },
       {
         team: teams[2],
         contract: contracts[2],
         transferValue: transferValues[2],
+        loan: false,
       },
     ];
   }
@@ -1785,8 +1827,12 @@ function App() {
           onClick={() => ChooseTeam(transfers[0])}
         >
           <p>
-            Transferir para{" "}
-            {transfers[0] == null ? "null" : transfers[0].team.name} (
+            {transfers[0] == null
+              ? "null"
+              : transfers[0].loan
+              ? "Empréstimo"
+              : "Transferir"}{" "}
+            para {transfers[0] == null ? "null" : transfers[0].team.name} (
             {transfers[0] == null
               ? "null"
               : (Math.round(transfers[0].team.power * 5) / 10).toFixed(1)}
@@ -1804,8 +1850,12 @@ function App() {
           onClick={() => ChooseTeam(transfers[1])}
         >
           <p>
-            Transferir para{" "}
-            {transfers[1] == null ? "null" : transfers[1].team.name} (
+            {transfers[1] == null
+              ? "null"
+              : transfers[1].loan
+              ? "Empréstimo"
+              : "Transferir"}{" "}
+            para {transfers[1] == null ? "null" : transfers[1].team.name} (
             {transfers[1] == null
               ? "null"
               : (Math.round(transfers[1].team.power * 5) / 10).toFixed(1)}
@@ -1823,8 +1873,12 @@ function App() {
           onClick={() => ChooseTeam(transfers[2])}
         >
           <p>
-            Transferir para{" "}
-            {transfers[2] == null ? "null" : transfers[2].team.name} (
+            {transfers[2] == null
+              ? "null"
+              : transfers[2].loan
+              ? "Empréstimo"
+              : "Transferir"}{" "}
+            para {transfers[2] == null ? "null" : transfers[2].team.name} (
             {transfers[2] == null
               ? "null"
               : (Math.round(transfers[2].team.power * 5) / 10).toFixed(1)}
