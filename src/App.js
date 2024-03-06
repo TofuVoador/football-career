@@ -130,7 +130,7 @@ function App() {
           team: newPlayer.team,
           contract: {
             value: newTeam.contract.value,
-            duration: newTeam.contract.duration,
+            duration: newContract - newTeam.contract.duration,
           },
           transferValue: newTeam.transferValue,
           loan: false,
@@ -934,18 +934,11 @@ function App() {
       newPlayer.europaQualification = false;
     }
 
-    //set ayer
-    setPlayer(newPlayer);
-
     if (newPlayer.fame < 0) newPlayer.fame = 0;
 
     newSeason.fame = newPlayer.fame;
 
     if (newSeason.fame > maxFame) setMaxFame(newSeason.fame);
-
-    //set Seasons
-    const newSeasons = [...seasons, newSeason];
-    setSeasons(newSeasons);
 
     //trasnfer window
     let newTransfers = GetNewTeams(newPlayer);
@@ -953,6 +946,7 @@ function App() {
     if (newPlayer.contractTeam != null && contract <= 1) {
       setContract(newPlayer.contractTeam.duration);
       ChooseTeam(newPlayer.contractTeam);
+      newPlayer.contractTeam = null;
     } else if (
       newPlayer.performance >= newPlayer.team.power / 10 &&
       newPlayer.age < 32 &&
@@ -990,7 +984,7 @@ function App() {
       med < 0 &&
       generalPerformance.length >= 2 &&
       newTransfers[0] != null &&
-      contract > 2
+      contract > 3
     ) {
       document.getElementById("decision-transfer1").style.display = "flex";
       newTransfers[0].loan = true;
@@ -1033,7 +1027,7 @@ function App() {
         document.getElementById("decision-transfer3").style.display = "flex";
       }
 
-      if (med <= -0.25) {
+      if (med <= -0.2) {
         document.getElementById("decision-stay").style.display = "none";
       } else {
         document.getElementById("decision-stay").style.display = "flex";
@@ -1062,7 +1056,12 @@ function App() {
     } else {
       ChooseTeam();
     }
+    setPlayer(newPlayer);
     setTransfers(newTransfers);
+
+    //set Seasons
+    const newSeasons = [...seasons, newSeason];
+    setSeasons(newSeasons);
   }
 
   function GetEuropaPosition(teams, playerTeam) {
