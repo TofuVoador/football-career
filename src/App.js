@@ -90,7 +90,7 @@ function App() {
   const [generalPerformance, setGeneralPerformance] = useState([]);
   const [maxFame, setMaxFame] = useState(0);
 
-  const [transfers, setTransfers] = useState(GetInitTeams());
+  const [transfers, setTransfers] = useState(GetInitTeams(1));
 
   const initStat = GetNewInit();
 
@@ -106,6 +106,7 @@ function App() {
     newPlayer.nation = initStat.nat;
 
     setPlayer(newPlayer);
+    setTransfers(GetInitTeams(initStat.pos.value));
   }
 
   function ChooseTeam(newTeam = null) {
@@ -952,7 +953,7 @@ function App() {
       ChooseTeam(newPlayer.contractTeam);
       newPlayer.contractTeam = null;
     } else if (
-      //if played good
+      //if played good midde contract
       newPlayer.performance >= newPlayer.team.power / 10 &&
       newPlayer.age < 32 &&
       generalPerformance.length >= 2 &&
@@ -982,7 +983,7 @@ function App() {
       //cant retire because of the contract
       document.getElementById("retire").style.display = "none";
     } else if (
-      //played bad
+      //played bad midde contract
       newPlayer.performance < -0.5 &&
       med < 0 &&
       generalPerformance.length >= 2 &&
@@ -1048,6 +1049,26 @@ function App() {
       } else {
         //can stay
         document.getElementById("decision-stay").style.display = "flex";
+        let contractDuration = RandomNumber(1, 4);
+
+        let expectedOverall =
+          GetOverall(
+            newPlayer.potential,
+            newPlayer.age + contractDuration / 2,
+            newPlayer.team.power
+          ) + med;
+
+        let contractValue =
+          Math.floor(
+            newPlayer.position.value *
+              (expectedOverall ** 4 / 1000000) *
+              (1 + (Math.random() - Math.random()) / 10.0) *
+              (1 + newPlayer.team.power / 50.0)
+          ) / 10.0;
+        setRenew({
+          value: contractValue,
+          duration: contractDuration,
+        });
       }
 
       if (newPlayer.age >= 32) {
@@ -1513,7 +1534,7 @@ function App() {
     return contracts;
   }
 
-  function GetInitTeams() {
+  function GetInitTeams(posValue) {
     let allTeams = Teams.reduce((acumulador, liga) => {
       return acumulador.concat(liga.teams);
     }, []);
@@ -1553,17 +1574,20 @@ function App() {
 
     let contractValues = [
       Math.floor(
-        (expectedOveralls[0] ** 4 / 1000000) *
+        posValue *
+          (expectedOveralls[0] ** 4 / 1000000) *
           (1 + (Math.random() - Math.random()) / 10.0) *
           (1 + teams[0].power / 50.0)
       ) / 10.0,
       Math.floor(
-        (expectedOveralls[1] ** 4 / 1000000) *
+        posValue *
+          (expectedOveralls[1] ** 4 / 1000000) *
           (1 + (Math.random() - Math.random()) / 10.0) *
           (1 + teams[1].power / 50.0)
       ) / 10.0,
       Math.floor(
-        (expectedOveralls[2] ** 4 / 1000000) *
+        posValue *
+          (expectedOveralls[2] ** 4 / 1000000) *
           (1 + (Math.random() - Math.random()) / 10.0) *
           (1 + teams[2].power / 50.0)
       ) / 10.0,
@@ -1577,17 +1601,20 @@ function App() {
 
     let transferValues = [
       Math.floor(
-        (70 ** 5 / 1000000) *
+        posValue *
+          (expectedOveralls[0] ** 5 / 1000000) *
           (1 + (Math.random() - Math.random()) / 10.0) *
           (1 + teams[0].power / 50.0)
       ) / 100.0,
       Math.floor(
-        (70 ** 5 / 1000000) *
+        posValue *
+          (expectedOveralls[1] ** 5 / 1000000) *
           (1 + (Math.random() - Math.random()) / 10.0) *
           (1 + teams[1].power / 50.0)
       ) / 100.0,
       Math.floor(
-        (70 ** 5 / 1000000) *
+        posValue *
+          (expectedOveralls[2] ** 5 / 1000000) *
           (1 + (Math.random() - Math.random()) / 10.0) *
           (1 + teams[2].power / 50.0)
       ) / 100.0,
