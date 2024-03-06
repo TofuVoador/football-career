@@ -943,49 +943,53 @@ function App() {
     //trasnfer window
     let newTransfers = GetNewTeams(newPlayer);
 
-    if (newPlayer.contractTeam != null && contract <= 1) {
+    if (
+      //if ended loan
+      newPlayer.contractTeam != null &&
+      contract <= 1
+    ) {
       setContract(newPlayer.contractTeam.duration);
       ChooseTeam(newPlayer.contractTeam);
       newPlayer.contractTeam = null;
     } else if (
+      //if played good
       newPlayer.performance >= newPlayer.team.power / 10 &&
       newPlayer.age < 32 &&
       generalPerformance.length >= 2 &&
       newTransfers[0] != null &&
       contract > 2
     ) {
+      //proposal 1
       document.getElementById("decision-transfer1").style.display = "flex";
 
       if (newTransfers[1] == null) {
+        //proposal 2
         document.getElementById("decision-transfer2").style.display = "none";
       } else {
         document.getElementById("decision-transfer2").style.display = "flex";
       }
 
       if (newTransfers[2] == null) {
+        //proposal 3
         document.getElementById("decision-transfer3").style.display = "none";
       } else {
         document.getElementById("decision-transfer3").style.display = "flex";
       }
 
+      //propose to stay
       document.getElementById("decision-stay").style.display = "flex";
-      let renewValue =
-        Math.floor(
-          newPlayer.position.value *
-            (newPlayer.overall ** 4 / 1000000) *
-            (1 + (Math.random() - Math.random()) / 10.0) *
-            (1 + newPlayer.team.power / 50.0)
-        ) / 10.0;
-      setRenew({ value: renewValue, duration: contract });
 
+      //cant retire because of the contract
       document.getElementById("retire").style.display = "none";
     } else if (
+      //played bad
       newPlayer.performance < -0.5 &&
       med < 0 &&
       generalPerformance.length >= 2 &&
       newTransfers[0] != null &&
       contract > 3
     ) {
+      //proposal 1
       document.getElementById("decision-transfer1").style.display = "flex";
       newTransfers[0].loan = true;
       newTransfers[0].contract.duration = RandomNumber(1, 2);
@@ -993,6 +997,7 @@ function App() {
       if (newTransfers[1] == null) {
         document.getElementById("decision-transfer2").style.display = "none";
       } else {
+        //proposal 2
         document.getElementById("decision-transfer2").style.display = "flex";
         newTransfers[1].loan = true;
         newTransfers[1].contract.duration = RandomNumber(1, 2);
@@ -1001,53 +1006,57 @@ function App() {
       if (newTransfers[2] == null) {
         document.getElementById("decision-transfer3").style.display = "none";
       } else {
+        //proposal 3
         document.getElementById("decision-transfer3").style.display = "flex";
         newTransfers[2].loan = true;
         newTransfers[2].contract.duration = RandomNumber(1, 2);
       }
 
+      //cant stay
       document.getElementById("decision-stay").style.display = "none";
+
+      //cant retire because of the contract
       document.getElementById("retire").style.display = "none";
-    } else if (contract <= 1) {
+    } else if (
+      //if contract expired
+      contract <= 1
+    ) {
       if (newTransfers[0] == null) {
         document.getElementById("decision-transfer1").style.display = "none";
       } else {
+        //proposal 1
         document.getElementById("decision-transfer1").style.display = "flex";
       }
 
       if (newTransfers[1] == null) {
         document.getElementById("decision-transfer2").style.display = "none";
       } else {
+        //proposal 2
         document.getElementById("decision-transfer2").style.display = "flex";
       }
 
       if (newTransfers[2] == null) {
         document.getElementById("decision-transfer3").style.display = "none";
+        //proposal 3
       } else {
         document.getElementById("decision-transfer3").style.display = "flex";
       }
 
       if (med <= -0.2) {
+        //cant stay
         document.getElementById("decision-stay").style.display = "none";
       } else {
+        //can stay
         document.getElementById("decision-stay").style.display = "flex";
-        let renewDuration = contract + RandomNumber(1, 3);
-
-        let renewValue =
-          Math.floor(
-            newPlayer.position.value *
-              (newPlayer.overall ** 4 / 1000000) *
-              (1 + (Math.random() - Math.random()) / 10.0) *
-              (1 + newPlayer.team.power / 50.0)
-          ) / 10.0;
-        setRenew({ value: renewValue, duration: renewDuration });
       }
 
       if (newPlayer.age >= 32) {
+        //can retire
         document.getElementById("retire").style.display = "flex";
       }
 
       if (newPlayer.age >= 36 && newPlayer.overall <= 84) {
+        //must retire
         document.getElementById("decision-stay").style.display = "none";
         document.getElementById("decision-transfer1").style.display = "none";
         document.getElementById("decision-transfer2").style.display = "none";
