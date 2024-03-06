@@ -124,19 +124,20 @@ function App() {
     //pre season setup
     if (newTeam != null) {
       //if they change team
-      newHistory.push(newTeam.team.name);
       let oldTeamLeague = newPlayer.team == null ? "" : newPlayer.team.league; //store old league table results
-      newPlayer.contractTeam = newTeam.loan
-        ? {
-            team: newPlayer.team,
-            contract: {
-              value: newTeam.contract.value,
-              duration: newTeam.contract.duration,
-            },
-            transferValue: newTeam.transferValue,
-            loan: false,
-          }
-        : null;
+      if (newTeam.loan) {
+        newPlayer.contractTeam = {
+          team: newPlayer.team,
+          contract: {
+            value: newTeam.contract.value,
+            duration: newTeam.contract.duration,
+          },
+          transferValue: newTeam.transferValue,
+          loan: false,
+        };
+      } else {
+        newHistory.push(newTeam.team.name);
+      }
       newGeneralPerformance = [];
       newPlayer.team = newTeam.team;
       newContract = newTeam.contract.duration;
