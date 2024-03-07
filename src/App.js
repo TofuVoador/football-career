@@ -1743,7 +1743,7 @@ function App() {
       let teamID = teamIndices[i];
 
       let current = Math.random();
-      let change = Math.round(4 * (last - current)) / 10.0;
+      let change = Math.round(2.5 * (last - current)) / 10.0;
       last = current;
 
       let newPower = newTeams[teamID].power + change;
