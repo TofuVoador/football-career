@@ -223,6 +223,7 @@ function App() {
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
       allTeams = allTeams.concat([...newTeams[leagueID].teams]);
     }
+    allTeams = allTeams.concat([...extrateams]);
     allTeams.sort((a, b) => {
       return b.power - a.power;
     });
@@ -1348,10 +1349,10 @@ function App() {
 
   function GetMatch(team1, team2, bonus) {
     let base =
-      Math.pow(team1.power, Math.log10(60)) +
-      Math.pow(team2.power, Math.log10(60));
-    let team1Power = Math.pow(team1.power, Math.log10(60)) / base;
-    let team2Power = Math.pow(team2.power, Math.log10(60)) / base;
+      Math.pow(team1.power, Math.log10(80)) +
+      Math.pow(team2.power, Math.log10(80));
+    let team1Power = Math.pow(team1.power, Math.log10(80)) / base;
+    let team2Power = Math.pow(team2.power, Math.log10(80)) / base;
 
     let goals = Math.random() + Math.random() * 1.5;
 
@@ -1742,7 +1743,7 @@ function App() {
       let teamID = teamIndices[i];
 
       let current = Math.random();
-      let change = Math.round(5 * (last - current)) / 10.0;
+      let change = Math.round(4 * (last - current)) / 10.0;
       last = current;
 
       let newPower = newTeams[teamID].power + change;
