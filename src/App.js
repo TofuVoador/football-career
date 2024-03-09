@@ -156,7 +156,7 @@ function App() {
         let nationalTeams =
           teams.find((league) => league.name === newPlayer.team.league)
             ?.teams || []; //find the new team league
-        lp = GetLeaguePosition(nationalTeams, newPlayer.team, 0.5).pos; //simulate the past season
+        lp = GetLeaguePosition(nationalTeams, newPlayer.team).pos; //simulate the past season
       }
 
       //get players league
@@ -318,11 +318,7 @@ function App() {
     let triplice = 0;
 
     //national league
-    let leagueResults = GetLeaguePosition(
-      league.teams,
-      newPlayer.team,
-      newSeason.performance
-    );
+    let leagueResults = GetLeaguePosition(league.teams, newPlayer.team);
 
     newSeason.leagueTable = leagueResults.table;
 
@@ -1258,15 +1254,21 @@ function App() {
     };
   }
 
-  function GetLeaguePosition(teams, playerTeam, bonus) {
+  function GetLeaguePosition(teams, playerTeam) {
     let newTeams = DeepClone(teams);
+
+    let bonuses = Array.from(
+      { length: newTeams.length },
+      () => Math.round(150.0 * (Math.random() - Math.random())) / 100
+    );
+    const sum = bonuses.reduce((acc, val) => acc + val, 0);
+    const adjustment = sum / newTeams.length;
+    bonuses = bonuses.map((num) => num - adjustment);
 
     let points = new Array(newTeams.length).fill(0);
     for (let home = 0; home < newTeams.length; home++) {
-      let newBonus =
-        newTeams[home].name == playerTeam.name
-          ? bonus
-          : Math.round(10.0 * (Math.random() - Math.random())) / 10;
+      let newBonus = Math.round(bonuses[home] * 100) / 100;
+      console.log(newTeams[home].name, newBonus);
       for (let away = 0; away < newTeams.length; away++) {
         if (newTeams[home] !== newTeams[away]) {
           let game = GetMatch(newTeams[home], newTeams[away], newBonus);
@@ -1292,6 +1294,8 @@ function App() {
     const playerPosition = table.findIndex(
       (time) => time.name == playerTeam.name
     );
+
+    console.log(table);
 
     return {
       pos: playerPosition + 1,
