@@ -37,7 +37,7 @@ const Season = (props) => {
           <div
             className="progress"
             style={{
-              width: `${Math.abs(season.performance.toFixed(2)) * 50}%`,
+              width: `${Math.abs(season.performance.toFixed(2) / 3.0) * 100}%`,
               height: "20px",
               backgroundColor:
                 season.performance.toFixed(2) >= 0
@@ -52,7 +52,9 @@ const Season = (props) => {
               right:
                 season.performance.toFixed(2) >= 0
                   ? "auto"
-                  : `-${50 - Math.abs(season.performance.toFixed(2)) * 50}%`,
+                  : `-${
+                      50 - Math.abs(season.performance.toFixed(2) / 3.0) * 100
+                    }%`,
             }}
           >
             <span

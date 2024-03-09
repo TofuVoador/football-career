@@ -153,10 +153,19 @@ function App() {
             (team) => team === newPlayer.team
           ) + 1; //get the new team's position
       } else {
-        let nationalTeams =
-          teams.find((league) => league.name === newPlayer.team.league)
-            ?.teams || []; //find the new team league
-        lp = GetLeaguePosition(nationalTeams, newPlayer.team).pos; //simulate the past season
+        let newLeague =
+          teams.find((league) => league.name === newPlayer.team.league) || []; //find the new team league
+        let bonuses = Array.from(
+          { length: newLeague.teams.length },
+          () => Math.round(150.0 * (Math.random() - Math.random())) / 100
+        );
+        const sum = bonuses.reduce((acc, val) => acc + val, 0);
+        const adjustment = sum / newLeague.teams.length;
+        bonuses = bonuses.map((num) => num - adjustment);
+        let leagueResults = GetLeaguePosition(newLeague.teams, bonuses); //simulate the past season
+        lp =
+          leagueResults.findIndex((team) => team.name == newPlayer.team.name) +
+          1;
       }
 
       //get players league
@@ -197,13 +206,13 @@ function App() {
 
     //calcule the player's performance
     newPlayer.performance =
-      Math.round(50.0 * (Math.random() - Math.random())) / 50.0;
+      Math.round(150.0 * (Math.random() - Math.random())) / 100.0;
 
     newPlayer.overall =
       GetOverall(newPlayer.potential, newPlayer.age, newPlayer.team.power) +
       newPlayer.performance * 2;
 
-    //set performance over time
+    //set performance over team
     newGeneralPerformance.push(newPlayer.performance);
     if (newGeneralPerformance.length > 4) newGeneralPerformance.shift();
 
@@ -318,27 +327,41 @@ function App() {
     let triplice = 0;
 
     //national league
-    let leagueResults = GetLeaguePosition(league.teams, newPlayer.team);
+    let bonuses = Array.from(
+      { length: league.teams.length },
+      () => Math.round(150.0 * (Math.random() - Math.random())) / 100
+    );
+    bonuses[
+      league.teams.findIndex((team) => team.name == newPlayer.team.name)
+    ] = newPlayer.performance;
+    const sum = bonuses.reduce((acc, val) => acc + val, 0);
+    const adjustment = sum / league.teams.length;
+    bonuses = bonuses.map((num) => num - adjustment);
 
-    newSeason.leagueTable = leagueResults.table;
+    let leagueResults = GetLeaguePosition(league.teams, bonuses);
+
+    const playerPosition =
+      leagueResults.findIndex((team) => team.name == newPlayer.team.name) + 1;
+
+    newSeason.leagueTable = leagueResults;
 
     //top six from the league
     let topSix = "";
     for (let p = 0; p < 6; p++) {
-      topSix += `-> ${p + 1}º: ${leagueResults.table[p].name}`;
+      topSix += `-> ${p + 1}º: ${leagueResults[p].name}`;
     }
 
     newSeason.awardPoints +=
-      ((league.championsSpots / 4.0) * (5 - leagueResults.pos)) / 2; //max = 2.0
+      ((league.championsSpots / 4.0) * (5 - playerPosition)) / 2; //max = 2.0
 
     //if fist place, then won trophy
-    if (leagueResults.pos == 1) {
+    if (playerPosition == 1) {
       newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
       newPlayer.fame += 10;
       triplice++;
     }
 
-    newSeason.titles.push(`Liga: ${leagueResults.pos}º lugar ${topSix}`);
+    newSeason.titles.push(`Liga: ${playerPosition}º lugar ${topSix}`);
 
     let description = "";
     let end = false;
@@ -452,7 +475,6 @@ function App() {
 
           if (!playerTeamSelected) {
             let weakestTeamIndex = selected.length - 1;
-
             selected[weakestTeamIndex] = newPlayer.team;
           }
         }
@@ -464,7 +486,11 @@ function App() {
 
       qualified = qualified.concat(extrateams.slice(0, 12));
 
-      let group = GetChampionsPosition(qualified, newPlayer.team);
+      let group = GetChampionsPosition(
+        qualified,
+        newPlayer.team,
+        newPlayer.performance
+      );
 
       description = `-> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
       description += group.desc;
@@ -618,7 +644,11 @@ function App() {
 
       qualified = qualified.concat(extrateams.slice(12, extrateams.length));
 
-      let group = GetEuropaPosition(qualified, newPlayer.team);
+      let group = GetEuropaPosition(
+        qualified,
+        newPlayer.team,
+        newPlayer.performance
+      );
 
       description = `-> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
       description += group.desc;
@@ -763,13 +793,27 @@ function App() {
       let thirdPlaces = [];
 
       for (let groupID = 0; groupID < groups.length; groupID++) {
-        let thisGroup = GetWorldCupPosition(
-          groups[groupID],
-          newPlayer.nation,
-          0
+        let bonuses = Array.from(
+          { length: groups[groupID].length },
+          () => Math.round(150.0 * (Math.random() - Math.random())) / 100
         );
+        bonuses[
+          groups[groupID].findIndex(
+            (team) => team.name == newPlayer.nation.name
+          )
+        ] = newPlayer.performance;
+        const sum = bonuses.reduce((acc, val) => acc + val, 0);
+        const adjustment = sum / groups[groupID].length;
+        bonuses = bonuses.map((num) => num - adjustment);
 
-        if (groups[groupID].some((n) => n.name == newPlayer.nation.name)) {
+        let thisGroup = GetWorldCupPosition(groups[groupID], bonuses);
+
+        const playerPosition =
+          thisGroup.table.findIndex(
+            (team) => team.name == newPlayer.nation.name
+          ) + 1;
+
+        if (playerPosition > 0) {
           playerGroup = thisGroup;
           description = `-> ${TournamentPath[phase]}: ${playerGroup.table[0].name} / ${playerGroup.table[1].name} / ${playerGroup.table[2].name} / ${playerGroup.table[3].name}`;
           description += thisGroup.desc;
@@ -917,14 +961,11 @@ function App() {
     }
 
     //setup next season
-    if (leagueResults.pos <= league.championsSpots) {
+    if (playerPosition <= league.championsSpots) {
       newPlayer.championsQualification = true;
       newPlayer.europaQualification = false;
-      newPlayer.lastLeaguePosition = leagueResults.pos;
-    } else if (
-      leagueResults.pos <=
-      league.championsSpots + league.europaSpots
-    ) {
+      newPlayer.lastLeaguePosition = playerPosition;
+    } else if (playerPosition <= league.championsSpots + league.europaSpots) {
       newPlayer.championsQualification = false;
       newPlayer.europaQualification = true;
     } else {
@@ -1091,7 +1132,7 @@ function App() {
     setSeasons(newSeasons);
   }
 
-  function GetEuropaPosition(teams, playerTeam) {
+  function GetEuropaPosition(teams, playerTeam, bonus) {
     let desc = "";
     let newTeams = DeepClone(teams);
     //sort by power
@@ -1108,7 +1149,14 @@ function App() {
         let home = i;
         let away = i + newTeams.length / 2;
 
-        let game = GetMatch(newTeams[home], newTeams[away], 0);
+        let newBonus =
+          newTeams[home].name == playerTeam.name
+            ? bonus
+            : newTeams[away].name == playerTeam.name
+            ? -bonus
+            : 0;
+
+        let game = GetMatch(newTeams[home], newTeams[away], newBonus);
 
         if (
           newTeams[home].name == playerTeam.name ||
@@ -1143,18 +1191,17 @@ function App() {
       return points[table.indexOf(b)] - points[table.indexOf(a)];
     });
 
-    const playerPosition = table.findIndex(
-      (time) => time.name == playerTeam.name
-    );
+    const playerPosition =
+      table.findIndex((team) => team.name == playerTeam.name) + 1;
 
     return {
-      pos: playerPosition + 1,
+      pos: playerPosition,
       table: table,
       desc: desc,
     };
   }
 
-  function GetChampionsPosition(teams, playerTeam) {
+  function GetChampionsPosition(teams, playerTeam, bonus) {
     let desc = "";
     let newTeams = DeepClone(teams);
     //sort by power
@@ -1198,7 +1245,14 @@ function App() {
         let home = i;
         let away = i + 1;
 
-        let game = GetMatch(newTeams[home], newTeams[away], 0);
+        let newBonus =
+          newTeams[home].name == playerTeam.name
+            ? bonus
+            : newTeams[away].name == playerTeam.name
+            ? -bonus
+            : 0;
+
+        let game = GetMatch(newTeams[home], newTeams[away], newBonus);
 
         if (
           newTeams[home].name == playerTeam.name ||
@@ -1243,32 +1297,22 @@ function App() {
       return points[table.indexOf(b)] - points[table.indexOf(a)];
     });
 
-    const playerPosition = table.findIndex(
-      (time) => time.name == playerTeam.name
-    );
+    const playerPosition =
+      table.findIndex((team) => team.name == playerTeam.name) + 1;
 
     return {
-      pos: playerPosition + 1,
+      pos: playerPosition,
       table: table,
       desc: desc,
     };
   }
 
-  function GetLeaguePosition(teams, playerTeam) {
+  function GetLeaguePosition(teams, bonuses) {
     let newTeams = DeepClone(teams);
-
-    let bonuses = Array.from(
-      { length: newTeams.length },
-      () => Math.round(150.0 * (Math.random() - Math.random())) / 100
-    );
-    const sum = bonuses.reduce((acc, val) => acc + val, 0);
-    const adjustment = sum / newTeams.length;
-    bonuses = bonuses.map((num) => num - adjustment);
 
     let points = new Array(newTeams.length).fill(0);
     for (let home = 0; home < newTeams.length; home++) {
       let newBonus = Math.round(bonuses[home] * 100) / 100;
-      console.log(newTeams[home].name, newBonus);
       for (let away = 0; away < newTeams.length; away++) {
         if (newTeams[home] !== newTeams[away]) {
           let game = GetMatch(newTeams[home], newTeams[away], newBonus);
@@ -1291,27 +1335,16 @@ function App() {
       return points[table.indexOf(b)] - points[table.indexOf(a)];
     });
 
-    const playerPosition = table.findIndex(
-      (time) => time.name == playerTeam.name
-    );
-
-    console.log(table);
-
-    return {
-      pos: playerPosition + 1,
-      table: table,
-    };
+    return table;
   }
 
-  function GetWorldCupPosition(teams, playerTeam, bonus) {
+  function GetWorldCupPosition(teams, bonuses) {
     let desc = "";
     let newTeams = DeepClone([...teams]);
     let points = new Array(teams.length).fill(0);
+
     for (let home = 0; home < teams.length; home++) {
-      let newBonus =
-        newTeams[home].name == playerTeam.name
-          ? bonus
-          : Math.round(10.0 * (Math.random() - Math.random())) / 10;
+      let newBonus = newTeams[home].name == bonuses[home];
       for (let away = 0; away < home; away++) {
         if (teams[home] !== teams[away]) {
           let game = GetMatch(teams[home], teams[away], newBonus);
@@ -1325,11 +1358,7 @@ function App() {
             points[home] += 1;
           }
 
-          if (
-            teams[home].name == playerTeam.name ||
-            teams[away].name == playerTeam.name
-          )
-            desc += `=> Rodada ${home}: ${teams[home].name} ${game[0]} x ${game[1]} ${teams[away].name}`;
+          desc += `=> ${teams[home].name} ${game[0]} x ${game[1]} ${teams[away].name}`;
         }
       }
     }
@@ -1340,12 +1369,7 @@ function App() {
       return points[table.indexOf(b)] - points[table.indexOf(a)];
     });
 
-    const playerPosition = table.findIndex(
-      (time) => time.name == playerTeam.name
-    );
-
     return {
-      pos: playerPosition + 1,
       table: table,
       desc: desc,
     };
@@ -1372,7 +1396,7 @@ function App() {
     return [team1Score, team2Score];
   }
 
-  function GetExtraTime(team1, team2) {
+  function GetExtrateam(team1, team2) {
     let base =
       Math.pow(team1.power, Math.log10(50)) +
       Math.pow(team2.power, Math.log10(50));
@@ -1440,7 +1464,7 @@ function App() {
     let teamGoals2 = game[1];
 
     if (teamGoals1 == teamGoals2) {
-      let extra = GetExtraTime(team1, team2);
+      let extra = GetExtrateam(team1, team2);
       teamGoals1 += extra[0];
       teamGoals2 += extra[1];
 
@@ -1680,7 +1704,7 @@ function App() {
     return (
       89 +
       potential / 10 +
-      Math.round(10 * teamPower) / 50 -
+      Math.round(10.0 * teamPower) / 100 -
       (28 - age) ** 2 / 10
     );
   }
