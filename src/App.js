@@ -157,7 +157,7 @@ function App() {
           teams.find((league) => league.name === newPlayer.team.league) || []; //find the new team league
         let bonuses = Array.from(
           { length: newLeague.teams.length },
-          () => Math.round(150.0 * (Math.random() - Math.random())) / 100
+          () => Math.round(50.0 * (Math.random() - Math.random())) / 100
         );
         const sum = bonuses.reduce((acc, val) => acc + val, 0);
         const adjustment = sum / newLeague.teams.length;
@@ -206,7 +206,7 @@ function App() {
 
     //calcule the player's performance
     newPlayer.performance =
-      Math.round(150.0 * (Math.random() - Math.random())) / 100.0;
+      Math.round(100.0 * (Math.random() - Math.random())) / 100.0;
 
     newPlayer.overall =
       GetOverall(newPlayer.potential, newPlayer.age, newPlayer.team.power) +
@@ -329,7 +329,7 @@ function App() {
     //national league
     let bonuses = Array.from(
       { length: league.teams.length },
-      () => Math.round(150.0 * (Math.random() - Math.random())) / 100
+      () => Math.round(75.0 * (Math.random() - Math.random())) / 100
     );
     bonuses[
       league.teams.findIndex((team) => team.name == newPlayer.team.name)
@@ -795,7 +795,7 @@ function App() {
       for (let groupID = 0; groupID < groups.length; groupID++) {
         let bonuses = Array.from(
           { length: groups[groupID].length },
-          () => Math.round(150.0 * (Math.random() - Math.random())) / 100
+          () => Math.round(100.0 * (Math.random() - Math.random())) / 100
         );
         bonuses[
           groups[groupID].findIndex(
@@ -1382,12 +1382,12 @@ function App() {
     let team1Power = Math.pow(team1.power, Math.log10(50)) / base;
     let team2Power = Math.pow(team2.power, Math.log10(50)) / base;
 
-    let goals = Math.random() + Math.random() * 1.5;
+    let goals = (Math.random() + Math.random()) * 1.5;
 
-    let team1Luck = (Math.random() + Math.random()) * 2;
-    let team2Luck = (Math.random() + Math.random()) * 2;
+    let team1Luck = (Math.random() + Math.random()) * 1.5;
+    let team2Luck = (Math.random() + Math.random()) * 1.5;
 
-    let team1Score = Math.round(goals * team1Luck * team1Power + bonus / 2);
+    let team1Score = Math.round(goals * team1Luck * team1Power + bonus);
     let team2Score = Math.round(goals * team2Luck * team2Power);
 
     if (team1Score < 0) team1Score = 0;
@@ -1405,8 +1405,8 @@ function App() {
 
     let goals = Math.random() + Math.random();
 
-    let team1Luck = Math.random() + Math.random() * 1.5;
-    let team2Luck = Math.random() + Math.random() * 1.5;
+    let team1Luck = (Math.random() + Math.random()) * 1.5;
+    let team2Luck = (Math.random() + Math.random()) * 1.5;
 
     let team1Score = Math.round(goals * team1Luck * team1Power);
     let team2Score = Math.round(goals * team2Luck * team2Power);

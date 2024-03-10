@@ -12,7 +12,7 @@
       {
         "name": "Bor. Dortmund",
         "league": "Bundesliga",
-        "power": 8
+        "power": 7.5
       },
       {
         "name": "RB Leipzig",
@@ -306,14 +306,14 @@
         "power": 5
       },
       {
-        "name": "Girona",
+        "name": "Getafe",
         "league": "La Liga",
         "power": 4.5
       },
       {
-        "name": "Getafe",
+        "name": "Girona",
         "league": "La Liga",
-        "power": 4
+        "power": 4.5
       },
       {
         "name": "Valencia",
@@ -455,6 +455,11 @@
         "power": 7.5
       },
       {
+        "name": "Tottenham",
+        "league": "Premier League",
+        "power": 6
+      },
+      {
         "name": "Chelsea",
         "league": "Premier League",
         "power": 5.5
@@ -465,19 +470,14 @@
         "power": 5.5
       },
       {
-        "name": "Tottenham",
+        "name": "Aston Villa",
         "league": "Premier League",
-        "power": 5.5
+        "power": 5
       },
       {
         "name": "Newcastle",
         "league": "Premier League",
         "power": 5
-      },
-      {
-        "name": "Aston Villa",
-        "league": "Premier League",
-        "power": 4.5
       },
       {
         "name": "Brighton",
@@ -529,7 +529,7 @@
       {
         "name": "Porto",
         "league": "Primeira Liga",
-        "power": 7.5
+        "power": 8
       },
       {
         "name": "Benfica",
@@ -542,22 +542,17 @@
         "power": 5.5
       },
       {
-        "name": "Braga",
-        "league": "Primeira Liga",
-        "power": 5
-      },
-      {
         "name": "Boavista",
         "league": "Primeira Liga",
         "power": 4.5
       },
       {
-        "name": "Famalicão",
+        "name": "Braga",
         "league": "Primeira Liga",
         "power": 4.5
       },
       {
-        "name": "Vitória de Guimarães",
+        "name": "Famalicão",
         "league": "Primeira Liga",
         "power": 4.5
       },
@@ -568,6 +563,11 @@
       },
       {
         "name": "Portimonense",
+        "league": "Primeira Liga",
+        "power": 4
+      },
+      {
+        "name": "Vitória de Guimarães",
         "league": "Primeira Liga",
         "power": 4
       },
@@ -624,9 +624,9 @@
         "power": 7
       },
       {
-        "name": "Napoli",
+        "name": "Lazio",
         "league": "Serie A",
-        "power": 6
+        "power": 5.5
       },
       {
         "name": "Juventus",
@@ -634,7 +634,7 @@
         "power": 5.5
       },
       {
-        "name": "Lazio",
+        "name": "Napoli",
         "league": "Serie A",
         "power": 5.5
       },
