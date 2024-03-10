@@ -1396,7 +1396,7 @@ function App() {
     return [team1Score, team2Score];
   }
 
-  function GetExtrateam(team1, team2) {
+  function GetExtraTime(team1, team2) {
     let base =
       Math.pow(team1.power, Math.log10(50)) +
       Math.pow(team2.power, Math.log10(50));
@@ -1464,7 +1464,7 @@ function App() {
     let teamGoals2 = game[1];
 
     if (teamGoals1 == teamGoals2) {
-      let extra = GetExtrateam(team1, team2);
+      let extra = GetExtraTime(team1, team2);
       teamGoals1 += extra[0];
       teamGoals2 += extra[1];
 
