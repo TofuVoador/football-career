@@ -391,13 +391,11 @@ function App() {
 
     let classif = pot1.concat(pot2, pot3);
 
-    console.log(classif);
     while (!end) {
       let newOpponentsLeft = [];
       let games = "";
       let playerGame = "";
       let playerEffect = 1 - phase / 10.0;
-      console.log(phase, playerEffect, newSeason.performance * playerEffect);
       for (let matchID = 0; matchID < classif.length / 2; matchID++) {
         let team1 = classif[matchID];
         let team2 = classif[classif.length - (matchID + 1)];
@@ -544,7 +542,6 @@ function App() {
       if (classif.some((t) => t.name == newPlayer.team.name)) {
         playerPhase += 2;
       }
-      console.log(classif);
 
       phase += 2;
       end = false;
@@ -553,7 +550,6 @@ function App() {
         playerGame = "";
         let newClassif = [];
         let playerEffect = 1 - phase / 10.0;
-        console.log(phase, playerEffect, newSeason.performance * playerEffect);
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
           let team2 = classif[classif.length - (matchID + 1)];
@@ -664,7 +660,6 @@ function App() {
       if (classif.some((t) => t.name == newPlayer.team.name)) {
         playerPhase += 2;
       }
-      console.log(classif);
 
       phase += 2;
       end = false;
@@ -673,7 +668,6 @@ function App() {
         let playerGame = "";
         let newClassif = [];
         let playerEffect = 1 - phase / 10.0;
-        console.log(phase, playerEffect, newSeason.performance * playerEffect);
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
           let team2 = classif[classif.length - (matchID + 1)];
@@ -839,7 +833,6 @@ function App() {
       if (classif.some((t) => t.name == newPlayer.nation.name)) {
         playerPhase++;
       }
-      console.log(classif);
 
       let end = false;
       while (!end) {
@@ -847,7 +840,6 @@ function App() {
         let newClassif = [];
         let playerGame = "";
         let playerEffect = 1 - phase / 10.0;
-        console.log(phase, playerEffect, newSeason.performance * playerEffect);
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
           let team1 = classif[matchID];
           let team2 = classif[classif.length - (matchID + 1)];
