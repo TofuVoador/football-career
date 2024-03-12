@@ -991,36 +991,49 @@ function App() {
       newPlayer.contractTeam != null &&
       contract <= 1
     ) {
-      setContract(newPlayer.contractTeam.duration);
-      ChooseTeam(newPlayer.contractTeam);
+      newTransfers = [newPlayer.contractTeam];
+
+      setRenew({
+        value: newPlayer.contractTeam.contract.value,
+        duration: newPlayer.contractTeam.contract.duration,
+      });
+
       newPlayer.contractTeam = null;
+
+      document.getElementById("decision-transfer1").style.display = "flex";
+      document.getElementById("decision-transfer2").style.display = "none";
+      document.getElementById("decision-transfer3").style.display = "none";
+      document.getElementById("decision-stay").style.display = "flex";
+      document.getElementById("retire").style.display = "none";
     } else if (
       //if played good midde contract
       newPlayer.performance >= newPlayer.team.power / 10 &&
-      newPlayer.age < 32 &&
+      newPlayer.age <= 32 &&
       generalPerformance.length >= 2 &&
       newTransfers[0] != null &&
       contract > 2
     ) {
-      //proposal 1
-      document.getElementById("decision-transfer1").style.display = "flex";
+      let contractValue =
+        Math.floor(
+          newPlayer.position.value *
+            (newPlayer.overall ** 4 / 1000000) *
+            (1 + (Math.random() - Math.random()) / 10.0) *
+            (1 + newPlayer.team.power / 50.0)
+        ) / 10.0;
 
-      if (newTransfers[1] == null) {
-        //proposal 2
-        document.getElementById("decision-transfer2").style.display = "none";
-      } else {
-        document.getElementById("decision-transfer2").style.display = "flex";
-      }
+      if (contractValue < newPlayer.wage) contractValue = newPlayer.wage;
 
-      if (newTransfers[2] == null) {
-        //proposal 3
-        document.getElementById("decision-transfer3").style.display = "none";
-      } else {
-        document.getElementById("decision-transfer3").style.display = "flex";
-      }
+      setRenew({
+        value: contractValue,
+        duration: contract - 1,
+      });
 
-      //propose to stay
       document.getElementById("decision-stay").style.display = "flex";
+      document.getElementById("decision-transfer1").style.display = "flex";
+      document.getElementById("decision-transfer2").style.display =
+        newTransfers[1] == null ? "none" : "flex";
+      document.getElementById("decision-transfer3").style.display =
+        newTransfers[2] == null ? "none" : "flex";
 
       //cant retire because of the contract
       document.getElementById("retire").style.display = "none";
@@ -1036,6 +1049,7 @@ function App() {
       document.getElementById("decision-transfer1").style.display = "flex";
       newTransfers[0].loan = true;
       newTransfers[0].contract.duration = RandomNumber(1, 2);
+      newTransfers[0].contract.value = newPlayer.wage;
 
       if (newTransfers[1] == null) {
         document.getElementById("decision-transfer2").style.display = "none";
@@ -1044,6 +1058,7 @@ function App() {
         document.getElementById("decision-transfer2").style.display = "flex";
         newTransfers[1].loan = true;
         newTransfers[1].contract.duration = RandomNumber(1, 2);
+        newTransfers[1].contract.value = newPlayer.wage;
       }
 
       if (newTransfers[2] == null) {
@@ -1053,6 +1068,7 @@ function App() {
         document.getElementById("decision-transfer3").style.display = "flex";
         newTransfers[2].loan = true;
         newTransfers[2].contract.duration = RandomNumber(1, 2);
+        newTransfers[2].contract.value = newPlayer.wage;
       }
 
       //cant stay
@@ -1064,27 +1080,6 @@ function App() {
       //if contract expired
       contract <= 1
     ) {
-      if (newTransfers[0] == null) {
-        document.getElementById("decision-transfer1").style.display = "none";
-      } else {
-        //proposal 1
-        document.getElementById("decision-transfer1").style.display = "flex";
-      }
-
-      if (newTransfers[1] == null) {
-        document.getElementById("decision-transfer2").style.display = "none";
-      } else {
-        //proposal 2
-        document.getElementById("decision-transfer2").style.display = "flex";
-      }
-
-      if (newTransfers[2] == null) {
-        document.getElementById("decision-transfer3").style.display = "none";
-        //proposal 3
-      } else {
-        document.getElementById("decision-transfer3").style.display = "flex";
-      }
-
       if (med <= -0.2) {
         //cant stay
         document.getElementById("decision-stay").style.display = "none";
@@ -1112,6 +1107,13 @@ function App() {
           duration: contractDuration,
         });
       }
+
+      document.getElementById("decision-transfer1").style.display =
+        newTransfers[0] == null ? "none" : "flex";
+      document.getElementById("decision-transfer2").style.display =
+        newTransfers[1] == null ? "none" : "flex";
+      document.getElementById("decision-transfer3").style.display =
+        newTransfers[2] == null ? "none" : "flex";
 
       if (newPlayer.age >= 32) {
         //can retire
@@ -1526,7 +1528,7 @@ function App() {
       let team = interestedTeams[index];
       if (team) {
         let contractDuration = RandomNumber(1, 4);
-        if (currentPlayer.age < 32) contractDuration += RandomNumber(1, 4);
+        if (currentPlayer.age <= 32) contractDuration += RandomNumber(1, 4);
         let expectedOverall =
           GetOverall(
             currentPlayer.potential,
