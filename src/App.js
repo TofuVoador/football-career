@@ -329,11 +329,11 @@ function App() {
     //national league
     let bonuses = Array.from(
       { length: league.teams.length },
-      () => Math.round(75.0 * (Math.random() - Math.random())) / 100
+      () => Math.round(50.0 * (Math.random() - Math.random())) / 100
     );
     bonuses[
       league.teams.findIndex((team) => team.name == newPlayer.team.name)
-    ] = newPlayer.performance;
+    ] = newPlayer.performance / 2;
     const sum = bonuses.reduce((acc, val) => acc + val, 0);
     const adjustment = sum / league.teams.length;
     bonuses = bonuses.map((num) => num - adjustment);
