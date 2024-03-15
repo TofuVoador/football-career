@@ -6,7 +6,7 @@ import Nations from "./Database/nations.json";
 import Positions from "./Database/positions.json";
 import ChartComponent from "./Components/chartComponent";
 import Season from "./Components/season";
-import { RandomNumber, DeepClone } from "./Utils";
+import { RandomNumber, DeepClone, FormatarNumero } from "./Utils";
 
 const StarPath = [
   "Esquecido", //0
@@ -157,7 +157,7 @@ function App() {
           teams.find((league) => league.name === newPlayer.team.league) || []; //find the new team league
         let bonuses = Array.from(
           { length: newLeague.teams.length },
-          () => Math.round(40.0 * (Math.random() - Math.random())) / 100
+          () => Math.round(50.0 * (Math.random() - Math.random())) / 100
         );
         const sum = bonuses.reduce((acc, val) => acc + val, 0);
         const adjustment = sum / newLeague.teams.length;
@@ -798,13 +798,13 @@ function App() {
       for (let groupID = 0; groupID < groups.length; groupID++) {
         let bonuses = Array.from(
           { length: groups[groupID].length },
-          () => Math.round(100.0 * (Math.random() - Math.random())) / 100
+          () => Math.round(70.0 * (Math.random() - Math.random())) / 100
         );
         bonuses[
           groups[groupID].findIndex(
             (team) => team.name == newPlayer.nation.name
           )
-        ] = newPlayer.performance;
+        ] = newPlayer.performance * 0.7;
         const sum = bonuses.reduce((acc, val) => acc + val, 0);
         const adjustment = sum / groups[groupID].length;
         bonuses = bonuses.map((num) => num - adjustment);
@@ -1014,14 +1014,26 @@ function App() {
       contract > 2
     ) {
       let contractValue =
-        Math.floor(
-          newPlayer.position.value *
-            (newPlayer.overall ** 4 / 1000000) *
-            (1 + (Math.random() - Math.random()) / 10.0) *
-            (1 + newPlayer.team.power / 50.0)
-        ) / 10.0;
+        newPlayer.position.value *
+        GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame);
 
       if (contractValue < newPlayer.wage) contractValue = newPlayer.wage;
+
+      if (newTransfers[1] == null) {
+        document.getElementById("decision-transfer2").style.display = "none";
+      } else {
+        document.getElementById("decision-transfer2").style.display = "flex";
+        if (newTransfers[1].contract.value < newPlayer.wage)
+          contractValue = newPlayer.wage;
+      }
+
+      if (newTransfers[2] == null) {
+        document.getElementById("decision-transfer2").style.display = "none";
+      } else {
+        document.getElementById("decision-transfer2").style.display = "flex";
+        if (newTransfers[2].contract.value < newPlayer.wage)
+          contractValue = newPlayer.wage;
+      }
 
       setRenew({
         value: contractValue,
@@ -1029,12 +1041,6 @@ function App() {
       });
 
       document.getElementById("decision-stay").style.display = "flex";
-      document.getElementById("decision-transfer1").style.display = "flex";
-      document.getElementById("decision-transfer2").style.display =
-        newTransfers[1] == null ? "none" : "flex";
-      document.getElementById("decision-transfer3").style.display =
-        newTransfers[2] == null ? "none" : "flex";
-
       //cant retire because of the contract
       document.getElementById("retire").style.display = "none";
     } else if (
@@ -1096,12 +1102,9 @@ function App() {
           ) + med;
 
         let contractValue =
-          Math.floor(
-            newPlayer.position.value *
-              (expectedOverall ** 4 / 1000000) *
-              (1 + (Math.random() - Math.random()) / 10.0) *
-              (1 + newPlayer.team.power / 50.0)
-          ) / 10.0;
+          newPlayer.position.value *
+          GetWage(expectedOverall, newPlayer.team.power, newPlayer.fame);
+
         setRenew({
           value: contractValue,
           duration: contractDuration,
@@ -1536,24 +1539,15 @@ function App() {
             team.power
           ) + currentPlayer.performance;
         let contractValue =
-          Math.floor(
-            currentPlayer.position.value *
-              (expectedOverall ** 4 / 1000000) *
-              (1 + (Math.random() - Math.random()) / 10.0) *
-              (1 + team.power / 50.0)
-          ) / 10.0;
+          currentPlayer.position.value *
+          GetWage(expectedOverall, team.power, currentPlayer.fame);
         let contract = {
           value: contractValue,
           duration: contractDuration,
         };
         let transferValue =
-          Math.floor(
-            currentPlayer.position.value *
-              (expectedOverall ** 5 / 1000000) *
-              (1 + (Math.random() - Math.random()) / 10.0) *
-              (1 + team.power / 50.0) +
-              currentPlayer.fame
-          ) / 100.0;
+          currentPlayer.position.value *
+          GetTransferValue(expectedOverall, team.power);
 
         contracts.push({
           team: team,
@@ -1602,57 +1596,27 @@ function App() {
     ];
 
     let expectedOveralls = [
-      GetOverall(0, 18 + Math.round(contractDurations[0] / 2), teams[0].power),
-      GetOverall(0, 18 + Math.round(contractDurations[1] / 2), teams[1].power),
-      GetOverall(0, 18 + Math.round(contractDurations[2] / 2), teams[2].power),
+      GetOverall(0, 18 + contractDurations[0] / 2, teams[0].power),
+      GetOverall(0, 18 + contractDurations[1] / 2, teams[1].power),
+      GetOverall(0, 18 + contractDurations[2] / 2, teams[2].power),
     ];
 
-    let contractValues = [
-      Math.floor(
-        posValue *
-          (expectedOveralls[0] ** 4 / 1000000) *
-          (1 + (Math.random() - Math.random()) / 10.0) *
-          (1 + teams[0].power / 50.0)
-      ) / 10.0,
-      Math.floor(
-        posValue *
-          (expectedOveralls[1] ** 4 / 1000000) *
-          (1 + (Math.random() - Math.random()) / 10.0) *
-          (1 + teams[1].power / 50.0)
-      ) / 10.0,
-      Math.floor(
-        posValue *
-          (expectedOveralls[2] ** 4 / 1000000) *
-          (1 + (Math.random() - Math.random()) / 10.0) *
-          (1 + teams[2].power / 50.0)
-      ) / 10.0,
+    let contractWages = [
+      posValue * GetWage(expectedOveralls[0], teams[0].power, 0),
+      posValue * GetWage(expectedOveralls[1], teams[1].power, 0),
+      posValue * GetWage(expectedOveralls[2], teams[2].power, 0),
     ];
 
     let contracts = [
-      { value: contractValues[0], duration: contractDurations[0] },
-      { value: contractValues[1], duration: contractDurations[1] },
-      { value: contractValues[2], duration: contractDurations[2] },
+      { value: contractWages[0], duration: contractDurations[0] },
+      { value: contractWages[1], duration: contractDurations[1] },
+      { value: contractWages[2], duration: contractDurations[2] },
     ];
 
     let transferValues = [
-      Math.floor(
-        posValue *
-          (expectedOveralls[0] ** 5 / 1000000) *
-          (1 + (Math.random() - Math.random()) / 10.0) *
-          (1 + teams[0].power / 50.0)
-      ) / 100.0,
-      Math.floor(
-        posValue *
-          (expectedOveralls[1] ** 5 / 1000000) *
-          (1 + (Math.random() - Math.random()) / 10.0) *
-          (1 + teams[1].power / 50.0)
-      ) / 100.0,
-      Math.floor(
-        posValue *
-          (expectedOveralls[2] ** 5 / 1000000) *
-          (1 + (Math.random() - Math.random()) / 10.0) *
-          (1 + teams[2].power / 50.0)
-      ) / 100.0,
+      posValue * GetTransferValue(expectedOveralls[0], teams[0].power),
+      posValue * GetTransferValue(expectedOveralls[1], teams[1].power),
+      posValue * GetTransferValue(expectedOveralls[2], teams[2].power),
     ];
 
     return [
@@ -1712,6 +1676,23 @@ function App() {
       potential / 10 +
       Math.round(10.0 * teamPower) / 100 -
       (28 - age) ** 2 / 10
+    );
+  }
+
+  function GetWage(expectedOverall, teamPower, fame) {
+    return Math.floor(
+      ((expectedOverall - 20) ** 8 / 10000000) *
+        (1 + (Math.random() - Math.random()) / 10.0) *
+        (1 + teamPower / 50.0) *
+        (1 + fame / 1000.0)
+    );
+  }
+
+  function GetTransferValue(expectedOverall, teamPower) {
+    return Math.floor(
+      ((expectedOverall - 50) ** 10 / 100000000) *
+        (1 + (Math.random() - Math.random()) / 10.0) *
+        (1 + teamPower / 50.0)
     );
   }
 
@@ -1888,7 +1869,7 @@ function App() {
             ⭐)
           </p>
           <p>
-            ${renew.value}M/ano |
+            ${FormatarNumero(renew.value)}/ano |
             {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")}
           </p>
         </a>
@@ -1910,8 +1891,12 @@ function App() {
             ⭐)
           </p>
           <p>
-            ${transfers[0] == null ? "null" : transfers[0].contract.value}M/ano
-            | {transfers[0] == null ? "null" : transfers[0].contract.duration}{" "}
+            $
+            {transfers[0] == null
+              ? "null"
+              : FormatarNumero(transfers[0].contract.value)}
+            /ano |{" "}
+            {transfers[0] == null ? "null" : transfers[0].contract.duration}{" "}
             anos
           </p>
         </a>
@@ -1933,8 +1918,12 @@ function App() {
             ⭐)
           </p>
           <p>
-            ${transfers[1] == null ? "null" : transfers[1].contract.value}M/ano
-            | {transfers[1] == null ? "null" : transfers[1].contract.duration}{" "}
+            $
+            {transfers[1] == null
+              ? "null"
+              : FormatarNumero(transfers[1].contract.value)}
+            /ano |{" "}
+            {transfers[1] == null ? "null" : transfers[1].contract.duration}{" "}
             anos
           </p>
         </a>
@@ -1956,8 +1945,12 @@ function App() {
             ⭐)
           </p>
           <p>
-            ${transfers[2] == null ? "null" : transfers[2].contract.value}M/ano
-            | {transfers[2] == null ? "null" : transfers[2].contract.duration}{" "}
+            $
+            {transfers[2] == null
+              ? "null"
+              : FormatarNumero(transfers[2].contract.value)}
+            /ano |{" "}
+            {transfers[2] == null ? "null" : transfers[2].contract.duration}{" "}
             anos
           </p>
         </a>

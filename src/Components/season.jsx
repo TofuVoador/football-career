@@ -1,5 +1,6 @@
 import React from "react";
 import "./season.css";
+import { FormatarNumero } from "../Utils";
 
 const Season = (props) => {
   let season = props.season;
@@ -20,8 +21,8 @@ const Season = (props) => {
             <div>Fama: {Math.floor(season.fame)}</div>
           </div>
           <div>
-            <div>${season.marketValue}M</div>
-            <div>${season.wage}M/ano</div>
+            <div>${FormatarNumero(season.marketValue)}</div>
+            <div>${FormatarNumero(season.wage)}/ano</div>
           </div>
         </div>
         <p style={{ marginTop: "0.5rem" }}>Performance:</p>
