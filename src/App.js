@@ -126,6 +126,7 @@ function App() {
     if (newTeam != null) {
       //if they change team
       let oldTeamLeague = newPlayer.team == null ? "" : newPlayer.team.league; //store old league table results
+      newHistory.push(newTeam.team.name);
       if (newTeam.loan) {
         newPlayer.contractTeam = {
           team: newPlayer.team,
@@ -136,8 +137,6 @@ function App() {
           transferValue: newTeam.transferValue,
           loan: false,
         };
-      } else {
-        newHistory.push(newTeam.team.name);
       }
       newGeneralPerformance = [];
       newPlayer.team = newTeam.team;

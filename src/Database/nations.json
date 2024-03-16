@@ -7,47 +7,47 @@
   {
     "name": "Inglaterra",
     "continent": "Europa",
-    "power": 9.5
+    "power": 9
   },
   {
     "name": "Argentina",
     "continent": "América do Sul",
-    "power": 9
+    "power": 8.5
   },
   {
     "name": "Espanha",
     "continent": "Europa",
-    "power": 9
+    "power": 8.5
   },
   {
     "name": "Alemanha",
     "continent": "Europa",
-    "power": 8.5
+    "power": 8
   },
   {
     "name": "Brasil",
     "continent": "América do Sul",
-    "power": 8.5
+    "power": 8
   },
   {
     "name": "Itália",
     "continent": "Europa",
-    "power": 8
+    "power": 7.5
   },
   {
     "name": "Países Baixos",
     "continent": "Europa",
-    "power": 8
+    "power": 7.5
   },
   {
     "name": "Croácia",
     "continent": "Europa",
-    "power": 7.5
+    "power": 7
   },
   {
     "name": "Portugal",
     "continent": "Europa",
-    "power": 7.5
+    "power": 7
   },
   {
     "name": "Bélgica",
