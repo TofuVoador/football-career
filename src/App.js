@@ -1265,7 +1265,7 @@ function App() {
             ? -bonus
             : 0;
 
-        let game = GetMatch(newTeams[home], newTeams[away], newBonus, 3);
+        let game = GetMatch(newTeams[home], newTeams[away], newBonus, 4);
 
         if (
           newTeams[home].name == playerTeam.name ||
@@ -1360,7 +1360,7 @@ function App() {
       let newBonus = newTeams[home].name == bonuses[home];
       for (let away = 0; away < home; away++) {
         if (teams[home] !== teams[away]) {
-          let game = GetMatch(teams[home], teams[away], newBonus, 1);
+          let game = GetMatch(teams[home], teams[away], newBonus, 2);
 
           if (game[0] > game[1]) {
             points[home] += 3;
@@ -1389,7 +1389,7 @@ function App() {
   }
 
   function GetMatch(team1, team2, bonus, importance) {
-    let potencia = Math.log10(30 + importance * 10);
+    let potencia = Math.log10(50 + importance * 5);
     let base =
       Math.pow(team1.power, potencia) + Math.pow(team2.power, potencia);
     let team1Power = Math.pow(team1.power, potencia) / base;
