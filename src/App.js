@@ -1023,20 +1023,24 @@ function App() {
 
       if (contractValue < newPlayer.wage) contractValue = newPlayer.wage;
 
+      document.getElementById("decision-transfer1").style.display = "flex";
+      if (newTransfers[0].contract.value < newPlayer.wage)
+        newTransfers[0].contract.value = newPlayer.wage;
+
       if (newTransfers[1] == null) {
         document.getElementById("decision-transfer2").style.display = "none";
       } else {
         document.getElementById("decision-transfer2").style.display = "flex";
         if (newTransfers[1].contract.value < newPlayer.wage)
-          contractValue = newPlayer.wage;
+          newTransfers[1].contract.value = newPlayer.wage;
       }
 
       if (newTransfers[2] == null) {
-        document.getElementById("decision-transfer2").style.display = "none";
+        document.getElementById("decision-transfer3").style.display = "none";
       } else {
-        document.getElementById("decision-transfer2").style.display = "flex";
+        document.getElementById("decision-transfer3").style.display = "flex";
         if (newTransfers[2].contract.value < newPlayer.wage)
-          contractValue = newPlayer.wage;
+          newTransfers[1].contract.value = newPlayer.wage;
       }
 
       setRenew({
