@@ -1392,7 +1392,7 @@ function App() {
     let team1Power = Math.pow(team1.power, potencia) / base;
     let team2Power = Math.pow(team2.power, potencia) / base;
 
-    let goals = (Math.random() + Math.random()) * 1.5;
+    let goals = (Math.random() + Math.random()) * 1.666;
 
     let team1Luck = (Math.random() + Math.random()) * 1.5;
     let team2Luck = (Math.random() + Math.random()) * 1.5;
