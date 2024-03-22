@@ -1557,9 +1557,10 @@ function App() {
           value: contractValue,
           duration: contractDuration,
         };
-        let transferValue =
+        let transferValue = Math.round(
           currentPlayer.position.value *
-          GetTransferValue(expectedOverall, team.power);
+            GetTransferValue(expectedOverall, team.power)
+        );
 
         contracts.push({
           team: team,
@@ -1626,9 +1627,15 @@ function App() {
     ];
 
     let transferValues = [
-      posValue * GetTransferValue(expectedOveralls[0], teams[0].power),
-      posValue * GetTransferValue(expectedOveralls[1], teams[1].power),
-      posValue * GetTransferValue(expectedOveralls[2], teams[2].power),
+      Math.round(
+        posValue * GetTransferValue(expectedOveralls[0], teams[0].power)
+      ),
+      Math.round(
+        posValue * GetTransferValue(expectedOveralls[1], teams[1].power)
+      ),
+      Math.round(
+        posValue * GetTransferValue(expectedOveralls[2], teams[2].power)
+      ),
     ];
 
     return [
