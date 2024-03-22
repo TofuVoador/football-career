@@ -1102,16 +1102,9 @@ function App() {
         document.getElementById("decision-stay").style.display = "flex";
         let contractDuration = RandomNumber(1, 4);
 
-        let expectedOverall =
-          GetOverall(
-            newPlayer.potential,
-            newPlayer.age + contractDuration / 2,
-            newPlayer.team.power
-          ) + med;
-
         let contractValue =
           newPlayer.position.value *
-          GetWage(expectedOverall, newPlayer.team.power, newPlayer.fame);
+          GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame);
 
         setRenew({
           value: contractValue,
@@ -1548,7 +1541,7 @@ function App() {
           ) + currentPlayer.performance;
         let contractValue =
           currentPlayer.position.value *
-          GetWage(expectedOverall, team.power, currentPlayer.fame);
+          GetWage(currentPlayer.overall, team.power, currentPlayer.fame);
         let contract = {
           value: contractValue,
           duration: contractDuration,
@@ -1603,22 +1596,22 @@ function App() {
       RandomNumber(2, 5),
     ];
 
-    let expectedOveralls = [
-      GetOverall(0, 18 + contractDurations[0] / 2, teams[0].power),
-      GetOverall(0, 18 + contractDurations[1] / 2, teams[1].power),
-      GetOverall(0, 18 + contractDurations[2] / 2, teams[2].power),
-    ];
-
     let contractWages = [
-      posValue * GetWage(expectedOveralls[0], teams[0].power, 0),
-      posValue * GetWage(expectedOveralls[1], teams[1].power, 0),
-      posValue * GetWage(expectedOveralls[2], teams[2].power, 0),
+      posValue * GetWage(GetOverall(0, 18, teams[0].power), teams[0].power, 0),
+      posValue * GetWage(GetOverall(0, 18, teams[1].power), teams[1].power, 0),
+      posValue * GetWage(GetOverall(0, 18, teams[2].power), teams[2].power, 0),
     ];
 
     let contracts = [
       { value: contractWages[0], duration: contractDurations[0] },
       { value: contractWages[1], duration: contractDurations[1] },
       { value: contractWages[2], duration: contractDurations[2] },
+    ];
+
+    let expectedOveralls = [
+      GetOverall(0, 18 + contractDurations[0] / 2, teams[0].power),
+      GetOverall(0, 18 + contractDurations[1] / 2, teams[1].power),
+      GetOverall(0, 18 + contractDurations[2] / 2, teams[2].power),
     ];
 
     let transferValues = [
@@ -1687,12 +1680,12 @@ function App() {
     );
   }
 
-  function GetWage(expectedOverall, teamPower, fame) {
+  function GetWage(currentOverall, teamPower, fame) {
     return Math.floor(
-      ((expectedOverall - 20) ** 8 / 10000000) *
+      (fame + 200) *
+        (currentOverall - 50) ** 3 *
         (1 + (Math.random() - Math.random()) / 10.0) *
-        (1 + teamPower / 50.0) *
-        (1 + fame / 1000.0)
+        (1 + teamPower / 50.0)
     );
   }
 
