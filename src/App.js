@@ -859,7 +859,7 @@ function App() {
               ? -newSeason.performance * playerEffect
               : 0,
             phase,
-            phase >= TournamentPath.length - 2 ? false : true
+            false
           );
 
           if (
