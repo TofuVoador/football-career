@@ -100,10 +100,16 @@ const ChartComponent = ({ data }) => {
         labels: data.map((item) => item.age), // x-axis labels
         datasets: [
           {
-            label: "Value",
+            label: "Valor",
             data: data.map((item) => item.marketValue), // y-axis data
             backgroundColor: "rgba(224, 225, 221, 1)", // Set background color
             borderColor: "rgba(224, 225, 221, 1)", // Set border color
+          },
+          {
+            label: "Salário",
+            data: data.map((item) => item.wage), // y-axis data
+            backgroundColor: "rgba(119, 141, 169, 1)", // Set background color
+            borderColor: "rgba(119, 141, 169, 1)", // Set border color
           },
         ],
       },
