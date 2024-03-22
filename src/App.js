@@ -406,7 +406,8 @@ function App() {
             : team2.name == newPlayer.team.name
             ? -newSeason.performance * playerEffect
             : 0,
-          phase
+          phase,
+          phase >= TournamentPath.length - 2 ? false : true
         );
 
         if (
@@ -514,7 +515,8 @@ function App() {
             : team2.name == newPlayer.team.name
             ? -newSeason.performance
             : 0,
-          phase
+          phase,
+          true
         );
 
         if (
@@ -562,7 +564,8 @@ function App() {
               : team2.name == newPlayer.team.name
               ? -newSeason.performance * playerEffect
               : 0,
-            phase
+            phase,
+            phase >= TournamentPath.length - 2 ? false : true
           );
 
           if (
@@ -681,7 +684,8 @@ function App() {
               : team2.name == newPlayer.team.name
               ? -newSeason.performance * playerEffect
               : 0,
-            phase
+            phase,
+            phase >= TournamentPath.length - 2 ? false : true
           );
 
           if (
@@ -854,7 +858,8 @@ function App() {
               : team2.name == player.nation.name
               ? -newSeason.performance * playerEffect
               : 0,
-            phase
+            phase,
+            phase >= TournamentPath.length - 2 ? false : true
           );
 
           if (
@@ -1466,16 +1471,18 @@ function App() {
     return [team1goals, team2goals];
   }
 
-  function GetKnockoutResult(team1, team2, bonus, importance) {
+  function GetKnockoutResult(team1, team2, bonus, importance, ida_e_volta) {
     let gameDesc = "";
 
     let game = GetMatch(team1, team2, bonus, importance);
     let teamGoals1 = game[0];
     let teamGoals2 = game[1];
 
-    let game2 = GetExtraTime(team1, team2);
-    teamGoals1 += game2[0];
-    teamGoals2 += game2[1];
+    if (ida_e_volta) {
+      let game2 = GetMatch(team2, team1, -bonus, importance);
+      teamGoals1 += game2[1];
+      teamGoals2 += game2[0];
+    }
 
     if (teamGoals1 == teamGoals2) {
       let extra = GetExtraTime(team1, team2);
