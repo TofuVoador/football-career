@@ -1022,9 +1022,10 @@ function App() {
       newTransfers[0] != null &&
       contract > 2
     ) {
-      let contractValue =
+      let contractValue = Math.round(
         newPlayer.position.value *
-        GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame);
+          GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame)
+      );
 
       if (contractValue < newPlayer.wage) contractValue = newPlayer.wage;
 
@@ -1107,9 +1108,10 @@ function App() {
         document.getElementById("decision-stay").style.display = "flex";
         let contractDuration = RandomNumber(1, 4);
 
-        let contractValue =
+        let contractValue = Math.round(
           newPlayer.position.value *
-          GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame);
+            GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame)
+        );
 
         setRenew({
           value: contractValue,
@@ -1550,9 +1552,10 @@ function App() {
             currentPlayer.age + Math.round(contractDuration / 2),
             team.power
           ) + currentPlayer.performance;
-        let contractValue =
+        let contractValue = Math.round(
           currentPlayer.position.value *
-          GetWage(currentPlayer.overall, team.power, currentPlayer.fame);
+            GetWage(currentPlayer.overall, team.power, currentPlayer.fame)
+        );
         let contract = {
           value: contractValue,
           duration: contractDuration,
@@ -1609,9 +1612,15 @@ function App() {
     ];
 
     let contractWages = [
-      posValue * GetWage(GetOverall(0, 18, teams[0].power), teams[0].power, 0),
-      posValue * GetWage(GetOverall(0, 18, teams[1].power), teams[1].power, 0),
-      posValue * GetWage(GetOverall(0, 18, teams[2].power), teams[2].power, 0),
+      Math.round(
+        posValue * GetWage(GetOverall(0, 18, teams[0].power), teams[0].power, 0)
+      ),
+      Math.round(
+        posValue * GetWage(GetOverall(0, 18, teams[1].power), teams[1].power, 0)
+      ),
+      Math.round(
+        posValue * GetWage(GetOverall(0, 18, teams[2].power), teams[2].power, 0)
+      ),
     ];
 
     let contracts = [
@@ -1699,19 +1708,19 @@ function App() {
   }
 
   function GetWage(currentOverall, teamPower, fame) {
-    return Math.floor(
+    return (
       (fame + 200) *
-        (currentOverall - 50) ** 3 *
-        (1 + (Math.random() - Math.random()) / 10.0) *
-        (1 + teamPower / 50.0)
+      (currentOverall - 50) ** 3 *
+      (1 + (Math.random() - Math.random()) / 10.0) *
+      (1 + teamPower / 50.0)
     );
   }
 
   function GetTransferValue(expectedOverall, teamPower) {
-    return Math.floor(
+    return (
       ((expectedOverall - 50) ** 10 / 100000000) *
-        (1 + (Math.random() - Math.random()) / 10.0) *
-        (1 + teamPower / 50.0)
+      (1 + (Math.random() - Math.random()) / 10.0) *
+      (1 + teamPower / 50.0)
     );
   }
 
