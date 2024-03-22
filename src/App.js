@@ -1392,7 +1392,7 @@ function App() {
     let team1Power = Math.pow(team1.power, potencia) / base;
     let team2Power = Math.pow(team2.power, potencia) / base;
 
-    let goals = (Math.random() + Math.random()) * 1.666;
+    let goals = (Math.random() + Math.random()) * 1.5;
 
     let team1Luck = (Math.random() + Math.random()) * 1.5;
     let team2Luck = (Math.random() + Math.random()) * 1.5;
@@ -1472,6 +1472,10 @@ function App() {
     let game = GetMatch(team1, team2, bonus, importance);
     let teamGoals1 = game[0];
     let teamGoals2 = game[1];
+
+    let game2 = GetExtraTime(team1, team2);
+    teamGoals1 += game2[0];
+    teamGoals2 += game2[1];
 
     if (teamGoals1 == teamGoals2) {
       let extra = GetExtraTime(team1, team2);
