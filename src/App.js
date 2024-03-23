@@ -1173,7 +1173,12 @@ function App() {
             ? -bonus
             : 0;
 
-        let game = GetMatch(newTeams[home], newTeams[away], newBonus, 0);
+        let game = GetMatch(
+          newTeams[home],
+          newTeams[away],
+          newBonus,
+          Math.log10(50)
+        );
 
         if (
           newTeams[home].name == playerTeam.name ||
@@ -1269,7 +1274,12 @@ function App() {
             ? -bonus
             : 0;
 
-        let game = GetMatch(newTeams[home], newTeams[away], newBonus, 4);
+        let game = GetMatch(
+          newTeams[home],
+          newTeams[away],
+          newBonus,
+          Math.log10(70)
+        );
 
         if (
           newTeams[home].name == playerTeam.name ||
@@ -1332,7 +1342,12 @@ function App() {
       let newBonus = Math.round(bonuses[home] * 100) / 100;
       for (let away = 0; away < newTeams.length; away++) {
         if (newTeams[home] !== newTeams[away]) {
-          let game = GetMatch(newTeams[home], newTeams[away], newBonus, 2);
+          let game = GetMatch(
+            newTeams[home],
+            newTeams[away],
+            newBonus,
+            Math.log10(60)
+          );
 
           if (game[0] > game[1]) {
             points[home] += 3;
@@ -1364,7 +1379,12 @@ function App() {
       let newBonus = newTeams[home].name == bonuses[home];
       for (let away = 0; away < home; away++) {
         if (teams[home] !== teams[away]) {
-          let game = GetMatch(teams[home], teams[away], newBonus, 2);
+          let game = GetMatch(
+            teams[home],
+            teams[away],
+            newBonus,
+            Math.log10(60)
+          );
 
           if (game[0] > game[1]) {
             points[home] += 3;
@@ -1393,16 +1413,16 @@ function App() {
   }
 
   function GetMatch(team1, team2, bonus, importance) {
-    let potencia = Math.log10(50 + importance * 5);
+    let powerBase = Math.log10(50 + importance * 5);
     let base =
-      Math.pow(team1.power, potencia) + Math.pow(team2.power, potencia);
-    let team1Power = Math.pow(team1.power, potencia) / base;
-    let team2Power = Math.pow(team2.power, potencia) / base;
+      Math.pow(team1.power, powerBase) + Math.pow(team2.power, powerBase);
+    let team1Power = Math.pow(team1.power, powerBase) / base;
+    let team2Power = Math.pow(team2.power, powerBase) / base;
 
-    let goals = (Math.random() + Math.random()) * 1.5;
+    let goals = Math.random() + Math.random();
 
-    let team1Luck = (Math.random() + Math.random()) * 1.5;
-    let team2Luck = (Math.random() + Math.random()) * 1.5;
+    let team1Luck = (Math.random() + Math.random()) * 2;
+    let team2Luck = (Math.random() + Math.random()) * 2;
 
     let team1Score = Math.round(goals * team1Luck * team1Power + bonus);
     let team2Score = Math.round(goals * team2Luck * team2Power);
@@ -1413,17 +1433,16 @@ function App() {
     return [team1Score, team2Score];
   }
 
-  function GetExtraTime(team1, team2) {
+  function GetExtraTime(team1, team2, powerBase) {
     let base =
-      Math.pow(team1.power, Math.log10(50)) +
-      Math.pow(team2.power, Math.log10(50));
-    let team1Power = Math.pow(team1.power, Math.log10(50)) / base;
-    let team2Power = Math.pow(team2.power, Math.log10(50)) / base;
+      Math.pow(team1.power, powerBase) + Math.pow(team2.power, powerBase);
+    let team1Power = Math.pow(team1.power, powerBase) / base;
+    let team2Power = Math.pow(team2.power, powerBase) / base;
 
     let goals = Math.random() + Math.random();
 
-    let team1Luck = (Math.random() + Math.random()) * 1.5;
-    let team2Luck = (Math.random() + Math.random()) * 1.5;
+    let team1Luck = Math.random() + Math.random() + Math.random();
+    let team2Luck = Math.random() + Math.random() + Math.random();
 
     let team1Score = Math.round(goals * team1Luck * team1Power);
     let team2Score = Math.round(goals * team2Luck * team2Power);
@@ -1434,12 +1453,11 @@ function App() {
     return [team1Score, team2Score];
   }
 
-  function GetPenalties(team1, team2) {
+  function GetPenalties(team1, team2, powerBase) {
     let base =
-      Math.pow(team1.power, Math.log10(50)) +
-      Math.pow(team2.power, Math.log10(50));
-    let team1Power = Math.pow(team1.power, Math.log10(50)) / base;
-    let team2Power = Math.pow(team2.power, Math.log10(50)) / base;
+      Math.pow(team1.power, powerBase) + Math.pow(team2.power, powerBase);
+    let team1Power = Math.pow(team1.power, powerBase) / base;
+    let team2Power = Math.pow(team2.power, powerBase) / base;
 
     let winner = false;
     let team1goals = 0;
@@ -1474,25 +1492,26 @@ function App() {
   }
 
   function GetKnockoutResult(team1, team2, bonus, importance, ida_e_volta) {
+    let powerBase = Math.log10(50 + importance * 5);
     let gameDesc = "";
 
-    let game = GetMatch(team1, team2, bonus, importance);
+    let game = GetMatch(team1, team2, bonus, powerBase);
     let teamGoals1 = game[0];
     let teamGoals2 = game[1];
 
     if (ida_e_volta) {
-      let game2 = GetMatch(team2, team1, -bonus, importance);
+      let game2 = GetMatch(team2, team1, -bonus, powerBase);
       teamGoals1 += game2[1];
       teamGoals2 += game2[0];
     }
 
     if (teamGoals1 == teamGoals2) {
-      let extra = GetExtraTime(team1, team2);
+      let extra = GetExtraTime(team1, team2, powerBase);
       teamGoals1 += extra[0];
       teamGoals2 += extra[1];
 
       if (teamGoals1 == teamGoals2) {
-        let penalties = GetPenalties(team1, team2);
+        let penalties = GetPenalties(team1, team2, powerBase);
         gameDesc = `${team1.name} ${teamGoals1} (${penalties[0]}) x (${penalties[1]}) ${teamGoals2} ${team2.name}`;
         teamGoals1 += penalties[0];
         teamGoals2 += penalties[1];
