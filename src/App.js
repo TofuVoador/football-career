@@ -1017,7 +1017,7 @@ function App() {
     } else if (
       //if played good midde contract
       newPlayer.performance >= newPlayer.team.power / 10 &&
-      newPlayer.age <= 32 &&
+      med > 0 &&
       generalPerformance.length >= 2 &&
       newTransfers[0] != null &&
       contract > 2
@@ -1100,7 +1100,7 @@ function App() {
       //if contract expired
       contract <= 1
     ) {
-      if (med <= -0.2) {
+      if (med < 0) {
         //cant stay
         document.getElementById("decision-stay").style.display = "none";
       } else {
@@ -1177,7 +1177,7 @@ function App() {
           newTeams[home],
           newTeams[away],
           newBonus,
-          Math.log10(50)
+          Math.log10(60)
         );
 
         if (
@@ -1346,7 +1346,7 @@ function App() {
             newTeams[home],
             newTeams[away],
             newBonus,
-            Math.log10(60)
+            Math.log10(50)
           );
 
           if (game[0] > game[1]) {
@@ -1412,8 +1412,7 @@ function App() {
     };
   }
 
-  function GetMatch(team1, team2, bonus, importance) {
-    let powerBase = Math.log10(50 + importance * 5);
+  function GetMatch(team1, team2, bonus, powerBase) {
     let base =
       Math.pow(team1.power, powerBase) + Math.pow(team2.power, powerBase);
     let team1Power = Math.pow(team1.power, powerBase) / base;
@@ -1421,8 +1420,8 @@ function App() {
 
     let goals = Math.random() + Math.random();
 
-    let team1Luck = (Math.random() + Math.random()) * 2;
-    let team2Luck = (Math.random() + Math.random()) * 2;
+    let team1Luck = (Math.random() + Math.random()) * 2.5;
+    let team2Luck = (Math.random() + Math.random()) * 2.5;
 
     let team1Score = Math.round(goals * team1Luck * team1Power + bonus);
     let team2Score = Math.round(goals * team2Luck * team2Power);
@@ -1441,8 +1440,8 @@ function App() {
 
     let goals = Math.random() + Math.random();
 
-    let team1Luck = Math.random() + Math.random() + Math.random();
-    let team2Luck = Math.random() + Math.random() + Math.random();
+    let team1Luck = (Math.random() + Math.random()) * 1.5;
+    let team2Luck = (Math.random() + Math.random()) * 1.5;
 
     let team1Score = Math.round(goals * team1Luck * team1Power);
     let team2Score = Math.round(goals * team2Luck * team2Power);
@@ -1521,7 +1520,6 @@ function App() {
     } else {
       gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name}`;
     }
-
     let result = teamGoals1 > teamGoals2;
 
     return { result: result, game: gameDesc };
@@ -1564,7 +1562,8 @@ function App() {
       let team = interestedTeams[index];
       if (team) {
         let contractDuration = RandomNumber(1, 4);
-        if (currentPlayer.age <= 32) contractDuration += RandomNumber(1, 4);
+        contractDuration += currentPlayer.age <= 32 ? RandomNumber(1, 2) : 0;
+        contractDuration += currentPlayer.age <= 24 ? RandomNumber(1, 2) : 0;
         let expectedOverall =
           GetOverall(
             currentPlayer.potential,
