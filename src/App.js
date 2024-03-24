@@ -1493,7 +1493,7 @@ function App() {
   }
 
   function GetKnockoutResult(team1, team2, bonus, importance, ida_e_volta) {
-    let powerBase = Math.log10(60 + importance * 4);
+    let powerBase = Math.log10(50 + importance * 10);
     let gameDesc = "";
 
     let game = GetMatch(team1, team2, bonus, powerBase);
