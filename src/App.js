@@ -328,11 +328,13 @@ function App() {
     //national league
     let bonuses = Array.from(
       { length: league.teams.length },
-      () => Math.round(70.0 * (Math.random() - Math.random())) / 100
+      () => Math.round(80.0 * (Math.random() - Math.random())) / 100
     );
-    bonuses[
-      league.teams.findIndex((team) => team.name == newPlayer.team.name)
-    ] = newPlayer.performance * 0.7;
+    let playerIndex = league.teams.findIndex(
+      (team) => team.name == newPlayer.team.name
+    );
+    bonuses[playerIndex] += newPlayer.performance * 0.8;
+    bonuses[playerIndex] /= 2;
     const sum = bonuses.reduce((acc, val) => acc + val, 0);
     const adjustment = sum / league.teams.length;
     bonuses = bonuses.map((num) => num - adjustment);
@@ -344,10 +346,10 @@ function App() {
 
     newSeason.leagueTable = leagueResults;
 
-    //top six from the league
-    let topSix = "";
-    for (let p = 0; p < 6; p++) {
-      topSix += `-> ${p + 1}º: ${leagueResults[p].name}`;
+    //top eight from the league
+    let topEight = "";
+    for (let p = 0; p < 8; p++) {
+      topEight += `-> ${p + 1}º: ${leagueResults[p].name}`;
     }
 
     newSeason.awardPoints +=
@@ -360,7 +362,7 @@ function App() {
       triplice++;
     }
 
-    newSeason.titles.push(`Liga: ${playerPosition}º lugar ${topSix}`);
+    newSeason.titles.push(`Liga: ${playerPosition}º lugar ${topEight}`);
 
     let description = "";
     let end = false;
@@ -805,13 +807,13 @@ function App() {
       for (let groupID = 0; groupID < groups.length; groupID++) {
         let bonuses = Array.from(
           { length: groups[groupID].length },
-          () => Math.round(70.0 * (Math.random() - Math.random())) / 100
+          () => Math.round(80.0 * (Math.random() - Math.random())) / 100
         );
-        bonuses[
-          groups[groupID].findIndex(
-            (team) => team.name == newPlayer.nation.name
-          )
-        ] = newPlayer.performance * 0.7;
+        let playerIndex = groups[groupID].findIndex(
+          (team) => team.name == newPlayer.nation.name
+        );
+        bonuses[playerIndex] += newPlayer.performance * 0.8;
+        bonuses[playerIndex] /= 2;
         const sum = bonuses.reduce((acc, val) => acc + val, 0);
         const adjustment = sum / groups[groupID].length;
         bonuses = bonuses.map((num) => num - adjustment);
@@ -1278,7 +1280,7 @@ function App() {
           newTeams[home],
           newTeams[away],
           newBonus,
-          Math.log10(70)
+          Math.log10(80)
         );
 
         if (
@@ -1346,7 +1348,7 @@ function App() {
             newTeams[home],
             newTeams[away],
             newBonus,
-            Math.log10(50)
+            Math.log10(60)
           );
 
           if (game[0] > game[1]) {
@@ -1383,7 +1385,7 @@ function App() {
             teams[home],
             teams[away],
             newBonus,
-            Math.log10(60)
+            Math.log10(70)
           );
 
           if (game[0] > game[1]) {
@@ -1491,7 +1493,7 @@ function App() {
   }
 
   function GetKnockoutResult(team1, team2, bonus, importance, ida_e_volta) {
-    let powerBase = Math.log10(50 + importance * 5);
+    let powerBase = Math.log10(60 + importance * 4);
     let gameDesc = "";
 
     let game = GetMatch(team1, team2, bonus, powerBase);
@@ -1841,7 +1843,7 @@ function App() {
       let nationID = nationIndices[i];
 
       let current = Math.random();
-      let change = Math.round(5 * (last - current)) / 10.0;
+      let change = Math.round(4 * (last - current)) / 10.0;
       last = current;
 
       let newPower = newNations[nationID].power + change;
