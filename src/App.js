@@ -328,12 +328,12 @@ function App() {
     //national league
     let bonuses = Array.from(
       { length: league.teams.length },
-      () => Math.round(80.0 * (Math.random() - Math.random())) / 100
+      () => Math.round(70.0 * (Math.random() - Math.random())) / 100
     );
     let playerIndex = league.teams.findIndex(
       (team) => team.name == newPlayer.team.name
     );
-    bonuses[playerIndex] += newPlayer.performance * 0.8;
+    bonuses[playerIndex] += newPlayer.performance * 0.7;
     bonuses[playerIndex] /= 2;
     const sum = bonuses.reduce((acc, val) => acc + val, 0);
     const adjustment = sum / league.teams.length;
@@ -807,12 +807,12 @@ function App() {
       for (let groupID = 0; groupID < groups.length; groupID++) {
         let bonuses = Array.from(
           { length: groups[groupID].length },
-          () => Math.round(80.0 * (Math.random() - Math.random())) / 100
+          () => Math.round(70.0 * (Math.random() - Math.random())) / 100
         );
         let playerIndex = groups[groupID].findIndex(
           (team) => team.name == newPlayer.nation.name
         );
-        bonuses[playerIndex] += newPlayer.performance * 0.8;
+        bonuses[playerIndex] += newPlayer.performance * 0.7;
         bonuses[playerIndex] /= 2;
         const sum = bonuses.reduce((acc, val) => acc + val, 0);
         const adjustment = sum / groups[groupID].length;
