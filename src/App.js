@@ -24,7 +24,7 @@ const StarPath = [
 
 const TournamentPath = [
   "Grupos",
-  "16 avos",
+  "Playoffs",
   "Oitavas",
   "Quartas",
   "Semi-finais",
@@ -501,6 +501,11 @@ function App() {
 
       let playoffsClassif = DeepClone([...group.table]).splice(0, 24);
 
+      phase++;
+      if (playoffsClassif.some((t) => t.name == newPlayer.team.name)) {
+        playerPhase++;
+      }
+
       let classif = playoffsClassif.splice(0, 8);
 
       let games = "";
@@ -537,18 +542,16 @@ function App() {
         }
       }
 
-      description += `-> Playoffs${
-        playerGame != "" && phase + 1 < TournamentPath.length - 1
-          ? playerGame
-          : ""
+      description += `-> ${TournamentPath[phase]}${
+        playerGame != "" && phase < TournamentPath.length - 1 ? playerGame : ""
       }`;
       description += games;
 
       if (classif.some((t) => t.name == newPlayer.team.name)) {
-        playerPhase += 2;
+        playerPhase++;
       }
 
-      phase += 2;
+      phase++;
       end = false;
       while (!end) {
         let games = "";
