@@ -90,7 +90,7 @@ function App() {
   const [generalPerformance, setGeneralPerformance] = useState([]);
   const [maxFame, setMaxFame] = useState(0);
 
-  const [transfers, setTransfers] = useState(GetInitTeams(1));
+  const [transfers, setTransfers] = useState([]);
 
   const initStat = GetNewInit();
 
@@ -105,8 +105,10 @@ function App() {
     newPlayer.position = initStat.pos;
     newPlayer.nation = initStat.nat;
 
+    let newTeams = UpdateTeamsStats(25.0);
+
     setPlayer(newPlayer);
-    setTransfers(GetInitTeams(initStat.pos.value));
+    setTransfers(GetInitTeams(initStat.pos.value, newTeams));
   }
 
   function ChooseTeam(newTeam = null) {
@@ -224,7 +226,7 @@ function App() {
     else if (starting < 0) starting = 0;
 
     //change teams power on each season
-    let newTeams = UpdateTeamsStats();
+    let newTeams = UpdateTeamsStats(50.0);
     let newExtraTeams = UpdateExtraTeamsStats();
 
     let allTeams = [];
@@ -1397,7 +1399,7 @@ function App() {
     let team1Power = Math.pow(team1.power, 2) / base;
     let team2Power = Math.pow(team2.power, 2) / base;
 
-    let goals = Math.random() + Math.random();
+    let goals = Math.random() + Math.random() * 1.5;
 
     let team1Luck = (Math.random() + Math.random()) * 2;
     let team2Luck = (Math.random() + Math.random()) * 2;
@@ -1502,7 +1504,7 @@ function App() {
   }
 
   function GetNewTeams(currentPlayer) {
-    let allTeams = Teams.reduce((acumulador, liga) => {
+    let allTeams = teams.reduce((acumulador, liga) => {
       return acumulador.concat(liga.teams);
     }, []);
 
@@ -1573,8 +1575,8 @@ function App() {
     return contracts;
   }
 
-  function GetInitTeams(posValue) {
-    let allTeams = Teams.reduce((acumulador, liga) => {
+  function GetInitTeams(posValue, newTeams) {
+    let allTeams = newTeams.reduce((acumulador, liga) => {
       return acumulador.concat(liga.teams);
     }, []);
 
@@ -1724,7 +1726,7 @@ function App() {
     document.getElementById("chart").style.display = "flex";
   }
 
-  function UpdateTeamsStats() {
+  function UpdateTeamsStats(limit) {
     let newTeams = DeepClone([...teams]);
 
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
@@ -1742,7 +1744,7 @@ function App() {
         let teamID = teamIndices[i];
 
         let current = Math.random();
-        let change = Math.round(50.0 * (last - current)) / 100.0;
+        let change = Math.round(limit * (last - current)) / 100.0;
         last = current;
 
         let newPower = newTeams[leagueID].teams[teamID].power + change;
@@ -1779,7 +1781,7 @@ function App() {
       let teamID = teamIndices[i];
 
       let current = Math.random();
-      let change = Math.round(20.0 * (last - current)) / 100.0;
+      let change = Math.round(25.0 * (last - current)) / 100.0;
       last = current;
 
       let newPower = newTeams[teamID].power + change;
@@ -1880,11 +1882,8 @@ function App() {
           onClick={() => ChooseTeam()}
         >
           <p>
-            Continuar em {player.team == null ? "" : player.team.name} (
-            {(
-              Math.round(player.team == null ? 0 : player.team.power * 50.0) /
-              100.0
-            ).toFixed(2)}
+            Continuar em {player.team == null ? "null" : player.team.name} (
+            {player.team == null ? "null" : (player.team.power / 2).toFixed(2)}
             ⭐)
           </p>
           <p>
@@ -1906,7 +1905,7 @@ function App() {
             para {transfers[0] == null ? "null" : transfers[0].team.name} (
             {transfers[0] == null
               ? "null"
-              : (Math.round(transfers[0].team.power * 50.0) / 100.0).toFixed(2)}
+              : (transfers[0].team.power / 2).toFixed(2)}
             ⭐)
           </p>
           <p>
@@ -1933,7 +1932,7 @@ function App() {
             para {transfers[1] == null ? "null" : transfers[1].team.name} (
             {transfers[1] == null
               ? "null"
-              : (Math.round(transfers[1].team.power * 50.0) / 100.0).toFixed(2)}
+              : (transfers[1].team.power / 2).toFixed(2)}
             ⭐)
           </p>
           <p>
@@ -1960,7 +1959,7 @@ function App() {
             para {transfers[2] == null ? "null" : transfers[2].team.name} (
             {transfers[2] == null
               ? "null"
-              : (Math.round(transfers[2].team.power * 50.0) / 100.0).toFixed(2)}
+              : (transfers[2].team.power / 2).toFixed(2)}
             ⭐)
           </p>
           <p>
