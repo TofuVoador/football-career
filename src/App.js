@@ -408,7 +408,6 @@ function App() {
             : team2.name == newPlayer.team.name
             ? -newSeason.performance * playerEffect
             : 0,
-          phase,
           phase >= TournamentPath.length - 2 ? false : true
         );
 
@@ -522,7 +521,6 @@ function App() {
             : team2.name == newPlayer.team.name
             ? -newSeason.performance
             : 0,
-          phase,
           true
         );
 
@@ -569,7 +567,6 @@ function App() {
               : team2.name == newPlayer.team.name
               ? -newSeason.performance * playerEffect
               : 0,
-            phase,
             phase >= TournamentPath.length - 2 ? false : true
           );
 
@@ -689,7 +686,6 @@ function App() {
               : team2.name == newPlayer.team.name
               ? -newSeason.performance * playerEffect
               : 0,
-            phase,
             phase >= TournamentPath.length - 2 ? false : true
           );
 
@@ -863,7 +859,6 @@ function App() {
               : team2.name == player.nation.name
               ? -newSeason.performance * playerEffect
               : 0,
-            phase,
             false
           );
 
@@ -1178,12 +1173,7 @@ function App() {
             ? -bonus
             : 0;
 
-        let game = GetMatch(
-          newTeams[home],
-          newTeams[away],
-          newBonus,
-          Math.log10(60)
-        );
+        let game = GetMatch(newTeams[home], newTeams[away], newBonus);
 
         if (
           newTeams[home].name == playerTeam.name ||
@@ -1279,12 +1269,7 @@ function App() {
             ? -bonus
             : 0;
 
-        let game = GetMatch(
-          newTeams[home],
-          newTeams[away],
-          newBonus,
-          Math.log10(80)
-        );
+        let game = GetMatch(newTeams[home], newTeams[away], newBonus);
 
         if (
           newTeams[home].name == playerTeam.name ||
@@ -1347,12 +1332,7 @@ function App() {
       let newBonus = Math.round(bonuses[home] * 100) / 100;
       for (let away = 0; away < newTeams.length; away++) {
         if (newTeams[home] !== newTeams[away]) {
-          let game = GetMatch(
-            newTeams[home],
-            newTeams[away],
-            newBonus,
-            Math.log10(60)
-          );
+          let game = GetMatch(newTeams[home], newTeams[away], newBonus);
 
           if (game[0] > game[1]) {
             points[home] += 3;
@@ -1384,12 +1364,7 @@ function App() {
       let newBonus = newTeams[home].name == bonuses[home];
       for (let away = 0; away < home; away++) {
         if (teams[home] !== teams[away]) {
-          let game = GetMatch(
-            teams[home],
-            teams[away],
-            newBonus,
-            Math.log10(70)
-          );
+          let game = GetMatch(teams[home], teams[away], newBonus);
 
           if (game[0] > game[1]) {
             points[home] += 3;
@@ -1417,11 +1392,10 @@ function App() {
     };
   }
 
-  function GetMatch(team1, team2, bonus, powerBase) {
-    let base =
-      Math.pow(team1.power, powerBase) + Math.pow(team2.power, powerBase);
-    let team1Power = Math.pow(team1.power, powerBase) / base;
-    let team2Power = Math.pow(team2.power, powerBase) / base;
+  function GetMatch(team1, team2, bonus) {
+    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
+    let team1Power = Math.pow(team1.power, 2) / base;
+    let team2Power = Math.pow(team2.power, 2) / base;
 
     let goals = Math.random() + Math.random();
 
@@ -1437,11 +1411,10 @@ function App() {
     return [team1Score, team2Score];
   }
 
-  function GetExtraTime(team1, team2, powerBase) {
-    let base =
-      Math.pow(team1.power, powerBase) + Math.pow(team2.power, powerBase);
-    let team1Power = Math.pow(team1.power, powerBase) / base;
-    let team2Power = Math.pow(team2.power, powerBase) / base;
+  function GetExtraTime(team1, team2) {
+    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
+    let team1Power = Math.pow(team1.power, 2) / base;
+    let team2Power = Math.pow(team2.power, 2) / base;
 
     let goals = Math.random() + Math.random();
 
@@ -1457,11 +1430,10 @@ function App() {
     return [team1Score, team2Score];
   }
 
-  function GetPenalties(team1, team2, powerBase) {
-    let base =
-      Math.pow(team1.power, powerBase) + Math.pow(team2.power, powerBase);
-    let team1Power = Math.pow(team1.power, powerBase) / base;
-    let team2Power = Math.pow(team2.power, powerBase) / base;
+  function GetPenalties(team1, team2) {
+    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
+    let team1Power = Math.pow(team1.power, 2) / base;
+    let team2Power = Math.pow(team2.power, 2) / base;
 
     let winner = false;
     let team1goals = 0;
@@ -1495,27 +1467,26 @@ function App() {
     return [team1goals, team2goals];
   }
 
-  function GetKnockoutResult(team1, team2, bonus, importance, ida_e_volta) {
-    let powerBase = Math.log10(50 + importance * 10);
+  function GetKnockoutResult(team1, team2, bonus, ida_e_volta) {
     let gameDesc = "";
 
-    let game = GetMatch(team1, team2, bonus, powerBase);
+    let game = GetMatch(team1, team2, bonus);
     let teamGoals1 = game[0];
     let teamGoals2 = game[1];
 
     if (ida_e_volta) {
-      let game2 = GetMatch(team2, team1, -bonus, powerBase);
+      let game2 = GetMatch(team2, team1, -bonus);
       teamGoals1 += game2[1];
       teamGoals2 += game2[0];
     }
 
     if (teamGoals1 == teamGoals2) {
-      let extra = GetExtraTime(team1, team2, powerBase);
+      let extra = GetExtraTime(team1, team2);
       teamGoals1 += extra[0];
       teamGoals2 += extra[1];
 
       if (teamGoals1 == teamGoals2) {
-        let penalties = GetPenalties(team1, team2, powerBase);
+        let penalties = GetPenalties(team1, team2);
         gameDesc = `${team1.name} ${teamGoals1} (${penalties[0]}) x (${penalties[1]}) ${teamGoals2} ${team2.name}`;
         teamGoals1 += penalties[0];
         teamGoals2 += penalties[1];
@@ -1771,13 +1742,12 @@ function App() {
         let teamID = teamIndices[i];
 
         let current = Math.random();
-        let change = Math.round(6 * (last - current)) / 10.0;
+        let change = Math.round(50.0 * (last - current)) / 100.0;
         last = current;
 
         let newPower = newTeams[leagueID].teams[teamID].power + change;
-
         newTeams[leagueID].teams[teamID].power =
-          Math.round(10.0 * newPower) / 10;
+          Math.round(100.0 * newPower) / 100;
 
         if (newTeams[leagueID].teams[teamID].power > 10)
           newTeams[leagueID].teams[teamID].power = 10;
@@ -1809,11 +1779,11 @@ function App() {
       let teamID = teamIndices[i];
 
       let current = Math.random();
-      let change = Math.round(4 * (last - current)) / 10.0;
+      let change = Math.round(20.0 * (last - current)) / 100.0;
       last = current;
 
       let newPower = newTeams[teamID].power + change;
-      newTeams[teamID].power = Math.round(10.0 * newPower) / 10;
+      newTeams[teamID].power = Math.round(100.0 * newPower) / 100.0;
 
       if (newTeams[teamID].power > 10) newTeams[teamID].power = 10;
       else if (newTeams[teamID].power < 2) newTeams[teamID].power = 2;
@@ -1846,15 +1816,12 @@ function App() {
       let nationID = nationIndices[i];
 
       let current = Math.random();
-      let change = Math.round(4 * (last - current)) / 10.0;
+      let change = Math.round(50.0 * (last - current)) / 100.0;
       last = current;
 
       let newPower = newNations[nationID].power + change;
 
-      newNations[nationID].power = Math.round(10.0 * newPower) / 10.0;
-
-      newNations[nationID].power =
-        Math.round(newNations[nationID].power * 10) / 10;
+      newNations[nationID].power = Math.round(100.0 * newPower) / 100.0;
 
       if (newNations[nationID].power > 10) newNations[nationID].power = 10;
       else if (newNations[nationID].power < 2) newNations[nationID].power = 2;
@@ -1915,8 +1882,9 @@ function App() {
           <p>
             Continuar em {player.team == null ? "" : player.team.name} (
             {(
-              Math.round(player.team == null ? 0 : player.team.power * 5) / 10
-            ).toFixed(1)}
+              Math.round(player.team == null ? 0 : player.team.power * 50.0) /
+              100.0
+            ).toFixed(2)}
             ⭐)
           </p>
           <p>
@@ -1938,7 +1906,7 @@ function App() {
             para {transfers[0] == null ? "null" : transfers[0].team.name} (
             {transfers[0] == null
               ? "null"
-              : (Math.round(transfers[0].team.power * 5) / 10).toFixed(1)}
+              : (Math.round(transfers[0].team.power * 50.0) / 100.0).toFixed(2)}
             ⭐)
           </p>
           <p>
@@ -1965,7 +1933,7 @@ function App() {
             para {transfers[1] == null ? "null" : transfers[1].team.name} (
             {transfers[1] == null
               ? "null"
-              : (Math.round(transfers[1].team.power * 5) / 10).toFixed(1)}
+              : (Math.round(transfers[1].team.power * 50.0) / 100.0).toFixed(2)}
             ⭐)
           </p>
           <p>
@@ -1992,7 +1960,7 @@ function App() {
             para {transfers[2] == null ? "null" : transfers[2].team.name} (
             {transfers[2] == null
               ? "null"
-              : (Math.round(transfers[2].team.power * 5) / 10).toFixed(1)}
+              : (Math.round(transfers[2].team.power * 50.0) / 100.0).toFixed(2)}
             ⭐)
           </p>
           <p>

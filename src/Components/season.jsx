@@ -116,7 +116,8 @@ const Season = (props) => {
             <summary>Top 10</summary>
             {season.top10.map((team, index) => (
               <p key={team + "top10" + index}>
-                {team.name} ({(Math.round(team.power * 5) / 10).toFixed(1)})
+                {team.name} (
+                {(Math.round(team.power * 50.0) / 100.0).toFixed(2)})
               </p>
             ))}
           </details>
@@ -124,7 +125,8 @@ const Season = (props) => {
             <summary>Top Seleções</summary>
             {season.topNations.map((team, index) => (
               <p key={team + "topNations" + index}>
-                {team.name} ({(Math.round(team.power * 5) / 10).toFixed(1)})
+                {team.name} (
+                {(Math.round(team.power * 50.0) / 100.0).toFixed(2)})
               </p>
             ))}
           </details>

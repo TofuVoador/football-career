@@ -1,122 +1,122 @@
 [
   {
-    "name": "Galatasaray",
-    "league": "Süper Lig",
-    "power": 6
-  },
-  {
     "name": "RB Salzburg",
     "league": "Austrian Bundesliga",
-    "power": 6
+    "power": 7
   },
   {
     "name": "Shakhtar",
     "league": "Ukrainian PL",
-    "power": 6
+    "power": 7
+  },
+  {
+    "name": "Galatasaray",
+    "league": "Süper Lig",
+    "power": 6.8
   },
   {
     "name": "Zenit",
     "league": "Russian PL",
-    "power": 6
-  },
-  {
-    "name": "Celtic",
-    "league": "Scottish Premiership",
-    "power": 5.5
+    "power": 6.8
   },
   {
     "name": "Copenhagen",
     "league": "Danish Superliga",
-    "power": 5.5
-  },
-  {
-    "name": "Olympiacos",
-    "league": "Greek Super League",
-    "power": 5.5
+    "power": 6.6
   },
   {
     "name": "Rangers",
     "league": "Scottish Premiership",
-    "power": 5.5
+    "power": 6.6
+  },
+  {
+    "name": "Celtic",
+    "league": "Scottish Premiership",
+    "power": 6.4
+  },
+  {
+    "name": "Olympiacos",
+    "league": "Greek Super League",
+    "power": 6.4
   },
   {
     "name": "Besiktas",
     "league": "Süper Lig",
-    "power": 5
-  },
-  {
-    "name": "CSKA",
-    "league": "Russian PL",
-    "power": 5
-  },
-  {
-    "name": "Malmö FF",
-    "league": "Allsvenskan",
-    "power": 5
+    "power": 6.2
   },
   {
     "name": "Young Boys",
     "league": "Swiss Super League",
-    "power": 5
+    "power": 6.2
   },
   {
-    "name": "Basel",
-    "league": "Swiss Super League",
-    "power": 4.5
+    "name": "CSKA",
+    "league": "Russian PL",
+    "power": 6
+  },
+  {
+    "name": "Malmö FF",
+    "league": "Allsvenskan",
+    "power": 6
   },
   {
     "name": "Dynamo Kyiv",
     "league": "Ukrainian PL",
-    "power": 4.5
+    "power": 5.8
   },
   {
     "name": "Fenerbahçe",
     "league": "Süper Lig",
-    "power": 4.5
+    "power": 5.8
+  },
+  {
+    "name": "Basel",
+    "league": "Swiss Super League",
+    "power": 5.6
   },
   {
     "name": "Rapid Vienna",
     "league": "Austrian Bundesliga",
-    "power": 4.5
+    "power": 5.6
   },
   {
     "name": "Dynamo Moscow",
     "league": "Russian PL",
-    "power": 4
-  },
-  {
-    "name": "Midtjylland",
-    "league": "Danish Superliga",
-    "power": 4
-  },
-  {
-    "name": "PAOK",
-    "league": "Greek Super League",
-    "power": 4
+    "power": 5.4
   },
   {
     "name": "Rosenborg",
     "league": "Eliteserien",
-    "power": 4
+    "power": 5.4
+  },
+  {
+    "name": "Midtjylland",
+    "league": "Danish Superliga",
+    "power": 5.2
+  },
+  {
+    "name": "PAOK",
+    "league": "Greek Super League",
+    "power": 5.2
   },
   {
     "name": "Aberdeen",
     "league": "Scottish Premiership",
-    "power": 3.5
+    "power": 5
   },
   {
     "name": "Spartak Moscou",
     "league": "Russian PL",
-    "power": 3.5
+    "power": 5
   },
   {
     "name": "Trabzonspor",
     "league": "Süper Lig",
-    "power": 3.5
+    "power": 5
   },
   {
     "name": "Zorya Luhansk",
     "league": "Ukrainian PL",
-    "power": 3.5
+    "power": 5
   }
 ]
