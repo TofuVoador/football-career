@@ -1,242 +1,267 @@
 [
   {
-    "name": "França",
-    "continent": "Europa",
-    "power": 9.8
+    "name": "AFC",
+    "teams": [
+      {
+        "name": "Japão",
+        "continent": "AFC",
+        "power": 7.2
+      },
+      {
+        "name": "Irã",
+        "continent": "AFC",
+        "power": 6.6
+      },
+      {
+        "name": "Austrália",
+        "continent": "AFC",
+        "power": 6.4
+      },
+      {
+        "name": "Coréia do Sul",
+        "continent": "AFC",
+        "power": 6.4
+      },
+      {
+        "name": "Catar",
+        "continent": "AFC",
+        "power": 5.2
+      },
+      {
+        "name": "Arábia Saudita",
+        "continent": "AFC",
+        "power": 4.8
+      },
+      {
+        "name": "Emirados Árabes Unidos",
+        "continent": "AFC",
+        "power": 4
+      },
+      {
+        "name": "Iraque",
+        "continent": "AFC",
+        "power": 4
+      }
+    ]
   },
   {
-    "name": "Inglaterra",
-    "continent": "Europa",
-    "power": 9.6
+    "name": "CAF",
+    "teams": [
+      {
+        "name": "Marrocos",
+        "continent": "CAF",
+        "power": 7.4
+      },
+      {
+        "name": "Nigéria",
+        "continent": "CAF",
+        "power": 7.2
+      },
+      {
+        "name": "Senegal",
+        "continent": "CAF",
+        "power": 6.8
+      },
+      {
+        "name": "Egito",
+        "continent": "CAF",
+        "power": 5.4
+      },
+      {
+        "name": "Costa do Marfim",
+        "continent": "CAF",
+        "power": 5.2
+      },
+      {
+        "name": "Argélia",
+        "continent": "CAF",
+        "power": 4.8
+      },
+      {
+        "name": "Gana",
+        "continent": "CAF",
+        "power": 4.6
+      },
+      {
+        "name": "África do Sul",
+        "continent": "CAF",
+        "power": 4.2
+      },
+      {
+        "name": "Camarões",
+        "continent": "CAF",
+        "power": 4.2
+      }
+    ]
   },
   {
-    "name": "Espanha",
-    "continent": "Europa",
-    "power": 9.4
+    "name": "CONCACAF",
+    "teams": [
+      {
+        "name": "Estados Unidos",
+        "continent": "CONCACAF",
+        "power": 7.4
+      },
+      {
+        "name": "México",
+        "continent": "CONCACAF",
+        "power": 7.0
+      },
+      {
+        "name": "Canadá",
+        "continent": "CONCACAF",
+        "power": 5.0
+      },
+      {
+        "name": "Costa Rica",
+        "continent": "CONCACAF",
+        "power": 4.6
+      },
+      {
+        "name": "Panamá",
+        "continent": "CONCACAF",
+        "power": 4.4
+      }
+    ]
   },
   {
-    "name": "Argentina",
-    "continent": "América do Sul",
-    "power": 9.2
+    "name": "CONMEBOL",
+    "teams": [
+      {
+        "name": "Argentina",
+        "continent": "CONCACAF",
+        "power": 9.2
+      },
+      {
+        "name": "Brasil",
+        "continent": "CONCACAF",
+        "power": 9.0
+      },
+      {
+        "name": "Uruguai",
+        "continent": "CONCACAF",
+        "power": 7.6
+      },
+      {
+        "name": "Colômbia",
+        "continent": "CONCACAF",
+        "power": 7.0
+      },
+      {
+        "name": "Equador",
+        "continent": "CONCACAF",
+        "power": 5.8
+      },
+      {
+        "name": "Peru",
+        "continent": "CONCACAF",
+        "power": 5.6
+      },
+      {
+        "name": "Chile",
+        "continent": "CONCACAF",
+        "power": 5.0
+      },
+      {
+        "name": "Paraguai",
+        "continent": "CONCACAF",
+        "power": 4.4
+      }
+    ]
   },
   {
-    "name": "Brasil",
-    "continent": "América do Sul",
-    "power": 9
-  },
-  {
-    "name": "Alemanha",
-    "continent": "Europa",
-    "power": 8.8
-  },
-  {
-    "name": "Países Baixos",
-    "continent": "Europa",
-    "power": 8.6
-  },
-  {
-    "name": "Itália",
-    "continent": "Europa",
-    "power": 8.4
-  },
-  {
-    "name": "Portugal",
-    "continent": "Europa",
-    "power": 8.2
-  },
-  {
-    "name": "Croácia",
-    "continent": "Europa",
-    "power": 8
-  },
-  {
-    "name": "Bélgica",
-    "continent": "Europa",
-    "power": 7.8
-  },
-  {
-    "name": "Uruguai",
-    "continent": "América do Sul",
-    "power": 7.6
-  },
-  {
-    "name": "Arábia Saudita",
-    "continent": "Ásia",
-    "power": 7.4
-  },
-  {
-    "name": "Dinamarca",
-    "continent": "Europa",
-    "power": 7.4
-  },
-  {
-    "name": "Japão",
-    "continent": "Ásia",
-    "power": 7.2
-  },
-  {
-    "name": "Marrocos",
-    "continent": "África",
-    "power": 7.2
-  },
-  {
-    "name": "Estados Unidos",
-    "continent": "América do Norte",
-    "power": 7
-  },
-  {
-    "name": "Nigéria",
-    "continent": "África",
-    "power": 7
-  },
-  {
-    "name": "México",
-    "continent": "América do Norte",
-    "power": 6.8
-  },
-  {
-    "name": "Suíça",
-    "continent": "Europa",
-    "power": 6.8
-  },
-  {
-    "name": "Irã",
-    "continent": "Ásia",
-    "power": 6.6
-  },
-  {
-    "name": "Noruega",
-    "continent": "Europa",
-    "power": 6.6
-  },
-  {
-    "name": "Senegal",
-    "continent": "África",
-    "power": 6.4
-  },
-  {
-    "name": "Suécia",
-    "continent": "Europa",
-    "power": 6.4
-  },
-  {
-    "name": "Colômbia",
-    "continent": "América do Sul",
-    "power": 6.2
-  },
-  {
-    "name": "Sérvia",
-    "continent": "Europa",
-    "power": 6.2
-  },
-  {
-    "name": "Costa do Marfim",
-    "continent": "África",
-    "power": 6
-  },
-  {
-    "name": "Polônia",
-    "continent": "Europa",
-    "power": 6
-  },
-  {
-    "name": "Áustria",
-    "continent": "Europa",
-    "power": 5.8
-  },
-  {
-    "name": "Egito",
-    "continent": "África",
-    "power": 5.8
-  },
-  {
-    "name": "Argélia",
-    "continent": "África",
-    "power": 5.6
-  },
-  {
-    "name": "Canadá",
-    "continent": "América do Norte",
-    "power": 5.6
-  },
-  {
-    "name": "Chile",
-    "continent": "América do Sul",
-    "power": 5.4
-  },
-  {
-    "name": "Gana",
-    "continent": "África",
-    "power": 5.4
-  },
-  {
-    "name": "Coréia do Sul",
-    "continent": "Ásia",
-    "power": 5.2
-  },
-  {
-    "name": "Tunísia",
-    "continent": "África",
-    "power": 5.2
-  },
-  {
-    "name": "Camarões",
-    "continent": "África",
-    "power": 5
-  },
-  {
-    "name": "Costa Rica",
-    "continent": "América do Norte",
-    "power": 5
-  },
-  {
-    "name": "Austrália",
-    "continent": "Ásia",
-    "power": 4.8
-  },
-  {
-    "name": "Peru",
-    "continent": "América do Sul",
-    "power": 4.8
-  },
-  {
-    "name": "África do Sul",
-    "continent": "África",
-    "power": 4.6
-  },
-  {
-    "name": "Catar",
-    "continent": "Ásia",
-    "power": 4.6
-  },
-  {
-    "name": "Emirados Árabes Unidos",
-    "continent": "Ásia",
-    "power": 4.4
-  },
-  {
-    "name": "Paraguai",
-    "continent": "América do Sul",
-    "power": 4.4
-  },
-  {
-    "name": "Bolívia",
-    "continent": "América do Sul",
-    "power": 4.2
-  },
-  {
-    "name": "Nova Zelândia",
-    "continent": "Ásia",
-    "power": 4.2
-  },
-  {
-    "name": "Honduras",
-    "continent": "América do Norte",
-    "power": 4
-  },
-  {
-    "name": "Jamaica",
-    "continent": "América do Norte",
-    "power": 4
+    "name": "UEFA",
+    "teams": [
+      {
+        "name": "França",
+        "continent": "UEFA",
+        "power": 9.8
+      },
+      {
+        "name": "Inglaterra",
+        "continent": "UEFA",
+        "power": 9.6
+      },
+      {
+        "name": "Espanha",
+        "continent": "UEFA",
+        "power": 9.4
+      },
+      {
+        "name": "Alemanha",
+        "continent": "UEFA",
+        "power": 8.8
+      },
+      {
+        "name": "Países Baixos",
+        "continent": "UEFA",
+        "power": 8.6
+      },
+      {
+        "name": "Itália",
+        "continent": "UEFA",
+        "power": 8.4
+      },
+      {
+        "name": "Portugal",
+        "continent": "UEFA",
+        "power": 8.2
+      },
+      {
+        "name": "Croácia",
+        "continent": "UEFA",
+        "power": 8.0
+      },
+      {
+        "name": "Belgica",
+        "continent": "UEFA",
+        "power": 7.8
+      },
+      {
+        "name": "Dinamarca",
+        "continent": "UEFA",
+        "power": 6.8
+      },
+      {
+        "name": "Suíça",
+        "continent": "UEFA",
+        "power": 6.6
+      },
+      {
+        "name": "Áustria",
+        "continent": "UEFA",
+        "power": 6.2
+      },
+      {
+        "name": "Ucrânia",
+        "continent": "UEFA",
+        "power": 6.2
+      },
+      {
+        "name": "Hungria",
+        "continent": "UEFA",
+        "power": 6.0
+      },
+      {
+        "name": "Suécia",
+        "continent": "UEFA",
+        "power": 6.0
+      },
+      {
+        "name": "Sérvia",
+        "continent": "UEFA",
+        "power": 5.8
+      },
+      {
+        "name": "País de Gales",
+        "continent": "UEFA",
+        "power": 5.6
+      },
+      {
+        "name": "Noruega",
+        "continent": "UEFA",
+        "power": 5.4
+      }
+    ]
   }
 ]

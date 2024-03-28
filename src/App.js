@@ -241,7 +241,11 @@ function App() {
     let top10 = allTeams.slice(0, 10);
 
     //change nations power on each season
-    let allNations = UpdateNationsStats();
+    let newNat = UpdateNationsStats();
+    let allNations = [];
+    for (let regionID = 0; regionID < newNat.length; regionID++) {
+      allNations = allNations.concat([...newNat[regionID].teams]);
+    }
     allNations.sort((a, b) => {
       return b.power - a.power;
     });
@@ -749,7 +753,13 @@ function App() {
       phase = 0;
       playerPhase = 0;
 
-      let allNations = DeepClone([...nations]);
+      let allNations = [];
+      for (let regionID = 0; regionID < nations.length; regionID++) {
+        allNations = allNations.concat(DeepClone([...nations[regionID].teams]));
+      }
+      allNations.sort((a, b) => {
+        return b.power - a.power;
+      });
 
       //was called by the manager
       let playedWorldCup =
@@ -778,7 +788,7 @@ function App() {
             );
           } else {
             //if there is no other nation available, try repeating Europe
-            validNations = pots[potID].filter((n) => n.continent == "Europa");
+            validNations = pots[potID].filter((n) => n.continent == "UEFA");
             if (validNations.length > 0) {
               let randomIndex = RandomNumber(0, validNations.length - 1);
               groups[GroupID].push(validNations[randomIndex]);
@@ -1671,30 +1681,35 @@ function App() {
   }
 
   function GetNewInit() {
-    let newPos = DeepClone(Positions);
-    for (let i = newPos.length - 1; i > 0; i--) {
+    let allPos = DeepClone(Positions);
+    for (let i = allPos.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [newPos[i], newPos[j]] = [newPos[j], newPos[i]];
+      [allPos[i], allPos[j]] = [allPos[j], allPos[i]];
     }
 
     let newNat = DeepClone(Nations);
-    for (let i = newNat.length - 1; i > 0; i--) {
+    let allNat = [];
+    for (let i = 0; i < newNat.length; i++) {
+      allNat = allNat.concat(newNat[i].teams);
+    }
+
+    for (let i = allNat.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [newNat[i], newNat[j]] = [newNat[j], newNat[i]];
+      [allNat[i], allNat[j]] = [allNat[j], allNat[i]];
     }
 
     return [
       {
-        pos: newPos[0],
-        nat: newNat[0],
+        pos: allPos[0],
+        nat: allNat[0],
       },
       {
-        pos: newPos[1],
-        nat: newNat[1],
+        pos: allPos[1],
+        nat: allNat[1],
       },
       {
-        pos: newPos[2],
-        nat: newNat[2],
+        pos: allPos[2],
+        nat: allNat[2],
       },
     ];
   }
@@ -1804,41 +1819,47 @@ function App() {
   }
 
   function UpdateNationsStats() {
-    let newNations = DeepClone([...nations]);
+    let allNations = DeepClone([...nations]);
 
-    let last = Math.random();
-    let nationIndices = Array.from(
-      { length: newNations.length },
-      (_, index) => index
-    );
-    for (let i = nationIndices.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [nationIndices[i], nationIndices[j]] = [
-        nationIndices[j],
-        nationIndices[i],
-      ];
+    for (let leagueID = 0; leagueID < allNations.length; leagueID++) {
+      let last = Math.random();
+      let nationIndices = Array.from(
+        { length: allNations[leagueID].teams.length },
+        (_, index) => index
+      );
+      for (let i = nationIndices.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [nationIndices[i], nationIndices[j]] = [
+          nationIndices[j],
+          nationIndices[i],
+        ];
+      }
+
+      for (let i = 0; i < allNations[leagueID].teams.length; i++) {
+        let nationID = nationIndices[i];
+
+        let current = Math.random();
+        let change = Math.round(50.0 * (last - current)) / 100.0;
+        last = current;
+
+        let newPower = allNations[leagueID].teams[nationID].power + change;
+
+        allNations[leagueID].teams[nationID].power =
+          Math.round(100.0 * newPower) / 100.0;
+
+        if (allNations[leagueID].teams[nationID].power > 10)
+          allNations[leagueID].teams[nationID].power = 10;
+        else if (allNations[leagueID].teams[nationID].power < 2)
+          allNations[leagueID].teams[nationID].power = 2;
+      }
+
+      allNations[leagueID].teams.sort((a, b) => {
+        return b.power - a.power;
+      });
     }
 
-    for (let i = 0; i < newNations.length; i++) {
-      let nationID = nationIndices[i];
-
-      let current = Math.random();
-      let change = Math.round(50.0 * (last - current)) / 100.0;
-      last = current;
-
-      let newPower = newNations[nationID].power + change;
-
-      newNations[nationID].power = Math.round(100.0 * newPower) / 100.0;
-
-      if (newNations[nationID].power > 10) newNations[nationID].power = 10;
-      else if (newNations[nationID].power < 2) newNations[nationID].power = 2;
-    }
-
-    newNations.sort((a, b) => {
-      return b.power - a.power;
-    });
-    setNations(newNations);
-    return newNations;
+    setNations(allNations);
+    return allNations;
   }
 
   return (
