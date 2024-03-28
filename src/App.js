@@ -754,12 +754,37 @@ function App() {
       playerPhase = 0;
 
       let allNations = [];
+      let playoffClassif = [];
       for (let regionID = 0; regionID < nations.length; regionID++) {
-        allNations = allNations.concat(DeepClone([...nations[regionID].teams]));
+        let region = DeepClone(nations[regionID]);
+        region.teams.sort((a, b) => {
+          return b.power - a.power - Math.random();
+        });
+        let classif = region.teams.splice(0, region.worldCupSpots);
+
+        allNations = allNations.concat(classif);
+        playoffClassif = playoffClassif.concat(region.teams);
       }
+
+      for (let i = playoffClassif.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [playoffClassif[i], playoffClassif[j]] = [
+          playoffClassif[j],
+          playoffClassif[i],
+        ];
+      }
+
+      allNations = allNations.concat(playoffClassif.splice(0, 4));
+
       allNations.sort((a, b) => {
         return b.power - a.power;
       });
+
+      let classifToWorldCup = allNations.some(
+        (t) => t.name == newPlayer.nation.name
+      );
+
+      if (!classifToWorldCup) description = "-> Grupos => Sem Dados";
 
       //was called by the manager
       let playedWorldCup =
@@ -926,9 +951,11 @@ function App() {
         }
       }
 
-      description = `Copa do Mundo: ${TournamentPath[playerPhase]} ${
-        playedWorldCup ? "" : " (Não Convocado)"
-      } ${description}`;
+      description = `Copa do Mundo: ${
+        classifToWorldCup
+          ? TournamentPath[playerPhase]
+          : "Seleção não classificada"
+      } ${playedWorldCup ? "" : " (Não Convocado)"} ${description}`;
       newSeason.titles.push(description);
     }
 

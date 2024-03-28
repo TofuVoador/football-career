@@ -1,6 +1,7 @@
 [
   {
     "name": "AFC",
+    "worldCupSpots": 8,
     "teams": [
       {
         "name": "Japão",
@@ -41,11 +42,22 @@
         "name": "Iraque",
         "continent": "AFC",
         "power": 4
+      },
+      {
+        "name": "Uzbequistão",
+        "continent": "AFC",
+        "power": 3.8
+      },
+      {
+        "name": "China",
+        "continent": "AFC",
+        "power": 3.4
       }
     ]
   },
   {
     "name": "CAF",
+    "worldCupSpots": 8,
     "teams": [
       {
         "name": "Marrocos",
@@ -83,19 +95,25 @@
         "power": 4.6
       },
       {
-        "name": "África do Sul",
+        "name": "Camarões",
         "continent": "CAF",
         "power": 4.2
       },
       {
-        "name": "Camarões",
+        "name": "Mali",
         "continent": "CAF",
         "power": 4.2
+      },
+      {
+        "name": "África do Sul",
+        "continent": "CAF",
+        "power": 3.8
       }
     ]
   },
   {
     "name": "CONCACAF",
+    "worldCupSpots": 4,
     "teams": [
       {
         "name": "Estados Unidos",
@@ -121,11 +139,17 @@
         "name": "Panamá",
         "continent": "CONCACAF",
         "power": 4.4
+      },
+      {
+        "name": "El Salvador",
+        "continent": "CONCACAF",
+        "power": 3.4
       }
     ]
   },
   {
     "name": "CONMEBOL",
+    "worldCupSpots": 8,
     "teams": [
       {
         "name": "Argentina",
@@ -166,11 +190,22 @@
         "name": "Paraguai",
         "continent": "CONCACAF",
         "power": 4.4
+      },
+      {
+        "name": "Bolívia",
+        "continent": "CONCACAF",
+        "power": 3.6
+      },
+      {
+        "name": "Venezuela",
+        "continent": "CONCACAF",
+        "power": 3.6
       }
     ]
   },
   {
     "name": "UEFA",
+    "worldCupSpots": 16,
     "teams": [
       {
         "name": "França",
