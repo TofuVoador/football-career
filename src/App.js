@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./App.css";
-import Teams from "./Database/teams.json";
+import Leagues from "./Database/leagues.json";
 import ExtraTeams from "./Database/extrateams.json";
 import Nations from "./Database/nations.json";
 import Positions from "./Database/positions.json";
@@ -33,7 +33,7 @@ const TournamentPath = [
 ];
 
 function App() {
-  const [teams, setTeams] = useState([...Teams]);
+  const [leagues, setLeagues] = useState([...Leagues]);
   const [extrateams, setExtraTeams] = useState([...ExtraTeams]);
   const [nations, setNations] = useState([...Nations]);
 
@@ -67,7 +67,7 @@ function App() {
     performance: 0,
     totalGoals: 0,
     totalAssists: 0,
-    leagues: [],
+    leagueTitles: [],
     nationalCup: [],
     europa: [],
     champions: [],
@@ -155,7 +155,7 @@ function App() {
           ) + 1; //get the new team's position
       } else {
         let newLeague =
-          teams.find((league) => league.name === newPlayer.team.league) || []; //find the new team league
+          leagues.find((league) => league.name === newPlayer.team.league) || []; //find the new team league
         let bonuses = Array.from(
           { length: newLeague.teams.length },
           () => Math.round(50.0 * (Math.random() - Math.random())) / 100
@@ -170,7 +170,7 @@ function App() {
       }
 
       //get players league
-      let league = teams.find(
+      let league = leagues.find(
         (league) => league.name === newPlayer.team.league
       );
 
@@ -323,7 +323,9 @@ function App() {
     med /= generalPerformance.length;
 
     //national tournaments
-    let league = teams.find((league) => league.name === newPlayer.team.league);
+    let league = leagues.find(
+      (league) => league.name === newPlayer.team.league
+    );
 
     let triplice = 0;
 
@@ -359,7 +361,7 @@ function App() {
 
     //if fist place, then won trophy
     if (playerPosition == 1) {
-      newPlayer.leagues.push(`${year} (${newPlayer.team.name})`);
+      newPlayer.leagueTitles.push(`${year} (${newPlayer.team.name})`);
       newPlayer.fame += 10;
       triplice++;
     }
@@ -469,11 +471,14 @@ function App() {
       let qualified = [];
 
       //get top teams in each league
-      for (let leagueID = 0; leagueID < teams.length; leagueID++) {
-        let remainingTeams = DeepClone([...teams[leagueID].teams]);
-        let selected = remainingTeams.splice(0, teams[leagueID].championsSpots);
+      for (let leagueID = 0; leagueID < leagues.length; leagueID++) {
+        let remainingTeams = DeepClone([...leagues[leagueID].teams]);
+        let selected = remainingTeams.splice(
+          0,
+          leagues[leagueID].championsSpots
+        );
 
-        if (newPlayer.team.league == teams[leagueID].name) {
+        if (newPlayer.team.league == leagues[leagueID].name) {
           let playerTeamSelected = selected.find(
             (team) => team.name == newPlayer.team.name
           );
@@ -629,14 +634,14 @@ function App() {
 
       let qualified = [];
 
-      for (let leagueID = 0; leagueID < teams.length; leagueID++) {
-        let remainingTeams = DeepClone([...teams[leagueID].teams]);
+      for (let leagueID = 0; leagueID < leagues.length; leagueID++) {
+        let remainingTeams = DeepClone([...leagues[leagueID].teams]);
         let selected = remainingTeams.splice(
-          teams[leagueID].championsSpots,
-          teams[leagueID].europaSpots
+          leagues[leagueID].championsSpots,
+          leagues[leagueID].europaSpots
         );
 
-        if (newPlayer.team.league == teams[leagueID].name) {
+        if (newPlayer.team.league == leagues[leagueID].name) {
           let playerTeamSelected = selected.find(
             (team) => team.name == newPlayer.team.name
           );
@@ -1504,7 +1509,7 @@ function App() {
   }
 
   function GetNewTeams(currentPlayer) {
-    let allTeams = teams.reduce((acumulador, liga) => {
+    let allTeams = leagues.reduce((acumulador, liga) => {
       return acumulador.concat(liga.teams);
     }, []);
 
@@ -1727,7 +1732,7 @@ function App() {
   }
 
   function UpdateTeamsStats(limit) {
-    let newTeams = DeepClone([...teams]);
+    let newTeams = DeepClone([...leagues]);
 
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
       let last = Math.random();
@@ -1761,7 +1766,7 @@ function App() {
         return b.power - a.power;
       });
     }
-    setTeams(newTeams);
+    setLeagues(newTeams);
     return newTeams;
   }
 
@@ -2018,8 +2023,8 @@ function App() {
         </div>
         <div>
           <details>
-            <summary>Ligas: {player.leagues.length}</summary>
-            {player.leagues.map((l) => (
+            <summary>Ligas: {player.leagueTitles.length}</summary>
+            {player.leagueTitles.map((l) => (
               <p key={l}>{l}</p>
             ))}
           </details>
