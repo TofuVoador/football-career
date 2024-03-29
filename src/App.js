@@ -477,6 +477,9 @@ function App() {
       //get top teams in each league
       for (let leagueID = 0; leagueID < leagues.length; leagueID++) {
         let remainingTeams = DeepClone([...leagues[leagueID].teams]);
+        remainingTeams.sort((a, b) => {
+          return b.power - a.power + Math.random();
+        });
         let selected = remainingTeams.splice(
           0,
           leagues[leagueID].championsSpots
@@ -1198,7 +1201,7 @@ function App() {
     let newTeams = DeepClone(teams);
     //sort by power
     newTeams.sort((a, b) => {
-      return a.power - b.power + Math.random() / 2;
+      return a.power - b.power + Math.random();
     });
 
     let points = new Array(newTeams.length).fill(0);
@@ -1623,7 +1626,7 @@ function App() {
     }, []);
 
     allTeams.sort((a, b) => {
-      return b.power - a.power + Math.random() / 2;
+      return b.power - a.power + Math.random();
     });
 
     allTeams = allTeams.slice(0, allTeams.length / 2);
