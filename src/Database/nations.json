@@ -26,32 +26,32 @@
       {
         "name": "Catar",
         "continent": "AFC",
-        "power": 5.2
+        "power": 4.8
       },
       {
         "name": "Arábia Saudita",
         "continent": "AFC",
-        "power": 4.8
+        "power": 4.6
       },
       {
         "name": "Emirados Árabes Unidos",
         "continent": "AFC",
-        "power": 4
+        "power": 3.6
       },
       {
         "name": "Iraque",
         "continent": "AFC",
-        "power": 4
+        "power": 3.6
+      },
+      {
+        "name": "Jordânia",
+        "continent": "AFC",
+        "power": 3.4
       },
       {
         "name": "Uzbequistão",
         "continent": "AFC",
-        "power": 3.8
-      },
-      {
-        "name": "China",
-        "continent": "AFC",
-        "power": 3.4
+        "power": 3.2
       }
     ]
   },
@@ -87,12 +87,12 @@
       {
         "name": "Argélia",
         "continent": "CAF",
-        "power": 4.8
+        "power": 4.6
       },
       {
         "name": "Gana",
         "continent": "CAF",
-        "power": 4.6
+        "power": 4.4
       },
       {
         "name": "Camarões",
@@ -131,17 +131,17 @@
         "power": 5.0
       },
       {
-        "name": "Costa Rica",
-        "continent": "CONCACAF",
-        "power": 4.6
-      },
-      {
         "name": "Panamá",
         "continent": "CONCACAF",
         "power": 4.4
       },
       {
-        "name": "El Salvador",
+        "name": "Costa Rica",
+        "continent": "CONCACAF",
+        "power": 4
+      },
+      {
+        "name": "Jamaica",
         "continent": "CONCACAF",
         "power": 3.4
       }
@@ -187,19 +187,19 @@
         "power": 5.0
       },
       {
+        "name": "Venezuela",
+        "continent": "CONCACAF",
+        "power": 4
+      },
+      {
         "name": "Paraguai",
         "continent": "CONCACAF",
-        "power": 4.4
+        "power": 3.8
       },
       {
         "name": "Bolívia",
         "continent": "CONCACAF",
-        "power": 3.6
-      },
-      {
-        "name": "Venezuela",
-        "continent": "CONCACAF",
-        "power": 3.6
+        "power": 3.2
       }
     ]
   },
@@ -296,6 +296,16 @@
         "name": "Noruega",
         "continent": "UEFA",
         "power": 5.4
+      },
+      {
+        "name": "Polônia",
+        "continent": "UEFA",
+        "power": 5.2
+      },
+      {
+        "name": "Turquia",
+        "continent": "UEFA",
+        "power": 4.8
       }
     ]
   }
