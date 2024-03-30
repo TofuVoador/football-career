@@ -346,12 +346,12 @@ function App() {
     //national league
     let bonuses = Array.from(
       { length: league.teams.length },
-      () => Math.round(50.0 * (Math.random() - Math.random())) / 100
+      () => Math.round(70.0 * (Math.random() - Math.random())) / 100
     );
     let playerIndex = league.teams.findIndex(
       (team) => team.name == newPlayer.team.name
     );
-    bonuses[playerIndex] += newPlayer.performance * 0.5;
+    bonuses[playerIndex] += newPlayer.performance * 0.7;
     bonuses[playerIndex] /= 2;
     const sum = bonuses.reduce((acc, val) => acc + val, 0);
     const adjustment = sum / league.teams.length;
@@ -525,7 +525,7 @@ function App() {
       // Generate random bonuses for each team in the group
       let bonuses = qualified.reduce((acc, curr) => {
         acc[curr.name] =
-          Math.round(50.0 * (Math.random() - Math.random())) / 100;
+          Math.round(30.0 * (Math.random() - Math.random())) / 100;
         return acc;
       }, {});
 
@@ -536,7 +536,7 @@ function App() {
 
       // If the player's team is found, update the bonuses accordingly
       if (playerIndex !== -1) {
-        bonuses[newPlayer.team.name] += newPlayer.performance * 0.5;
+        bonuses[newPlayer.team.name] += newPlayer.performance * 0.3;
         bonuses[newPlayer.team.name] /= 2;
       } else {
         console.log("Player's team not found in qualified array.");
