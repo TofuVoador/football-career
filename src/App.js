@@ -1788,9 +1788,9 @@ function App() {
     ];
 
     let contractDurations = [
-      RandomNumber(2, 5),
-      RandomNumber(2, 5),
-      RandomNumber(2, 5),
+      RandomNumber(2, 6),
+      RandomNumber(2, 6),
+      RandomNumber(2, 6),
     ];
 
     let contractWages = [
