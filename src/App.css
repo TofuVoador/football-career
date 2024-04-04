@@ -7,11 +7,14 @@ header {
 
 footer {
   position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   bottom: 0;
   background-color: var(--color-dark);
   color: var(--color-light);
   width: 100%;
-  padding: 1rem;
+  height: 5vh;
 }
 
 .career,
