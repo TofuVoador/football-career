@@ -1352,6 +1352,9 @@ function App() {
     } else {
       ChooseTeam();
     }
+
+    document.getElementById("scroller").scrollIntoView({ behavior: "smooth" });
+
     setPlayer(newPlayer);
     setTransfers(newTransfers);
 
@@ -2164,6 +2167,7 @@ function App() {
           {contract > 1 ? "anos restantes" : "ano restante"})
         </a>
       </div>
+      <div id="scroller" />
       <div className="chart" id="chart" style={{ display: "none" }}>
         <ChartComponent data={seasons} />
       </div>
@@ -2242,6 +2246,10 @@ function App() {
           </details>
         </div>
       </div>
+      <footer>
+        <h3>Football Career Simulator</h3>
+        <p>Gustavo Amamia Kumagai</p>
+      </footer>
     </>
   );
 }

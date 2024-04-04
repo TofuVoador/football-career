@@ -5,6 +5,18 @@ header {
   padding: 1rem;
 }
 
+footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: fixed;
+  bottom: 0;
+  background-color: var(--color-dark);
+  color: var(--color-light);
+  width: 100%;
+  padding: 1rem;
+}
+
 .career,
 .choices,
 .stats {
