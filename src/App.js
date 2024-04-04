@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
 import Leagues from "./Database/leagues.json";
 import ExtraTeams from "./Database/extrateams.json";
@@ -38,6 +38,15 @@ function App() {
   const [nations, setNations] = useState([...Nations]);
 
   const [seasons, setSeasons] = useState([]);
+
+  const parentRef = useRef(null);
+  useEffect(() => {
+    const parent = parentRef.current;
+    if (!parent) return;
+
+    const target = parent.lastElementChild;
+    if (target) target.scrollIntoView({ behavior: "smooth" });
+  }, [seasons]);
 
   const [currentSeason, setCurrentSeason] = useState({
     year: null,
@@ -1353,10 +1362,6 @@ function App() {
       ChooseTeam();
     }
 
-    const parent = document.getElementById("career");
-    const target = parent.lastElementChild;
-    if (target) target.scrollIntoView({ behavior: "smooth" });
-
     setPlayer(newPlayer);
     setTransfers(newTransfers);
 
@@ -2034,7 +2039,7 @@ function App() {
           <li>Boa sorte e divirta-se</li>
         </ol>
       </header>
-      <div className="career" id="career">
+      <div className="career" ref={parentRef}>
         {seasons.map((s, index) => (
           <Season key={index} season={s} open={index >= seasons.length - 1} />
         ))}
