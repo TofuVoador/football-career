@@ -1353,7 +1353,9 @@ function App() {
       ChooseTeam();
     }
 
-    document.getElementById("scroller").scrollIntoView({ behavior: "smooth" });
+    const parent = document.getElementById("career");
+    const target = parent.lastElementChild;
+    if (target) target.scrollIntoView({ behavior: "smooth" });
 
     setPlayer(newPlayer);
     setTransfers(newTransfers);
@@ -2032,11 +2034,12 @@ function App() {
           <li>Boa sorte e divirta-se</li>
         </ol>
       </header>
-      <div className="career">
+      <div className="career" id="career">
         {seasons.map((s, index) => (
           <Season key={index} season={s} open={index >= seasons.length - 1} />
         ))}
       </div>
+      <div id="scroller" />
       <div className="choices" id="init-choice">
         <a className="d-alert" onClick={() => ChooseInitStats(initStat[0])}>
           <p>
@@ -2167,7 +2170,6 @@ function App() {
           {contract > 1 ? "anos restantes" : "ano restante"})
         </a>
       </div>
-      <div id="scroller" />
       <div className="chart" id="chart" style={{ display: "none" }}>
         <ChartComponent data={seasons} />
       </div>
