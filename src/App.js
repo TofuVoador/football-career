@@ -2247,8 +2247,7 @@ function App() {
         </div>
       </div>
       <footer>
-        <h3>Football Career Simulator</h3>
-        <p>Gustavo Amamia Kumagai</p>
+        <p>Por Gustavo Amamia Kumagai</p>
       </footer>
     </>
   );
