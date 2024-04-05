@@ -2042,19 +2042,13 @@ function App() {
       <div className="choices" id="init-nation">
         <h3 style={{ marginBottom: "1rem" }}>Escolha o país do jogador:</h3>
         <a className="d-alert" onClick={() => ChooseNation(initNation[0])}>
-          <p>
-            {initNation[0].name} ({(initNation[0].power / 2).toFixed(2)}⭐)
-          </p>
+          <p>{initNation[0].name}</p>
         </a>
         <a className="d-alert" onClick={() => ChooseNation(initNation[1])}>
-          <p>
-            {initNation[1].name} ({(initNation[1].power / 2).toFixed(2)}⭐)
-          </p>
+          <p>{initNation[1].name}</p>
         </a>
         <a className="d-alert" onClick={() => ChooseNation(initNation[2])}>
-          <p>
-            {initNation[2].name} ({(initNation[2].power / 2).toFixed(2)}⭐)
-          </p>
+          <p>{initNation[2].name}</p>
         </a>
       </div>
       <div className="choices" id="init-pos" style={{ display: "none" }}>
