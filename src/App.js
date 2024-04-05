@@ -10,14 +10,14 @@ import { RandomNumber, DeepClone, FormatarNumero, shuffleArray } from "./Utils";
 
 const StarPath = [
   "Esquecido", //0
-  "Péssimo", //100
-  "Ruim", //200
+  "Ruim", //100
+  "Não Foi", //200
   "Ok", //300
   "Bom", //400
   "Ótimo", //500
   "Deixou sua marca", //600
   "Estrela", //700
-  "Ídolo Nacional", //800
+  "Ídolo", //800
   "Lenda", //900
   "GOAT", //1000
 ];
