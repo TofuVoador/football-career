@@ -107,23 +107,34 @@ function App() {
 
   const [transfers, setTransfers] = useState([]);
 
-  const initStat = GetNewInit();
+  const initPos = shuffleArray(DeepClone(Positions));
+  const [initNation, setInitNation] = useState(GetNewNation());
 
   const [renew, setRenew] = useState({ value: 0, duration: 0 });
 
-  function ChooseInitStats(initStat) {
+  function ChooseNation(initNation) {
     //change display
-    document.getElementById("team-choice").style.display = "flex";
-    document.getElementById("init-choice").style.display = "none";
+    document.getElementById("init-pos").style.display = "flex";
+    document.getElementById("init-nation").style.display = "none";
 
     let newPlayer = player;
-    newPlayer.position = initStat.pos;
-    newPlayer.nation = initStat.nat;
+    newPlayer.nation = initNation;
+
+    setPlayer(newPlayer);
+  }
+
+  function ChoosePos(initPos) {
+    //change display
+    document.getElementById("team-choice").style.display = "flex";
+    document.getElementById("init-pos").style.display = "none";
+
+    let newPlayer = player;
+    newPlayer.position = initPos;
 
     let newTeams = UpdateTeamsStats(25.0);
 
     setPlayer(newPlayer);
-    setTransfers(GetInitTeams(initStat.pos.value, newTeams));
+    setTransfers(GetInitTeams(initPos.value, newTeams));
   }
 
   function ChooseTeam(newTeam = null) {
@@ -1026,7 +1037,7 @@ function App() {
         // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
         if (playerPosition > 0) {
           playerGroup = thisGroup;
-          description = `-> ${TournamentPath[phase]}: ${playerGroup.table[0].name} / ${playerGroup.table[1].name} / ${playerGroup.table[2].name} / ${playerGroup.table[3].name}`;
+          description = `-> ${TournamentPath[phase]}: ${playerPosition}º lugar`;
           description += thisGroup.desc;
         }
 
@@ -1858,9 +1869,7 @@ function App() {
     ];
   }
 
-  function GetNewInit() {
-    let allPos = shuffleArray(DeepClone(Positions));
-
+  function GetNewNation() {
     let newNat = DeepClone(Nations);
     let allNat = [];
     for (let i = 0; i < newNat.length; i++) {
@@ -1868,20 +1877,7 @@ function App() {
     }
     allNat = shuffleArray(allNat);
 
-    return [
-      {
-        pos: allPos[0],
-        nat: allNat[0],
-      },
-      {
-        pos: allPos[1],
-        nat: allNat[1],
-      },
-      {
-        pos: allPos[2],
-        nat: allNat[2],
-      },
-    ];
+    return allNat;
   }
 
   function GetOverall(potential, age, teamPower) {
@@ -2030,8 +2026,8 @@ function App() {
           <li>Escolha qual proposta você aceitará.</li>
           <li>O jogo simulará a partir do que você escolheu</li>
           <li>
-            Você pode recarregar a página para alterar os atributos iniciais do
-            jogador
+            Você pode recarregar a página até aparecer os atributos iniciais
+            desejados
           </li>
           <li>Boa sorte e divirta-se</li>
         </ol>
@@ -2043,21 +2039,34 @@ function App() {
           </div>
         ))}
       </div>
-      <div className="choices" id="init-choice">
-        <a className="d-alert" onClick={() => ChooseInitStats(initStat[0])}>
+      <div className="choices" id="init-nation">
+        <h3 style={{ marginBottom: "1rem" }}>Escolha o país do jogador:</h3>
+        <a className="d-alert" onClick={() => ChooseNation(initNation[0])}>
           <p>
-            {initStat[0].pos.title} | {initStat[0].nat.name}
+            {initNation[0].name} ({(initNation[0].power / 2).toFixed(2)}⭐)
           </p>
         </a>
-        <a className="d-alert" onClick={() => ChooseInitStats(initStat[1])}>
+        <a className="d-alert" onClick={() => ChooseNation(initNation[1])}>
           <p>
-            {initStat[1].pos.title} | {initStat[1].nat.name}
+            {initNation[1].name} ({(initNation[1].power / 2).toFixed(2)}⭐)
           </p>
         </a>
-        <a className="d-alert" onClick={() => ChooseInitStats(initStat[2])}>
+        <a className="d-alert" onClick={() => ChooseNation(initNation[2])}>
           <p>
-            {initStat[2].pos.title} | {initStat[2].nat.name}
+            {initNation[2].name} ({(initNation[2].power / 2).toFixed(2)}⭐)
           </p>
+        </a>
+      </div>
+      <div className="choices" id="init-pos" style={{ display: "none" }}>
+        <h3 style={{ marginBottom: "1rem" }}>Escolha a posição do jogador:</h3>
+        <a className="d-alert" onClick={() => ChoosePos(initPos[0])}>
+          <p>{initPos[0].title}</p>
+        </a>
+        <a className="d-alert" onClick={() => ChoosePos(initPos[1])}>
+          <p>{initPos[1].title}</p>
+        </a>
+        <a className="d-alert" onClick={() => ChoosePos(initPos[2])}>
+          <p>{initPos[2].title}</p>
         </a>
       </div>
       <div className="choices" id="team-choice" style={{ display: "none" }}>
