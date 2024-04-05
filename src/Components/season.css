@@ -1,6 +1,5 @@
 .season {
   padding: 0 1rem;
-  margin-bottom: 2rem;
   border-radius: 2rem;
   background-color: var(--color-dark);
   width: 100%;
@@ -9,7 +8,7 @@
 }
 
 .season-title {
-  padding: 0.5rem;
+  padding: 0.5rem 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -19,10 +18,10 @@
 }
 
 .oval {
-  border-radius: 2.5rem;
+  border-radius: 2rem;
   border: 1px var(--color-contrast) solid;
-  height: 2.5rem;
-  width: 5rem;
+  height: 2rem;
+  width: 4rem;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,6 +49,7 @@ summary {
 .season-titles-list details,
 .single-title {
   font-size: 1.2rem;
+  margin-top: 0.2rem;
 }
 
 .season-titles-list details summary {
@@ -64,7 +64,7 @@ summary {
 .season-titles-list details > *:not(summary) {
   font-size: 80%;
   color: var(--color-light);
-  margin-left: 2rem;
+  margin-left: 1rem;
 }
 
 .season-stats {
@@ -97,7 +97,6 @@ summary {
   }
   .season {
     padding: 0 1rem;
-    margin-bottom: 1rem;
     border-radius: 2rem;
   }
 }

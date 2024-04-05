@@ -28,6 +28,14 @@ footer {
   color: var(--color-light);
 }
 
+.career-container {
+  width: 100%;
+  padding: 1rem 0 0 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .choices a {
   margin-bottom: 1rem;
   padding: 1rem;

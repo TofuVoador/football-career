@@ -49,7 +49,7 @@ function App() {
       target.scrollIntoView({
         alignToTop: true,
         behavior: "smooth",
-        block: "center",
+        block: "start",
         inline: "center",
       });
   }, [seasons]);
@@ -2038,10 +2038,11 @@ function App() {
       </header>
       <div className="career" ref={parentRef}>
         {seasons.map((s, index) => (
-          <Season key={index} season={s} open={index >= seasons.length - 1} />
+          <div className="career-container">
+            <Season key={index} season={s} open={index >= seasons.length - 1} />
+          </div>
         ))}
       </div>
-      <div id="scroller" />
       <div className="choices" id="init-choice">
         <a className="d-alert" onClick={() => ChooseInitStats(initStat[0])}>
           <p>
@@ -2066,13 +2067,10 @@ function App() {
           style={{ display: "none" }}
           onClick={() => ChooseTeam()}
         >
+          <p>Continuar em {player.team == null ? "null" : player.team.name}</p>
           <p>
-            Continuar em {player.team == null ? "null" : player.team.name} (
             {player.team == null ? "null" : (player.team.power / 2).toFixed(2)}
-            ⭐)
-          </p>
-          <p>
-            ${FormatarNumero(renew.value)}/ano |
+            ⭐ | ${FormatarNumero(renew.value)}/ano |{" "}
             {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")}
           </p>
         </a>
@@ -2087,14 +2085,13 @@ function App() {
               : transfers[0].loan
               ? "Empréstimo"
               : "Transferir"}{" "}
-            para {transfers[0] == null ? "null" : transfers[0].team.name} (
+            para {transfers[0] == null ? "null" : transfers[0].team.name}
+          </p>
+          <p>
             {transfers[0] == null
               ? "null"
               : (transfers[0].team.power / 2).toFixed(2)}
-            ⭐)
-          </p>
-          <p>
-            $
+            ⭐ | $
             {transfers[0] == null
               ? "null"
               : FormatarNumero(transfers[0].contract.value)}
@@ -2114,14 +2111,13 @@ function App() {
               : transfers[1].loan
               ? "Empréstimo"
               : "Transferir"}{" "}
-            para {transfers[1] == null ? "null" : transfers[1].team.name} (
+            para {transfers[1] == null ? "null" : transfers[1].team.name}
+          </p>
+          <p>
             {transfers[1] == null
               ? "null"
               : (transfers[1].team.power / 2).toFixed(2)}
-            ⭐)
-          </p>
-          <p>
-            $
+            ⭐ | $
             {transfers[1] == null
               ? "null"
               : FormatarNumero(transfers[1].contract.value)}
@@ -2141,14 +2137,13 @@ function App() {
               : transfers[2].loan
               ? "Empréstimo"
               : "Transferir"}{" "}
-            para {transfers[2] == null ? "null" : transfers[2].team.name} (
+            para {transfers[2] == null ? "null" : transfers[2].team.name}
+          </p>
+          <p>
             {transfers[2] == null
               ? "null"
               : (transfers[2].team.power / 2).toFixed(2)}
-            ⭐)
-          </p>
-          <p>
-            $
+            ⭐ | $
             {transfers[2] == null
               ? "null"
               : FormatarNumero(transfers[2].contract.value)}
