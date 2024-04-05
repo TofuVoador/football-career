@@ -1,78 +1,78 @@
 [
   {
-    "title": "CA",
+    "title": "Centroavante",
     "goalsBonus": 40,
     "assistsBonus": 17,
     "value": 1.2
   },
   {
-    "title": "SA",
+    "title": "Segundo Atacante",
     "goalsBonus": 37,
     "assistsBonus": 19,
     "value": 1.2
   },
   {
-    "title": "PTE",
+    "title": "Ponta Esquerda",
     "goalsBonus": 34,
     "assistsBonus": 21,
     "value": 1.2
   },
   {
-    "title": "PTD",
+    "title": "Ponta Direita",
     "goalsBonus": 34,
     "assistsBonus": 21,
     "value": 1.2
   },
   {
-    "title": "MAT",
+    "title": "Meia-Atacante",
     "goalsBonus": 28,
     "assistsBonus": 23,
     "value": 1
   },
   {
-    "title": "ME",
+    "title": "Meia Esquerda",
     "goalsBonus": 25,
     "assistsBonus": 21,
     "value": 0.8
   },
   {
-    "title": "MC",
+    "title": "Meia Central",
     "goalsBonus": 25,
     "assistsBonus": 21,
     "value": 0.8
   },
   {
-    "title": "MD",
+    "title": "Meia Direita",
     "goalsBonus": 25,
     "assistsBonus": 21,
     "value": 0.8
   },
   {
-    "title": "VOL",
+    "title": "Volante",
     "goalsBonus": 22,
     "assistsBonus": 17,
     "value": 0.8
   },
   {
-    "title": "LE",
+    "title": "Lateral Esquerdo",
     "goalsBonus": 16,
     "assistsBonus": 13,
     "value": 0.6
   },
   {
-    "title": "LD",
+    "title": "Lateral Direito",
     "goalsBonus": 16,
     "assistsBonus": 13,
     "value": 0.6
   },
   {
-    "title": "ZC",
+    "title": "Zagueiro Central",
     "goalsBonus": 13,
     "assistsBonus": 9,
     "value": 0.6
   },
   {
-    "title": "GOL",
+    "title": "Goleiro",
     "goalsBonus": 7,
     "assistsBonus": 5,
     "value": 0.4
