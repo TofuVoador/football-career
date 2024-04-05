@@ -45,7 +45,13 @@ function App() {
     if (!parent) return;
 
     const target = parent.lastElementChild;
-    if (target) target.scrollIntoView({ behavior: "smooth" });
+    if (target)
+      target.scrollIntoView({
+        alignToTop: true,
+        behavior: "smooth",
+        block: "center",
+        inline: "center",
+      });
   }, [seasons]);
 
   const [currentSeason, setCurrentSeason] = useState({
@@ -1236,7 +1242,7 @@ function App() {
       document.getElementById("retire").style.display = "none";
     } else if (
       //if played good midde contract
-      newPlayer.performance >= newPlayer.team.power / 10 &&
+      newPlayer.performance > 0.5 &&
       med > 0 &&
       generalPerformance.length >= 2 &&
       newTransfers[0] != null &&
@@ -1320,7 +1326,7 @@ function App() {
       //if contract expired
       contract <= 1
     ) {
-      if (med < 0) {
+      if (med < 0 && newTransfers[0] != null) {
         //cant stay
         document.getElementById("decision-stay").style.display = "none";
       } else {
@@ -1705,19 +1711,10 @@ function App() {
     }, []);
 
     allTeams.sort((a, b) => {
-      return b.power - a.power + Math.random() / 2;
+      return b.power - a.power + Math.random();
     });
 
-    let interestedCut = 1;
-    if (currentPlayer.overall > 90) {
-      interestedCut = 4;
-    } else if (currentPlayer.overall > 85) {
-      interestedCut = 3;
-    } else if (currentPlayer.overall > 80) {
-      interestedCut = 2;
-    }
-
-    allTeams = allTeams.slice(0, allTeams.length / interestedCut);
+    allTeams = allTeams.slice(0, allTeams.length / 2);
 
     let interestedTeams = [];
 
