@@ -344,13 +344,13 @@ function App() {
     newSeason.goals = Math.floor(
       goalsOppostunities *
         (Math.pow(newPlayer.overall, 2.55853) / 100000.0) *
-        (1.0 + newSeason.performance / 4.0) *
+        (1.0 + newSeason.performance / 3.0) *
         (1.0 + (Math.random() - Math.random()) / 4.0)
     );
     newSeason.assists = Math.floor(
       assistsOppostunities *
         (Math.pow(newPlayer.overall, 2.55853) / 100000.0) *
-        (1.0 + newSeason.performance / 4.0) *
+        (1.0 + newSeason.performance / 3.0) *
         (1.0 + (Math.random() - Math.random()) / 4.0)
     );
 
@@ -1259,13 +1259,6 @@ function App() {
       newTransfers[0] != null &&
       contract > 2
     ) {
-      let contractValue = Math.round(
-        newPlayer.position.value *
-          GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame)
-      );
-
-      if (contractValue < newPlayer.wage) contractValue = newPlayer.wage;
-
       document.getElementById("decision-transfer1").style.display = "flex";
       if (newTransfers[0].contract.value < newPlayer.wage)
         newTransfers[0].contract.value = newPlayer.wage;
@@ -1287,7 +1280,7 @@ function App() {
       }
 
       setRenew({
-        value: contractValue,
+        value: newPlayer.wage,
         duration: contract - 1,
       });
 
