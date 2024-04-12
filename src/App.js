@@ -343,13 +343,13 @@ function App() {
 
     newSeason.goals = Math.floor(
       goalsOppostunities *
-        (Math.pow(newPlayer.overall, 2.55853) / 100000.0) *
+        (Math.pow(newPlayer.overall, 3) / 800000.0) *
         (1.0 + newSeason.performance / 3.0) *
         (1.0 + (Math.random() - Math.random()) / 4.0)
     );
     newSeason.assists = Math.floor(
       assistsOppostunities *
-        (Math.pow(newPlayer.overall, 2.55853) / 100000.0) *
+        (Math.pow(newPlayer.overall, 3) / 800000.0) *
         (1.0 + newSeason.performance / 3.0) *
         (1.0 + (Math.random() - Math.random()) / 4.0)
     );
