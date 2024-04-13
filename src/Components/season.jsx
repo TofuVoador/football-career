@@ -15,15 +15,10 @@ const Season = (props) => {
         <div className="oval">{season.overall.toFixed(1)}</div>
       </summary>
       <div className="season-stats">
+        {season.age} anos
         <div className="double-column">
-          <div>
-            <div>{season.age} anos</div>
-            <div>Fama: {Math.floor(season.fame)}</div>
-          </div>
-          <div>
-            <div>${FormatarNumero(season.marketValue)}</div>
-            <div>${FormatarNumero(season.wage)}/ano</div>
-          </div>
+          <div>${FormatarNumero(season.marketValue)}</div>
+          <div>${FormatarNumero(season.wage)}/ano</div>
         </div>
         <p style={{ marginTop: "0.5rem" }}>Performance:</p>
         <div

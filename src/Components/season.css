@@ -13,7 +13,7 @@
   justify-content: space-between;
   align-items: center;
   color: var(--color-contrast);
-  font-size: 1.5rem;
+  font-size: 1rem;
   font-weight: bold;
 }
 
@@ -82,10 +82,6 @@ summary {
 }
 
 @media (max-width: 900px) {
-  .season-title {
-    font-size: 1rem;
-  }
-
   .season-titles-list details summary,
   .season-titles-list h1 {
     font-size: 1rem;

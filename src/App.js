@@ -2169,11 +2169,40 @@ function App() {
       <div className="stats">
         <h1>Carreira</h1>
         <div>
-          <p>
-            Fama da Carreira: {Math.floor(maxFame)} (
-            {StarPath[Math.min(Math.floor(maxFame / 100), StarPath.length - 1)]}
-            )
-          </p>
+          Fama:{" "}
+          {StarPath[Math.min(Math.floor(maxFame / 100), StarPath.length - 1)]}
+          <div
+            style={{
+              width: "300px",
+              height: "20px",
+              backgroundColor: "var(--color-medium)",
+              borderRadius: "10px",
+              alignItems: "flex-start",
+            }}
+          >
+            <div
+              style={{
+                width: `${Math.floor(Math.min(maxFame, 1000) % 100)}%`,
+                minHeight: "20px",
+                backgroundColor: `${
+                  maxFame < 1000 ? "var(--color-contrast)" : "gold"
+                }`,
+                borderRadius: "10px",
+                margin: "0",
+              }}
+            />
+            <span
+              style={{
+                position: "relative",
+                top: "-50%", // Centraliza verticalmente
+                left: "50%", // Centraliza horizontalmente
+                transform: "translate(-50%, -50%)", // Centraliza completamente
+                color: "var(--color-dark)",
+              }}
+            >
+              {Math.floor(maxFame)}
+            </span>
+          </div>
           <p>
             Posição:{" "}
             {player.position == null ? "A definir" : player.position.title}
