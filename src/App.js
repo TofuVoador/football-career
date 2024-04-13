@@ -103,7 +103,6 @@ function App() {
   const [contract, setContract] = useState(0);
 
   const [generalPerformance, setGeneralPerformance] = useState([]);
-  const [maxFame, setMaxFame] = useState(0);
 
   const [transfers, setTransfers] = useState([]);
 
@@ -1227,8 +1226,6 @@ function App() {
 
     newSeason.fame = newPlayer.fame;
 
-    if (newSeason.fame > maxFame) setMaxFame(newSeason.fame);
-
     //trasnfer window
     let newTransfers = GetNewTeams(newPlayer);
 
@@ -2027,8 +2024,8 @@ function App() {
       </header>
       <div className="career" ref={parentRef}>
         {seasons.map((s, index) => (
-          <div className="career-container">
-            <Season key={index} season={s} open={index >= seasons.length - 1} />
+          <div key={index} className="career-container">
+            <Season season={s} open={index >= seasons.length - 1} />
           </div>
         ))}
       </div>
@@ -2170,7 +2167,11 @@ function App() {
         <h1>Carreira</h1>
         <div>
           Fama:{" "}
-          {StarPath[Math.min(Math.floor(maxFame / 100), StarPath.length - 1)]}
+          {
+            StarPath[
+              Math.min(Math.floor(player.fame / 100), StarPath.length - 1)
+            ]
+          }
           <div
             style={{
               width: "300px",
@@ -2182,10 +2183,10 @@ function App() {
           >
             <div
               style={{
-                width: `${Math.floor(Math.min(maxFame, 1000) % 100)}%`,
+                width: `${Math.floor(Math.min(player.fame, 1000) % 100)}%`,
                 minHeight: "20px",
                 backgroundColor: `${
-                  maxFame < 1000 ? "var(--color-contrast)" : "gold"
+                  player.fame < 1000 ? "var(--color-contrast)" : "gold"
                 }`,
                 borderRadius: "10px",
                 margin: "0",
@@ -2200,7 +2201,7 @@ function App() {
                 color: "var(--color-dark)",
               }}
             >
-              {Math.floor(maxFame)}
+              {Math.floor(player.fame)}
             </span>
           </div>
           <p>
