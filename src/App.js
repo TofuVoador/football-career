@@ -394,7 +394,7 @@ function App() {
     //top eight from the league
     let topEight = "";
     for (let p = 0; p < 8; p++) {
-      topEight += `-> ${p + 1}º: ${newSeason.leagueTable[p].name}`;
+      topEight += `---> ${p + 1}º: ${newSeason.leagueTable[p].name}`;
     }
 
     newSeason.awardPoints +=
@@ -428,7 +428,6 @@ function App() {
     while (!end) {
       let newOpponentsLeft = [];
       let games = "";
-      let playerGame = "";
       // Loop pelos jogos do torneio
       for (let matchID = 0; matchID < classif.length / 2; matchID++) {
         // Selecionando os dois times para o jogo atual
@@ -453,8 +452,6 @@ function App() {
           team1.name == newPlayer.team.name ||
           team2.name == newPlayer.team.name
         ) {
-          // Adicionando o resultado do jogo ao histórico do jogador
-          playerGame += `: ${game.game}`;
           // Verificando se o jogador ganhou o jogo
           if (
             (game.result && team1.name == newPlayer.team.name) ||
@@ -474,7 +471,7 @@ function App() {
         }
 
         // Adicionando o resultado do jogo ao histórico geral
-        games += `=> ${game.game}`;
+        games += `--> ${game.game}`;
 
         // Adicionando o próximo oponente para a próxima rodada com base no resultado do jogo atual
         if (game.result) {
@@ -484,11 +481,7 @@ function App() {
         }
       }
 
-      description += `-> ${TournamentPath[phase]}${
-        playerGame != "" && phase + 1 < TournamentPath.length - 1
-          ? playerGame
-          : ""
-      }`;
+      description += `---> ${TournamentPath[phase]}`;
       description += games;
 
       phase++;
@@ -496,7 +489,7 @@ function App() {
 
       if (phase >= TournamentPath.length - 1) {
         end = true;
-        description += `-> Vencedor: ${newOpponentsLeft[0].name}`;
+        description += `---> Vencedor: ${newOpponentsLeft[0].name}`;
       }
     }
 
@@ -580,7 +573,7 @@ function App() {
       let group = GetChampionsPosition(qualified, newPlayer.team, bonuses);
 
       // Construir a descrição da fase do torneio
-      description = `-> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
+      description = `---> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
       description += group.desc;
 
       // Obter as equipes classificadas para os playoffs e limitar para 24 equipes
@@ -598,7 +591,6 @@ function App() {
       let classif = playoffsClassif.splice(0, 8);
 
       let games = "";
-      let playerGame = "";
 
       for (let matchID = 0; matchID < playoffsClassif.length / 2; matchID++) {
         let team1 = playoffsClassif[matchID];
@@ -614,14 +606,7 @@ function App() {
           true
         );
 
-        if (
-          team1.name == newPlayer.team.name ||
-          team2.name == newPlayer.team.name
-        ) {
-          playerGame += `: ${game.game}`;
-        }
-
-        games += `=> ${game.game}`;
+        games += `--> ${game.game}`;
 
         if (game.result) {
           classif.push(team1);
@@ -630,9 +615,7 @@ function App() {
         }
       }
 
-      description += `-> ${TournamentPath[phase]}${
-        playerGame != "" && phase < TournamentPath.length - 1 ? playerGame : ""
-      }`;
+      description += `---> ${TournamentPath[phase]}`;
       description += games;
 
       if (classif.some((t) => t.name == newPlayer.team.name)) {
@@ -645,7 +628,6 @@ function App() {
       while (!end) {
         // Limpar variáveis ​​para armazenar informações dos jogos
         let games = "";
-        playerGame = "";
         let newClassif = [];
 
         // Calcular o efeito do jogador na fase atual do torneio
@@ -674,9 +656,6 @@ function App() {
             team1.name == newPlayer.team.name ||
             team2.name == newPlayer.team.name
           ) {
-            // Adicionar o resultado do jogo ao histórico do jogador
-            playerGame += `: ${game.game}`;
-
             // Verificar se o jogador ganhou o jogo
             if (
               (game.result && team1.name == newPlayer.team.name) ||
@@ -696,7 +675,7 @@ function App() {
           }
 
           // Adicionar o resultado do jogo ao histórico geral
-          games += `=> ${game.game}`;
+          games += `--> ${game.game}`;
 
           // Adicionar os vencedores do jogo à nova classificação
           if (game.result) {
@@ -707,11 +686,7 @@ function App() {
         }
 
         // Construir a descrição da fase do torneio
-        description += `-> ${TournamentPath[phase]}${
-          playerGame != "" && phase + 1 < TournamentPath.length - 1
-            ? playerGame
-            : ""
-        }`;
+        description += `---> ${TournamentPath[phase]}`;
         description += games;
 
         // Avançar para a próxima fase e atualizar a classificação
@@ -721,7 +696,7 @@ function App() {
         // Verificar se o torneio chegou ao fim
         if (phase >= TournamentPath.length - 1) {
           end = true;
-          description += `-> Vencedor: ${newClassif[0].name}`;
+          description += `---> Vencedor: ${newClassif[0].name}`;
         }
       }
 
@@ -800,7 +775,7 @@ function App() {
 
       let group = GetEuropaPosition(qualified, newPlayer.team, bonuses);
 
-      description = `-> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
+      description = `---> ${TournamentPath[playerPhase]}: ${group.pos}º lugar`;
       description += group.desc;
 
       let classif = DeepClone([...group.table]).splice(0, 16);
@@ -815,7 +790,6 @@ function App() {
       while (!end) {
         // Limpar variáveis ​​para armazenar informações dos jogos
         let games = "";
-        let playerGame = "";
         let newClassif = [];
 
         // Loop pelos jogos do torneio atual
@@ -841,9 +815,6 @@ function App() {
             team1.name == newPlayer.team.name ||
             team2.name == newPlayer.team.name
           ) {
-            // Adicionar o resultado do jogo ao histórico do jogador
-            playerGame += `: ${game.game}`;
-
             // Verificar se o jogador ganhou o jogo
             if (
               (game.result && team1.name == newPlayer.team.name) ||
@@ -859,7 +830,7 @@ function App() {
           }
 
           // Adicionar o resultado do jogo ao histórico geral
-          games += `=> ${game.game}`;
+          games += `--> ${game.game}`;
 
           // Adicionar os vencedores do jogo à nova classificação
           if (game.result) {
@@ -870,11 +841,7 @@ function App() {
         }
 
         // Construir a descrição da fase do torneio
-        description += `-> ${TournamentPath[phase]}${
-          playerGame != "" && phase + 1 < TournamentPath.length - 1
-            ? playerGame
-            : ""
-        }`;
+        description += `---> ${TournamentPath[phase]}`;
         description += games;
 
         // Avançar para a próxima fase e atualizar a classificação
@@ -884,7 +851,7 @@ function App() {
         // Verificar se o torneio chegou ao fim
         if (phase >= TournamentPath.length - 1) {
           end = true;
-          description += `-> Vencedor: ${newClassif[0].name}`;
+          description += `---> Vencedor: ${newClassif[0].name}`;
         }
       }
 
@@ -940,7 +907,7 @@ function App() {
         (t) => t.name == newPlayer.nation.name
       );
 
-      if (!classifToWorldCup) description = "-> Grupos => Sem Dados";
+      if (!classifToWorldCup) description = "---> Grupos --> Sem Dados";
 
       //was called by the manager
       let playedWorldCup =
@@ -1036,7 +1003,7 @@ function App() {
         // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
         if (playerPosition > 0) {
           playerGroup = thisGroup;
-          description = `-> ${TournamentPath[phase]}: ${playerPosition}º lugar`;
+          description = `---> ${TournamentPath[phase]}: ${playerPosition}º lugar`;
           description += thisGroup.desc;
         }
 
@@ -1063,7 +1030,6 @@ function App() {
         // Limpar variáveis para armazenar informações dos jogos
         let games = "";
         let newClassif = [];
-        let playerGame = "";
 
         // Calcular o efeito do jogador na fase atual do torneio
         let playerEffect = 1 - phase / 10.0;
@@ -1092,9 +1058,6 @@ function App() {
             team1.name == player.nation.name ||
             team2.name == player.nation.name
           ) {
-            // Adicionar o resultado do jogo ao histórico do jogador
-            playerGame += `: ${game.game}`;
-
             // Verificar se o jogador ganhou o jogo
             if (
               (game.result && team1.name == player.nation.name) ||
@@ -1114,7 +1077,7 @@ function App() {
           }
 
           // Adicionar o resultado do jogo ao histórico geral
-          games += `=> ${game.game}`;
+          games += `--> ${game.game}`;
 
           // Adicionar os vencedores do jogo à nova classificação
           if (game.result) {
@@ -1125,11 +1088,7 @@ function App() {
         }
 
         // Construir a descrição da fase do torneio
-        description += `-> ${TournamentPath[phase]}${
-          playerGame != "" && phase + 1 < TournamentPath.length - 1
-            ? playerGame
-            : ""
-        }`;
+        description += `---> ${TournamentPath[phase]}`;
         description += games;
 
         // Avançar para a próxima fase e atualizar a classificação
@@ -1139,7 +1098,7 @@ function App() {
         // Verificar se o torneio chegou ao fim
         if (phase >= TournamentPath.length - 1) {
           end = true;
-          description += `-> Vencedor: ${newClassif[0].name}`;
+          description += `---> Vencedor: ${newClassif[0].name}`;
         }
       }
 
@@ -1403,7 +1362,7 @@ function App() {
           newTeams[home].name == playerTeam.name ||
           newTeams[away].name == playerTeam.name
         )
-          desc += `=> Rodada ${round + 1}: ${newTeams[home].name} ${
+          desc += `--> Rodada ${round + 1}: ${newTeams[home].name} ${
             game[0]
           } x ${game[1]} ${newTeams[away].name}`;
 
@@ -1480,7 +1439,7 @@ function App() {
           newTeams[home].name == playerTeam.name ||
           newTeams[away].name == playerTeam.name
         )
-          desc += `=> Rodada ${round + 1}: ${newTeams[home].name} ${
+          desc += `--> Rodada ${round + 1}: ${newTeams[home].name} ${
             game[0]
           } x ${game[1]} ${newTeams[away].name}`;
 
@@ -1580,7 +1539,7 @@ function App() {
             points[home] += 1;
           }
 
-          desc += `=> ${teams[home].name} ${game[0]} x ${game[1]} ${teams[away].name}`;
+          desc += `--> ${teams[home].name} ${game[0]} x ${game[1]} ${teams[away].name}`;
         }
       }
     }
@@ -1602,13 +1561,11 @@ function App() {
     let team1Power = Math.pow(team1.power, 2) / base;
     let team2Power = Math.pow(team2.power, 2) / base;
 
-    let goals = Math.random() + Math.random() * 1.5;
+    let team1Luck = (Math.random() + Math.random()) * 4;
+    let team2Luck = (Math.random() + Math.random()) * 4;
 
-    let team1Luck = (Math.random() + Math.random()) * 2;
-    let team2Luck = (Math.random() + Math.random()) * 2;
-
-    let team1Score = Math.round(goals * team1Luck * team1Power + bonus);
-    let team2Score = Math.round(goals * team2Luck * team2Power);
+    let team1Score = Math.round(team1Luck * team1Power + bonus);
+    let team2Score = Math.round(team2Luck * team2Power);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
@@ -1680,12 +1637,44 @@ function App() {
     let teamGoals2 = game[1];
 
     if (ida_e_volta) {
+      gameDesc = `->${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name}`;
+
       let game2 = GetMatch(team2, team1, -bonus);
       teamGoals1 += game2[1];
       teamGoals2 += game2[0];
-    }
 
-    if (teamGoals1 == teamGoals2) {
+      if (teamGoals1 == teamGoals2) {
+        let extra = GetExtraTime(team2, team1);
+        teamGoals1 += extra[1];
+        teamGoals2 += extra[0];
+
+        if (teamGoals1 == teamGoals2) {
+          let penalties = GetPenalties(team2, team1);
+          gameDesc += `->${team2.name} ${game2[0] + extra[0]} (${
+            penalties[0]
+          }) x (${penalties[1]}) ${game2[1] + extra[1]} ${team1.name}`;
+          teamGoals1 += penalties[0];
+          teamGoals2 += penalties[1];
+          gameDesc = `${team1.name} ${game[0] + game2[1] + extra[1]} (${
+            penalties[1]
+          }) x (${penalties[0]}) ${game[1] + game2[0] + extra[0]} ${
+            team2.name
+          }${gameDesc}`;
+        } else {
+          gameDesc += `->${team2.name} ${game2[0] + extra[0]} x ${
+            game2[1] + extra[1]
+          } ${team1.name} (Pr)`;
+          gameDesc = `${team1.name} ${game[0] + game2[1] + extra[1]} x ${
+            game[1] + game2[0] + extra[0]
+          } ${team2.name}${gameDesc}`;
+        }
+      } else {
+        gameDesc += `->${team2.name} ${game2[0]} x ${game2[1]} ${team1.name}`;
+        gameDesc = `${team1.name} ${game[0] + game2[1]} x ${
+          game[1] + game2[0]
+        } ${team2.name}${gameDesc}`;
+      }
+    } else if (teamGoals1 == teamGoals2) {
       let extra = GetExtraTime(team1, team2);
       teamGoals1 += extra[0];
       teamGoals2 += extra[1];
@@ -1701,6 +1690,7 @@ function App() {
     } else {
       gameDesc = `${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name}`;
     }
+
     let result = teamGoals1 > teamGoals2;
 
     return { result: result, game: gameDesc };

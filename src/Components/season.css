@@ -46,25 +46,33 @@ summary {
   cursor: pointer;
 }
 
-.season-titles-list details,
 .single-title {
   font-size: 1.2rem;
   margin-top: 0.2rem;
 }
 
+.season-titles-list {
+  font-size: 1.2rem;
+}
+
 .season-titles-list details summary {
+  margin-top: 0.1rem;
   border-radius: 1rem;
-  padding: 0.2rem 0.6rem;
+  padding-left: 0.5rem;
 }
 
 .season-titles-list details summary:hover {
   background-color: var(--color-medium);
 }
 
-.season-titles-list details > *:not(summary) {
-  font-size: 80%;
+.season-titles-list > * :not(summary) {
+  font-size: 1rem;
+  padding: 0.1rem 1rem;
   color: var(--color-light);
-  margin-left: 1rem;
+}
+
+.season-titles-list details > * :not(summary) {
+  font-size: 0.8rem;
 }
 
 .season-stats {

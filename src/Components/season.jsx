@@ -126,34 +126,52 @@ const Season = (props) => {
             ))}
           </details>
           {season.titles.map((t) => {
-            let titleDesc = t.split("->");
-            if (titleDesc.length > 1) {
-              let matches = titleDesc.slice(1);
+            let titleDetails = t.split("--->");
+            if (titleDetails.length > 1) {
+              let rounds = titleDetails.slice(1);
               return (
-                <details key={season.year + titleDesc[0]}>
-                  <summary>{titleDesc[0]}</summary>
-                  {matches.map((match) => {
-                    let matchDetails = match.split("=>");
+                <details key={season.year + titleDetails[0]}>
+                  <summary>{titleDetails[0]}</summary>
+                  {rounds.map((round) => {
+                    let matchDetails = round.split("-->");
                     if (matchDetails.length > 1) {
-                      let innerMatches = matchDetails.slice(1);
+                      let matches = matchDetails.slice(1);
                       return (
                         <details key={season.year + matchDetails[0]}>
                           <summary>{matchDetails[0]}</summary>
-                          {innerMatches.map((innerMatch) => (
-                            <p key={season.year + innerMatch}>{innerMatch}</p>
-                          ))}
+                          {matches.map((match) => {
+                            let innerDetails = match.split("->");
+                            if (innerDetails.length > 1) {
+                              let inners = innerDetails.slice(1);
+                              return (
+                                <details key={season.year + innerDetails[0]}>
+                                  <summary>{innerDetails[0]}</summary>
+                                  {inners.map((innerMatch) => (
+                                    <p key={season.year + innerMatch}>
+                                      {innerMatch}
+                                    </p>
+                                  ))}
+                                </details>
+                              );
+                            } else {
+                              return <p key={season.year + match}>{match}</p>;
+                            }
+                          })}
                         </details>
                       );
                     } else {
-                      return <p key={season.year + match}>{match}</p>;
+                      return <p key={season.year + round}>{round}</p>;
                     }
                   })}
                 </details>
               );
             } else {
               return (
-                <h1 className="single-title" key={season.year + titleDesc[0]}>
-                  {titleDesc[0]}
+                <h1
+                  className="single-title"
+                  key={season.year + titleDetails[0]}
+                >
+                  {titleDetails[0]}
                 </h1>
               );
             }
