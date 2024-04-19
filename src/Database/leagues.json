@@ -12,15 +12,15 @@
       {
         "name": "Bor. Dortmund",
         "league": "Bundesliga",
-        "power": 8
+        "power": 8.6
       },
       {
-        "name": "RB Leipzig",
+        "name": "Leverkusen",
         "league": "Bundesliga",
         "power": 7.2
       },
       {
-        "name": "Leverkusen",
+        "name": "RB Leipzig",
         "league": "Bundesliga",
         "power": 6.4
       },
@@ -271,14 +271,14 @@
         "power": 9.4
       },
       {
-        "name": "At. de Madrid",
-        "league": "La Liga",
-        "power": 8.6
-      },
-      {
         "name": "Barcelona",
         "league": "La Liga",
         "power": 8.4
+      },
+      {
+        "name": "At. de Madrid",
+        "league": "La Liga",
+        "power": 8.2
       },
       {
         "name": "Real Sociedad",
@@ -355,7 +355,7 @@
       {
         "name": "PSG",
         "league": "Ligue 1",
-        "power": 7.4
+        "power": 7.8
       },
       {
         "name": "Lille",
@@ -383,7 +383,7 @@
         "power": 5.8
       },
       {
-        "name": "Rennes",
+        "name": "Stade Brestois",
         "league": "Ligue 1",
         "power": 5.6
       },
@@ -393,12 +393,12 @@
         "power": 5.4
       },
       {
-        "name": "Nantes",
+        "name": "Rennes",
         "league": "Ligue 1",
         "power": 5.2
       },
       {
-        "name": "Stade Brestois",
+        "name": "Nantes",
         "league": "Ligue 1",
         "power": 5
       },
@@ -447,17 +447,17 @@
       {
         "name": "Arsenal",
         "league": "Premier League",
-        "power": 8.8
+        "power": 9
       },
       {
         "name": "Liverpool",
         "league": "Premier League",
-        "power": 8.2
+        "power": 8
       },
       {
         "name": "Tottenham",
         "league": "Premier League",
-        "power": 6.8
+        "power": 7
       },
 
       {
@@ -466,7 +466,7 @@
         "power": 6.4
       },
       {
-        "name": "Chelsea",
+        "name": "Aston Villa",
         "league": "Premier League",
         "power": 6.2
       },
@@ -476,7 +476,7 @@
         "power": 6
       },
       {
-        "name": "Aston Villa",
+        "name": "Chelsea",
         "league": "Premier League",
         "power": 5.8
       },
@@ -530,12 +530,12 @@
       {
         "name": "Porto",
         "league": "Primeira Liga",
-        "power": 7.8
+        "power": 7.6
       },
       {
         "name": "Benfica",
         "league": "Primeira Liga",
-        "power": 7
+        "power": 6.8
       },
       {
         "name": "Sporting",
@@ -617,12 +617,12 @@
       {
         "name": "Inter Milan",
         "league": "Serie A",
-        "power": 9
+        "power": 8.8
       },
       {
         "name": "AC Milan",
         "league": "Serie A",
-        "power": 7.6
+        "power": 7.4
       },
       {
         "name": "Juventus",
