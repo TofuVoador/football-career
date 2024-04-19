@@ -428,6 +428,7 @@ function App() {
     while (!end) {
       let newOpponentsLeft = [];
       let games = "";
+      let playerOpp = "";
       // Loop pelos jogos do torneio
       for (let matchID = 0; matchID < classif.length / 2; matchID++) {
         // Selecionando os dois times para o jogo atual
@@ -452,6 +453,9 @@ function App() {
           team1.name == newPlayer.team.name ||
           team2.name == newPlayer.team.name
         ) {
+          playerOpp = `: ${
+            team1.name == newPlayer.team.name ? team2.name : team1.name
+          }`;
           // Verificando se o jogador ganhou o jogo
           if (
             (game.result && team1.name == newPlayer.team.name) ||
@@ -481,7 +485,7 @@ function App() {
         }
       }
 
-      description += `---> ${TournamentPath[phase]}`;
+      description += `---> ${TournamentPath[phase]}${playerOpp}`;
       description += games;
 
       phase++;
@@ -489,7 +493,6 @@ function App() {
 
       if (phase >= TournamentPath.length - 1) {
         end = true;
-        description += `---> Vencedor: ${newOpponentsLeft[0].name}`;
       }
     }
 
@@ -591,7 +594,7 @@ function App() {
       let classif = playoffsClassif.splice(0, 8);
 
       let games = "";
-      let playerGame = "";
+      let playerOpp = "";
 
       for (let matchID = 0; matchID < playoffsClassif.length / 2; matchID++) {
         let team1 = playoffsClassif[matchID];
@@ -611,7 +614,9 @@ function App() {
           team1.name == newPlayer.team.name ||
           team2.name == newPlayer.team.name
         ) {
-          playerGame = game.game;
+          playerOpp = `: ${
+            team1.name == newPlayer.team.name ? team2.name : team1.name
+          }`;
         }
 
         games += `--> ${game.game}`;
@@ -623,7 +628,7 @@ function App() {
         }
       }
 
-      description += `---> ${TournamentPath[phase]}: ${playerGame}`;
+      description += `---> ${TournamentPath[phase]}${playerOpp}`;
       description += games;
 
       if (classif.some((t) => t.name == newPlayer.team.name)) {
@@ -636,6 +641,7 @@ function App() {
       while (!end) {
         // Limpar variáveis ​​para armazenar informações dos jogos
         let games = "";
+        let playerOpp = "";
         let newClassif = [];
 
         // Calcular o efeito do jogador na fase atual do torneio
@@ -664,6 +670,9 @@ function App() {
             team1.name == newPlayer.team.name ||
             team2.name == newPlayer.team.name
           ) {
+            playerOpp = `: ${
+              team1.name == newPlayer.team.name ? team2.name : team1.name
+            }`;
             // Verificar se o jogador ganhou o jogo
             if (
               (game.result && team1.name == newPlayer.team.name) ||
@@ -694,7 +703,7 @@ function App() {
         }
 
         // Construir a descrição da fase do torneio
-        description += `---> ${TournamentPath[phase]}`;
+        description += `---> ${TournamentPath[phase]}${playerOpp}`;
         description += games;
 
         // Avançar para a próxima fase e atualizar a classificação
@@ -704,7 +713,6 @@ function App() {
         // Verificar se o torneio chegou ao fim
         if (phase >= TournamentPath.length - 1) {
           end = true;
-          description += `---> Vencedor: ${newClassif[0].name}`;
         }
       }
 
@@ -798,6 +806,7 @@ function App() {
       while (!end) {
         // Limpar variáveis ​​para armazenar informações dos jogos
         let games = "";
+        let playerOpp = "";
         let newClassif = [];
 
         // Loop pelos jogos do torneio atual
@@ -823,6 +832,9 @@ function App() {
             team1.name == newPlayer.team.name ||
             team2.name == newPlayer.team.name
           ) {
+            playerOpp = `: ${
+              team1.name == newPlayer.team.name ? team2.name : team1.name
+            }`;
             // Verificar se o jogador ganhou o jogo
             if (
               (game.result && team1.name == newPlayer.team.name) ||
@@ -849,7 +861,7 @@ function App() {
         }
 
         // Construir a descrição da fase do torneio
-        description += `---> ${TournamentPath[phase]}`;
+        description += `---> ${TournamentPath[phase]}${playerOpp}`;
         description += games;
 
         // Avançar para a próxima fase e atualizar a classificação
@@ -859,7 +871,6 @@ function App() {
         // Verificar se o torneio chegou ao fim
         if (phase >= TournamentPath.length - 1) {
           end = true;
-          description += `---> Vencedor: ${newClassif[0].name}`;
         }
       }
 
@@ -868,7 +879,7 @@ function App() {
     }
 
     //World Cup
-    if ((year + 2) % 4 == 0) {
+    if (year % 4 == 2) {
       newSeason.awardPoints -= 2.0;
       phase = 0;
       playerPhase = 0;
@@ -1038,7 +1049,7 @@ function App() {
         // Limpar variáveis para armazenar informações dos jogos
         let games = "";
         let newClassif = [];
-        let playerGame = "";
+        let playerOpp = "";
 
         // Calcular o efeito do jogador na fase atual do torneio
         let playerEffect = 1 - phase / 10.0;
@@ -1065,7 +1076,9 @@ function App() {
             team1.name == player.nation.name ||
             team2.name == player.nation.name
           ) {
-            playerGame = game.game;
+            playerOpp = `: ${
+              team1.name == player.nation.name ? team2.name : team1.name
+            }`;
           }
 
           // Verificar se o jogador está envolvido no jogo atual
@@ -1103,7 +1116,7 @@ function App() {
         }
 
         // Construir a descrição da fase do torneio
-        description += `---> ${TournamentPath[phase]}: ${playerGame}`;
+        description += `---> ${TournamentPath[phase]}${playerOpp}`;
         description += games;
 
         // Avançar para a próxima fase e atualizar a classificação
@@ -1113,7 +1126,6 @@ function App() {
         // Verificar se o torneio chegou ao fim
         if (phase >= TournamentPath.length - 1) {
           end = true;
-          description += `---> Vencedor: ${newClassif[0].name}`;
         }
       }
 
