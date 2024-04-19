@@ -591,6 +591,7 @@ function App() {
       let classif = playoffsClassif.splice(0, 8);
 
       let games = "";
+      let playerGame = "";
 
       for (let matchID = 0; matchID < playoffsClassif.length / 2; matchID++) {
         let team1 = playoffsClassif[matchID];
@@ -606,6 +607,13 @@ function App() {
           true
         );
 
+        if (
+          team1.name == newPlayer.team.name ||
+          team2.name == newPlayer.team.name
+        ) {
+          playerGame = game.game;
+        }
+
         games += `--> ${game.game}`;
 
         if (game.result) {
@@ -615,7 +623,7 @@ function App() {
         }
       }
 
-      description += `---> ${TournamentPath[phase]}`;
+      description += `---> ${TournamentPath[phase]}: ${playerGame}`;
       description += games;
 
       if (classif.some((t) => t.name == newPlayer.team.name)) {
@@ -1030,6 +1038,7 @@ function App() {
         // Limpar variáveis para armazenar informações dos jogos
         let games = "";
         let newClassif = [];
+        let playerGame = "";
 
         // Calcular o efeito do jogador na fase atual do torneio
         let playerEffect = 1 - phase / 10.0;
@@ -1044,14 +1053,20 @@ function App() {
           let game = GetKnockoutResult(
             team1,
             team2,
-            // Aplicar o efeito do jogador no desempenho do time do jogador
             team1.name == player.nation.name
               ? newSeason.performance * playerEffect
               : team2.name == player.nation.name
               ? -newSeason.performance * playerEffect
               : 0,
-            false // Indicar que não é uma fase da Copa do Mundo
+            false
           );
+
+          if (
+            team1.name == player.nation.name ||
+            team2.name == player.nation.name
+          ) {
+            playerGame = game.game;
+          }
 
           // Verificar se o jogador está envolvido no jogo atual
           if (
@@ -1088,7 +1103,7 @@ function App() {
         }
 
         // Construir a descrição da fase do torneio
-        description += `---> ${TournamentPath[phase]}`;
+        description += `---> ${TournamentPath[phase]}: ${playerGame}`;
         description += games;
 
         // Avançar para a próxima fase e atualizar a classificação
@@ -1561,8 +1576,8 @@ function App() {
     let team1Power = Math.pow(team1.power, 3) / base;
     let team2Power = Math.pow(team2.power, 3) / base;
 
-    let team1Luck = (Math.random() + Math.random()) * 5 - 2.5;
-    let team2Luck = (Math.random() + Math.random()) * 5 - 2.5;
+    let team1Luck = (Math.random() + Math.random()) * 4 - 2;
+    let team2Luck = (Math.random() + Math.random()) * 4 - 2;
 
     let team1Score = Math.round(team1Luck * team1Power + bonus);
     let team2Score = Math.round(team2Luck * team2Power);
@@ -1578,13 +1593,11 @@ function App() {
     let team1Power = Math.pow(team1.power, 3) / base;
     let team2Power = Math.pow(team2.power, 3) / base;
 
-    let goals = Math.random() + Math.random();
+    let team1Luck = (Math.random() + Math.random()) * 2;
+    let team2Luck = (Math.random() + Math.random()) * 2;
 
-    let team1Luck = Math.random() + Math.random();
-    let team2Luck = Math.random() + Math.random();
-
-    let team1Score = Math.round(goals * team1Luck * team1Power);
-    let team2Score = Math.round(goals * team2Luck * team2Power);
+    let team1Score = Math.round(team1Luck * team1Power);
+    let team2Score = Math.round(team2Luck * team2Power);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
