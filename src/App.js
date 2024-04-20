@@ -1661,7 +1661,6 @@ function App() {
             currentPlayer.age + Math.round(contractDuration / 2),
             team.power
           ) + currentPlayer.performance;
-        console.log(team, expectedOverall);
         let contractValue = Math.round(
           currentPlayer.position.value *
             GetWage(currentPlayer.overall, team.power, currentPlayer.fame)
