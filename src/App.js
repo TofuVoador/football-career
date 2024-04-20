@@ -121,21 +121,22 @@ function App() {
 
     setPlayer(newPlayer);
 
-    // let l80 = Array(8).fill(0);
-    // let l50 = Array(8).fill(0);
-    // let l20 = Array(8).fill(0);
+    // let l80 = Array(10).fill(0);
+    // let l50 = Array(10).fill(0);
+    // let l20 = Array(10).fill(0);
 
     // for (let i = 0; i < 1000; i++) {
-    //   let r = (Math.random() + Math.random()) * 5 - 2;
-    //   let r80 = Math.round(r * 0.8);
-    //   let r50 = Math.round(r * 0.5);
-    //   let r20 = Math.round(r * 0.2);
+    //   let g = Math.random() + Math.random();
+    //   let r = (Math.random() + Math.random()) * 4 - 2;
+    //   let r80 = Math.round(g * r * 0.8);
+    //   let r50 = Math.round(g * r * 0.5);
+    //   let r20 = Math.round(g * r * 0.2);
     //   if (r80 < 0) r80 = 0;
     //   if (r50 < 0) r50 = 0;
     //   if (r20 < 0) r20 = 0;
-    //   l80[r80]++;
-    //   l50[r50]++;
-    //   l20[r20]++;
+    //   l80[r80] += 0.1;
+    //   l50[r50] += 0.1;
+    //   l20[r20] += 0.1;
     // }
 
     // console.log(l80);
@@ -1515,11 +1516,13 @@ function App() {
     let team1Power = Math.pow(team1.power, 2) / base;
     let team2Power = Math.pow(team2.power, 2) / base;
 
-    let team1Luck = (Math.random() + Math.random()) * 5 - 2;
-    let team2Luck = (Math.random() + Math.random()) * 5 - 2;
+    let goals = Math.random() + Math.random();
 
-    let team1Score = Math.round(team1Luck * team1Power + bonus);
-    let team2Score = Math.round(team2Luck * team2Power);
+    let team1Luck = (Math.random() + Math.random()) * 4 - 2;
+    let team2Luck = (Math.random() + Math.random()) * 4 - 2;
+
+    let team1Score = Math.round(goals * team1Luck * team1Power + bonus);
+    let team2Score = Math.round(goals * team2Luck * team2Power);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
@@ -1532,11 +1535,13 @@ function App() {
     let team1Power = Math.pow(team1.power, 2) / base;
     let team2Power = Math.pow(team2.power, 2) / base;
 
-    let team1Luck = (Math.random() + Math.random()) * 2;
-    let team2Luck = (Math.random() + Math.random()) * 2;
+    let goals = Math.random() + Math.random();
 
-    let team1Score = Math.round(team1Luck * team1Power);
-    let team2Score = Math.round(team2Luck * team2Power);
+    let team1Luck = Math.random() + Math.random();
+    let team2Luck = Math.random() + Math.random();
+
+    let team1Score = Math.round(goals * team1Luck * team1Power);
+    let team2Score = Math.round(goals * team2Luck * team2Power);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
