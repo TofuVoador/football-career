@@ -178,14 +178,10 @@ function App() {
       // Verifica se o novo time está na mesma liga que o antigo
       if (oldTeamLeague == newPlayer.team.league) {
         // Obtém a posição do novo time na tabela da liga atual
-        lp =
-          currentSeason.leagueTable.findIndex(
-            (team) => team === newPlayer.team
-          ) + 1;
+        lp = currentSeason.leagueTable.findIndex((team) => team === newPlayer.team) + 1;
       } else {
         // Encontra a liga do novo time
-        let newLeague =
-          leagues.find((league) => league.name === newPlayer.team.league) || [];
+        let newLeague = leagues.find((league) => league.name === newPlayer.team.league) || [];
 
         // Calcula os bônus com base no desempenho passado da liga
         let bonuses = Array.from(
@@ -198,15 +194,11 @@ function App() {
 
         // Simula a posição na liga com base no desempenho passado
         let leagueResults = GetLeaguePosition(newLeague.teams, bonuses);
-        lp =
-          leagueResults.findIndex((team) => team.name == newPlayer.team.name) +
-          1;
+        lp = leagueResults.findIndex((team) => team.name == newPlayer.team.name) + 1;
       }
 
       // Obtém a liga do jogador
-      let league = leagues.find(
-        (league) => league.name === newPlayer.team.league
-      );
+      let league = leagues.find((league) => league.name === newPlayer.team.league);
 
       // Verifica se o jogador se classificou no ano passado
       if (lp <= league.championsSpots) {
@@ -228,37 +220,6 @@ function App() {
       newContract = renew.duration; // Nova duração do contrato
       newPlayer.wage = renew.value; // Novo valor do contrato
     }
-
-    // Filtra os valores de transferValue que são números
-    const transferValues = transfers.map((transfer) => transfer?.transferValue);
-    const validTransferValues = transferValues.filter(
-      (value) => typeof value === "number" && !isNaN(value)
-    );
-
-    if (validTransferValues.length > 0) {
-      // Calcula o maior valor de transferValue
-      newPlayer.marketValue = Math.max(...validTransferValues);
-    }
-
-    //calcule the player's performance
-    newPlayer.performance =
-      Math.round(100.0 * (Math.random() - Math.random())) / 100.0;
-
-    newPlayer.overall =
-      GetOverall(newPlayer.potential, newPlayer.age, newPlayer.team.power) +
-      newPlayer.performance * 2;
-
-    //set performance over team
-    newGeneralPerformance.push(newPlayer.performance);
-    if (newGeneralPerformance.length > 4) newGeneralPerformance.shift();
-
-    //giving the performance, set how many games did they were the starter player
-    let starting = Math.floor(
-      (newPlayer.overall - (75 + newPlayer.team.power / 2)) / 0.1 +
-        (Math.random() - Math.random()) * 10
-    );
-    if (starting > 100) starting = 100;
-    else if (starting < 0) starting = 0;
 
     //change teams power on each season
     let newTeams = UpdateTeamsStats(50.0);
@@ -289,6 +250,36 @@ function App() {
 
     newPlayer.team = allTeams.find((t) => t.name == newPlayer.team.name); //find player's team by name and update
     newPlayer.nation = allNations.find((n) => n.name == newPlayer.nation.name); //find player's nation by name and update
+
+    // Filtra os valores de transferValue que são números
+    const transferValues = transfers.map((transfer) => transfer?.transferValue);
+    const validTransferValues = transferValues.filter(
+      (value) => typeof value === "number" && !isNaN(value)
+    );
+
+    if (validTransferValues.length > 0) {
+      // Calcula o maior valor de transferValue
+      newPlayer.marketValue = Math.max(...validTransferValues);
+    }
+
+    //calcule the player's performance
+    newPlayer.performance = Math.round(100.0 * (Math.random() - Math.random())) / 100.0;
+
+    newPlayer.overall =
+      GetOverall(newPlayer.potential, newPlayer.age, newPlayer.team.power) +
+      newPlayer.performance * 2;
+
+    //set performance over team
+    newGeneralPerformance.push(newPlayer.performance);
+    if (newGeneralPerformance.length > 4) newGeneralPerformance.shift();
+
+    //giving the performance, set how many games did they were the starter player
+    let starting = Math.floor(
+      (newPlayer.overall - (75 + newPlayer.team.power / 2)) / 0.1 +
+        (Math.random() - Math.random()) * 10
+    );
+    if (starting > 100) starting = 100;
+    else if (starting < 0) starting = 0;
 
     //set season start
     let newSeason = {
@@ -331,13 +322,11 @@ function App() {
     //randomize how many goals/assists did they score
     let goalsOppostunities =
       (newPlayer.position.goalsBonus *
-        (Math.pow(newPlayer.team.power, Math.log10(50)) +
-          newSeason.starting / 2)) /
+        (Math.pow(newPlayer.team.power, Math.log10(50)) + newSeason.starting / 2)) /
       100.0;
     let assistsOppostunities =
       (newPlayer.position.assistsBonus *
-        (Math.pow(newPlayer.team.power, Math.log10(50)) +
-          newSeason.starting / 2)) /
+        (Math.pow(newPlayer.team.power, Math.log10(50)) + newSeason.starting / 2)) /
       100.0;
 
     newSeason.goals = Math.floor(
@@ -362,9 +351,7 @@ function App() {
     med /= generalPerformance.length;
 
     //national tournaments
-    let league = leagues.find(
-      (league) => league.name === newPlayer.team.league
-    );
+    let league = leagues.find((league) => league.name === newPlayer.team.league);
 
     let triplice = 0;
 
@@ -373,23 +360,17 @@ function App() {
       { length: league.teams.length },
       () => Math.round(70.0 * (Math.random() - Math.random())) / 100
     );
-    let playerIndex = league.teams.findIndex(
-      (team) => team.name == newPlayer.team.name
-    );
+    let playerIndex = league.teams.findIndex((team) => team.name == newPlayer.team.name);
     bonuses[playerIndex] += newPlayer.performance * 0.7;
     bonuses[playerIndex] /= 2;
     const sum = bonuses.reduce((acc, val) => acc + val, 0);
     const adjustment = sum / league.teams.length;
-    bonuses = bonuses.map(
-      (num) => Math.round(100.0 * (num - adjustment)) / 100
-    );
+    bonuses = bonuses.map((num) => Math.round(100.0 * (num - adjustment)) / 100);
 
     newSeason.leagueTable = GetLeaguePosition(league.teams, bonuses);
 
     const playerPosition =
-      newSeason.leagueTable.findIndex(
-        (team) => team.name == newPlayer.team.name
-      ) + 1;
+      newSeason.leagueTable.findIndex((team) => team.name == newPlayer.team.name) + 1;
 
     //top eight from the league
     let topEight = "";
@@ -397,8 +378,7 @@ function App() {
       topEight += `---> ${p + 1}º: ${newSeason.leagueTable[p].name}`;
     }
 
-    newSeason.awardPoints +=
-      ((league.championsSpots / 4.0) * (5 - playerPosition)) / 2; //max = 2.0
+    newSeason.awardPoints += ((league.championsSpots / 4.0) * (5 - playerPosition)) / 2; //max = 2.0
     newSeason.titles.push(`Liga: ${playerPosition}º lugar ${topEight}`);
 
     //if fist place, then won trophy
@@ -449,13 +429,8 @@ function App() {
         let game = GetKnockoutResult(team1, team2, matchPerformance, isFinal);
 
         // Verificando se o jogador está envolvido no jogo atual
-        if (
-          team1.name == newPlayer.team.name ||
-          team2.name == newPlayer.team.name
-        ) {
-          playerOpp = `: ${
-            team1.name == newPlayer.team.name ? team2.name : team1.name
-          }`;
+        if (team1.name == newPlayer.team.name || team2.name == newPlayer.team.name) {
+          playerOpp = `: ${team1.name == newPlayer.team.name ? team2.name : team1.name}`;
           // Verificando se o jogador ganhou o jogo
           if (
             (game.result && team1.name == newPlayer.team.name) ||
@@ -515,17 +490,12 @@ function App() {
           return b.power - a.power + Math.random();
         });
         // Selecionar os times principais com base nos lugares de campeão da liga
-        let selected = remainingTeams.splice(
-          0,
-          leagues[leagueID].championsSpots
-        );
+        let selected = remainingTeams.splice(0, leagues[leagueID].championsSpots);
 
         // Verificar se o time do novo jogador pertence à liga atual
         if (newPlayer.team.league == leagues[leagueID].name) {
           // Encontrar o time do jogador entre os times selecionados
-          let playerTeamSelected = selected.find(
-            (team) => team.name == newPlayer.team.name
-          );
+          let playerTeamSelected = selected.find((team) => team.name == newPlayer.team.name);
 
           // Se o time do jogador não estiver entre os selecionados, substituir o time mais fraco pelo time do jogador
           if (!playerTeamSelected) {
@@ -545,15 +515,12 @@ function App() {
 
       // Generate random bonuses for each team in the group
       let bonuses = qualified.reduce((acc, curr) => {
-        acc[curr.name] =
-          Math.round(30.0 * (Math.random() - Math.random())) / 100;
+        acc[curr.name] = Math.round(30.0 * (Math.random() - Math.random())) / 100;
         return acc;
       }, {});
 
       // Find the index of the new player's team in the qualified array
-      let playerIndex = qualified.findIndex(
-        (team) => team.name === newPlayer.team.name
-      );
+      let playerIndex = qualified.findIndex((team) => team.name === newPlayer.team.name);
 
       // If the player's team is found, update the bonuses accordingly
       if (playerIndex !== -1) {
@@ -610,13 +577,8 @@ function App() {
           true
         );
 
-        if (
-          team1.name == newPlayer.team.name ||
-          team2.name == newPlayer.team.name
-        ) {
-          playerOpp = `: ${
-            team1.name == newPlayer.team.name ? team2.name : team1.name
-          }`;
+        if (team1.name == newPlayer.team.name || team2.name == newPlayer.team.name) {
+          playerOpp = `: ${team1.name == newPlayer.team.name ? team2.name : team1.name}`;
         }
 
         games += `--> ${game.game}`;
@@ -666,13 +628,8 @@ function App() {
           );
 
           // Verificar se o jogador está envolvido no jogo atual
-          if (
-            team1.name == newPlayer.team.name ||
-            team2.name == newPlayer.team.name
-          ) {
-            playerOpp = `: ${
-              team1.name == newPlayer.team.name ? team2.name : team1.name
-            }`;
+          if (team1.name == newPlayer.team.name || team2.name == newPlayer.team.name) {
+            playerOpp = `: ${team1.name == newPlayer.team.name ? team2.name : team1.name}`;
             // Verificar se o jogador ganhou o jogo
             if (
               (game.result && team1.name == newPlayer.team.name) ||
@@ -741,9 +698,7 @@ function App() {
         // Verificar se o time do novo jogador pertence à liga atual
         if (newPlayer.team.league == leagues[leagueID].name) {
           // Encontrar o time do jogador entre os times selecionados
-          let playerTeamSelected = selected.find(
-            (team) => team.name == newPlayer.team.name
-          );
+          let playerTeamSelected = selected.find((team) => team.name == newPlayer.team.name);
 
           // Se o time do jogador não estiver entre os selecionados, substituir o time mais fraco pelo time do jogador
           if (!playerTeamSelected) {
@@ -762,15 +717,12 @@ function App() {
 
       // Generate random bonuses for each team in the group
       let bonuses = qualified.reduce((acc, curr) => {
-        acc[curr.name] =
-          Math.round(50.0 * (Math.random() - Math.random())) / 100;
+        acc[curr.name] = Math.round(50.0 * (Math.random() - Math.random())) / 100;
         return acc;
       }, {});
 
       // Find the index of the new player's team in the qualified array
-      let playerIndex = qualified.findIndex(
-        (team) => team.name === newPlayer.team.name
-      );
+      let playerIndex = qualified.findIndex((team) => team.name === newPlayer.team.name);
 
       // If the player's team is found, update the bonuses accordingly
       if (playerIndex !== -1) {
@@ -828,13 +780,8 @@ function App() {
           );
 
           // Verificar se o jogador está envolvido no jogo atual
-          if (
-            team1.name == newPlayer.team.name ||
-            team2.name == newPlayer.team.name
-          ) {
-            playerOpp = `: ${
-              team1.name == newPlayer.team.name ? team2.name : team1.name
-            }`;
+          if (team1.name == newPlayer.team.name || team2.name == newPlayer.team.name) {
+            playerOpp = `: ${team1.name == newPlayer.team.name ? team2.name : team1.name}`;
             // Verificar se o jogador ganhou o jogo
             if (
               (game.result && team1.name == newPlayer.team.name) ||
@@ -922,9 +869,7 @@ function App() {
       });
 
       // Verificar se a nação do novo jogador está entre as nações qualificadas para a Copa do Mundo
-      let classifToWorldCup = allNations.some(
-        (t) => t.name == newPlayer.nation.name
-      );
+      let classifToWorldCup = allNations.some((t) => t.name == newPlayer.nation.name);
 
       if (!classifToWorldCup) description = "---> Grupos --> Sem Dados";
 
@@ -950,32 +895,23 @@ function App() {
             let randomIndex = RandomNumber(0, validNations.length - 1);
             groups[GroupID].push(validNations[randomIndex]);
 
-            pots[potID] = pots[potID].filter(
-              (n) => validNations[randomIndex] != n
-            );
+            pots[potID] = pots[potID].filter((n) => validNations[randomIndex] != n);
           } else {
             //if there is no other nation available, try repeating Europe
             validNations = pots[potID].filter((n) => n.continent == "UEFA");
             if (validNations.length > 0) {
               let randomIndex = RandomNumber(0, validNations.length - 1);
               groups[GroupID].push(validNations[randomIndex]);
-              pots[potID] = pots[potID].filter(
-                (n) => validNations[randomIndex] != n
-              );
+              pots[potID] = pots[potID].filter((n) => validNations[randomIndex] != n);
             } else {
               validNations = pots[potID];
               if (validNations.length > 0) {
                 let randomIndex = RandomNumber(0, validNations.length - 1);
                 groups[GroupID].push(validNations[randomIndex]);
-                pots[potID] = pots[potID].filter(
-                  (n) => validNations[randomIndex] != n
-                );
+                pots[potID] = pots[potID].filter((n) => validNations[randomIndex] != n);
               } else {
                 //if can't make a group
-                throw new Error(
-                  "Não foi possível gerar o grupo para a copa",
-                  groups
-                );
+                throw new Error("Não foi possível gerar o grupo para a copa", groups);
               }
             }
           }
@@ -999,25 +935,19 @@ function App() {
         );
 
         // Adicionar o desempenho do jogador aos bônus do grupo
-        let playerIndex = groups[groupID].findIndex(
-          (team) => team.name == newPlayer.nation.name
-        );
+        let playerIndex = groups[groupID].findIndex((team) => team.name == newPlayer.nation.name);
         bonuses[playerIndex] += newPlayer.performance * 0.5;
         bonuses[playerIndex] /= 2;
 
         // Calcular o ajuste médio para os bônus do grupo
         const sum = bonuses.reduce((acc, val) => acc + val, 0);
         const adjustment = sum / groups[groupID].length;
-        bonuses = bonuses.map(
-          (num) => Math.round(100.0 * (num - adjustment)) / 100
-        );
+        bonuses = bonuses.map((num) => Math.round(100.0 * (num - adjustment)) / 100);
 
         // Obter a posição do jogador no grupo atual
         let thisGroup = GetWorldCupPosition(groups[groupID], bonuses);
         const playerPosition =
-          thisGroup.table.findIndex(
-            (team) => team.name == newPlayer.nation.name
-          ) + 1;
+          thisGroup.table.findIndex((team) => team.name == newPlayer.nation.name) + 1;
 
         // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
         if (playerPosition > 0) {
@@ -1072,20 +1002,12 @@ function App() {
             false
           );
 
-          if (
-            team1.name == player.nation.name ||
-            team2.name == player.nation.name
-          ) {
-            playerOpp = `: ${
-              team1.name == player.nation.name ? team2.name : team1.name
-            }`;
+          if (team1.name == player.nation.name || team2.name == player.nation.name) {
+            playerOpp = `: ${team1.name == player.nation.name ? team2.name : team1.name}`;
           }
 
           // Verificar se o jogador está envolvido no jogo atual
-          if (
-            team1.name == player.nation.name ||
-            team2.name == player.nation.name
-          ) {
+          if (team1.name == player.nation.name || team2.name == player.nation.name) {
             // Verificar se o jogador ganhou o jogo
             if (
               (game.result && team1.name == player.nation.name) ||
@@ -1130,9 +1052,7 @@ function App() {
       }
 
       description = `Copa do Mundo: ${
-        classifToWorldCup
-          ? TournamentPath[playerPhase]
-          : "Seleção não classificada"
+        classifToWorldCup ? TournamentPath[playerPhase] : "Seleção não classificada"
       } ${playedWorldCup ? "" : " (Não Convocado)"} ${description}`;
       newSeason.titles.push(description);
     }
@@ -1157,9 +1077,7 @@ function App() {
 
     if (45 + RandomNumber(0, 3) + RandomNumber(0, 2) < newSeason.goals) {
       //Golden Shoes
-      newPlayer.awards.push(
-        `Chuteiras de Ouro ${year} (${newPlayer.team.name})`
-      );
+      newPlayer.awards.push(`Chuteiras de Ouro ${year} (${newPlayer.team.name})`);
       newSeason.awardPoints += 1.0;
       newPlayer.fame += 20;
       newSeason.titles.push("Chuteira de Ouro");
@@ -1220,19 +1138,23 @@ function App() {
       newPlayer.contractTeam != null &&
       contract <= 1
     ) {
-      newTransfers = [newPlayer.contractTeam];
+      newTransfers[2] = newPlayer.contractTeam;
 
-      setRenew({
-        value: newPlayer.contractTeam.contract.value,
-        duration: newPlayer.contractTeam.contract.duration,
-      });
+      if (med > 0) {
+        setRenew({
+          value: newPlayer.contractTeam.contract.value,
+          duration: newPlayer.contractTeam.contract.duration,
+        });
+        document.getElementById("decision-stay").style.display = "flex";
+      } else {
+        document.getElementById("decision-stay").style.display = "none";
+      }
 
       newPlayer.contractTeam = null;
 
       document.getElementById("decision-transfer1").style.display = "flex";
       document.getElementById("decision-transfer2").style.display = "none";
       document.getElementById("decision-transfer3").style.display = "none";
-      document.getElementById("decision-stay").style.display = "flex";
       document.getElementById("retire").style.display = "none";
     } else if (
       //if played good midde contract
@@ -1380,18 +1302,14 @@ function App() {
         let home = i;
         let away = i + newTeams.length / 2;
 
-        let newBonus =
-          bonuses[newTeams[home].name] - bonuses[newTeams[away].name];
+        let newBonus = bonuses[newTeams[home].name] - bonuses[newTeams[away].name];
 
         let game = GetMatch(newTeams[home], newTeams[away], newBonus);
 
-        if (
-          newTeams[home].name == playerTeam.name ||
-          newTeams[away].name == playerTeam.name
-        )
-          desc += `--> Rodada ${round + 1}: ${newTeams[home].name} ${
-            game[0]
-          } x ${game[1]} ${newTeams[away].name}`;
+        if (newTeams[home].name == playerTeam.name || newTeams[away].name == playerTeam.name)
+          desc += `--> Rodada ${round + 1}: ${newTeams[home].name} ${game[0]} x ${game[1]} ${
+            newTeams[away].name
+          }`;
 
         if (game[0] > game[1]) {
           points[home] += 3;
@@ -1418,8 +1336,7 @@ function App() {
       return points[table.indexOf(b)] - points[table.indexOf(a)];
     });
 
-    const playerPosition =
-      table.findIndex((team) => team.name == playerTeam.name) + 1;
+    const playerPosition = table.findIndex((team) => team.name == playerTeam.name) + 1;
 
     return {
       pos: playerPosition,
@@ -1457,18 +1374,14 @@ function App() {
         let home = i;
         let away = i + 1;
 
-        let newBonus =
-          bonuses[newTeams[home].name] - bonuses[newTeams[away].name];
+        let newBonus = bonuses[newTeams[home].name] - bonuses[newTeams[away].name];
 
         let game = GetMatch(newTeams[home], newTeams[away], newBonus);
 
-        if (
-          newTeams[home].name == playerTeam.name ||
-          newTeams[away].name == playerTeam.name
-        )
-          desc += `--> Rodada ${round + 1}: ${newTeams[home].name} ${
-            game[0]
-          } x ${game[1]} ${newTeams[away].name}`;
+        if (newTeams[home].name == playerTeam.name || newTeams[away].name == playerTeam.name)
+          desc += `--> Rodada ${round + 1}: ${newTeams[home].name} ${game[0]} x ${game[1]} ${
+            newTeams[away].name
+          }`;
 
         if (game[0] > game[1]) {
           points[home] += 3;
@@ -1479,20 +1392,14 @@ function App() {
           points[home] += 1;
         }
 
-        newOrderTeams[
-          ((i * 2) % newTeams.length) + Math.floor((2 * i) / newTeams.length)
-        ] = newTeams[home];
-        newOrderTeams[
-          (((i + 1) * 2) % newTeams.length) +
-            Math.floor((2 * i) / newTeams.length)
-        ] = newTeams[away];
-        newOrderPoints[
-          ((i * 2) % newTeams.length) + Math.floor((2 * i) / newTeams.length)
-        ] = points[home];
-        newOrderPoints[
-          (((i + 1) * 2) % newTeams.length) +
-            Math.floor((2 * i) / newTeams.length)
-        ] = points[away];
+        newOrderTeams[((i * 2) % newTeams.length) + Math.floor((2 * i) / newTeams.length)] =
+          newTeams[home];
+        newOrderTeams[(((i + 1) * 2) % newTeams.length) + Math.floor((2 * i) / newTeams.length)] =
+          newTeams[away];
+        newOrderPoints[((i * 2) % newTeams.length) + Math.floor((2 * i) / newTeams.length)] =
+          points[home];
+        newOrderPoints[(((i + 1) * 2) % newTeams.length) + Math.floor((2 * i) / newTeams.length)] =
+          points[away];
       }
 
       newTeams = newOrderTeams;
@@ -1505,8 +1412,7 @@ function App() {
       return points[table.indexOf(b)] - points[table.indexOf(a)];
     });
 
-    const playerPosition =
-      table.findIndex((team) => team.name == playerTeam.name) + 1;
+    const playerPosition = table.findIndex((team) => team.name == playerTeam.name) + 1;
 
     return {
       pos: playerPosition,
@@ -1675,29 +1581,27 @@ function App() {
 
         if (teamGoals1 == teamGoals2) {
           let penalties = GetPenalties(team2, team1);
-          gameDesc += `->${team2.name} ${game2[0] + extra[0]} (${
-            penalties[0]
-          }) x (${penalties[1]}) ${game2[1] + extra[1]} ${team1.name}`;
+          gameDesc += `->${team2.name} ${game2[0] + extra[0]} (${penalties[0]}) x (${
+            penalties[1]
+          }) ${game2[1] + extra[1]} ${team1.name}`;
           teamGoals1 += penalties[0];
           teamGoals2 += penalties[1];
-          gameDesc = `${team1.name} ${game[0] + game2[1] + extra[1]} (${
-            penalties[1]
-          }) x (${penalties[0]}) ${game[1] + game2[0] + extra[0]} ${
-            team2.name
-          }${gameDesc}`;
+          gameDesc = `${team1.name} ${game[0] + game2[1] + extra[1]} (${penalties[1]}) x (${
+            penalties[0]
+          }) ${game[1] + game2[0] + extra[0]} ${team2.name}${gameDesc}`;
         } else {
-          gameDesc += `->${team2.name} ${game2[0] + extra[0]} x ${
-            game2[1] + extra[1]
-          } ${team1.name} (Pr)`;
+          gameDesc += `->${team2.name} ${game2[0] + extra[0]} x ${game2[1] + extra[1]} ${
+            team1.name
+          } (Pr)`;
           gameDesc = `${team1.name} ${game[0] + game2[1] + extra[1]} x ${
             game[1] + game2[0] + extra[0]
           } ${team2.name}${gameDesc}`;
         }
       } else {
         gameDesc += `->${team2.name} ${game2[0]} x ${game2[1]} ${team1.name}`;
-        gameDesc = `${team1.name} ${game[0] + game2[1]} x ${
-          game[1] + game2[0]
-        } ${team2.name}${gameDesc}`;
+        gameDesc = `${team1.name} ${game[0] + game2[1]} x ${game[1] + game2[0]} ${
+          team2.name
+        }${gameDesc}`;
       }
     } else if (teamGoals1 == teamGoals2) {
       let extra = GetExtraTime(team1, team2);
@@ -1757,6 +1661,7 @@ function App() {
             currentPlayer.age + Math.round(contractDuration / 2),
             team.power
           ) + currentPlayer.performance;
+        console.log(team, expectedOverall);
         let contractValue = Math.round(
           currentPlayer.position.value *
             GetWage(currentPlayer.overall, team.power, currentPlayer.fame)
@@ -1766,8 +1671,7 @@ function App() {
           duration: contractDuration,
         };
         let transferValue = Math.round(
-          currentPlayer.position.value *
-            GetTransferValue(expectedOverall, team.power)
+          currentPlayer.position.value * GetTransferValue(expectedOverall, team.power)
         );
 
         contracts.push({
@@ -1810,22 +1714,12 @@ function App() {
       allTeams[randomIndices[2]],
     ];
 
-    let contractDurations = [
-      RandomNumber(2, 6),
-      RandomNumber(2, 6),
-      RandomNumber(2, 6),
-    ];
+    let contractDurations = [RandomNumber(2, 6), RandomNumber(2, 6), RandomNumber(2, 6)];
 
     let contractWages = [
-      Math.round(
-        posValue * GetWage(GetOverall(0, 18, teams[0].power), teams[0].power, 0)
-      ),
-      Math.round(
-        posValue * GetWage(GetOverall(0, 18, teams[1].power), teams[1].power, 0)
-      ),
-      Math.round(
-        posValue * GetWage(GetOverall(0, 18, teams[2].power), teams[2].power, 0)
-      ),
+      Math.round(posValue * GetWage(GetOverall(0, 18, teams[0].power), teams[0].power, 0)),
+      Math.round(posValue * GetWage(GetOverall(0, 18, teams[1].power), teams[1].power, 0)),
+      Math.round(posValue * GetWage(GetOverall(0, 18, teams[2].power), teams[2].power, 0)),
     ];
 
     let contracts = [
@@ -1841,15 +1735,9 @@ function App() {
     ];
 
     let transferValues = [
-      Math.round(
-        posValue * GetTransferValue(expectedOveralls[0], teams[0].power)
-      ),
-      Math.round(
-        posValue * GetTransferValue(expectedOveralls[1], teams[1].power)
-      ),
-      Math.round(
-        posValue * GetTransferValue(expectedOveralls[2], teams[2].power)
-      ),
+      Math.round(posValue * GetTransferValue(expectedOveralls[0], teams[0].power)),
+      Math.round(posValue * GetTransferValue(expectedOveralls[1], teams[1].power)),
+      Math.round(posValue * GetTransferValue(expectedOveralls[2], teams[2].power)),
     ];
 
     return [
@@ -1886,12 +1774,7 @@ function App() {
   }
 
   function GetOverall(potential, age, teamPower) {
-    return (
-      89 +
-      potential / 10 +
-      Math.round(10.0 * teamPower) / 100 -
-      (28 - age) ** 2 / 10
-    );
+    return 89 + potential / 10 + Math.round(10.0 * teamPower) / 100 - (28 - age) ** 2 / 10;
   }
 
   function GetWage(currentOverall, teamPower, fame) {
@@ -1936,8 +1819,7 @@ function App() {
         last = current;
 
         let newPower = newTeams[leagueID].teams[teamID].power + change;
-        newTeams[leagueID].teams[teamID].power =
-          Math.round(100.0 * newPower) / 100;
+        newTeams[leagueID].teams[teamID].power = Math.round(100.0 * newPower) / 100;
 
         if (newTeams[leagueID].teams[teamID].power > 10)
           newTeams[leagueID].teams[teamID].power = 10;
@@ -1956,10 +1838,7 @@ function App() {
   function UpdateExtraTeamsStats() {
     let newTeams = DeepClone([...extrateams]);
     let last = Math.random();
-    let teamIndices = Array.from(
-      { length: newTeams.length },
-      (_, index) => index
-    );
+    let teamIndices = Array.from({ length: newTeams.length }, (_, index) => index);
     teamIndices = shuffleArray(teamIndices);
 
     for (let i = 0; i < newTeams.length; i++) {
@@ -2003,8 +1882,7 @@ function App() {
 
         let newPower = allNations[leagueID].teams[nationID].power + change;
 
-        allNations[leagueID].teams[nationID].power =
-          Math.round(100.0 * newPower) / 100.0;
+        allNations[leagueID].teams[nationID].power = Math.round(100.0 * newPower) / 100.0;
 
         if (allNations[leagueID].teams[nationID].power > 10)
           allNations[leagueID].teams[nationID].power = 10;
@@ -2030,10 +1908,7 @@ function App() {
           <li>Escolha seus dados iniciais.</li>
           <li>Escolha qual proposta você aceitará.</li>
           <li>O jogo simulará a partir do que você escolheu</li>
-          <li>
-            Você pode recarregar a página até aparecer os atributos iniciais
-            desejados
-          </li>
+          <li>Você pode recarregar a página até aparecer os atributos iniciais desejados</li>
           <li>Boa sorte e divirta-se</li>
         </ol>
       </header>
@@ -2077,102 +1952,51 @@ function App() {
         >
           <p>Continuar em {player.team == null ? "null" : player.team.name}</p>
           <p>
-            {player.team == null ? "null" : (player.team.power / 2).toFixed(2)}
-            ⭐ | ${FormatarNumero(renew.value)}/ano |{" "}
+            {player.team == null ? "null" : (player.team.power / 2).toFixed(2)}⭐ | $
+            {FormatarNumero(renew.value)}/ano |{" "}
             {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")}
           </p>
         </a>
-        <a
-          className="d-alert"
-          id="decision-transfer1"
-          onClick={() => ChooseTeam(transfers[0])}
-        >
+        <a className="d-alert" id="decision-transfer1" onClick={() => ChooseTeam(transfers[0])}>
           <p>
-            {transfers[0] == null
-              ? "null"
-              : transfers[0].loan
-              ? "Empréstimo"
-              : "Transferir"}{" "}
-            para {transfers[0] == null ? "null" : transfers[0].team.name}
+            {transfers[0] == null ? "null" : transfers[0].loan ? "Empréstimo" : "Transferir"} para{" "}
+            {transfers[0] == null ? "null" : transfers[0].team.name}
           </p>
           <p>
-            {transfers[0] == null
-              ? "null"
-              : (transfers[0].team.power / 2).toFixed(2)}
-            ⭐ | $
-            {transfers[0] == null
-              ? "null"
-              : FormatarNumero(transfers[0].contract.value)}
-            /ano |{" "}
-            {transfers[0] == null ? "null" : transfers[0].contract.duration}{" "}
-            anos
+            {transfers[0] == null ? "null" : (transfers[0].team.power / 2).toFixed(2)}⭐ | $
+            {transfers[0] == null ? "null" : FormatarNumero(transfers[0].contract.value)}
+            /ano | {transfers[0] == null ? "null" : transfers[0].contract.duration} anos
           </p>
         </a>
-        <a
-          className="d-alert"
-          id="decision-transfer2"
-          onClick={() => ChooseTeam(transfers[1])}
-        >
+        <a className="d-alert" id="decision-transfer2" onClick={() => ChooseTeam(transfers[1])}>
           <p>
-            {transfers[1] == null
-              ? "null"
-              : transfers[1].loan
-              ? "Empréstimo"
-              : "Transferir"}{" "}
-            para {transfers[1] == null ? "null" : transfers[1].team.name}
+            {transfers[1] == null ? "null" : transfers[1].loan ? "Empréstimo" : "Transferir"} para{" "}
+            {transfers[1] == null ? "null" : transfers[1].team.name}
           </p>
           <p>
-            {transfers[1] == null
-              ? "null"
-              : (transfers[1].team.power / 2).toFixed(2)}
-            ⭐ | $
-            {transfers[1] == null
-              ? "null"
-              : FormatarNumero(transfers[1].contract.value)}
-            /ano |{" "}
-            {transfers[1] == null ? "null" : transfers[1].contract.duration}{" "}
-            anos
+            {transfers[1] == null ? "null" : (transfers[1].team.power / 2).toFixed(2)}⭐ | $
+            {transfers[1] == null ? "null" : FormatarNumero(transfers[1].contract.value)}
+            /ano | {transfers[1] == null ? "null" : transfers[1].contract.duration} anos
           </p>
         </a>
-        <a
-          className="d-alert"
-          id="decision-transfer3"
-          onClick={() => ChooseTeam(transfers[2])}
-        >
+        <a className="d-alert" id="decision-transfer3" onClick={() => ChooseTeam(transfers[2])}>
           <p>
-            {transfers[2] == null
-              ? "null"
-              : transfers[2].loan
-              ? "Empréstimo"
-              : "Transferir"}{" "}
-            para {transfers[2] == null ? "null" : transfers[2].team.name}
+            {transfers[2] == null ? "null" : transfers[2].loan ? "Empréstimo" : "Transferir"} para{" "}
+            {transfers[2] == null ? "null" : transfers[2].team.name}
           </p>
           <p>
-            {transfers[2] == null
-              ? "null"
-              : (transfers[2].team.power / 2).toFixed(2)}
-            ⭐ | $
-            {transfers[2] == null
-              ? "null"
-              : FormatarNumero(transfers[2].contract.value)}
-            /ano |{" "}
-            {transfers[2] == null ? "null" : transfers[2].contract.duration}{" "}
-            anos
+            {transfers[2] == null ? "null" : (transfers[2].team.power / 2).toFixed(2)}⭐ | $
+            {transfers[2] == null ? "null" : FormatarNumero(transfers[2].contract.value)}
+            /ano | {transfers[2] == null ? "null" : transfers[2].contract.duration} anos
           </p>
         </a>
-        <a
-          className="d-alert"
-          id="retire"
-          style={{ display: "none" }}
-          onClick={() => Retire()}
-        >
+        <a className="d-alert" id="retire" style={{ display: "none" }} onClick={() => Retire()}>
           Aposentar-se
         </a>
       </div>
       <div className="choices" id="continue" style={{ display: "none" }}>
         <a className="d-stay" onClick={() => Continue()}>
-          Simular Temporada ({contract}{" "}
-          {contract > 1 ? "anos restantes" : "ano restante"})
+          Simular Temporada ({contract} {contract > 1 ? "anos restantes" : "ano restante"})
         </a>
       </div>
       <div className="chart" id="chart" style={{ display: "none" }}>
@@ -2181,12 +2005,7 @@ function App() {
       <div className="stats">
         <h1>Carreira</h1>
         <div>
-          Fama:{" "}
-          {
-            StarPath[
-              Math.min(Math.floor(player.fame / 100), StarPath.length - 1)
-            ]
-          }
+          Fama: {StarPath[Math.min(Math.floor(player.fame / 100), StarPath.length - 1)]}
           <div
             style={{
               width: "300px",
@@ -2200,9 +2019,7 @@ function App() {
               style={{
                 width: `${Math.floor(Math.min(player.fame, 1000) % 100)}%`,
                 minHeight: "20px",
-                backgroundColor: `${
-                  player.fame < 1000 ? "var(--color-contrast)" : "gold"
-                }`,
+                backgroundColor: `${player.fame < 1000 ? "var(--color-contrast)" : "gold"}`,
                 borderRadius: "10px",
                 margin: "0",
               }}
@@ -2219,13 +2036,8 @@ function App() {
               {Math.floor(player.fame)}
             </span>
           </div>
-          <p>
-            Posição:{" "}
-            {player.position == null ? "A definir" : player.position.title}
-          </p>
-          <p>
-            Seleção: {player.nation == null ? "A definir" : player.nation.name}
-          </p>
+          <p>Posição: {player.position == null ? "A definir" : player.position.title}</p>
+          <p>Seleção: {player.nation == null ? "A definir" : player.nation.name}</p>
         </div>
         <details>
           <summary>Copa do Mundo: {player.worldCup.length}</summary>
