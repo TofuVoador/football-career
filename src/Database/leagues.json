@@ -114,12 +114,12 @@
       {
         "name": "Twente",
         "league": "Eredivisie",
-        "power": 5.8
+        "power": 5.6
       },
       {
         "name": "Heerenveen",
         "league": "Eredivisie",
-        "power": 5.6
+        "power": 5.4
       },
       {
         "name": "NEC Nijmegen",
@@ -181,22 +181,22 @@
       {
         "name": "Club Brugge",
         "league": "Jupiler Pro League",
-        "power": 6.4
+        "power": 6.2
       },
       {
         "name": "Genk",
         "league": "Jupiler Pro League",
-        "power": 6.2
+        "power": 6.0
       },
       {
         "name": "Antwerp",
         "league": "Jupiler Pro League",
-        "power": 6
+        "power": 5.8
       },
       {
         "name": "Union Saint-Gilloise",
         "league": "Jupiler Pro League",
-        "power": 5.8
+        "power": 5.6
       },
       {
         "name": "Anderlecht",
@@ -308,12 +308,12 @@
       {
         "name": "Girona",
         "league": "La Liga",
-        "power": 5.6
+        "power": 5.8
       },
       {
         "name": "Getafe",
         "league": "La Liga",
-        "power": 5.4
+        "power": 5.6
       },
       {
         "name": "Valencia",
@@ -468,17 +468,17 @@
       {
         "name": "Aston Villa",
         "league": "Premier League",
-        "power": 6.2
+        "power": 6.4
       },
       {
         "name": "Newcastle",
         "league": "Premier League",
-        "power": 6
+        "power": 6.0
       },
       {
         "name": "Chelsea",
         "league": "Premier League",
-        "power": 5.8
+        "power": 6.0
       },
       {
         "name": "Brighton",
@@ -493,7 +493,7 @@
       {
         "name": "Everton",
         "league": "Premier League",
-        "power": 4.8
+        "power": 5.0
       },
       {
         "name": "Crystal Palace",
@@ -545,7 +545,7 @@
       {
         "name": "Braga",
         "league": "Primeira Liga",
-        "power": 5.6
+        "power": 5.8
       },
       {
         "name": "Boavista",
@@ -563,14 +563,14 @@
         "power": 5.2
       },
       {
-        "name": "Arouca",
+        "name": "Vitória de Guimarães",
         "league": "Primeira Liga",
         "power": 5
       },
       {
-        "name": "Vitória de Guimarães",
+        "name": "Arouca",
         "league": "Primeira Liga",
-        "power": 5
+        "power": 4.8
       },
       {
         "name": "Marítimo",
@@ -642,7 +642,7 @@
       {
         "name": "Roma",
         "league": "Serie A",
-        "power": 6
+        "power": 6.2
       },
       {
         "name": "Atalanta",
