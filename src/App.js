@@ -1619,7 +1619,7 @@ function App() {
           } (Pr)`;
           gameDesc = `${team1.name} ${game[0] + game2[1] + extra[1]} x ${
             game[1] + game2[0] + extra[0]
-          } ${team2.name}${gameDesc}`;
+          } ${team2.name} (Pr)${gameDesc}`;
         }
       } else {
         gameDesc += `->${team2.name} ${game2[0]} x ${game2[1]} ${team1.name}`;
