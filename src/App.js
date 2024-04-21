@@ -1160,7 +1160,7 @@ function App() {
       newPlayer.contractTeam != null &&
       contract <= 1
     ) {
-      newTransfers[2] = newPlayer.contractTeam;
+      newTransfers = [newPlayer.contractTeam];
 
       if (med > 0) {
         setRenew({
