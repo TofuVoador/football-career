@@ -1610,11 +1610,9 @@ function App() {
           gameDesc += `->${team2.name} ${game2[0] + extra[0]} (${penalties[0]}) x (${
             penalties[1]
           }) ${game2[1] + extra[1]} ${team1.name}`;
-          teamGoals1 += penalties[0];
-          teamGoals2 += penalties[1];
-          gameDesc = `${team1.name} ${game[0] + game2[1] + extra[1]} (${penalties[1]}) x (${
-            penalties[0]
-          }) ${game[1] + game2[0] + extra[0]} ${team2.name}${gameDesc}`;
+          gameDesc = `${team1.name} ${teamGoals1} (${penalties[1]}) x (${penalties[0]}) ${teamGoals2} ${team2.name}${gameDesc}`;
+          teamGoals1 += penalties[1];
+          teamGoals2 += penalties[0];
         } else {
           gameDesc += `->${team2.name} ${game2[0] + extra[0]} x ${game2[1] + extra[1]} ${
             team1.name
