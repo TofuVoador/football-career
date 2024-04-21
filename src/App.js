@@ -96,6 +96,8 @@ function App() {
     marketValue: 1,
   });
 
+  const [lastLeagueResults, setLastLeagueResults] = useState([]);
+
   const [history, setHistory] = useState([]);
 
   const [year, setYear] = useState(new Date().getFullYear());
@@ -154,6 +156,24 @@ function App() {
 
     let newTeams = UpdateTeamsStats(25.0);
 
+    let leagueResults = leagues.map((league) => {
+      let bonuses = Array.from(
+        { length: league.teams.length },
+        () => Math.round(30.0 * (Math.random() - Math.random())) / 100
+      );
+      const sum = bonuses.reduce((acc, val) => acc + val, 0);
+      const adjustment = sum / league.teams.length;
+      bonuses = bonuses.map((num) => Math.round(100.0 * (num - adjustment)) / 100);
+      let leagueResult = {
+        name: league.name,
+        championsSpots: league.championsSpots,
+        europaSpots: league.europaSpots,
+        table: GetLeaguePosition(league.teams, bonuses),
+      };
+      return leagueResult;
+    });
+
+    setLastLeagueResults(leagueResults);
     setPlayer(newPlayer);
     setTransfers(GetInitTeams(initPos.value, newTeams));
   }
@@ -197,38 +217,17 @@ function App() {
 
       let lp = 99; // Inicializa o valor padrão de "lp"
 
-      // Verifica se o novo time está na mesma liga que o antigo
-      if (oldTeamLeague == newPlayer.team.league) {
-        // Obtém a posição do novo time na tabela da liga atual
-        lp = currentSeason.leagueTable.findIndex((team) => team === newPlayer.team) + 1;
-      } else {
-        // Encontra a liga do novo time
-        let newLeague = leagues.find((league) => league.name === newPlayer.team.league) || [];
-
-        // Calcula os bônus com base no desempenho passado da liga
-        let bonuses = Array.from(
-          { length: newLeague.teams.length },
-          () => Math.round(50.0 * (Math.random() - Math.random())) / 100
-        );
-        const sum = bonuses.reduce((acc, val) => acc + val, 0);
-        const adjustment = sum / newLeague.teams.length;
-        bonuses = bonuses.map((num) => num - adjustment);
-
-        // Simula a posição na liga com base no desempenho passado
-        let leagueResults = GetLeaguePosition(newLeague.teams, bonuses);
-        lp = leagueResults.findIndex((team) => team.name == newPlayer.team.name) + 1;
-      }
-
-      // Obtém a liga do jogador
-      let league = leagues.find((league) => league.name === newPlayer.team.league);
+      let newLeagueResults =
+        lastLeagueResults.find((league) => league.name === newPlayer.team.league) || [];
+      lp = newLeagueResults.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
 
       // Verifica se o jogador se classificou no ano passado
-      if (lp <= league.championsSpots) {
+      if (lp <= newLeagueResults.championsSpots) {
         // Para os campeões
         newPlayer.championsQualification = true;
         newPlayer.europaQualification = false;
         newPlayer.lastLeaguePosition = lp;
-      } else if (lp <= league.championsSpots + league.europaSpots) {
+      } else if (lp <= newLeagueResults.championsSpots + newLeagueResults.europaSpots) {
         // Para a Liga Europa
         newPlayer.championsQualification = false;
         newPlayer.europaQualification = true;
@@ -340,6 +339,7 @@ function App() {
     //load
     let newPlayer = player;
     let newSeason = currentSeason;
+    let newLeagues = leagues;
 
     //randomize how many goals/assists did they score
     let goalsOppostunities =
@@ -373,35 +373,48 @@ function App() {
     med /= generalPerformance.length;
 
     //national tournaments
-    let league = leagues.find((league) => league.name === newPlayer.team.league);
+    let leagueResults = leagues.map((league) => {
+      let bonuses = Array.from(
+        { length: league.teams.length },
+        () => Math.round(70.0 * (Math.random() - Math.random())) / 100
+      );
+      if (newPlayer.team.league === league.name) {
+        let playerIndex = league.teams.findIndex((team) => team.name == newPlayer.team.name);
+        bonuses[playerIndex] += newPlayer.performance * 0.7;
+        bonuses[playerIndex] /= 2;
+      }
+      const sum = bonuses.reduce((acc, val) => acc + val, 0);
+      const adjustment = sum / league.teams.length;
+      bonuses = bonuses.map((num) => Math.round(100.0 * (num - adjustment)) / 100);
+      let leagueResult = {
+        name: league.name,
+        championsSpots: league.championsSpots,
+        europaSpots: league.europaSpots,
+        table: GetLeaguePosition(league.teams, bonuses),
+      };
+      return leagueResult;
+    });
+
+    let playerLeagueResult = leagueResults.find((league) => league.name === newPlayer.team.league);
 
     let triplice = 0;
 
-    //national league
-    let bonuses = Array.from(
-      { length: league.teams.length },
-      () => Math.round(70.0 * (Math.random() - Math.random())) / 100
-    );
-    let playerIndex = league.teams.findIndex((team) => team.name == newPlayer.team.name);
-    bonuses[playerIndex] += newPlayer.performance * 0.7;
-    bonuses[playerIndex] /= 2;
-    const sum = bonuses.reduce((acc, val) => acc + val, 0);
-    const adjustment = sum / league.teams.length;
-    bonuses = bonuses.map((num) => Math.round(100.0 * (num - adjustment)) / 100);
-
-    newSeason.leagueTable = GetLeaguePosition(league.teams, bonuses);
-
     const playerPosition =
-      newSeason.leagueTable.findIndex((team) => team.name == newPlayer.team.name) + 1;
+      playerLeagueResult.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
 
-    //top eight from the league
-    let topEight = "";
-    for (let p = 0; p < 8; p++) {
-      topEight += `---> ${p + 1}º: ${newSeason.leagueTable[p].name}`;
+    //top eight from each league
+
+    let leaguesTopEight = "";
+    for (let l = 0; l < leagueResults.length; l++) {
+      let topEight = `--->${leagueResults[l].name}`;
+      for (let p = 0; p < 8; p++) {
+        topEight += `--> ${p + 1}º: ${leagueResults[l].table[p].name}`;
+      }
+      leaguesTopEight += topEight;
     }
 
-    newSeason.awardPoints += ((league.championsSpots / 4.0) * (5 - playerPosition)) / 2; //max = 2.0
-    newSeason.titles.push(`Liga: ${playerPosition}º lugar ${topEight}`);
+    newSeason.awardPoints += ((playerLeagueResult.championsSpots / 4.0) * (5 - playerPosition)) / 2; //max = 2.0
+    newSeason.titles.push(`Liga: ${playerPosition}º lugar ${leaguesTopEight}`);
 
     //if fist place, then won trophy
     if (playerPosition == 1) {
@@ -414,6 +427,8 @@ function App() {
     let end = false;
     let phase = 2;
     let playerPhase = 2;
+
+    let league = leagues.find((league) => league.name === newPlayer.team.league);
 
     //get opponents for national cup
     let pot3 = DeepClone([...league.teams]);
@@ -505,30 +520,17 @@ function App() {
 
       // Obter os principais times de cada liga
       for (let leagueID = 0; leagueID < leagues.length; leagueID++) {
-        // Clonar profundamente os times da liga atual
-        let remainingTeams = DeepClone([...leagues[leagueID].teams]);
-        // Ordenar os times restantes com base no poder, com uma pequena variação aleatória
-        remainingTeams.sort((a, b) => {
-          return b.power - a.power + Math.random();
-        });
-        // Selecionar os times principais com base nos lugares de campeão da liga
-        let selected = remainingTeams.splice(0, leagues[leagueID].championsSpots);
+        let league = DeepClone([...leagues[leagueID].teams]);
 
-        // Verificar se o time do novo jogador pertence à liga atual
-        if (newPlayer.team.league == leagues[leagueID].name) {
-          // Encontrar o time do jogador entre os times selecionados
-          let playerTeamSelected = selected.find((team) => team.name == newPlayer.team.name);
+        let leagueTableNames = lastLeagueResults[leagueID].table.map((team) => team.name);
+        let leagueQualifiedNames = leagueTableNames.splice(
+          0,
+          lastLeagueResults[leagueID].championsSpots
+        );
+        let leagueQualified = league.filter((team) => leagueQualifiedNames.includes(team.name));
 
-          // Se o time do jogador não estiver entre os selecionados, substituir o time mais fraco pelo time do jogador
-          if (!playerTeamSelected) {
-            let weakestTeamIndex = selected.length - 1;
-            selected[weakestTeamIndex] = newPlayer.team;
-          }
-        }
-
-        // Adicionar os times selecionados aos times qualificados para as competições
-        for (let i = 0; i < selected.length; i++) {
-          qualified.push(DeepClone(selected[i]));
+        for (let teamID = 0; teamID < lastLeagueResults[leagueID].championsSpots; teamID++) {
+          qualified.push(leagueQualified[teamID]);
         }
       }
 
@@ -706,32 +708,18 @@ function App() {
 
       let qualified = [];
 
-      // Loop para cada liga
       for (let leagueID = 0; leagueID < leagues.length; leagueID++) {
-        // Clonar profundamente os times da liga atual
-        let remainingTeams = DeepClone([...leagues[leagueID].teams]);
+        let league = DeepClone([...leagues[leagueID].teams]);
 
-        // Selecionar os times para as vagas de campeões e vagas da Europa
-        let selected = remainingTeams.splice(
-          leagues[leagueID].championsSpots, // Início das vagas de campeões
-          leagues[leagueID].europaSpots // Total de vagas da Europa
+        let leagueTableNames = lastLeagueResults[leagueID].table.map((team) => team.name);
+        let leagueQualifiedNames = leagueTableNames.splice(
+          lastLeagueResults[leagueID].championsSpots,
+          lastLeagueResults[leagueID].europaSpots
         );
+        let leagueQualified = league.filter((team) => leagueQualifiedNames.includes(team.name));
 
-        // Verificar se o time do novo jogador pertence à liga atual
-        if (newPlayer.team.league == leagues[leagueID].name) {
-          // Encontrar o time do jogador entre os times selecionados
-          let playerTeamSelected = selected.find((team) => team.name == newPlayer.team.name);
-
-          // Se o time do jogador não estiver entre os selecionados, substituir o time mais fraco pelo time do jogador
-          if (!playerTeamSelected) {
-            let weakestTeamIndex = selected.length - 1;
-            selected[weakestTeamIndex] = newPlayer.team;
-          }
-        }
-
-        // Adicionar os times selecionados aos times qualificados para as competições
-        for (let i = 0; i < selected.length; i++) {
-          qualified.push(DeepClone(selected[i]));
+        for (let teamID = 0; teamID < lastLeagueResults[leagueID].europaSpots; teamID++) {
+          qualified.push(leagueQualified[teamID]);
         }
       }
 
@@ -1299,6 +1287,7 @@ function App() {
       ChooseTeam();
     }
 
+    setLastLeagueResults(leagueResults);
     setPlayer(newPlayer);
     setTransfers(newTransfers);
 
