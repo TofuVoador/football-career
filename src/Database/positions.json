@@ -7,19 +7,19 @@
   },
   {
     "title": "Segundo Atacante",
-    "goalsBonus": 37,
+    "goalsBonus": 36,
     "assistsBonus": 19,
     "value": 1
   },
   {
     "title": "Ponta Esquerda",
-    "goalsBonus": 34,
+    "goalsBonus": 32,
     "assistsBonus": 21,
     "value": 1
   },
   {
     "title": "Ponta Direita",
-    "goalsBonus": 34,
+    "goalsBonus": 32,
     "assistsBonus": 21,
     "value": 1
   },
@@ -31,50 +31,50 @@
   },
   {
     "title": "Meia Esquerda",
-    "goalsBonus": 25,
-    "assistsBonus": 21,
+    "goalsBonus": 24,
+    "assistsBonus": 25,
     "value": 0.8
   },
   {
     "title": "Meia Central",
-    "goalsBonus": 25,
-    "assistsBonus": 21,
+    "goalsBonus": 24,
+    "assistsBonus": 25,
     "value": 0.8
   },
   {
     "title": "Meia Direita",
-    "goalsBonus": 25,
-    "assistsBonus": 21,
+    "goalsBonus": 24,
+    "assistsBonus": 25,
     "value": 0.8
   },
   {
     "title": "Volante",
-    "goalsBonus": 22,
-    "assistsBonus": 17,
+    "goalsBonus": 20,
+    "assistsBonus": 21,
     "value": 0.8
   },
   {
     "title": "Lateral Esquerdo",
     "goalsBonus": 16,
-    "assistsBonus": 13,
+    "assistsBonus": 17,
     "value": 0.6
   },
   {
     "title": "Lateral Direito",
     "goalsBonus": 16,
-    "assistsBonus": 13,
+    "assistsBonus": 17,
     "value": 0.6
   },
   {
     "title": "Zagueiro Central",
-    "goalsBonus": 13,
-    "assistsBonus": 9,
+    "goalsBonus": 12,
+    "assistsBonus": 13,
     "value": 0.6
   },
   {
     "title": "Goleiro",
-    "goalsBonus": 7,
-    "assistsBonus": 5,
+    "goalsBonus": 4,
+    "assistsBonus": 9,
     "value": 0.6
   }
 ]
