@@ -1384,9 +1384,9 @@ function App() {
   }
 
   function GetMatch(team1, team2) {
-    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
-    let team1Power = Math.pow(team1.power, 2) / base;
-    let team2Power = Math.pow(team2.power, 2) / base;
+    let base = Math.pow(team1.power, 3) + Math.pow(team2.power, 3);
+    let team1Power = Math.pow(team1.power, 3) / base;
+    let team2Power = Math.pow(team2.power, 3) / base;
 
     let goals = Math.random() + Math.random();
 
@@ -1422,9 +1422,9 @@ function App() {
   }
 
   function GetPenalties(team1, team2) {
-    let base = Math.pow(team1.power, 4) + Math.pow(team2.power, 4);
-    let team1Power = Math.pow(team1.power, 4) / base;
-    let team2Power = Math.pow(team2.power, 4) / base;
+    let base = Math.pow(team1.power, 3) + Math.pow(team2.power, 3);
+    let team1Power = Math.pow(team1.power, 3) / base;
+    let team2Power = Math.pow(team2.power, 3) / base;
 
     let winner = false;
     let team1goals = 0;
