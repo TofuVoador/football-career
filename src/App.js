@@ -448,7 +448,7 @@ function App() {
         let isFinal = phase >= TournamentPath.length - 2 ? false : true;
 
         // Obtendo o resultado do jogo
-        let game = GetKnockoutResult(team1, team2, matchPerformance, isFinal);
+        let game = GetKnockoutResult(team1, team2, isFinal);
 
         // Verificando se o jogador está envolvido no jogo atual
         if (team1.name == newPlayer.team.name || team2.name == newPlayer.team.name) {
@@ -549,16 +549,7 @@ function App() {
       for (let matchID = 0; matchID < playoffsClassif.length / 2; matchID++) {
         let team1 = playoffsClassif[matchID];
         let team2 = playoffsClassif[playoffsClassif.length - (matchID + 1)];
-        let game = GetKnockoutResult(
-          team1,
-          team2,
-          team1.name == newPlayer.team.name
-            ? newSeason.performance
-            : team2.name == newPlayer.team.name
-            ? -newSeason.performance
-            : 0,
-          true
-        );
+        let game = GetKnockoutResult(team1, team2, true);
 
         if (team1.name == newPlayer.team.name || team2.name == newPlayer.team.name) {
           playerOpp = `: ${team1.name == newPlayer.team.name ? team2.name : team1.name}`;
@@ -602,11 +593,6 @@ function App() {
           let game = GetKnockoutResult(
             team1,
             team2,
-            team1.name == newPlayer.team.name
-              ? newSeason.performance * playerEffect
-              : team2.name == newPlayer.team.name
-              ? -newSeason.performance * playerEffect
-              : 0,
             phase >= TournamentPath.length - 2 ? false : true
           );
 
@@ -714,11 +700,6 @@ function App() {
           let game = GetKnockoutResult(
             team1,
             team2,
-            team1.name == newPlayer.team.name
-              ? newSeason.performance
-              : team2.name == newPlayer.team.name
-              ? -newSeason.performance
-              : 0,
             phase >= TournamentPath.length - 2 ? false : true
           );
 
@@ -918,16 +899,7 @@ function App() {
           let team2 = classif[classif.length - (matchID + 1)];
 
           // Obter o resultado do jogo
-          let game = GetKnockoutResult(
-            team1,
-            team2,
-            team1.name == player.nation.name
-              ? newSeason.performance * playerEffect
-              : team2.name == player.nation.name
-              ? -newSeason.performance * playerEffect
-              : 0,
-            false
-          );
+          let game = GetKnockoutResult(team1, team2, false);
 
           if (team1.name == player.nation.name || team2.name == player.nation.name) {
             playerOpp = `: ${team1.name == player.nation.name ? team2.name : team1.name}`;
