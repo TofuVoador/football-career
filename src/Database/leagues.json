@@ -191,12 +191,12 @@
       {
         "name": "Antwerp",
         "league": "Jupiler Pro League",
-        "power": 5.8
+        "power": 6.0
       },
       {
         "name": "Union Saint-Gilloise",
         "league": "Jupiler Pro League",
-        "power": 5.6
+        "power": 5.8
       },
       {
         "name": "Anderlecht",
@@ -204,12 +204,12 @@
         "power": 5.6
       },
       {
-        "name": "Charleroi",
+        "name": "Gent",
         "league": "Jupiler Pro League",
-        "power": 5.4
+        "power": 5.6
       },
       {
-        "name": "Gent",
+        "name": "Charleroi",
         "league": "Jupiler Pro League",
         "power": 5.4
       },
@@ -301,19 +301,19 @@
         "power": 6
       },
       {
-        "name": "Real Betis",
-        "league": "La Liga",
-        "power": 5.8
-      },
-      {
         "name": "Girona",
         "league": "La Liga",
         "power": 5.8
       },
       {
-        "name": "Getafe",
+        "name": "Real Betis",
         "league": "La Liga",
         "power": 5.6
+      },
+      {
+        "name": "Getafe",
+        "league": "La Liga",
+        "power": 5.4
       },
       {
         "name": "Valencia",
@@ -478,12 +478,12 @@
       {
         "name": "Chelsea",
         "league": "Premier League",
-        "power": 6.0
+        "power": 5.8
       },
       {
         "name": "Brighton",
         "league": "Premier League",
-        "power": 5.6
+        "power": 5.4
       },
       {
         "name": "West Ham",
