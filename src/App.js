@@ -122,28 +122,6 @@ function App() {
     newPlayer.nation = initNation;
 
     setPlayer(newPlayer);
-
-    // let l80 = Array(10).fill(0);
-    // let l50 = Array(10).fill(0);
-    // let l20 = Array(10).fill(0);
-
-    // for (let i = 0; i < 1000; i++) {
-    //   let g = Math.random() + Math.random();
-    //   let r = (Math.random() + Math.random()) * 4 - 2;
-    //   let r80 = Math.round(g * r * 0.8);
-    //   let r50 = Math.round(g * r * 0.5);
-    //   let r20 = Math.round(g * r * 0.2);
-    //   if (r80 < 0) r80 = 0;
-    //   if (r50 < 0) r50 = 0;
-    //   if (r20 < 0) r20 = 0;
-    //   l80[r80] += 0.1;
-    //   l50[r50] += 0.1;
-    //   l20[r20] += 0.1;
-    // }
-
-    // console.log(l80);
-    // console.log(l50);
-    // console.log(l20);
   }
 
   function ChoosePos(initPos) {
@@ -1384,9 +1362,9 @@ function App() {
   }
 
   function GetMatch(team1, team2) {
-    let base = Math.pow(team1.power, 2.3) + Math.pow(team2.power, 2.3);
-    let team1Power = Math.pow(team1.power, 2.3) / base;
-    let team2Power = Math.pow(team2.power, 2.3) / base;
+    let base = Math.pow(team1.power, 2.6) + Math.pow(team2.power, 2.6);
+    let team1Power = Math.pow(team1.power, 2.6) / base;
+    let team2Power = Math.pow(team2.power, 2.6) / base;
 
     let goals = Math.random() + Math.random();
 
@@ -1403,9 +1381,9 @@ function App() {
   }
 
   function GetExtraTime(team1, team2) {
-    let base = Math.pow(team1.power, 2.3) + Math.pow(team2.power, 2.3);
-    let team1Power = Math.pow(team1.power, 2.3) / base;
-    let team2Power = Math.pow(team2.power, 2.3) / base;
+    let base = Math.pow(team1.power, 2.6) + Math.pow(team2.power, 2.6);
+    let team1Power = Math.pow(team1.power, 2.6) / base;
+    let team2Power = Math.pow(team2.power, 2.6) / base;
 
     let goals = Math.random() + Math.random();
 
@@ -1422,9 +1400,9 @@ function App() {
   }
 
   function GetPenalties(team1, team2) {
-    let base = Math.pow(team1.power, 2.3) + Math.pow(team2.power, 2.3);
-    let team1Power = Math.pow(team1.power, 2.3) / base;
-    let team2Power = Math.pow(team2.power, 2.3) / base;
+    let base = Math.pow(team1.power, 2.6) + Math.pow(team2.power, 2.6);
+    let team1Power = Math.pow(team1.power, 2.6) / base;
+    let team2Power = Math.pow(team2.power, 2.6) / base;
 
     let winner = false;
     let team1goals = 0;
