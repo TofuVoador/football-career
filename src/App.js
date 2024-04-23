@@ -163,7 +163,6 @@ function App() {
 
     if (newTeam != null) {
       // Se houver mudança de time
-      let oldTeamLeague = newPlayer.team == null ? "" : newPlayer.team.league; // Armazena os resultados antigos da tabela da liga
       newHistory.push(newTeam.team.name);
 
       // Verifica se o jogador foi emprestado para o novo time
@@ -263,7 +262,7 @@ function App() {
 
     //set performance over team
     newGeneralPerformance.push(newPlayer.performance);
-    if (newGeneralPerformance.length > 4) newGeneralPerformance.shift();
+    if (newGeneralPerformance.length > 3) newGeneralPerformance.shift();
 
     //giving the performance, set how many games did they were the starter player
     let starting = Math.floor(
@@ -310,7 +309,6 @@ function App() {
     //load
     let newPlayer = player;
     let newSeason = currentSeason;
-    let newLeagues = leagues;
 
     //randomize how many goals/assists did they score
     let goalsOppostunities =
@@ -347,6 +345,8 @@ function App() {
     }
     med /= generalPerformance.length;
 
+    let triplice = 0;
+
     //national tournaments
     let leagueResults = leagues.map((league) => {
       let leagueResult = {
@@ -360,13 +360,7 @@ function App() {
 
     let playerLeagueResult = leagueResults.find((league) => league.name === newPlayer.team.league);
 
-    let triplice = 0;
-
-    const playerPosition =
-      playerLeagueResult.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
-
     //top eight from each league
-
     let leaguesTopEight = "";
     for (let l = 0; l < leagueResults.length; l++) {
       let topEight = `--->${leagueResults[l].name}`;
@@ -376,6 +370,8 @@ function App() {
       leaguesTopEight += topEight;
     }
 
+    const playerPosition =
+      playerLeagueResult.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
     newSeason.awardPoints += ((playerLeagueResult.championsSpots / 4.0) * (5 - playerPosition)) / 2; //max = 2.0
     newSeason.titles.push(`Liga: ${playerPosition}º lugar ${leaguesTopEight}`);
 
@@ -414,14 +410,6 @@ function App() {
         // Selecionando os dois times para o jogo atual
         let team1 = classif[matchID];
         let team2 = classif[classif.length - (matchID + 1)];
-
-        // Determinando a performance do jogador no jogo atual
-        let matchPerformance =
-          team1.name == newPlayer.team.name // Se o jogador estiver no time 1
-            ? newSeason.performance
-            : team2.name == newPlayer.team.name // Se o jogador estiver no time 2
-            ? -newSeason.performance
-            : 0; // Se o jogador não estiver em nenhum dos times
 
         let isFinal = phase >= TournamentPath.length - 2 ? false : true;
 
@@ -557,9 +545,6 @@ function App() {
         let games = "";
         let playerOpp = "";
         let newClassif = [];
-
-        // Calcular o efeito do jogador na fase atual do torneio
-        let playerEffect = 1 - phase / 10.0;
 
         // Loop pelos jogos do torneio atual
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
@@ -820,9 +805,6 @@ function App() {
         }
       }
 
-      // Variável para armazenar o grupo do jogador
-      let playerGroup = null;
-
       // Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
       let firstPlaces = [];
       let secondPlaces = [];
@@ -837,7 +819,6 @@ function App() {
 
         // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
         if (playerPosition > 0) {
-          playerGroup = thisGroup;
           description = `---> ${TournamentPath[phase]}: ${playerPosition}º lugar`;
           description += thisGroup.desc;
         }
@@ -866,9 +847,6 @@ function App() {
         let games = "";
         let newClassif = [];
         let playerOpp = "";
-
-        // Calcular o efeito do jogador na fase atual do torneio
-        let playerEffect = 1 - phase / 10.0;
 
         // Loop pelos jogos do torneio atual
         for (let matchID = 0; matchID < classif.length / 2; matchID++) {
@@ -1258,13 +1236,16 @@ function App() {
           }`;
 
         if (game[0] > game[1]) {
-          points[home] += 3;
+          points[home] += 3000;
         } else if (game[1] > game[0]) {
-          points[away] += 3;
+          points[away] += 3000;
         } else {
-          points[away] += 1;
-          points[home] += 1;
+          points[away] += 1000;
+          points[home] += 1000;
         }
+
+        points[home] += game[0];
+        points[away] += game[1];
 
         newOrderTeams[((i * 2) % newTeams.length) + Math.floor((2 * i) / newTeams.length)] =
           newTeams[home];
@@ -1305,13 +1286,16 @@ function App() {
           let game = GetMatch(newTeams[home], newTeams[away]);
 
           if (game[0] > game[1]) {
-            points[home] += 3;
+            points[home] += 3000;
           } else if (game[1] > game[0]) {
-            points[away] += 3;
+            points[away] += 3000;
           } else {
-            points[away] += 1;
-            points[home] += 1;
+            points[away] += 1000;
+            points[home] += 1000;
           }
+
+          points[home] += game[0];
+          points[away] += game[1];
         }
       }
     }
@@ -1336,13 +1320,16 @@ function App() {
           let game = GetMatch(teams[home], teams[away]);
 
           if (game[0] > game[1]) {
-            points[home] += 3;
+            points[home] += 3000;
           } else if (game[1] > game[0]) {
-            points[away] += 3;
+            points[away] += 3000;
           } else {
-            points[away] += 1;
-            points[home] += 1;
+            points[away] += 1000;
+            points[home] += 1000;
           }
+
+          points[home] += game[0];
+          points[away] += game[1];
 
           desc += `--> ${teams[home].name} ${game[0]} x ${game[1]} ${teams[away].name}`;
         }
