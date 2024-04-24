@@ -1505,6 +1505,7 @@ function App() {
       let r = RandomNumber(0, 100);
       if (r < chance && !history.some((t) => t == allTeams[i].name)) {
         interestedTeams.push(allTeams[i]);
+        if (interestedTeams.length > 3) break;
       }
     }
 
