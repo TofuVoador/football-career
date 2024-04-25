@@ -574,7 +574,7 @@ function App() {
                 // Se o jogador vencer o torneio, conceder prêmios adicionais
                 newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
                 newPlayer.fame += 50;
-                newSeason.awardPoints += 1.0; // Máximo 1.0 x 5 + 1.0 = 6.0
+                if (year % 4 != 2) newSeason.awardPoints += 1.0; // Máximo 1.0 x 5 + 1.0 = 6.0
                 triplice++;
               }
             }
@@ -714,7 +714,7 @@ function App() {
 
     //World Cup
     if (year % 4 == 2) {
-      newSeason.awardPoints -= 2.0;
+      newSeason.awardPoints -= 1.0;
       phase = 0;
       playerPhase = 0;
 
@@ -926,11 +926,10 @@ function App() {
     if (triplice >= 3) {
       newPlayer.awards.push(`Tríplice Coroa ${year} (${newPlayer.team.name})`);
       newSeason.titles.push("Tríplice Coroa");
-      newPlayer.fame += 20;
       newSeason.awardPoints += 1.0;
     }
 
-    if (45 + RandomNumber(0, 3) + RandomNumber(0, 2) < newSeason.goals) {
+    if (45 + RandomNumber(0, 5) < newSeason.goals) {
       //Golden Shoes
       newPlayer.awards.push(`Chuteiras de Ouro ${year} (${newPlayer.team.name})`);
       newSeason.awardPoints += 1.0;
@@ -947,7 +946,7 @@ function App() {
       newSeason.titles.push("Luva de Ouro");
     }
 
-    newPlayer.fame += newSeason.performance * 10;
+    newPlayer.fame += newSeason.performance * 15;
 
     newPlayer.fame += newSeason.goals / 5.0;
     newPlayer.fame += newSeason.assists / 5.0;
