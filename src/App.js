@@ -374,11 +374,12 @@ function App() {
       playerLeagueResult.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
     newSeason.awardPoints += ((playerLeagueResult.championsSpots / 4.0) * (5 - playerPosition)) / 2; //max = 2.0
     newSeason.titles.push(`Liga: ${playerPosition}º lugar ${leaguesTopEight}`);
+    newPlayer.fame += Math.floor((playerLeagueResult.championsSpots * (5 - playerPosition)) / 2.0);
 
     //if fist place, then won trophy
     if (playerPosition == 1) {
       newPlayer.leagueTitles.push(`${year} (${newPlayer.team.name})`);
-      newPlayer.fame += 20;
+      newPlayer.fame += playerLeagueResult.championsSpots;
       triplice++;
     }
 
@@ -427,10 +428,11 @@ function App() {
             // Incrementando a fase do jogador e concedendo pontos e prêmios adicionais
             playerPhase++;
             newSeason.awardPoints += 0.3; // Máximo 0.3 x 5 = 1.5
+            newPlayer.fame++;
             if (playerPhase >= TournamentPath.length - 1) {
               // Se o jogador venceu o torneio, conceder prêmios adicionais
               newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
-              newPlayer.fame += 10;
+              newPlayer.fame += 5;
               newSeason.awardPoints += 0.5; // Máximo 0.3 x 5 + 0.5 = 2.0
               triplice++;
             }
@@ -570,10 +572,11 @@ function App() {
               // Incrementar a fase do jogador e conceder pontos e prêmios adicionais
               playerPhase++;
               newSeason.awardPoints += 1.0; // Máximo 1.0 x 5 = 5.0
+              newPlayer.fame += 3;
               if (playerPhase >= TournamentPath.length - 1) {
                 // Se o jogador vencer o torneio, conceder prêmios adicionais
                 newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
-                newPlayer.fame += 50;
+                newPlayer.fame += 15;
                 if (year % 4 != 2) newSeason.awardPoints += 1.0; // Máximo 1.0 x 5 + 1.0 = 6.0
                 triplice++;
               }
@@ -676,9 +679,10 @@ function App() {
             ) {
               // Incrementar a fase do jogador e, se vencer o torneio, adicionar à sua lista de realizações
               playerPhase++;
+              newPlayer.fame += 2;
               if (playerPhase >= TournamentPath.length - 1) {
                 newPlayer.europa.push(`${year} (${newPlayer.team.name})`);
-                newPlayer.fame += 30;
+                newPlayer.fame += 10;
               }
             }
           }
@@ -869,13 +873,14 @@ function App() {
               (!game.result && team2.name == player.nation.name)
             ) {
               playerPhase++;
+              newPlayer.fame += 5;
               // Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
               if (playedWorldCup) {
                 newSeason.awardPoints += 1.0; // Máximo 1.0 x 5 - 2.0 = 3.0
                 if (playerPhase >= TournamentPath.length - 1) {
                   newPlayer.worldCup.push(`${year}`);
                   newSeason.awardPoints += 1.0; // Máximo 1.0 x 5 - 2.0 + 1.0 = 4.0
-                  newPlayer.fame += 60;
+                  newPlayer.fame += 25;
                 }
               }
             }
@@ -946,7 +951,7 @@ function App() {
       newSeason.titles.push("Luva de Ouro");
     }
 
-    newPlayer.fame += newSeason.performance * 15;
+    newPlayer.fame += newSeason.performance * 20;
 
     newPlayer.fame += newSeason.goals / 5.0;
     newPlayer.fame += newSeason.assists / 5.0;
@@ -956,13 +961,13 @@ function App() {
     if (newSeason.awardPoints + newPlayer.overall >= 100) {
       //Ballon D'or
       newPlayer.ballonDor.push(`Ballon D'or ${year} (${newPlayer.team.name})`);
-      newPlayer.fame += 80;
+      newPlayer.fame += 60;
       position = 1;
 
       newSeason.titles.push(`Ballon D'Or: 1º lugar`);
     } else if (newSeason.awardPoints + newPlayer.overall >= 91) {
       let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 91);
-      newPlayer.fame += pts * 4;
+      newPlayer.fame += pts * 2;
       position = 10 - pts;
       newSeason.titles.push(`Ballon D'Or: ${position}º lugar`);
     }
