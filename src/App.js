@@ -1353,9 +1353,9 @@ function App() {
   }
 
   function GetMatch(team1, team2) {
-    let base = Math.pow(team1.power, Math.log(500)) + Math.pow(team2.power, Math.log(500));
-    let team1Power = Math.pow(team1.power, Math.log(500)) / base;
-    let team2Power = Math.pow(team2.power, Math.log(500)) / base;
+    let base = Math.pow(team1.power, Math.log(400)) + Math.pow(team2.power, Math.log(400));
+    let team1Power = Math.pow(team1.power, Math.log(400)) / base;
+    let team2Power = Math.pow(team2.power, Math.log(400)) / base;
 
     let goals = Math.random() + Math.random();
 
