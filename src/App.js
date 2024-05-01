@@ -378,7 +378,6 @@ function App() {
 
     //if fist place, then won trophy
     if (playerPosition == 1) {
-      newSeason.awardPoints += 1.0; //Max 3
       newPlayer.leagueTitles.push(`${year} (${newPlayer.team.name})`);
       newPlayer.fame += playerLeagueResult.championsSpots;
       triplice++;
@@ -923,7 +922,7 @@ function App() {
     newPlayer.totalAssists += newSeason.assists;
 
     //post season results
-    if (RandomNumber(1, 1000) <= 5) {
+    if (RandomNumber(1, 1000) <= newSeason.goals / 4 - 1) {
       //Puskás
       newPlayer.awards.push(`Puskás ${year} (${newPlayer.team.name})`);
       newSeason.titles.push("Puskás");
@@ -1638,7 +1637,7 @@ function App() {
   }
 
   function GetOverall(potential, age, teamPower) {
-    return 90 + potential / 10 + Math.round(10.0 * teamPower) / 100 - (28 - age) ** 2 / 10;
+    return 90 + potential / 10 + Math.round(20.0 * teamPower) / 100 - (28 - age) ** 2 / 10;
   }
 
   function GetWage(currentOverall, teamPower, fame) {
