@@ -71,7 +71,7 @@ function App() {
   });
 
   const [player, setPlayer] = useState({
-    potential: RandomNumber(0, 10) + RandomNumber(0, 10),
+    potential: RandomNumber(0, 15) + RandomNumber(0, 15),
     age: 17,
     nation: null,
     team: null,
@@ -337,7 +337,7 @@ function App() {
         (1.0 + (Math.random() - Math.random()) / 4.0)
     );
 
-    newSeason.awardPoints = newSeason.performance * 2; //min = -2.0 | max = 2.0
+    newSeason.awardPoints = newSeason.performance * 3; //min = -3.0 | max = 3.0
 
     let med = 0;
     for (let i = 0; i < generalPerformance.length; i++) {
@@ -571,13 +571,13 @@ function App() {
             ) {
               // Incrementar a fase do jogador e conceder pontos e prêmios adicionais
               playerPhase++;
-              newSeason.awardPoints += 1.0; // Máximo 1.0 x 5 = 5.0
+              newSeason.awardPoints += 0.8; // Máximo 0.8 x 5 = 4.0
               newPlayer.fame += 3;
               if (playerPhase >= TournamentPath.length - 1) {
                 // Se o jogador vencer o torneio, conceder prêmios adicionais
                 newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
                 newPlayer.fame += 15;
-                if (year % 4 != 2) newSeason.awardPoints += 1.0; // Máximo 1.0 x 5 + 1.0 = 6.0
+                if (year % 4 != 2) newSeason.awardPoints += 2.0; // Máximo 0.8 x 5 + 2.0 = 6.0
                 triplice++;
               }
             }
@@ -718,7 +718,7 @@ function App() {
 
     //World Cup
     if (year % 4 == 2) {
-      newSeason.awardPoints -= 1.0;
+      newSeason.awardPoints -= 2.0;
       phase = 0;
       playerPhase = 0;
 
@@ -876,10 +876,10 @@ function App() {
               newPlayer.fame += 5;
               // Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
               if (playedWorldCup) {
-                newSeason.awardPoints += 1.0; // Máximo 1.0 x 5 - 2.0 = 3.0
+                newSeason.awardPoints += 0.8; // Máximo 0.8 x 5 - 4.0 = 0.0
                 if (playerPhase >= TournamentPath.length - 1) {
                   newPlayer.worldCup.push(`${year}`);
-                  newSeason.awardPoints += 1.0; // Máximo 1.0 x 5 - 2.0 + 1.0 = 4.0
+                  newSeason.awardPoints += 2.0; // Máximo 1.0 x 5 - 4.0 + 2.0 = 2.0
                   newPlayer.fame += 25;
                 }
               }
@@ -1353,9 +1353,9 @@ function App() {
   }
 
   function GetMatch(team1, team2) {
-    let base = Math.pow(team1.power, Math.log(400)) + Math.pow(team2.power, Math.log(400));
-    let team1Power = Math.pow(team1.power, Math.log(400)) / base;
-    let team2Power = Math.pow(team2.power, Math.log(400)) / base;
+    let base = Math.pow(team1.power, 2.5) + Math.pow(team2.power, 2.5);
+    let team1Power = Math.pow(team1.power, 2.5) / base;
+    let team2Power = Math.pow(team2.power, 2.5) / base;
 
     let goals = Math.random() + Math.random();
 
@@ -1372,9 +1372,9 @@ function App() {
   }
 
   function GetExtraTime(team1, team2) {
-    let base = Math.pow(team1.power, Math.log(400)) + Math.pow(team2.power, Math.log(400));
-    let team1Power = Math.pow(team1.power, Math.log(400)) / base;
-    let team2Power = Math.pow(team2.power, Math.log(400)) / base;
+    let base = Math.pow(team1.power, 2.5) + Math.pow(team2.power, 2.5);
+    let team1Power = Math.pow(team1.power, 2.5) / base;
+    let team2Power = Math.pow(team2.power, 2.5) / base;
 
     let team1Luck = Math.random() * 3;
     let team2Luck = Math.random() * 3;
@@ -1389,9 +1389,9 @@ function App() {
   }
 
   function GetPenalties(team1, team2) {
-    let base = Math.pow(team1.power, Math.log(400)) + Math.pow(team2.power, Math.log(400));
-    let team1Power = Math.pow(team1.power, Math.log(400)) / base;
-    let team2Power = Math.pow(team2.power, Math.log(400)) / base;
+    let base = Math.pow(team1.power, 2.5) + Math.pow(team2.power, 2.5);
+    let team1Power = Math.pow(team1.power, 2.5) / base;
+    let team2Power = Math.pow(team2.power, 2.5) / base;
 
     let winner = false;
     let team1goals = 0;
@@ -1637,7 +1637,7 @@ function App() {
   }
 
   function GetOverall(potential, age, teamPower) {
-    return 90 + potential / 10 + Math.round(20.0 * teamPower) / 100 - (28 - age) ** 2 / 10;
+    return 90 + potential / 10 + Math.round(10.0 * teamPower) / 100 - (28 - age) ** 2 / 10;
   }
 
   function GetWage(currentOverall, teamPower, fame) {
