@@ -378,6 +378,7 @@ function App() {
 
     //if fist place, then won trophy
     if (playerPosition == 1) {
+      newSeason.awardPoints += 1.0; //Max 3
       newPlayer.leagueTitles.push(`${year} (${newPlayer.team.name})`);
       newPlayer.fame += playerLeagueResult.championsSpots;
       triplice++;
