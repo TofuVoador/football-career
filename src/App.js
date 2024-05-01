@@ -132,7 +132,7 @@ function App() {
     let newPlayer = player;
     newPlayer.position = initPos;
 
-    let newTeams = UpdateTeamsStats(25.0);
+    let newTeams = UpdateTeamsStats(20.0);
 
     let leagueResults = leagues.map((league) => {
       let leagueResult = {
@@ -213,7 +213,7 @@ function App() {
     }
 
     //change teams power on each season
-    let newTeams = UpdateTeamsStats(50.0);
+    let newTeams = UpdateTeamsStats(60.0);
     let newExtraTeams = UpdateExtraTeamsStats();
 
     let allTeams = [];
@@ -1708,7 +1708,7 @@ function App() {
       let teamID = teamIndices[i];
 
       let current = Math.random();
-      let change = Math.round(25.0 * (last - current)) / 100.0;
+      let change = Math.round(20.0 * (last - current)) / 100.0;
       last = current;
 
       let newPower = newTeams[teamID].power + change;
@@ -1740,7 +1740,7 @@ function App() {
         let nationID = nationIndices[i];
 
         let current = Math.random();
-        let change = Math.round(50.0 * (last - current)) / 100.0;
+        let change = Math.round(60.0 * (last - current)) / 100.0;
         last = current;
 
         let newPower = allNations[leagueID].teams[nationID].power + change;
