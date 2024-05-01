@@ -213,7 +213,7 @@ function App() {
     }
 
     //change teams power on each season
-    let newTeams = UpdateTeamsStats(60.0);
+    let newTeams = UpdateTeamsStats(50.0);
     let newExtraTeams = UpdateExtraTeamsStats();
 
     let allTeams = [];
@@ -1740,7 +1740,7 @@ function App() {
         let nationID = nationIndices[i];
 
         let current = Math.random();
-        let change = Math.round(60.0 * (last - current)) / 100.0;
+        let change = Math.round(50.0 * (last - current)) / 100.0;
         last = current;
 
         let newPower = allNations[leagueID].teams[nationID].power + change;
