@@ -71,7 +71,7 @@ function App() {
   });
 
   const [player, setPlayer] = useState({
-    potential: RandomNumber(0, 15) + RandomNumber(0, 15),
+    potential: RandomNumber(0, 10) + RandomNumber(0, 10),
     age: 17,
     nation: null,
     team: null,
@@ -337,7 +337,7 @@ function App() {
         (1.0 + (Math.random() - Math.random()) / 4.0)
     );
 
-    newSeason.awardPoints = newSeason.performance * 3; //min = -3.0 | max = 3.0
+    newSeason.awardPoints = newSeason.performance * 2; //min = -2.0 | max = 2.0
 
     let med = 0;
     for (let i = 0; i < generalPerformance.length; i++) {
@@ -372,7 +372,7 @@ function App() {
 
     const playerPosition =
       playerLeagueResult.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
-    newSeason.awardPoints += ((playerLeagueResult.championsSpots / 4.0) * (5 - playerPosition)) / 2; //max = 2.0
+    newSeason.awardPoints += (playerLeagueResult.championsSpots / 5.0) * (5 - playerPosition); //max = 3.2
     newSeason.titles.push(`Liga: ${playerPosition}º lugar ${leaguesTopEight}`);
     newPlayer.fame += Math.floor((playerLeagueResult.championsSpots * (5 - playerPosition)) / 2.0);
 
@@ -433,7 +433,7 @@ function App() {
               // Se o jogador venceu o torneio, conceder prêmios adicionais
               newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
               newPlayer.fame += 5;
-              newSeason.awardPoints += 0.5; // Máximo 0.3 x 5 + 0.5 = 2.0
+              newSeason.awardPoints += 0.3; // Máximo 0.3 x 5 + 0.3 = 1.8
               triplice++;
             }
           }
