@@ -213,7 +213,7 @@ function App() {
     }
 
     //change teams power on each season
-    let newTeams = UpdateTeamsStats(50.0);
+    let newTeams = UpdateTeamsStats(40.0);
     let newExtraTeams = UpdateExtraTeamsStats();
 
     let allTeams = [];
@@ -1352,9 +1352,9 @@ function App() {
   }
 
   function GetMatch(team1, team2) {
-    let base = Math.pow(team1.power, Math.log(400)) + Math.pow(team2.power, Math.log(400));
-    let team1Power = Math.pow(team1.power, Math.log(400)) / base;
-    let team2Power = Math.pow(team2.power, Math.log(400)) / base;
+    let base = Math.pow(team1.power, Math.log(500)) + Math.pow(team2.power, Math.log(500));
+    let team1Power = Math.pow(team1.power, Math.log(500)) / base;
+    let team2Power = Math.pow(team2.power, Math.log(500)) / base;
 
     let goals = Math.random() + Math.random();
 
@@ -1371,9 +1371,9 @@ function App() {
   }
 
   function GetExtraTime(team1, team2) {
-    let base = Math.pow(team1.power, Math.log(400)) + Math.pow(team2.power, Math.log(400));
-    let team1Power = Math.pow(team1.power, Math.log(400)) / base;
-    let team2Power = Math.pow(team2.power, Math.log(400)) / base;
+    let base = Math.pow(team1.power, Math.log(500)) + Math.pow(team2.power, Math.log(500));
+    let team1Power = Math.pow(team1.power, Math.log(500)) / base;
+    let team2Power = Math.pow(team2.power, Math.log(500)) / base;
 
     let team1Luck = Math.random() * 3;
     let team2Luck = Math.random() * 3;
@@ -1388,9 +1388,9 @@ function App() {
   }
 
   function GetPenalties(team1, team2) {
-    let base = Math.pow(team1.power, Math.log(400)) + Math.pow(team2.power, Math.log(400));
-    let team1Power = Math.pow(team1.power, Math.log(400)) / base;
-    let team2Power = Math.pow(team2.power, Math.log(400)) / base;
+    let base = Math.pow(team1.power, Math.log(500)) + Math.pow(team2.power, Math.log(500));
+    let team1Power = Math.pow(team1.power, Math.log(500)) / base;
+    let team2Power = Math.pow(team2.power, Math.log(500)) / base;
 
     let winner = false;
     let team1goals = 0;
@@ -1739,7 +1739,7 @@ function App() {
         let nationID = nationIndices[i];
 
         let current = Math.random();
-        let change = Math.round(50.0 * (last - current)) / 100.0;
+        let change = Math.round(40.0 * (last - current)) / 100.0;
         last = current;
 
         let newPower = allNations[leagueID].teams[nationID].power + change;
