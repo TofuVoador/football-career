@@ -618,8 +618,8 @@ function App() {
     }
 
     let playerChampionsResult = newPlayer.championsQualification
-      ? TournamentPath[playerPhase]
-      : "Não participou";
+      ? `: ${TournamentPath[playerPhase]}`
+      : "";
     championsDescription = `Champions League: ${playerChampionsResult} ${championsDescription}`;
     newSeason.titles.push(championsDescription);
 
@@ -733,9 +733,9 @@ function App() {
     }
 
     let playerEuropaResult = newPlayer.europaQualification
-      ? TournamentPath[playerPhase]
-      : "Não participou";
-    europaLeagueDescription = `Europa League: ${playerEuropaResult} ${europaLeagueDescription}`;
+      ? `: ${TournamentPath[playerPhase]}`
+      : "";
+    europaLeagueDescription = `Europa League${playerEuropaResult} ${europaLeagueDescription}`;
     newSeason.titles.push(europaLeagueDescription);
 
     //World Cup
