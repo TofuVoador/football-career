@@ -24,7 +24,7 @@
         "power": 6.6
       },
       {
-        "name": "Catar",
+        "name": "Qatar",
         "continent": "AFC",
         "power": 6.2
       },
@@ -153,52 +153,52 @@
     "teams": [
       {
         "name": "Argentina",
-        "continent": "CONCACAF",
+        "continent": "CONMEBOL",
         "power": 8.6
       },
       {
         "name": "Brasil",
-        "continent": "CONCACAF",
+        "continent": "CONMEBOL",
         "power": 8.4
       },
       {
         "name": "Uruguai",
-        "continent": "CONCACAF",
+        "continent": "CONMEBOL",
         "power": 7.4
       },
       {
         "name": "Colômbia",
-        "continent": "CONCACAF",
+        "continent": "CONMEBOL",
         "power": 7.0
       },
       {
         "name": "Equador",
-        "continent": "CONCACAF",
+        "continent": "CONMEBOL",
         "power": 6.4
       },
       {
         "name": "Peru",
-        "continent": "CONCACAF",
+        "continent": "CONMEBOL",
         "power": 6.4
       },
       {
         "name": "Chile",
-        "continent": "CONCACAF",
+        "continent": "CONMEBOL",
         "power": 6.0
       },
       {
         "name": "Venezuela",
-        "continent": "CONCACAF",
+        "continent": "CONMEBOL",
         "power": 5.4
       },
       {
         "name": "Paraguai",
-        "continent": "CONCACAF",
+        "continent": "CONMEBOL",
         "power": 5.2
       },
       {
         "name": "Bolívia",
-        "continent": "CONCACAF",
+        "continent": "CONMEBOL",
         "power": 5.0
       }
     ]

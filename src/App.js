@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./App.css";
+import WorldCupHistoryHosts from "./Database/worldCupLastHosts.json";
 import Leagues from "./Database/leagues.json";
 import ExtraTeams from "./Database/extrateams.json";
 import Nations from "./Database/nations.json";
@@ -33,6 +34,7 @@ const TournamentPath = [
 ];
 
 function App() {
+  const [worldCupHistoryHosts, setWorldCupHistoryHosts] = useState([...WorldCupHistoryHosts]);
   const [leagues, setLeagues] = useState([...Leagues]);
   const [extrateams, setExtraTeams] = useState([...ExtraTeams]);
   const [nations, setNations] = useState([...Nations]);
@@ -743,7 +745,13 @@ function App() {
       newSeason.awardPoints -= 3.0;
       phase = 0;
       playerPhase = 0;
-      let worldCupDescription = "";
+      let newWorldCupHistoryHosts = worldCupHistoryHosts;
+      let currentHosts = newWorldCupHistoryHosts[newWorldCupHistoryHosts.length - 1];
+
+      let worldCupDescription = "---> Hosts";
+      for (let hostID = 0; hostID < currentHosts.countries.length; hostID++) {
+        worldCupDescription += `-->${currentHosts.countries[hostID]}`;
+      }
 
       // Lista para armazenar todas as nações qualificadas para a Copa do Mundo
       let allNations = [];
@@ -756,10 +764,18 @@ function App() {
         // Clonar profundamente a região/nacionalidade atual
         let region = DeepClone(nations[regionID]);
 
+        let autoClassifHost = [];
+        if (region.name == currentHosts.continent) {
+          autoClassifHost = region.teams.filter((n) => currentHosts.countries.includes(n.name));
+          region.teams = region.teams.filter((n) => !currentHosts.countries.includes(n.name));
+        }
+
         // Ordenar as equipes da região/nacionalidade atual por poder, com uma pequena variação aleatória
         region.teams.sort((a, b) => {
           return b.power - a.power - Math.random();
         });
+
+        region.teams = autoClassifHost.concat(region.teams);
 
         // Selecionar as equipes qualificadas diretamente para a Copa do Mundo
         let classif = region.teams.splice(0, region.worldCupSpots);
@@ -785,7 +801,7 @@ function App() {
       // Verificar se a nação do novo jogador está entre as nações qualificadas para a Copa do Mundo
       let classifToWorldCup = allNations.some((t) => t.name == newPlayer.nation.name);
 
-      if (!classifToWorldCup) worldCupDescription = "---> Grupos --> Sem Dados";
+      if (!classifToWorldCup) worldCupDescription += "---> Grupos --> Sem Dados";
 
       //was called by the manager
       let playedWorldCup =
@@ -846,7 +862,7 @@ function App() {
 
         // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
         if (playerPosition > 0) {
-          worldCupDescription = `---> ${TournamentPath[phase]}: ${playerPosition}º lugar`;
+          worldCupDescription += `---> ${TournamentPath[phase]}: ${playerPosition}º lugar`;
           worldCupDescription += thisGroup.desc;
         }
 
@@ -936,8 +952,6 @@ function App() {
 
       let playerWorldCupDesc = "";
 
-      console.log(playedWorldCup);
-
       if (classifToWorldCup) {
         playerWorldCupDesc = `: ${TournamentPath[playerPhase]} ${
           playedWorldCup ? "" : " (Não Convocado)"
@@ -946,6 +960,38 @@ function App() {
 
       worldCupDescription = `Copa do Mundo${playerWorldCupDesc} ${worldCupDescription}`;
       newSeason.titles.push(worldCupDescription);
+
+      //select the next host
+      let newNations = DeepClone([...nations]);
+      let lastTwoRegions = newWorldCupHistoryHosts.map((worldCup) => worldCup.continent).slice(-2);
+
+      let validRegionsToHost = newNations.filter((region) => !lastTwoRegions.includes(region.name));
+
+      let regionHostID = RandomNumber(0, validRegionsToHost.length - 1);
+      let chossenRegionToHost = validRegionsToHost[regionHostID];
+
+      let countriesHosts = newWorldCupHistoryHosts.flatMap((wc) => wc.countries);
+
+      let validTeams = chossenRegionToHost.teams
+        .filter((n) => !countriesHosts.includes(n.name))
+        .map((n) => n.name);
+
+      let chosenHosts = [];
+
+      let numberOfHosts = RandomNumber(1, Math.min(validTeams.length / 2, 4));
+      for (let count = 0; count < numberOfHosts; count++) {
+        let chosenID = RandomNumber(0, validTeams.length - 1);
+        let chosenHost = validTeams[chosenID];
+        validTeams = validTeams.filter((n) => n.name == chosenHost.name);
+        chosenHosts.push(chosenHost);
+      }
+
+      newWorldCupHistoryHosts.push({
+        continent: chossenRegionToHost.name,
+        countries: chosenHosts,
+      });
+
+      setWorldCupHistoryHosts(newWorldCupHistoryHosts);
     }
 
     //add goals to the carrer summary

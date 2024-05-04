@@ -1,0 +1,8 @@
+[
+  { "continent": "UEFA", "countries": ["Alemanha"] },
+  { "continent": "CAF", "countries": ["África do Sul"] },
+  { "continent": "CONMEBOL", "countries": ["Brasil"] },
+  { "continent": "UEFA", "countries": ["Rússia"] },
+  { "continent": "AFC", "countries": ["Qatar"] },
+  { "continent": "CONCACAF", "countries": ["Estados Unidos", "Canadá", "México"] }
+]
