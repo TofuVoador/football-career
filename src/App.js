@@ -304,7 +304,6 @@ function App() {
   }
 
   function Continue() {
-    console.clear();
     //change display
     document.getElementById("team-choice").style.display = "flex";
     document.getElementById("continue").style.display = "none";
@@ -967,12 +966,10 @@ function App() {
       for (let regionID = 0; regionID < nations.length; regionID++) {
         allNations = allNations.concat([...nations[regionID].teams]);
       }
-      console.log(allNations);
+
       let countriesHosts = newWorldCupHistoryHosts.flatMap((wc) => wc);
 
       let currentMainHost = allNations.filter((n) => n.name == currentHosts[0])[0];
-
-      console.log(currentMainHost);
 
       let validTeams = allNations
         .filter((team) => {
@@ -1013,8 +1010,6 @@ function App() {
         validTeams = validTeams.filter((n) => n.name != chosenHost.name);
         chosenHosts.push(chosenHost);
       }
-
-      console.log(chosenHosts.map((t) => t.name));
 
       newWorldCupHistoryHosts.push(chosenHosts.map((t) => t.name));
       newWorldCupHistoryHosts.shift();
