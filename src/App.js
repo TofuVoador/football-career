@@ -304,6 +304,7 @@ function App() {
   }
 
   function Continue() {
+    console.clear();
     //change display
     document.getElementById("team-choice").style.display = "flex";
     document.getElementById("continue").style.display = "none";
@@ -749,12 +750,12 @@ function App() {
       let currentHosts = newWorldCupHistoryHosts[newWorldCupHistoryHosts.length - 1];
 
       let worldCupDescription = "---> Hosts";
-      for (let hostID = 0; hostID < currentHosts.countries.length; hostID++) {
-        worldCupDescription += `-->${currentHosts.countries[hostID]}`;
+      for (let hostID = 0; hostID < currentHosts.length; hostID++) {
+        worldCupDescription += `-->${currentHosts[hostID]}`;
       }
 
       // Lista para armazenar todas as nações qualificadas para a Copa do Mundo
-      let allNations = [];
+      let allClassifNations = [];
 
       // Lista para armazenar as nações para os playoffs
       let playoffClassif = [];
@@ -781,7 +782,7 @@ function App() {
         let classif = region.teams.splice(0, region.worldCupSpots);
 
         // Adicionar as equipes qualificadas para a Copa do Mundo à lista de todas as nações
-        allNations = allNations.concat(classif);
+        allClassifNations = allClassifNations.concat(classif);
 
         // Adicionar as equipes restantes à lista de equipes para os playoffs
         playoffClassif = playoffClassif.concat(region.teams);
@@ -791,15 +792,15 @@ function App() {
       playoffClassif = shuffleArray(playoffClassif);
 
       // Selecionar as equipes adicionais para a Copa do Mundo dos playoffs
-      allNations = allNations.concat(playoffClassif.splice(0, 4));
+      allClassifNations = allClassifNations.concat(playoffClassif.splice(0, 4));
 
       // Ordenar todas as nações qualificadas para a Copa do Mundo por poder
-      allNations.sort((a, b) => {
+      allClassifNations.sort((a, b) => {
         return b.power - a.power;
       });
 
       // Verificar se a nação do novo jogador está entre as nações qualificadas para a Copa do Mundo
-      let classifToWorldCup = allNations.some((t) => t.name == newPlayer.nation.name);
+      let classifToWorldCup = allClassifNations.some((t) => t.name == newPlayer.nation.name);
 
       if (!classifToWorldCup) worldCupDescription += "---> Grupos --> Sem Dados";
 
@@ -810,7 +811,7 @@ function App() {
 
       //create four pots to the group draw
       let pots = Array.from({ length: 4 }, (_, potID) =>
-        allNations.slice(potID * 12, (potID + 1) * 12)
+        allClassifNations.slice(potID * 12, (potID + 1) * 12)
       );
 
       let groups = [[], [], [], [], [], [], [], [], [], [], [], []];
@@ -962,34 +963,61 @@ function App() {
       newSeason.titles.push(worldCupDescription);
 
       //select the next host
-      let newNations = DeepClone([...nations]);
-      let lastTwoRegions = newWorldCupHistoryHosts.map((worldCup) => worldCup.continent).slice(-2);
+      let allNations = [];
+      for (let regionID = 0; regionID < nations.length; regionID++) {
+        allNations = allNations.concat([...nations[regionID].teams]);
+      }
+      console.log(allNations);
+      let countriesHosts = newWorldCupHistoryHosts.flatMap((wc) => wc);
 
-      let validRegionsToHost = newNations.filter((region) => !lastTwoRegions.includes(region.name));
+      let currentMainHost = allNations.filter((n) => n.name == currentHosts[0])[0];
 
-      let regionHostID = RandomNumber(0, validRegionsToHost.length - 1);
-      let chossenRegionToHost = validRegionsToHost[regionHostID];
+      console.log(currentMainHost);
 
-      let countriesHosts = newWorldCupHistoryHosts.flatMap((wc) => wc.countries);
-
-      let validTeams = chossenRegionToHost.teams
-        .filter((n) => !countriesHosts.includes(n.name))
-        .map((n) => n.name);
+      let validTeams = allNations
+        .filter((team) => {
+          const distance = calculateDistance(
+            currentMainHost.latitude,
+            currentMainHost.longitude,
+            team.latitude,
+            team.longitude
+          );
+          return distance >= 6000;
+        })
+        .filter((team) => !countriesHosts.includes(team.name));
 
       let chosenHosts = [];
 
-      let numberOfHosts = RandomNumber(1, Math.min(validTeams.length / 2, 4));
-      for (let count = 0; count < numberOfHosts; count++) {
+      let chosenID = RandomNumber(0, validTeams.length - 1);
+      let mainHost = validTeams[chosenID];
+      chosenHosts.push(mainHost);
+
+      // Verifica quais estão próximos
+      validTeams = allNations
+        .filter((team) => {
+          const distance = calculateDistance(
+            mainHost.latitude,
+            mainHost.longitude,
+            team.latitude,
+            team.longitude
+          );
+          return distance <= 1800;
+        })
+        .filter((n) => !countriesHosts.includes(n.name) && n.name != mainHost.name);
+
+      let numberOfAdditionalHosts = RandomNumber(0, Math.min(validTeams.length - 1, 3));
+      for (let count = 0; count < numberOfAdditionalHosts; count++) {
+        //seleciona
         let chosenID = RandomNumber(0, validTeams.length - 1);
         let chosenHost = validTeams[chosenID];
-        validTeams = validTeams.filter((n) => n.name == chosenHost.name);
+        validTeams = validTeams.filter((n) => n.name != chosenHost.name);
         chosenHosts.push(chosenHost);
       }
 
-      newWorldCupHistoryHosts.push({
-        continent: chossenRegionToHost.name,
-        countries: chosenHosts,
-      });
+      console.log(chosenHosts.map((t) => t.name));
+
+      newWorldCupHistoryHosts.push(chosenHosts.map((t) => t.name));
+      newWorldCupHistoryHosts.shift();
 
       setWorldCupHistoryHosts(newWorldCupHistoryHosts);
     }
@@ -1220,6 +1248,21 @@ function App() {
     //set Seasons
     const newSeasons = [...seasons, newSeason];
     setSeasons(newSeasons);
+  }
+
+  function calculateDistance(lat1, lon1, lat2, lon2) {
+    const R = 6371; // Raio da Terra em quilômetros
+    const dLat = ((lat2 - lat1) * Math.PI) / 180;
+    const dLon = ((lon2 - lon1) * Math.PI) / 180;
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos((lat1 * Math.PI) / 180) *
+        Math.cos((lat2 * Math.PI) / 180) *
+        Math.sin(dLon / 2) *
+        Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    const distance = R * c; // Distância em quilômetros
+    return distance;
   }
 
   function GetEuropaPosition(teams) {
