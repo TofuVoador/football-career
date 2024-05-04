@@ -620,7 +620,7 @@ function App() {
     let playerChampionsResult = newPlayer.championsQualification
       ? `: ${TournamentPath[playerPhase]}`
       : "";
-    championsDescription = `Champions League: ${playerChampionsResult} ${championsDescription}`;
+    championsDescription = `Champions League${playerChampionsResult} ${championsDescription}`;
     newSeason.titles.push(championsDescription);
 
     //europa league
