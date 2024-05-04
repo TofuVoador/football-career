@@ -934,9 +934,17 @@ function App() {
         }
       }
 
-      worldCupDescription = `Copa do Mundo: ${
-        classifToWorldCup ? TournamentPath[playerPhase] : "Seleção não classificada"
-      } ${playedWorldCup ? "" : " (Não Convocado)"} ${worldCupDescription}`;
+      let playerWorldCupDesc = "";
+
+      console.log(playedWorldCup);
+
+      if (classifToWorldCup) {
+        playerWorldCupDesc = `: ${TournamentPath[playerPhase]} ${
+          playedWorldCup ? "" : " (Não Convocado)"
+        }`;
+      }
+
+      worldCupDescription = `Copa do Mundo${playerWorldCupDesc} ${worldCupDescription}`;
       newSeason.titles.push(worldCupDescription);
     }
 
