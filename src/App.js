@@ -1000,20 +1000,20 @@ function App() {
         })
         .filter((n) => !countriesHosts.includes(n.name) && n.name != mainHost.name)
         .sort((a, b) => {
-        let bDist = calculateDistance(
+          let bDist = calculateDistance(
             mainHost.latitude,
             mainHost.longitude,
             b.latitude,
             b.longitude
           );
-        let aDist = calculateDistance(
+          let aDist = calculateDistance(
             mainHost.latitude,
             mainHost.longitude,
             a.latitude,
             a.longitude
           );
-        return aDist - bDist + RandomNumber(0, 200);
-      });
+          return aDist - bDist + RandomNumber(0, 200);
+        });
 
       let numberOfAdditionalHosts = RandomNumber(0, Math.min(validTeams.length - 1, 3));
       for (let count = 0; count < numberOfAdditionalHosts; count++) {
