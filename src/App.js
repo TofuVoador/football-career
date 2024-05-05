@@ -765,7 +765,7 @@ function App() {
         let region = DeepClone(nations[regionID]);
 
         let autoClassifHost = [];
-        if (region.name == currentHosts.continent) {
+        if (region.teams.some((team) => currentHosts.include(team.name))) {
           autoClassifHost = region.teams.filter((n) => currentHosts.countries.includes(n.name));
           region.teams = region.teams.filter((n) => !currentHosts.countries.includes(n.name));
         }
@@ -998,16 +998,29 @@ function App() {
             team.latitude,
             team.longitude
           );
-          return distance <= 1800;
+          return distance <= 2000;
         })
-        .filter((n) => !countriesHosts.includes(n.name) && n.name != mainHost.name);
+        .filter((n) => !countriesHosts.includes(n.name) && n.name != mainHost.name)
+        .sort((a, b) => {
+        let bDist = calculateDistance(
+            mainHost.latitude,
+            mainHost.longitude,
+            b.latitude,
+            b.longitude
+          );
+        let aDist = calculateDistance(
+            mainHost.latitude,
+            mainHost.longitude,
+            a.latitude,
+            a.longitude
+          );
+        return bDist - aDist + RandomNumber(0, 500);
+      });;
 
       let numberOfAdditionalHosts = RandomNumber(0, Math.min(validTeams.length - 1, 3));
       for (let count = 0; count < numberOfAdditionalHosts; count++) {
         //seleciona
-        let chosenID = RandomNumber(0, validTeams.length - 1);
-        let chosenHost = validTeams[chosenID];
-        validTeams = validTeams.filter((n) => n.name != chosenHost.name);
+        let chosenHost = validTeams.splice(1);
         chosenHosts.push(chosenHost);
       }
 
