@@ -1012,7 +1012,7 @@ function App() {
             a.latitude,
             a.longitude
           );
-        return bDist - aDist + RandomNumber(0, 500);
+        return bDist - aDist + RandomNumber(0, 200);
       });
 
       let numberOfAdditionalHosts = RandomNumber(0, Math.min(validTeams.length - 1, 3));
