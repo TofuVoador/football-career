@@ -766,8 +766,8 @@ function App() {
 
         let autoClassifHost = [];
         if (region.teams.some((team) => currentHosts.include(team.name))) {
-          autoClassifHost = region.teams.filter((n) => currentHosts.countries.includes(n.name));
-          region.teams = region.teams.filter((n) => !currentHosts.countries.includes(n.name));
+          autoClassifHost = region.teams.filter((n) => currentHosts.includes(n.name));
+          region.teams = region.teams.filter((n) => !currentHosts.includes(n.name));
         }
 
         // Ordenar as equipes da região/nacionalidade atual por poder, com uma pequena variação aleatória
