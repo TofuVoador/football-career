@@ -1020,7 +1020,7 @@ function App() {
       let numberOfAdditionalHosts = RandomNumber(0, Math.min(validTeams.length - 1, 3));
       for (let count = 0; count < numberOfAdditionalHosts; count++) {
         //seleciona
-        let chosenHost = validTeams.splice(1);
+        let chosenHost = validTeams.splice(0, 1);
         chosenHosts.push(chosenHost);
       }
 
