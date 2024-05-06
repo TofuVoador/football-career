@@ -495,21 +495,16 @@ function App() {
     let championsGroup = GetChampionsPosition(qualifiedToChamptions);
 
     const playerChampionsPos =
-      championsGroup.findIndex((team) => team.name == newPlayer.team.name) + 1;
-
-    let championsGroupDesc = "";
-    for (let teamID = 0; teamID < 8; teamID++) {
-      championsGroupDesc += `-->${teamID + 1}º: ${championsGroup[teamID].name}`;
-    }
+      championsGroup.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
 
     if (playerChampionsPos > 0) championsDescription = `: ${playerChampionsPos}º lugar`;
 
     // Construir a descrição da fase do torneio
     championsDescription = `---> ${TournamentPath[playerPhase]}${championsDescription}`;
-    championsDescription += championsGroupDesc;
+    championsDescription += championsGroup.desc;
 
     // Obter as equipes classificadas para os playoffs e limitar para 24 equipes
-    let playoffsClassif = DeepClone([...championsGroup]).splice(0, 24);
+    let playoffsClassif = DeepClone([...championsGroup.table]).splice(0, 24);
 
     // Avançar para a próxima fase
     phase++;
@@ -651,19 +646,15 @@ function App() {
 
     let group = GetEuropaPosition(qualified);
 
-    const playerEuropaPosition = group.findIndex((team) => team.name == newPlayer.team.name) + 1;
+    const playerEuropaPosition =
+      group.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
 
     if (playerEuropaPosition > 0) europaLeagueDescription = `: ${playerEuropaPosition}º lugar`;
 
-    let groupDesc = "";
-    for (let teamID = 0; teamID < 8; teamID++) {
-      groupDesc += `-->${teamID + 1}º: ${group[teamID].name}`;
-    }
-
     europaLeagueDescription = `---> ${TournamentPath[playerPhase]}${europaLeagueDescription}`;
-    europaLeagueDescription += groupDesc;
+    europaLeagueDescription += group.desc;
 
-    let classif = DeepClone([...group]).splice(0, 16);
+    let classif = DeepClone([...group.table]).splice(0, 16);
 
     if (classif.some((t) => t.name == newPlayer.team.name)) {
       playerPhase += 2;
@@ -791,10 +782,21 @@ function App() {
       // Selecionar as equipes adicionais para a Copa do Mundo dos playoffs
       allClassifNations = allClassifNations.concat(playoffClassif.splice(0, 4));
 
+      const hostsAreFirst = [];
+      allClassifNations = allClassifNations.filter((obj) => {
+        if (currentHosts.includes(obj.name)) {
+          hostsAreFirst.push(obj);
+          return false;
+        }
+        return true;
+      });
+
       // Ordenar todas as nações qualificadas para a Copa do Mundo por poder
       allClassifNations.sort((a, b) => {
         return b.power - a.power;
       });
+
+      allClassifNations = hostsAreFirst.concat(allClassifNations);
 
       // Verificar se a nação do novo jogador está entre as nações qualificadas para a Copa do Mundo
       let classifToWorldCup = allClassifNations.some((t) => t.name == newPlayer.nation.name);
@@ -1024,7 +1026,10 @@ function App() {
           return aDist - bDist + RandomNumber(0, 200);
         });
 
-      let numberOfAdditionalHosts = RandomNumber(0, Math.min(validTeams.length - 1, 3));
+      let numberOfAdditionalHosts = RandomNumber(
+        !!validTeams.length,
+        Math.min(validTeams.length - 1, 3)
+      );
       for (let count = 0; count < numberOfAdditionalHosts; count++) {
         //seleciona
         let chosenHost = validTeams[count];
@@ -1281,6 +1286,7 @@ function App() {
   }
 
   function GetEuropaPosition(teams) {
+    let desc = "";
     let newTeams = DeepClone(teams);
     //sort by power
     newTeams.sort((a, b) => {
@@ -1289,7 +1295,8 @@ function App() {
 
     let points = new Array(newTeams.length).fill(0);
 
-    for (let round = 0; round < 6; round++) {
+    for (let round = 1; round <= 6; round++) {
+      desc += `--> Rodada ${round}`;
       let newOrderTeams = [];
       let newOrderPoints = [];
       for (let i = 0; i < newTeams.length / 2; i++) {
@@ -1307,6 +1314,8 @@ function App() {
           points[home] += 1;
         }
 
+        desc += `->${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}`;
+
         newOrderTeams.push(newTeams[home]);
         newOrderTeams.push(newTeams[away]);
         newOrderPoints.push(points[home]);
@@ -1323,10 +1332,19 @@ function App() {
       return points[table.indexOf(b)] - points[table.indexOf(a)];
     });
 
-    return table;
+    desc += `--> Tabela`;
+    for (let count = 0; count < 8; count++) {
+      desc += `-> ${count + 1}º: ${table[count].name}`;
+    }
+
+    return {
+      table: table,
+      desc: desc,
+    };
   }
 
   function GetChampionsPosition(teams) {
+    let desc = "";
     let newTeams = DeepClone(teams);
     //sort by power
     newTeams.sort((a, b) => {
@@ -1347,7 +1365,8 @@ function App() {
 
     let points = new Array(newTeams.length).fill(0);
 
-    for (let round = 0; round < 8; round++) {
+    for (let round = 1; round <= 8; round++) {
+      desc += `--> Rodada ${round}`;
       let newOrderTeams = Array(newTeams.length).fill(null);
       let newOrderPoints = Array(newTeams.length).fill(0);
       for (let i = 0; i < newTeams.length - 1; i += 2) {
@@ -1364,6 +1383,8 @@ function App() {
           points[away] += 1000;
           points[home] += 1000;
         }
+
+        desc += `->${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}`;
 
         points[home] += game[0];
         points[away] += game[1];
@@ -1388,13 +1409,21 @@ function App() {
       return points[table.indexOf(b)] - points[table.indexOf(a)];
     });
 
-    return table;
+    desc += `--> Tabela`;
+    for (let count = 0; count < 8; count++) {
+      desc += `-> ${count + 1}º: ${table[count].name}`;
+    }
+
+    return {
+      table: table,
+      desc: desc,
+    };
   }
 
   function GetLeaguePosition(teams) {
     let newTeams = DeepClone(teams);
-
     let points = new Array(newTeams.length).fill(0);
+
     for (let home = 0; home < newTeams.length; home++) {
       for (let away = 0; away < newTeams.length; away++) {
         if (newTeams[home] !== newTeams[away]) {
@@ -1429,26 +1458,40 @@ function App() {
     let newTeams = DeepClone([...teams]);
     let points = new Array(teams.length).fill(0);
 
-    for (let home = 0; home < teams.length; home++) {
-      for (let away = 0; away < home; away++) {
-        if (teams[home] !== teams[away]) {
-          let game = GetMatch(teams[home], teams[away]);
+    // Iterate over each team
+    for (let round = 1; round < newTeams.length; round++) {
+      let newOrder = [];
+      let newPointsOrder = [];
+      desc += `--> Rodada ${round}`;
+      for (let matchID = 0; matchID < newTeams.length / 2; matchID++) {
+        // Start from home + 1 to avoid playing against itself and avoid duplicated matches
+        let home = matchID;
+        let away = newTeams.length - (matchID + 1);
 
-          if (game[0] > game[1]) {
-            points[home] += 3000;
-          } else if (game[1] > game[0]) {
-            points[away] += 3000;
-          } else {
-            points[away] += 1000;
-            points[home] += 1000;
-          }
+        let game = GetMatch(newTeams[home], newTeams[away]);
 
-          points[home] += game[0];
-          points[away] += game[1];
-
-          desc += `--> ${teams[home].name} ${game[0]} x ${game[1]} ${teams[away].name}`;
+        if (game[0] > game[1]) {
+          points[home] += 3000;
+        } else if (game[1] > game[0]) {
+          points[away] += 3000;
+        } else {
+          points[away] += 1000;
+          points[home] += 1000;
         }
+
+        points[home] += game[0];
+        points[away] += game[1];
+
+        newOrder.push(newTeams[home]);
+        newOrder.push(newTeams[away]);
+        newPointsOrder.push(points[home]);
+        newPointsOrder.push(points[away]);
+
+        desc += `-> ${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}\n`;
       }
+
+      newTeams = newOrder;
+      points = newPointsOrder;
     }
 
     let table = [...newTeams];
@@ -1456,6 +1499,11 @@ function App() {
     table.sort((a, b) => {
       return points[table.indexOf(b)] - points[table.indexOf(a)];
     });
+
+    desc += `--> Tabela`;
+    for (let count = 0; count < table.length; count++) {
+      desc += `-> ${count + 1}º: ${table[count].name}`;
+    }
 
     return {
       table: table,
