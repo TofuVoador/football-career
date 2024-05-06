@@ -968,6 +968,9 @@ function App() {
       let countriesHosts = newWorldCupHistoryHosts.flatMap((wc) => wc);
 
       let currentMainHost = allNations.filter((n) => n.name == currentHosts[0])[0];
+      let lastMainHost = allNations.filter(
+        (n) => n.name == newWorldCupHistoryHosts[newWorldCupHistoryHosts.length - 2][0]
+      )[0];
 
       let validTeams = allNations
         .filter((team) => {
@@ -977,7 +980,13 @@ function App() {
             team.latitude,
             team.longitude
           );
-          return distance >= 6000;
+          const distance2 = calculateDistance(
+            lastMainHost.latitude,
+            lastMainHost.longitude,
+            team.latitude,
+            team.longitude
+          );
+          return distance >= 5000 && distance2 >= 5000;
         })
         .filter((team) => !countriesHosts.includes(team.name));
 
