@@ -492,7 +492,10 @@ function App() {
     qualifiedToChamptions = qualifiedToChamptions.concat(extrateams.slice(0, 12));
 
     // Obter a posição dos campeões em um grupo específico
-    let championsGroup = GetChampionsPosition(qualifiedToChamptions);
+    let championsGroup = GetChampionsPosition(
+      qualifiedToChamptions,
+      newPlayer.championsQualification ? newPlayer.team : null
+    );
 
     const playerChampionsPos =
       championsGroup.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
@@ -644,7 +647,7 @@ function App() {
 
     qualified = qualified.concat(extrateams.slice(12, extrateams.length));
 
-    let group = GetEuropaPosition(qualified);
+    let group = GetEuropaPosition(qualified, newPlayer.europaQualification ? newPlayer.team : null);
 
     const playerEuropaPosition =
       group.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
@@ -1285,7 +1288,7 @@ function App() {
     return distance;
   }
 
-  function GetEuropaPosition(teams) {
+  function GetEuropaPosition(teams, playerTeam = null) {
     let desc = "";
     let newTeams = DeepClone(teams);
     //sort by power
@@ -1296,7 +1299,6 @@ function App() {
     let points = new Array(newTeams.length).fill(0);
 
     for (let round = 1; round <= 6; round++) {
-      desc += `--> Rodada ${round}`;
       let newOrderTeams = [];
       let newOrderPoints = [];
       for (let i = 0; i < newTeams.length / 2; i++) {
@@ -1314,7 +1316,12 @@ function App() {
           points[home] += 1;
         }
 
-        desc += `->${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}`;
+        if (
+          playerTeam &&
+          (playerTeam.name == newTeams[home].name || playerTeam.name == newTeams[away].name)
+        ) {
+          desc += `-->${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}`;
+        }
 
         newOrderTeams.push(newTeams[home]);
         newOrderTeams.push(newTeams[away]);
@@ -1343,7 +1350,7 @@ function App() {
     };
   }
 
-  function GetChampionsPosition(teams) {
+  function GetChampionsPosition(teams, playerTeam = null) {
     let desc = "";
     let newTeams = DeepClone(teams);
     //sort by power
@@ -1366,7 +1373,6 @@ function App() {
     let points = new Array(newTeams.length).fill(0);
 
     for (let round = 1; round <= 8; round++) {
-      desc += `--> Rodada ${round}`;
       let newOrderTeams = Array(newTeams.length).fill(null);
       let newOrderPoints = Array(newTeams.length).fill(0);
       for (let i = 0; i < newTeams.length - 1; i += 2) {
@@ -1384,7 +1390,12 @@ function App() {
           points[home] += 1000;
         }
 
-        desc += `->${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}`;
+        if (
+          playerTeam &&
+          (playerTeam.name == newTeams[home].name || playerTeam.name == newTeams[away].name)
+        ) {
+          desc += `-->${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}`;
+        }
 
         points[home] += game[0];
         points[away] += game[1];
@@ -1420,7 +1431,7 @@ function App() {
     };
   }
 
-  function GetLeaguePosition(teams) {
+  function GetLeaguePosition(teams, playerTeam) {
     let newTeams = DeepClone(teams);
     let points = new Array(newTeams.length).fill(0);
 
