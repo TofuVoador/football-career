@@ -36,13 +36,8 @@ const Season = (props) => {
               width: `${Math.abs(season.performance.toFixed(2)) * 50}%`,
               height: "20px",
               backgroundColor:
-                season.performance.toFixed(2) >= 0
-                  ? "var(--color-contrast)"
-                  : "var(--color-light)",
-              borderRadius:
-                season.performance.toFixed(2) >= 0
-                  ? "0 10px 10px 0"
-                  : "10px 0 0 10px", // Bordas arredondadas dependendo da direção
+                season.performance.toFixed(2) >= 0 ? "var(--color-contrast)" : "var(--color-light)",
+              borderRadius: season.performance.toFixed(2) >= 0 ? "0 10px 10px 0" : "10px 0 0 10px", // Bordas arredondadas dependendo da direção
               position: "relative",
               left: season.performance.toFixed(2) >= 0 ? "50%" : "auto",
               right:
@@ -111,8 +106,7 @@ const Season = (props) => {
             <summary>Top Clubes</summary>
             {season.top10.map((team, index) => (
               <p key={team + "topClubs" + index}>
-                {team.name} (
-                {(Math.round(team.power * 50.0) / 100.0).toFixed(2)})
+                {team.name} ({(Math.round(team.power * 50.0) / 100.0).toFixed(2)})
               </p>
             ))}
           </details>
@@ -120,19 +114,17 @@ const Season = (props) => {
             <summary>Top Seleções</summary>
             {season.topNations.map((team, index) => (
               <p key={team + "topNations" + index}>
-                {team.name} (
-                {(Math.round(team.power * 50.0) / 100.0).toFixed(2)})
+                {team.name} ({(Math.round(team.power * 50.0) / 100.0).toFixed(2)})
               </p>
             ))}
           </details>
-          {season.titles.map((t) => {
-            let titleDetails = t.split("--->");
-            if (titleDetails.length > 1) {
-              let rounds = titleDetails.slice(1);
+          {season.titles.map((title) => {
+            if (title.length > 1) {
+              let stages = title.slice(1);
               return (
-                <details key={season.year + titleDetails[0]}>
-                  <summary>{titleDetails[0]}</summary>
-                  {rounds.map((round) => {
+                <details key={season.year + title[0]}>
+                  <summary>{title[0]}</summary>
+                  {stages.map((round) => {
                     let matchDetails = round.split("-->");
                     if (matchDetails.length > 1) {
                       let matches = matchDetails.slice(1);
@@ -147,9 +139,7 @@ const Season = (props) => {
                                 <details key={season.year + innerDetails[0]}>
                                   <summary>{innerDetails[0]}</summary>
                                   {inners.map((innerMatch) => (
-                                    <p key={season.year + innerMatch}>
-                                      {innerMatch}
-                                    </p>
+                                    <p key={season.year + innerMatch}>{innerMatch}</p>
                                   ))}
                                 </details>
                               );
@@ -167,11 +157,8 @@ const Season = (props) => {
               );
             } else {
               return (
-                <h1
-                  className="single-title"
-                  key={season.year + titleDetails[0]}
-                >
-                  {titleDetails[0]}
+                <h1 className="single-title" key={season.year + title}>
+                  {title}
                 </h1>
               );
             }

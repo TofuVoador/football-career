@@ -363,20 +363,20 @@ function App() {
     let playerLeagueResult = leagueResults.find((league) => league.name === newPlayer.team.league);
 
     //top eight from each league
-    let leaguesTopEight = "";
+    let leaguesTopEight = [];
     for (let l = 0; l < leagueResults.length; l++) {
-      let topEight = `--->${leagueResults[l].name}`;
+      let topEight = `${leagueResults[l].name}`;
       for (let p = 0; p < 8; p++) {
         topEight += `--> ${p + 1}º: ${leagueResults[l].table[p].name}`;
       }
-      leaguesTopEight += topEight;
+      leaguesTopEight.push(topEight);
     }
 
     const playerPosition =
       playerLeagueResult.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
     newSeason.awardPoints +=
       ((playerLeagueResult.championsSpots / 4.0) * (5 - playerPosition)) / 2.0; //max = 2.0
-    newSeason.titles.push(`Liga: ${playerPosition}º lugar ${leaguesTopEight}`);
+    newSeason.titles.push([`Liga: ${playerPosition}º lugar`].concat(leaguesTopEight));
     newPlayer.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0);
 
     //if fist place, then won trophy
@@ -385,7 +385,7 @@ function App() {
       triplice++;
     }
 
-    let nationalCupDescription = "";
+    let nationalCupDescription = [];
     let end = false;
     let phase = 2;
     let playerPhase = 2;
@@ -451,8 +451,7 @@ function App() {
         }
       }
 
-      nationalCupDescription += `---> ${TournamentPath[phase]}${playerOpp}`;
-      nationalCupDescription += games;
+      nationalCupDescription.push(`${TournamentPath[phase]}${playerOpp}${games}`);
 
       phase++;
       classifToNationalCup = newOpponentsLeft;
@@ -462,14 +461,15 @@ function App() {
       }
     }
 
-    nationalCupDescription = `Copa Nacional: ${TournamentPath[playerPhase]} ${nationalCupDescription}`;
-    newSeason.titles.push(nationalCupDescription);
+    newSeason.titles.push(
+      [`Copa Nacional: ${TournamentPath[playerPhase]}`].concat(nationalCupDescription)
+    );
 
     //Champions League
     phase = 0;
     playerPhase = 0;
 
-    let championsDescription = "";
+    let championsDescription = [];
     let qualifiedToChamptions = [];
 
     // Obter os principais times de cada liga
@@ -500,11 +500,12 @@ function App() {
     const playerChampionsPos =
       championsGroup.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
 
-    if (playerChampionsPos > 0) championsDescription = `: ${playerChampionsPos}º lugar`;
-
     // Construir a descrição da fase do torneio
-    championsDescription = `---> ${TournamentPath[playerPhase]}${championsDescription}`;
-    championsDescription += championsGroup.desc;
+    championsDescription.push(
+      `${TournamentPath[playerPhase]}${
+        playerChampionsPos > 0 ? `: ${playerChampionsPos}º lugar` : ""
+      }${championsGroup.desc}`
+    );
 
     // Obter as equipes classificadas para os playoffs e limitar para 24 equipes
     let playoffsClassif = DeepClone([...championsGroup.table]).splice(0, 24);
@@ -541,8 +542,7 @@ function App() {
       }
     }
 
-    championsDescription += `---> ${TournamentPath[phase]}${playerOpp}`;
-    championsDescription += games;
+    championsDescription.push(`${TournamentPath[phase]}${playerOpp}${games}`);
 
     if (classifToKnockout.some((t) => t.name == newPlayer.team.name)) {
       playerPhase++;
@@ -604,8 +604,7 @@ function App() {
       }
 
       // Construir a descrição da fase do torneio
-      championsDescription += `---> ${TournamentPath[phase]}${playerOpp}`;
-      championsDescription += games;
+      championsDescription.push(`${TournamentPath[phase]}${playerOpp}${games}`);
 
       // Avançar para a próxima fase e atualizar a classificação
       phase++;
@@ -620,13 +619,14 @@ function App() {
     let playerChampionsResult = newPlayer.championsQualification
       ? `: ${TournamentPath[playerPhase]}`
       : "";
-    championsDescription = `Champions League${playerChampionsResult} ${championsDescription}`;
-    newSeason.titles.push(championsDescription);
+    newSeason.titles.push(
+      [`Champions League${playerChampionsResult}`].concat(championsDescription)
+    );
 
     //europa league
     phase = 0;
     playerPhase = 0;
-    let europaLeagueDescription = "";
+    let europaLeagueDescription = [];
 
     let qualified = [];
 
@@ -652,10 +652,11 @@ function App() {
     const playerEuropaPosition =
       group.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
 
-    if (playerEuropaPosition > 0) europaLeagueDescription = `: ${playerEuropaPosition}º lugar`;
-
-    europaLeagueDescription = `---> ${TournamentPath[playerPhase]}${europaLeagueDescription}`;
-    europaLeagueDescription += group.desc;
+    europaLeagueDescription.push(
+      `${TournamentPath[playerPhase]}${
+        playerEuropaPosition > 0 ? `: ${playerEuropaPosition}º lugar` : ""
+      }${group.desc}`
+    );
 
     let classif = DeepClone([...group.table]).splice(0, 16);
 
@@ -715,8 +716,7 @@ function App() {
       }
 
       // Construir a descrição da fase do torneio
-      europaLeagueDescription += `---> ${TournamentPath[phase]}${playerOpp}`;
-      europaLeagueDescription += games;
+      europaLeagueDescription.push(`${TournamentPath[phase]}${playerOpp}${games}`);
 
       // Avançar para a próxima fase e atualizar a classificação
       phase++;
@@ -731,21 +731,23 @@ function App() {
     let playerEuropaResult = newPlayer.europaQualification
       ? `: ${TournamentPath[playerPhase]}`
       : "";
-    europaLeagueDescription = `Europa League${playerEuropaResult} ${europaLeagueDescription}`;
-    newSeason.titles.push(europaLeagueDescription);
+
+    newSeason.titles.push([`Europa League${playerEuropaResult}`].concat(europaLeagueDescription));
 
     //World Cup
     if (year % 4 == 2) {
       newSeason.awardPoints -= 3.0;
       phase = 0;
       playerPhase = 0;
+      let worldCupDescription = [];
       let newWorldCupHistoryHosts = worldCupHistoryHosts;
       let currentHosts = newWorldCupHistoryHosts[newWorldCupHistoryHosts.length - 1];
 
-      let worldCupDescription = "---> Hosts";
+      let worldCupHostDescription = "Hosts";
       for (let hostID = 0; hostID < currentHosts.length; hostID++) {
-        worldCupDescription += `-->${currentHosts[hostID]}`;
+        worldCupHostDescription += `-->${currentHosts[hostID]}`;
       }
+      worldCupDescription.push(worldCupHostDescription);
 
       // Lista para armazenar todas as nações qualificadas para a Copa do Mundo
       let allClassifNations = [];
@@ -804,7 +806,7 @@ function App() {
       // Verificar se a nação do novo jogador está entre as nações qualificadas para a Copa do Mundo
       let classifToWorldCup = allClassifNations.some((t) => t.name == newPlayer.nation.name);
 
-      if (!classifToWorldCup) worldCupDescription += "---> Grupos --> Sem Dados";
+      if (!classifToWorldCup) worldCupDescription.push("Grupos-->Sem Dados");
 
       //was called by the manager
       let playedWorldCup =
@@ -865,8 +867,9 @@ function App() {
 
         // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
         if (playerPosition > 0) {
-          worldCupDescription += `---> ${TournamentPath[phase]}: ${playerPosition}º lugar`;
-          worldCupDescription += thisGroup.desc;
+          worldCupDescription.push(
+            `${TournamentPath[phase]}: ${playerPosition}º lugar${thisGroup.desc}`
+          );
         }
 
         // Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
@@ -940,8 +943,7 @@ function App() {
         }
 
         // Construir a descrição da fase do torneio
-        worldCupDescription += `---> ${TournamentPath[phase]}${playerOpp}`;
-        worldCupDescription += games;
+        worldCupDescription.push(`${TournamentPath[phase]}${playerOpp}${games}`);
 
         // Avançar para a próxima fase e atualizar a classificação
         phase++;
@@ -961,8 +963,7 @@ function App() {
         }`;
       }
 
-      worldCupDescription = `Copa do Mundo${playerWorldCupDesc} ${worldCupDescription}`;
-      newSeason.titles.push(worldCupDescription);
+      newSeason.titles.push([`Copa do Mundo${playerWorldCupDesc}`].concat(worldCupDescription));
 
       //select the next host
       let allNations = [];
