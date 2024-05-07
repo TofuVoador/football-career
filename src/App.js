@@ -818,6 +818,8 @@ function App() {
         allClassifNations.slice(potID * 12, (potID + 1) * 12)
       );
 
+      console.log(JSON.parse(JSON.stringify(pots)));
+
       let groups = [[], [], [], [], [], [], [], [], [], [], [], []];
 
       for (let potID = 0; potID < pots.length; potID++) {
@@ -853,6 +855,8 @@ function App() {
         }
       }
 
+      console.log(JSON.parse(JSON.stringify(groups)));
+
       // Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
       let firstPlaces = [];
       let secondPlaces = [];
@@ -871,6 +875,8 @@ function App() {
             `${TournamentPath[phase]}: ${playerPosition}º lugar${thisGroup.desc}`
           );
         }
+
+        console.log(thisGroup.table);
 
         // Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
         firstPlaces.push(thisGroup.table[0]);
@@ -1054,12 +1060,12 @@ function App() {
     if (RandomNumber(1, 1000) <= newSeason.goals / 4 - 1) {
       //Puskás
       newPlayer.awards.push(`Puskás ${year} (${newPlayer.team.name})`);
-      newSeason.titles.push("Puskás");
+      newSeason.titles.push(["Puskás"]);
     }
 
     if (triplice >= 3) {
       newPlayer.awards.push(`Tríplice Coroa ${year} (${newPlayer.team.name})`);
-      newSeason.titles.push("Tríplice Coroa");
+      newSeason.titles.push(["Tríplice Coroa"]);
       newSeason.awardPoints += 1.0;
     }
 
@@ -1068,7 +1074,7 @@ function App() {
       newPlayer.awards.push(`Chuteiras de Ouro ${year} (${newPlayer.team.name})`);
       newSeason.awardPoints += 1.0;
       newPlayer.fame += 40;
-      newSeason.titles.push("Chuteira de Ouro");
+      newSeason.titles.push(["Chuteira de Ouro"]);
     } else if (
       player.position.title == "GK" &&
       newSeason.performance * 5 + (newPlayer.overall - 75) / 2 > 10
@@ -1077,7 +1083,7 @@ function App() {
       newPlayer.awards.push(`Luvas de Ouro ${year} (${newPlayer.team.name})`);
       newSeason.awardPoints += 1.0;
       newPlayer.fame += 40;
-      newSeason.titles.push("Luva de Ouro");
+      newSeason.titles.push(["Luva de Ouro"]);
     }
 
     newPlayer.fame += newSeason.performance * 20;
@@ -1092,13 +1098,12 @@ function App() {
       newPlayer.ballonDor.push(`Ballon D'or ${year} (${newPlayer.team.name})`);
       newPlayer.fame += 80;
       position = 1;
-
-      newSeason.titles.push(`Ballon D'Or: 1º lugar`);
+      newSeason.titles.push([`Ballon D'Or: 1º lugar`]);
     } else if (newSeason.awardPoints + newPlayer.overall >= 91) {
       let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 91);
       newPlayer.fame += pts * 4;
       position = 10 - pts;
-      newSeason.titles.push(`Ballon D'Or: ${position}º lugar`);
+      newSeason.titles.push([`Ballon D'Or: ${position}º lugar`]);
     }
 
     //setup next season
