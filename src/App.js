@@ -998,7 +998,7 @@ function App() {
             team.latitude,
             team.longitude
           );
-          return distance >= 5000 && distance2 >= 5000;
+          return distance >= 4000 && distance2 >= 4000;
         })
         .filter((team) => !countriesHosts.includes(team.name));
 
