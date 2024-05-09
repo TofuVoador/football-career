@@ -18,32 +18,32 @@
         "power": 7.0
       },
       {
-        "name": "Austrália",
-        "continent": "AFC",
-        "latitude": -33.87,
-        "longitude": 144.96,
-        "power": 6.8
-      },
-      {
-        "name": "Coreia do Sul",
+        "name": "Coréia do Sul",
         "continent": "AFC",
         "latitude": 35.91,
         "longitude": 127.77,
         "power": 6.8
       },
       {
-        "name": "Qatar",
+        "name": "Austrália",
+        "continent": "AFC",
+        "latitude": -33.21,
+        "longitude": 140.73,
+        "power": 6.6
+      },
+      {
+        "name": "Catar",
         "continent": "AFC",
         "latitude": 25.35,
         "longitude": 51.18,
-        "power": 6.4
+        "power": 6.2
       },
       {
         "name": "Arábia Saudita",
         "continent": "AFC",
-        "latitude": 23.89,
-        "longitude": 45.08,
-        "power": 6.2
+        "latitude": 24.47,
+        "longitude": 39.83,
+        "power": 6.0
       },
       {
         "name": "Iraque",
@@ -55,8 +55,8 @@
       {
         "name": "Emirados Árabes Unidos",
         "continent": "AFC",
-        "latitude": 23.42,
-        "longitude": 53.85,
+        "latitude": 23.71,
+        "longitude": 43.09,
         "power": 5.2
       },
       {
@@ -69,8 +69,8 @@
       {
         "name": "China",
         "continent": "AFC",
-        "latitude": 29.56,
-        "longitude": 114.06,
+        "latitude": 31.18,
+        "longitude": 116.48,
         "power": 5.0
       },
       {
@@ -82,7 +82,6 @@
       }
     ]
   },
-
   {
     "name": "CAF",
     "worldCupSpots": 8,
@@ -90,22 +89,22 @@
       {
         "name": "Marrocos",
         "continent": "CAF",
-        "latitude": 31.79,
-        "longitude": -7.09,
+        "latitude": 33.81,
+        "longitude": -6.65,
         "power": 7.4
-      },
-      {
-        "name": "Senegal",
-        "continent": "CAF",
-        "latitude": 14.5,
-        "longitude": -14.45,
-        "power": 7.2
       },
       {
         "name": "Nigéria",
         "continent": "CAF",
         "latitude": 9.08,
         "longitude": 8.68,
+        "power": 7.0
+      },
+      {
+        "name": "Senegal",
+        "continent": "CAF",
+        "latitude": 14.5,
+        "longitude": -14.45,
         "power": 7.0
       },
       {
@@ -118,15 +117,15 @@
       {
         "name": "Egito",
         "continent": "CAF",
-        "latitude": 26.82,
-        "longitude": 30.8,
+        "latitude": 30.53,
+        "longitude": 31.18,
         "power": 6.4
       },
       {
         "name": "Argélia",
         "continent": "CAF",
-        "latitude": 36.47,
-        "longitude": 3.04,
+        "latitude": 36.25,
+        "longitude": 4.59,
         "power": 6.0
       },
       {
@@ -139,9 +138,9 @@
       {
         "name": "Mali",
         "continent": "CAF",
-        "latitude": 12.65,
-        "longitude": -5.68,
-        "power": 5.8
+        "latitude": 12.86,
+        "longitude": -5.91,
+        "power": 5.6
       },
       {
         "name": "Tunísia",
@@ -149,13 +148,6 @@
         "latitude": 33.89,
         "longitude": 9.53,
         "power": 5.6
-      },
-      {
-        "name": "África do Sul",
-        "continent": "CAF",
-        "latitude": -30.56,
-        "longitude": 22.94,
-        "power": 5.4
       },
       {
         "name": "Gana",
@@ -173,8 +165,8 @@
       {
         "name": "Estados Unidos",
         "continent": "CONCACAF",
-        "latitude": -17.85,
-        "longitude": -45.29,
+        "latitude": 35.97,
+        "longitude": -97.46,
         "power": 7.4
       },
       {
@@ -185,17 +177,17 @@
         "power": 7.2
       },
       {
+        "name": "Canadá",
+        "continent": "CONCACAF",
+        "latitude": 46.98,
+        "longitude": -93.16,
+        "power": 5.8
+      },
+      {
         "name": "Panamá",
         "continent": "CONCACAF",
         "latitude": 8.54,
         "longitude": -80.78,
-        "power": 6.0
-      },
-      {
-        "name": "Canadá",
-        "continent": "CONCACAF",
-        "latitude": 45.5,
-        "longitude": -79.38,
         "power": 5.8
       },
       {
@@ -219,18 +211,18 @@
     "worldCupSpots": 8,
     "teams": [
       {
+        "name": "Brasil",
+        "continent": "CONMEBOL",
+        "latitude": -15.78,
+        "longitude": -42.95,
+        "power": 9.0
+      },
+      {
         "name": "Argentina",
         "continent": "CONMEBOL",
         "latitude": -32.89,
         "longitude": -64.18,
         "power": 8.8
-      },
-      {
-        "name": "Brasil",
-        "continent": "CONMEBOL",
-        "latitude": -33.75,
-        "longitude": -97.65,
-        "power": 8.6
       },
       {
         "name": "Uruguai",
@@ -258,7 +250,7 @@
         "continent": "CONMEBOL",
         "latitude": -9.19,
         "longitude": -75.02,
-        "power": 6.6
+        "power": 6.4
       },
       {
         "name": "Chile",
@@ -299,49 +291,49 @@
         "continent": "UEFA",
         "latitude": 46.6,
         "longitude": 1.89,
-        "power": 9.4
+        "power": 9.6
       },
       {
         "name": "Inglaterra",
         "continent": "UEFA",
         "latitude": 52.36,
         "longitude": -1.17,
-        "power": 9.2
+        "power": 9.4
       },
       {
         "name": "Espanha",
         "continent": "UEFA",
         "latitude": 40.46,
         "longitude": -3.75,
-        "power": 9.0
+        "power": 9.2
       },
       {
         "name": "Países Baixos",
         "continent": "UEFA",
         "latitude": 52.13,
         "longitude": 5.29,
-        "power": 8.4
+        "power": 8.6
       },
       {
         "name": "Alemanha",
         "continent": "UEFA",
         "latitude": 51.17,
         "longitude": 10.45,
-        "power": 8.2
+        "power": 8.4
       },
       {
         "name": "Itália",
         "continent": "UEFA",
         "latitude": 41.89,
         "longitude": 12.48,
-        "power": 8.0
+        "power": 8.2
       },
       {
         "name": "Croácia",
         "continent": "UEFA",
         "latitude": 45.1,
         "longitude": 15.2,
-        "power": 7.8
+        "power": 8.0
       },
       {
         "name": "Portugal",
@@ -355,13 +347,6 @@
         "continent": "UEFA",
         "latitude": 50.85,
         "longitude": 4.35,
-        "power": 7.6
-      },
-      {
-        "name": "Suíça",
-        "continent": "UEFA",
-        "latitude": 46.81,
-        "longitude": 8.23,
         "power": 7.4
       },
       {
@@ -372,17 +357,17 @@
         "power": 7.2
       },
       {
+        "name": "Suíça",
+        "continent": "UEFA",
+        "latitude": 46.81,
+        "longitude": 8.23,
+        "power": 7.2
+      },
+      {
         "name": "Áustria",
         "continent": "UEFA",
         "latitude": 47.52,
         "longitude": 14.55,
-        "power": 7.0
-      },
-      {
-        "name": "Ucrânia",
-        "continent": "UEFA",
-        "latitude": 48.38,
-        "longitude": 31.17,
         "power": 7.0
       },
       {
@@ -395,8 +380,15 @@
       {
         "name": "Suécia",
         "continent": "UEFA",
-        "latitude": 59.33,
-        "longitude": 16.55,
+        "latitude": 58.42,
+        "longitude": 15.44,
+        "power": 6.8
+      },
+      {
+        "name": "Ucrânia",
+        "continent": "UEFA",
+        "latitude": 48.38,
+        "longitude": 31.17,
         "power": 6.8
       },
       {
@@ -430,8 +422,8 @@
       {
         "name": "Turquia",
         "continent": "UEFA",
-        "latitude": 39.93,
-        "longitude": 29.07,
+        "latitude": 39.31,
+        "longitude": 30.67,
         "power": 6.2
       },
       {
@@ -444,8 +436,8 @@
       {
         "name": "Noruega",
         "continent": "UEFA",
-        "latitude": 59.91,
-        "longitude": 10.2,
+        "latitude": 60.49,
+        "longitude": 8.48,
         "power": 6.0
       },
       {
@@ -458,8 +450,8 @@
       {
         "name": "Grécia",
         "continent": "UEFA",
-        "latitude": 39.07,
-        "longitude": 21.82,
+        "latitude": 38.24,
+        "longitude": 22.94,
         "power": 5.6
       },
       {

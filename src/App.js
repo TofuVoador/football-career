@@ -818,8 +818,6 @@ function App() {
         allClassifNations.slice(potID * 12, (potID + 1) * 12)
       );
 
-      console.log(JSON.parse(JSON.stringify(pots)));
-
       let groups = [[], [], [], [], [], [], [], [], [], [], [], []];
 
       for (let potID = 0; potID < pots.length; potID++) {
@@ -855,8 +853,6 @@ function App() {
         }
       }
 
-      console.log(JSON.parse(JSON.stringify(groups)));
-
       // Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
       let firstPlaces = [];
       let secondPlaces = [];
@@ -875,8 +871,6 @@ function App() {
             `${TournamentPath[phase]}: ${playerPosition}º lugar${thisGroup.desc}`
           );
         }
-
-        console.log(thisGroup.table);
 
         // Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
         firstPlaces.push(thisGroup.table[0]);
@@ -979,6 +973,8 @@ function App() {
 
       let countriesHosts = newWorldCupHistoryHosts.flatMap((wc) => wc);
 
+      console.log(countriesHosts);
+
       let currentMainHost = allNations.filter((n) => n.name == currentHosts[0])[0];
       let lastMainHost = allNations.filter(
         (n) => n.name == newWorldCupHistoryHosts[newWorldCupHistoryHosts.length - 2][0]
@@ -998,15 +994,19 @@ function App() {
             team.latitude,
             team.longitude
           );
-          return distance >= 5000 && distance2 >= 2500;
+          return distance >= 6000 && distance2 >= 4000;
         })
         .filter((team) => !countriesHosts.includes(team.name));
+
+      console.log(validTeams);
 
       let chosenHosts = [];
 
       let chosenID = RandomNumber(0, validTeams.length - 1);
       let mainHost = validTeams[chosenID];
       chosenHosts.push(mainHost);
+
+      console.log(mainHost);
 
       // Verifica quais estão próximos
       validTeams = allNations
@@ -1035,6 +1035,8 @@ function App() {
           );
           return aDist - bDist;
         });
+
+      console.log(validTeams);
 
       let numberOfAdditionalHosts = RandomNumber(
         !!validTeams.length,
