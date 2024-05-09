@@ -1033,7 +1033,7 @@ function App() {
             a.latitude,
             a.longitude
           );
-          return aDist - bDist + RandomNumber(0, 200);
+          return aDist - bDist;
         });
 
       let numberOfAdditionalHosts = RandomNumber(
@@ -1961,25 +1961,25 @@ function App() {
       <div className="choices" id="init-nation">
         <h3 style={{ marginBottom: "1rem" }}>Escolha o país do jogador:</h3>
         <a className="d-alert" onClick={() => ChooseNation(initNation[0])}>
-          <p>{initNation[0].name}</p>
+          {initNation[0].name}
         </a>
         <a className="d-alert" onClick={() => ChooseNation(initNation[1])}>
-          <p>{initNation[1].name}</p>
+          {initNation[1].name}
         </a>
         <a className="d-alert" onClick={() => ChooseNation(initNation[2])}>
-          <p>{initNation[2].name}</p>
+          {initNation[2].name}
         </a>
       </div>
       <div className="choices" id="init-pos" style={{ display: "none" }}>
         <h3 style={{ marginBottom: "1rem" }}>Escolha a posição do jogador:</h3>
         <a className="d-alert" onClick={() => ChoosePos(initPos[0])}>
-          <p>{initPos[0].title}</p>
+          {initPos[0].title}
         </a>
         <a className="d-alert" onClick={() => ChoosePos(initPos[1])}>
-          <p>{initPos[1].title}</p>
+          {initPos[1].title}
         </a>
         <a className="d-alert" onClick={() => ChoosePos(initPos[2])}>
-          <p>{initPos[2].title}</p>
+          {initPos[2].title}
         </a>
       </div>
       <div className="choices" id="team-choice" style={{ display: "none" }}>
