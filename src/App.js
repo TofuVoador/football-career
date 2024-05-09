@@ -973,8 +973,6 @@ function App() {
 
       let countriesHosts = newWorldCupHistoryHosts.flatMap((wc) => wc);
 
-      console.log(countriesHosts);
-
       let currentMainHost = allNations.filter((n) => n.name == currentHosts[0])[0];
       let lastMainHost = allNations.filter(
         (n) => n.name == newWorldCupHistoryHosts[newWorldCupHistoryHosts.length - 2][0]
@@ -998,15 +996,11 @@ function App() {
         })
         .filter((team) => !countriesHosts.includes(team.name));
 
-      console.log(validTeams);
-
       let chosenHosts = [];
 
       let chosenID = RandomNumber(0, validTeams.length - 1);
       let mainHost = validTeams[chosenID];
       chosenHosts.push(mainHost);
-
-      console.log(mainHost);
 
       // Verifica quais estão próximos
       validTeams = allNations
@@ -1035,8 +1029,6 @@ function App() {
           );
           return aDist - bDist;
         });
-
-      console.log(validTeams);
 
       let numberOfAdditionalHosts = RandomNumber(
         !!validTeams.length,
