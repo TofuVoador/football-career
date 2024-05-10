@@ -176,6 +176,7 @@ function App() {
           contract: {
             value: newTeam.contract.value,
             duration: newContract - newTeam.contract.duration,
+            salaryAdjustment: newTeam.contract.salaryAdjustment
           },
           transferValue: newTeam.transferValue,
           loan: false,
