@@ -2015,28 +2015,20 @@ function App() {
         </a>
         <a className="d-alert" id="decision-transfer2" onClick={() => ChooseTeam(transfers[1])}>
           <p>
-            {transfers[1] == null ? "null" : transfers[1].loan ? "Empréstimo" : "Transferir"}:{" "}
+            {transfers[1] == null ? "null" : transfers[1].loan ? "Empréstimo" : "Transferir"} para{" "}
             {transfers[1] == null ? "null" : transfers[1].team.name}
           </p>
           <p>
-            {transfers[1] == null ? "null" : (transfers[1].team.power / 2).toFixed(2)}⭐ | ${transfers[1] == null ? "null" : FormatarNumero(transfers[1].contract.value)} +
-            {transfers[1] == null
-              ? "null"
-              : Math.round((transfers[1].contract.salaryAdjustment - 1) * 100)}
-            %/ano | {transfers[1] == null ? "null" : transfers[1].contract.duration} anos
+            {transfers[1] == null ? "null" : (transfers[1].team.power / 2).toFixed(2)}⭐ | ${transfers[1] == null ? "null" : FormatarNumero(transfers[1].contract.value)} | {transfers[1] == null ? "null" : transfers[1].contract.duration} anos
           </p>
         </a>
         <a className="d-alert" id="decision-transfer3" onClick={() => ChooseTeam(transfers[2])}>
           <p>
-            {transfers[2] == null ? "null" : transfers[2].loan ? "Empréstimo" : "Transferir"}:{" "}
+            {transfers[2] == null ? "null" : transfers[2].loan ? "Empréstimo" : "Transferir"} para{" "}
             {transfers[2] == null ? "null" : transfers[2].team.name}
           </p>
           <p>
-            {transfers[2] == null ? "null" : (transfers[2].team.power / 2).toFixed(2)}⭐ | ${transfers[2] == null ? "null" : FormatarNumero(transfers[2].contract.value)} +
-            {transfers[2] == null
-              ? "null"
-              : Math.round((transfers[2].contract.salaryAdjustment - 1) * 100)}
-            %/ano | {transfers[2] == null ? "null" : transfers[2].contract.duration} anos
+            {transfers[2] == null ? "null" : (transfers[2].team.power / 2).toFixed(2)}⭐ | ${transfers[2] == null ? "null" : FormatarNumero(transfers[2].contract.value)} | {transfers[2] == null ? "null" : transfers[2].contract.duration} anos
           </p>
         </a>
         <a className="d-alert" id="retire" style={{ display: "none" }} onClick={() => Retire()}>
