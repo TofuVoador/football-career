@@ -213,7 +213,7 @@ function App() {
       newContract = renew.duration; // Nova duração do contrato
       newPlayer.wage = renew.value; // Novo valor do contrato
     } else {
-      newPlayer.wage = newPlayer.wage * 1.1; // Reajuste
+      newPlayer.wage = newPlayer.wage * (1.1 + newPlayer.performance / 10); // Reajuste
     }
 
     //change teams power on each season
@@ -1996,40 +1996,60 @@ function App() {
           style={{ display: "none" }}
           onClick={() => ChooseTeam()}
         >
+          <p>Continuar em {player.team == null ? "null" : player.team.name}</p>
           <p>
-            Continuar em {player.team == null ? "null" : player.team.name}
-          </p>
-          <p>
-            {player.team == null ? "null" : (player.team.power / 2).toFixed(2)}⭐ | ${FormatarNumero(renew.value)} |{" "}
+            {player.team == null ? "null" : (player.team.power / 2).toFixed(2)}⭐ | $
+            {FormatarNumero(renew.value)}/ano |{" "}
             {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")}
           </p>
         </a>
         <a className="d-alert" id="decision-transfer1" onClick={() => ChooseTeam(transfers[0])}>
-          <p>
-            {transfers[0] == null ? "null" : transfers[0].loan ? "Empréstimo" : "Transferir"}: para{" "}
-            {transfers[0] == null ? "null" : transfers[0].team.name}
-          </p>
-          <p>
-            {transfers[0] == null ? "null" : (transfers[0].team.power / 2).toFixed(2)}⭐ | ${transfers[0] == null ? "null" : FormatarNumero(transfers[0].contract.value)} | {transfers[0] == null ? "null" : transfers[0].contract.duration} anos
-          </p>
+          {transfers[0] ? (
+            <>
+              <p>
+                {transfers[0].loan ? "Empréstimo" : "Transferir"} para {transfers[0].team.name}
+              </p>
+              <p>
+                {(transfers[0].team.power / 2).toFixed(2)}⭐ | $
+                {FormatarNumero(transfers[0].contract.value)}/ano | {transfers[0].contract.duration}{" "}
+                anos
+              </p>
+            </>
+          ) : (
+            <p>null</p>
+          )}
         </a>
         <a className="d-alert" id="decision-transfer2" onClick={() => ChooseTeam(transfers[1])}>
-          <p>
-            {transfers[1] == null ? "null" : transfers[1].loan ? "Empréstimo" : "Transferir"} para{" "}
-            {transfers[1] == null ? "null" : transfers[1].team.name}
-          </p>
-          <p>
-            {transfers[1] == null ? "null" : (transfers[1].team.power / 2).toFixed(2)}⭐ | ${transfers[1] == null ? "null" : FormatarNumero(transfers[1].contract.value)} | {transfers[1] == null ? "null" : transfers[1].contract.duration} anos
-          </p>
+          {transfers[1] ? (
+            <>
+              <p>
+                {transfers[1].loan ? "Empréstimo" : "Transferir"} para {transfers[1].team.name}
+              </p>
+              <p>
+                {(transfers[1].team.power / 2).toFixed(2)}⭐ | $
+                {FormatarNumero(transfers[1].contract.value)}/ano | {transfers[1].contract.duration}{" "}
+                anos
+              </p>
+            </>
+          ) : (
+            <p>null</p>
+          )}
         </a>
         <a className="d-alert" id="decision-transfer3" onClick={() => ChooseTeam(transfers[2])}>
-          <p>
-            {transfers[2] == null ? "null" : transfers[2].loan ? "Empréstimo" : "Transferir"} para{" "}
-            {transfers[2] == null ? "null" : transfers[2].team.name}
-          </p>
-          <p>
-            {transfers[2] == null ? "null" : (transfers[2].team.power / 2).toFixed(2)}⭐ | ${transfers[2] == null ? "null" : FormatarNumero(transfers[2].contract.value)} | {transfers[2] == null ? "null" : transfers[2].contract.duration} anos
-          </p>
+          {transfers[2] ? (
+            <>
+              <p>
+                {transfers[2].loan ? "Empréstimo" : "Transferir"} para {transfers[2].team.name}
+              </p>
+              <p>
+                {(transfers[2].team.power / 2).toFixed(2)}⭐ | $
+                {FormatarNumero(transfers[2].contract.value)}/ano | {transfers[2].contract.duration}{" "}
+                anos
+              </p>
+            </>
+          ) : (
+            <p>null</p>
+          )}
         </a>
         <a className="d-alert" id="retire" style={{ display: "none" }} onClick={() => Retire()}>
           Aposentar-se
