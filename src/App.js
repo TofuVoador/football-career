@@ -80,6 +80,7 @@ function App() {
     contractTeam: null,
     position: null,
     wage: 1,
+    salaryAdjustment: 1.0,
     overall: 70,
     performance: 0,
     totalGoals: 0,
@@ -113,7 +114,7 @@ function App() {
   const initPos = shuffleArray(DeepClone(Positions));
   const [initNation, setInitNation] = useState(GetNewNation());
 
-  const [renew, setRenew] = useState({ value: 0, duration: 0 });
+  const [renew, setRenew] = useState({ value: 0, duration: 0, salaryAdjustment: 0 });
 
   function ChooseNation(initNation) {
     //change display
@@ -186,6 +187,7 @@ function App() {
       newContract = newTeam.contract.duration;
       newPlayer.marketValue = newTeam.transferValue;
       newPlayer.wage = newTeam.contract.value;
+      newPlayer.salaryAdjustment = newTeam.contract.salaryAdjustment;
 
       let lp = 99; // Inicializa o valor padrão de "lp"
 
@@ -212,6 +214,9 @@ function App() {
       // Renovação do contrato
       newContract = renew.duration; // Nova duração do contrato
       newPlayer.wage = renew.value; // Novo valor do contrato
+      newPlayer.salaryAdjustment = renew.salaryAdjustment;
+    } else {
+      newPlayer.wage = newPlayer.wage * newPlayer.salaryAdjustment; // Reajuste
     }
 
     //change teams power on each season
@@ -1131,6 +1136,7 @@ function App() {
         setRenew({
           value: newPlayer.contractTeam.contract.value,
           duration: newPlayer.contractTeam.contract.duration,
+          salaryAdjustment: newPlayer.contractTeam.contract.salaryAdjustment,
         });
         document.getElementById("decision-stay").style.display = "flex";
       } else {
@@ -1174,6 +1180,7 @@ function App() {
       setRenew({
         value: newPlayer.wage,
         duration: contract - 1,
+        salaryAdjustment: newPlayer.salaryAdjustment,
       });
 
       document.getElementById("decision-stay").style.display = "flex";
@@ -1235,9 +1242,12 @@ function App() {
             GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame)
         );
 
+        let contractSalaryAdjustment = 1.0 + RandomNumber(1, 20) / 100.0;
+
         setRenew({
           value: contractValue,
           duration: contractDuration,
+          salaryAdjustment: contractSalaryAdjustment,
         });
       }
 
@@ -1699,9 +1709,11 @@ function App() {
           currentPlayer.position.value *
             GetWage(currentPlayer.overall, team.power, currentPlayer.fame)
         );
+        let salaryAdjustment = 1.0 + RandomNumber(1, 20) / 100.0;
         let contract = {
           value: contractValue,
           duration: contractDuration,
+          salaryAdjustment: salaryAdjustment,
         };
         let transferValue = Math.round(
           currentPlayer.position.value * GetTransferValue(expectedOverall, team.power)
@@ -1755,10 +1767,28 @@ function App() {
       Math.round(posValue * GetWage(GetOverall(0, 18, teams[2].power), teams[2].power, 0)),
     ];
 
+    let salaryAdjustments = [
+      1.0 + RandomNumber(1, 20) / 100.0,
+      1.0 + RandomNumber(1, 20) / 100.0,
+      1.0 + RandomNumber(1, 20) / 100.0,
+    ];
+
     let contracts = [
-      { value: contractWages[0], duration: contractDurations[0] },
-      { value: contractWages[1], duration: contractDurations[1] },
-      { value: contractWages[2], duration: contractDurations[2] },
+      {
+        value: contractWages[0],
+        duration: contractDurations[0],
+        salaryAdjustment: salaryAdjustments[0],
+      },
+      {
+        value: contractWages[1],
+        duration: contractDurations[1],
+        salaryAdjustment: salaryAdjustments[1],
+      },
+      {
+        value: contractWages[2],
+        duration: contractDurations[2],
+        salaryAdjustment: salaryAdjustments[2],
+      },
     ];
 
     let expectedOveralls = [
@@ -1983,44 +2013,55 @@ function App() {
           style={{ display: "none" }}
           onClick={() => ChooseTeam()}
         >
-          <p>Continuar em {player.team == null ? "null" : player.team.name}</p>
           <p>
-            {player.team == null ? "null" : (player.team.power / 2).toFixed(2)}⭐ | $
-            {FormatarNumero(renew.value)}/ano |{" "}
+            Continuar: {player.team == null ? "null" : player.team.name} (
+            {player.team == null ? "null" : (player.team.power / 2).toFixed(2)}⭐)
+          </p>
+          <p>
+            ${FormatarNumero(renew.value)} +{Math.round((renew.salaryAdjustment - 1) * 100)}%/ano |{" "}
             {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")}
           </p>
         </a>
         <a className="d-alert" id="decision-transfer1" onClick={() => ChooseTeam(transfers[0])}>
           <p>
-            {transfers[0] == null ? "null" : transfers[0].loan ? "Empréstimo" : "Transferir"} para{" "}
-            {transfers[0] == null ? "null" : transfers[0].team.name}
+            {transfers[0] == null ? "null" : transfers[0].loan ? "Empréstimo" : "Transferir"}:{" "}
+            {transfers[0] == null ? "null" : transfers[0].team.name} (
+            {transfers[0] == null ? "null" : (transfers[0].team.power / 2).toFixed(2)}⭐)
           </p>
           <p>
-            {transfers[0] == null ? "null" : (transfers[0].team.power / 2).toFixed(2)}⭐ | $
-            {transfers[0] == null ? "null" : FormatarNumero(transfers[0].contract.value)}
-            /ano | {transfers[0] == null ? "null" : transfers[0].contract.duration} anos
+            ${transfers[0] == null ? "null" : FormatarNumero(transfers[0].contract.value)} +
+            {transfers[0] == null
+              ? "null"
+              : Math.round((transfers[0].contract.salaryAdjustment - 1) * 100)}
+            %/ano | {transfers[0] == null ? "null" : transfers[0].contract.duration} anos
           </p>
         </a>
         <a className="d-alert" id="decision-transfer2" onClick={() => ChooseTeam(transfers[1])}>
           <p>
-            {transfers[1] == null ? "null" : transfers[1].loan ? "Empréstimo" : "Transferir"} para{" "}
-            {transfers[1] == null ? "null" : transfers[1].team.name}
+            {transfers[1] == null ? "null" : transfers[1].loan ? "Empréstimo" : "Transferir"}:{" "}
+            {transfers[1] == null ? "null" : transfers[1].team.name} (
+            {transfers[1] == null ? "null" : (transfers[1].team.power / 2).toFixed(2)}⭐)
           </p>
           <p>
-            {transfers[1] == null ? "null" : (transfers[1].team.power / 2).toFixed(2)}⭐ | $
-            {transfers[1] == null ? "null" : FormatarNumero(transfers[1].contract.value)}
-            /ano | {transfers[1] == null ? "null" : transfers[1].contract.duration} anos
+            ${transfers[1] == null ? "null" : FormatarNumero(transfers[1].contract.value)} +
+            {transfers[0] == null
+              ? "null"
+              : Math.round((transfers[1].contract.salaryAdjustment - 1) * 100)}
+            %/ano | {transfers[1] == null ? "null" : transfers[1].contract.duration} anos
           </p>
         </a>
         <a className="d-alert" id="decision-transfer3" onClick={() => ChooseTeam(transfers[2])}>
           <p>
-            {transfers[2] == null ? "null" : transfers[2].loan ? "Empréstimo" : "Transferir"} para{" "}
-            {transfers[2] == null ? "null" : transfers[2].team.name}
+            {transfers[2] == null ? "null" : transfers[2].loan ? "Empréstimo" : "Transferir"}:{" "}
+            {transfers[2] == null ? "null" : transfers[2].team.name} (
+            {transfers[2] == null ? "null" : (transfers[2].team.power / 2).toFixed(2)}⭐)
           </p>
           <p>
-            {transfers[2] == null ? "null" : (transfers[2].team.power / 2).toFixed(2)}⭐ | $
-            {transfers[2] == null ? "null" : FormatarNumero(transfers[2].contract.value)}
-            /ano | {transfers[2] == null ? "null" : transfers[2].contract.duration} anos
+            ${transfers[2] == null ? "null" : FormatarNumero(transfers[2].contract.value)} +
+            {transfers[0] == null
+              ? "null"
+              : Math.round((transfers[2].contract.salaryAdjustment - 1) * 100)}
+            %/ano | {transfers[2] == null ? "null" : transfers[2].contract.duration} anos
           </p>
         </a>
         <a className="d-alert" id="retire" style={{ display: "none" }} onClick={() => Retire()}>
