@@ -1200,6 +1200,7 @@ function App() {
       newTransfers[0].loan = true;
       newTransfers[0].contract.duration = RandomNumber(1, 2);
       newTransfers[0].contract.value = newPlayer.wage;
+      newTransfers[0].contract.salaryAdjustment = newPlayer.salaryAdjustment;
 
       if (newTransfers[1] == null) {
         document.getElementById("decision-transfer2").style.display = "none";
@@ -1209,6 +1210,7 @@ function App() {
         newTransfers[1].loan = true;
         newTransfers[1].contract.duration = RandomNumber(1, 2);
         newTransfers[1].contract.value = newPlayer.wage;
+        newTransfers[1].contract.salaryAdjustment = newPlayer.salaryAdjustment;
       }
 
       if (newTransfers[2] == null) {
@@ -1219,6 +1221,7 @@ function App() {
         newTransfers[2].loan = true;
         newTransfers[2].contract.duration = RandomNumber(1, 2);
         newTransfers[2].contract.value = newPlayer.wage;
+        newTransfers[2].contract.salaryAdjustment = newPlayer.salaryAdjustment;
       }
 
       //cant stay
