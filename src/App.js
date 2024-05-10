@@ -974,13 +974,10 @@ function App() {
       }
 
       let countriesHosts = newWorldCupHistoryHosts.flatMap((wc) => wc);
-
       let currentMainHost = allNations.filter((n) => n.name == currentHosts[0])[0];
-      let lastMainHost = allNations.filter(
-        (n) => n.name == newWorldCupHistoryHosts[newWorldCupHistoryHosts.length - 2][0]
-      )[0];
 
       let validTeams = allNations
+        .filter((team) => !countriesHosts.includes(team.name))
         .filter((team) => {
           const distance = calculateDistance(
             currentMainHost.latitude,
@@ -988,15 +985,9 @@ function App() {
             team.latitude,
             team.longitude
           );
-          const distance2 = calculateDistance(
-            lastMainHost.latitude,
-            lastMainHost.longitude,
-            team.latitude,
-            team.longitude
-          );
-          return distance >= 6000 && distance2 >= 4000;
-        })
-        .filter((team) => !countriesHosts.includes(team.name));
+
+          return distance >= 5000;
+        });
 
       let chosenHosts = [];
 
@@ -1013,7 +1004,8 @@ function App() {
             team.latitude,
             team.longitude
           );
-          return distance <= 2000;
+          let maxDist = 200 + (mainHost.distance + team.distance) / 2;
+          return distance <= maxDist;
         })
         .filter((n) => !countriesHosts.includes(n.name) && n.name != mainHost.name)
         .sort((a, b) => {
@@ -1185,7 +1177,7 @@ function App() {
       //played bad midde contract
       newPlayer.performance < -0.5 &&
       med < 0 &&
-      generalPerformance.length >= 2 &&
+      (generalPerformance.length >= 2 || newSeason.starting < 50) &&
       newTransfers[0] != null &&
       contract > 3
     ) {
