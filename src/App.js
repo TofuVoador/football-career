@@ -80,7 +80,6 @@ function App() {
     contractTeam: null,
     position: null,
     wage: 1,
-    salaryAdjustment: 1.0,
     overall: 70,
     performance: 0,
     totalGoals: 0,
@@ -176,7 +175,6 @@ function App() {
           contract: {
             value: newTeam.contract.value,
             duration: newContract - newTeam.contract.duration,
-            salaryAdjustment: newTeam.contract.salaryAdjustment
           },
           transferValue: newTeam.transferValue,
           loan: false,
@@ -188,7 +186,6 @@ function App() {
       newContract = newTeam.contract.duration;
       newPlayer.marketValue = newTeam.transferValue;
       newPlayer.wage = newTeam.contract.value;
-      newPlayer.salaryAdjustment = newTeam.contract.salaryAdjustment;
 
       let lp = 99; // Inicializa o valor padrão de "lp"
 
@@ -215,9 +212,8 @@ function App() {
       // Renovação do contrato
       newContract = renew.duration; // Nova duração do contrato
       newPlayer.wage = renew.value; // Novo valor do contrato
-      newPlayer.salaryAdjustment = renew.salaryAdjustment;
     } else {
-      newPlayer.wage = newPlayer.wage * newPlayer.salaryAdjustment; // Reajuste
+      newPlayer.wage = newPlayer.wage * 1.1; // Reajuste
     }
 
     //change teams power on each season
@@ -1137,7 +1133,6 @@ function App() {
         setRenew({
           value: newPlayer.contractTeam.contract.value,
           duration: newPlayer.contractTeam.contract.duration,
-          salaryAdjustment: newPlayer.contractTeam.contract.salaryAdjustment,
         });
         document.getElementById("decision-stay").style.display = "flex";
       } else {
@@ -1181,7 +1176,6 @@ function App() {
       setRenew({
         value: newPlayer.wage,
         duration: contract - 1,
-        salaryAdjustment: newPlayer.salaryAdjustment,
       });
 
       document.getElementById("decision-stay").style.display = "flex";
@@ -1200,7 +1194,6 @@ function App() {
       newTransfers[0].loan = true;
       newTransfers[0].contract.duration = RandomNumber(1, 2);
       newTransfers[0].contract.value = newPlayer.wage;
-      newTransfers[0].contract.salaryAdjustment = newPlayer.salaryAdjustment;
 
       if (newTransfers[1] == null) {
         document.getElementById("decision-transfer2").style.display = "none";
@@ -1210,7 +1203,6 @@ function App() {
         newTransfers[1].loan = true;
         newTransfers[1].contract.duration = RandomNumber(1, 2);
         newTransfers[1].contract.value = newPlayer.wage;
-        newTransfers[1].contract.salaryAdjustment = newPlayer.salaryAdjustment;
       }
 
       if (newTransfers[2] == null) {
@@ -1221,7 +1213,6 @@ function App() {
         newTransfers[2].loan = true;
         newTransfers[2].contract.duration = RandomNumber(1, 2);
         newTransfers[2].contract.value = newPlayer.wage;
-        newTransfers[2].contract.salaryAdjustment = newPlayer.salaryAdjustment;
       }
 
       //cant stay
@@ -1251,7 +1242,6 @@ function App() {
         setRenew({
           value: contractValue,
           duration: contractDuration,
-          salaryAdjustment: contractSalaryAdjustment,
         });
       }
 
@@ -1713,11 +1703,9 @@ function App() {
           currentPlayer.position.value *
             GetWage(currentPlayer.overall, team.power, currentPlayer.fame)
         );
-        let salaryAdjustment = 1.0 + RandomNumber(1, 20) / 100.0;
         let contract = {
           value: contractValue,
           duration: contractDuration,
-          salaryAdjustment: salaryAdjustment,
         };
         let transferValue = Math.round(
           currentPlayer.position.value * GetTransferValue(expectedOverall, team.power)
@@ -1771,27 +1759,18 @@ function App() {
       Math.round(posValue * GetWage(GetOverall(0, 18, teams[2].power), teams[2].power, 0)),
     ];
 
-    let salaryAdjustments = [
-      1.0 + RandomNumber(1, 20) / 100.0,
-      1.0 + RandomNumber(1, 20) / 100.0,
-      1.0 + RandomNumber(1, 20) / 100.0,
-    ];
-
     let contracts = [
       {
         value: contractWages[0],
         duration: contractDurations[0],
-        salaryAdjustment: salaryAdjustments[0],
       },
       {
         value: contractWages[1],
         duration: contractDurations[1],
-        salaryAdjustment: salaryAdjustments[1],
       },
       {
         value: contractWages[2],
         duration: contractDurations[2],
-        salaryAdjustment: salaryAdjustments[2],
       },
     ];
 
@@ -2018,37 +1997,30 @@ function App() {
           onClick={() => ChooseTeam()}
         >
           <p>
-            Continuar: {player.team == null ? "null" : player.team.name} (
-            {player.team == null ? "null" : (player.team.power / 2).toFixed(2)}⭐)
+            Continuar em {player.team == null ? "null" : player.team.name}
           </p>
           <p>
-            ${FormatarNumero(renew.value)} +{Math.round((renew.salaryAdjustment - 1) * 100)}%/ano |{" "}
+            {player.team == null ? "null" : (player.team.power / 2).toFixed(2)}⭐ | ${FormatarNumero(renew.value)} |{" "}
             {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")}
           </p>
         </a>
         <a className="d-alert" id="decision-transfer1" onClick={() => ChooseTeam(transfers[0])}>
           <p>
-            {transfers[0] == null ? "null" : transfers[0].loan ? "Empréstimo" : "Transferir"}:{" "}
-            {transfers[0] == null ? "null" : transfers[0].team.name} (
-            {transfers[0] == null ? "null" : (transfers[0].team.power / 2).toFixed(2)}⭐)
+            {transfers[0] == null ? "null" : transfers[0].loan ? "Empréstimo" : "Transferir"}: para{" "}
+            {transfers[0] == null ? "null" : transfers[0].team.name}
           </p>
           <p>
-            ${transfers[0] == null ? "null" : FormatarNumero(transfers[0].contract.value)} +
-            {transfers[0] == null
-              ? "null"
-              : Math.round((transfers[0].contract.salaryAdjustment - 1) * 100)}
-            %/ano | {transfers[0] == null ? "null" : transfers[0].contract.duration} anos
+            {transfers[0] == null ? "null" : (transfers[0].team.power / 2).toFixed(2)}⭐ | ${transfers[0] == null ? "null" : FormatarNumero(transfers[0].contract.value)} | {transfers[0] == null ? "null" : transfers[0].contract.duration} anos
           </p>
         </a>
         <a className="d-alert" id="decision-transfer2" onClick={() => ChooseTeam(transfers[1])}>
           <p>
             {transfers[1] == null ? "null" : transfers[1].loan ? "Empréstimo" : "Transferir"}:{" "}
-            {transfers[1] == null ? "null" : transfers[1].team.name} (
-            {transfers[1] == null ? "null" : (transfers[1].team.power / 2).toFixed(2)}⭐)
+            {transfers[1] == null ? "null" : transfers[1].team.name}
           </p>
           <p>
-            ${transfers[1] == null ? "null" : FormatarNumero(transfers[1].contract.value)} +
-            {transfers[0] == null
+            {transfers[1] == null ? "null" : (transfers[1].team.power / 2).toFixed(2)}⭐ | ${transfers[1] == null ? "null" : FormatarNumero(transfers[1].contract.value)} +
+            {transfers[1] == null
               ? "null"
               : Math.round((transfers[1].contract.salaryAdjustment - 1) * 100)}
             %/ano | {transfers[1] == null ? "null" : transfers[1].contract.duration} anos
@@ -2057,12 +2029,11 @@ function App() {
         <a className="d-alert" id="decision-transfer3" onClick={() => ChooseTeam(transfers[2])}>
           <p>
             {transfers[2] == null ? "null" : transfers[2].loan ? "Empréstimo" : "Transferir"}:{" "}
-            {transfers[2] == null ? "null" : transfers[2].team.name} (
-            {transfers[2] == null ? "null" : (transfers[2].team.power / 2).toFixed(2)}⭐)
+            {transfers[2] == null ? "null" : transfers[2].team.name}
           </p>
           <p>
-            ${transfers[2] == null ? "null" : FormatarNumero(transfers[2].contract.value)} +
-            {transfers[0] == null
+            {transfers[2] == null ? "null" : (transfers[2].team.power / 2).toFixed(2)}⭐ | ${transfers[2] == null ? "null" : FormatarNumero(transfers[2].contract.value)} +
+            {transfers[2] == null
               ? "null"
               : Math.round((transfers[2].contract.salaryAdjustment - 1) * 100)}
             %/ano | {transfers[2] == null ? "null" : transfers[2].contract.duration} anos
