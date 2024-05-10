@@ -282,7 +282,7 @@ function App() {
       top10: top10,
       topNations: topNations,
       age: newPlayer.age,
-      team: newPlayer.team,
+      team: DeepClone(newPlayer.team),
       wage: newPlayer.wage,
       starting: starting,
       titles: [],
@@ -1178,16 +1178,20 @@ function App() {
       newPlayer.performance < -0.5 &&
       med < 0 &&
       (generalPerformance.length >= 2 || newSeason.starting < 50) &&
-      newTransfers[0] != null &&
+      newTransfers.some((t) => t != null && t.team.power < newPlayer.team.power) &&
       contract > 3
     ) {
-      //proposal 1
-      document.getElementById("decision-transfer1").style.display = "flex";
-      newTransfers[0].loan = true;
-      newTransfers[0].contract.duration = RandomNumber(1, 2);
-      newTransfers[0].contract.value = newPlayer.wage;
+      if (newTransfers[1] == null || newTransfers[1].team.power > newPlayer.team.power) {
+        document.getElementById("decision-transfer1").style.display = "none";
+      } else {
+        //proposal 1
+        document.getElementById("decision-transfer1").style.display = "flex";
+        newTransfers[0].loan = true;
+        newTransfers[0].contract.duration = RandomNumber(1, 2);
+        newTransfers[0].contract.value = newPlayer.wage;
+      }
 
-      if (newTransfers[1] == null) {
+      if (newTransfers[1] == null || newTransfers[1].team.power > newPlayer.team.power) {
         document.getElementById("decision-transfer2").style.display = "none";
       } else {
         //proposal 2
@@ -1197,7 +1201,7 @@ function App() {
         newTransfers[1].contract.value = newPlayer.wage;
       }
 
-      if (newTransfers[2] == null) {
+      if (newTransfers[2] == null || newTransfers[2].team.power > newPlayer.team.power) {
         document.getElementById("decision-transfer3").style.display = "none";
       } else {
         //proposal 3
