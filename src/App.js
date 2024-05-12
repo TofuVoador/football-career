@@ -1537,13 +1537,11 @@ function App() {
     let team1Power = Math.pow(team1.power, Math.log(400)) / base;
     let team2Power = Math.pow(team2.power, Math.log(400)) / base;
 
-    let goals = Math.random() + Math.random();
+    let team1Luck = (Math.random() + Math.random()) * 5 - 2;
+    let team2Luck = (Math.random() + Math.random()) * 5 - 2;
 
-    let team1Luck = (Math.random() + Math.random()) * 3 - 1;
-    let team2Luck = (Math.random() + Math.random()) * 3 - 1;
-
-    let team1Score = Math.round(goals * team1Luck * team1Power);
-    let team2Score = Math.round(goals * team2Luck * team2Power);
+    let team1Score = Math.round(team1Luck * team1Power);
+    let team2Score = Math.round(team2Luck * team2Power);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
