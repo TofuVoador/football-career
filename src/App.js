@@ -1532,7 +1532,7 @@ function App() {
     };
   }
 
-  function GetMatch(team1, team2, time) {
+  function GetMatch(team1, team2, time = 4) {
     let base = Math.pow(team1.power, Math.log(400)) + Math.pow(team2.power, Math.log(400));
     let team1Power = Math.pow(team1.power, Math.log(400)) / base;
     let team2Power = Math.pow(team2.power, Math.log(400)) / base;
