@@ -1537,8 +1537,8 @@ function App() {
     let team1Power = Math.pow(team1.power, Math.log(400)) / base;
     let team2Power = Math.pow(team2.power, Math.log(400)) / base;
 
-    let team1Luck = (Math.random() + Math.random()) * 5 - 2.5;
-    let team2Luck = (Math.random() + Math.random()) * 5 - 2.5;
+    let team1Luck = (Math.random() + Math.random() + Math.random()) * 2 - 3;
+    let team2Luck = (Math.random() + Math.random() + Math.random()) * 2 - 3;
 
     let team1Score = Math.round(team1Luck * team1Power);
     let team2Score = Math.round(team2Luck * team2Power);
