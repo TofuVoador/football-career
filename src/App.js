@@ -1589,14 +1589,14 @@ function App() {
   function GetKnockoutResult(team1, team2, ida_e_volta) {
     let gameDesc = "";
 
-    let game = GetMatch(team1, team2. 4);
+    let game = GetMatch(team1, team2);
     let teamGoals1 = game[0];
     let teamGoals2 = game[1];
 
     if (ida_e_volta) {
       gameDesc = `->${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name}`;
 
-      let game2 = GetMatch(team2, team1, 4);
+      let game2 = GetMatch(team2, team1);
       teamGoals1 += game2[1];
       teamGoals2 += game2[0];
 
