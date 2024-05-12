@@ -1532,13 +1532,30 @@ function App() {
     };
   }
 
-  function GetMatch(team1, team2, time = 4) {
+  function GetMatch(team1, team2) {
     let base = Math.pow(team1.power, Math.log(400)) + Math.pow(team2.power, Math.log(400));
     let team1Power = Math.pow(team1.power, Math.log(400)) / base;
     let team2Power = Math.pow(team2.power, Math.log(400)) / base;
     
-    let team1Luck = (Math.random() + Math.random()) * time - 1;
-    let team2Luck = (Math.random() + Math.random()) * time - 1;
+    let team1Luck = (Math.random() + Math.random()) * 4 - 1;
+    let team2Luck = (Math.random() + Math.random()) * 4 - 1;
+
+    let team1Score = Math.round(team1Luck * team1Power);
+    let team2Score = Math.round(team2Luck * team2Power);
+
+    if (team1Score < 0) team1Score = 0;
+    if (team2Score < 0) team2Score = 0;
+
+    return [team1Score, team2Score];
+  }
+
+  function GetExtraTime(team1, team2) {
+    let base = Math.pow(team1.power, Math.log(400)) + Math.pow(team2.power, Math.log(400));
+    let team1Power = Math.pow(team1.power, Math.log(400)) / base;
+    let team2Power = Math.pow(team2.power, Math.log(400)) / base;
+    
+    let team1Luck = (Math.random() + Math.random()) * 2 - 1;
+    let team2Luck = (Math.random() + Math.random()) * 2 - 1;
 
     let team1Score = Math.round(team1Luck * team1Power);
     let team2Score = Math.round(team2Luck * team2Power);
@@ -1601,7 +1618,7 @@ function App() {
       teamGoals2 += game2[0];
 
       if (teamGoals1 == teamGoals2) {
-        let extra = GetMatch(team2, team1, 2);
+        let extra = GetExtraTime(team2, team1);
         teamGoals1 += extra[1];
         teamGoals2 += extra[0];
 
