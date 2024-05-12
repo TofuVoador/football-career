@@ -1532,32 +1532,13 @@ function App() {
     };
   }
 
-  function GetMatch(team1, team2) {
+  function GetMatch(team1, team2, time) {
     let base = Math.pow(team1.power, Math.log(400)) + Math.pow(team2.power, Math.log(400));
     let team1Power = Math.pow(team1.power, Math.log(400)) / base;
     let team2Power = Math.pow(team2.power, Math.log(400)) / base;
-
-    let goals = Math.random() + Math.random();
     
-    let team1Luck = (Math.random() + Math.random()) * 3 - 1;
-    let team2Luck = (Math.random() + Math.random()) * 3 - 1;
-
-    let team1Score = Math.round(team1Luck * team1Power);
-    let team2Score = Math.round(team2Luck * team2Power);
-
-    if (team1Score < 0) team1Score = 0;
-    if (team2Score < 0) team2Score = 0;
-
-    return [team1Score, team2Score];
-  }
-
-  function GetExtraTime(team1, team2) {
-    let base = Math.pow(team1.power, Math.log(500)) + Math.pow(team2.power, Math.log(500));
-    let team1Power = Math.pow(team1.power, Math.log(500)) / base;
-    let team2Power = Math.pow(team2.power, Math.log(500)) / base;
-
-    let team1Luck = Math.random() * 3;
-    let team2Luck = Math.random() * 3;
+    let team1Luck = (Math.random() + Math.random()) * time - 1;
+    let team2Luck = (Math.random() + Math.random()) * time - 1;
 
     let team1Score = Math.round(team1Luck * team1Power);
     let team2Score = Math.round(team2Luck * team2Power);
@@ -1569,9 +1550,9 @@ function App() {
   }
 
   function GetPenalties(team1, team2) {
-    let base = Math.pow(team1.power, Math.log(500)) + Math.pow(team2.power, Math.log(500));
-    let team1Power = Math.pow(team1.power, Math.log(500)) / base;
-    let team2Power = Math.pow(team2.power, Math.log(500)) / base;
+    let base = Math.pow(team1.power, Math.log(400)) + Math.pow(team2.power, Math.log(400));
+    let team1Power = Math.pow(team1.power, Math.log(400)) / base;
+    let team2Power = Math.pow(team2.power, Math.log(400)) / base;
 
     let winner = false;
     let team1goals = 0;
@@ -1608,19 +1589,19 @@ function App() {
   function GetKnockoutResult(team1, team2, ida_e_volta) {
     let gameDesc = "";
 
-    let game = GetMatch(team1, team2);
+    let game = GetMatch(team1, team2. 4);
     let teamGoals1 = game[0];
     let teamGoals2 = game[1];
 
     if (ida_e_volta) {
       gameDesc = `->${team1.name} ${teamGoals1} x ${teamGoals2} ${team2.name}`;
 
-      let game2 = GetMatch(team2, team1);
+      let game2 = GetMatch(team2, team1, 4);
       teamGoals1 += game2[1];
       teamGoals2 += game2[0];
 
       if (teamGoals1 == teamGoals2) {
-        let extra = GetExtraTime(team2, team1);
+        let extra = GetMatch(team2, team1, 2);
         teamGoals1 += extra[1];
         teamGoals2 += extra[0];
 
