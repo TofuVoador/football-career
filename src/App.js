@@ -134,7 +134,7 @@ function App() {
     let newPlayer = player;
     newPlayer.position = initPos;
 
-    let newTeams = UpdateTeamsStats(20.0);
+    let newTeams = UpdateTeamsStats(25.0);
 
     let leagueResults = leagues.map((league) => {
       let leagueResult = {
@@ -217,7 +217,7 @@ function App() {
     }
 
     //change teams power on each season
-    let newTeams = UpdateTeamsStats(40.0);
+    let newTeams = UpdateTeamsStats(50.0);
     let newExtraTeams = UpdateExtraTeamsStats();
 
     let allTeams = [];
@@ -998,7 +998,6 @@ function App() {
           return distance >= 5000 && distance2 >= 2500;
         });
 
-      console.log(validTeams);
       let chosenHosts = [];
 
       let chosenID = RandomNumber(0, validTeams.length - 1);
@@ -1533,10 +1532,10 @@ function App() {
   }
 
   function GetMatch(team1, team2) {
-    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
-    let team1Power = Math.pow(team1.power, 2) / base;
-    let team2Power = Math.pow(team2.power, 2) / base;
-    
+    let base = Math.pow(team1.power, 2.5) + Math.pow(team2.power, 2.5);
+    let team1Power = Math.pow(team1.power, 2.5) / base;
+    let team2Power = Math.pow(team2.power, 2.5) / base;
+
     let team1Luck = (Math.random() + Math.random()) * 4 - 1;
     let team2Luck = (Math.random() + Math.random()) * 4 - 1;
 
@@ -1550,10 +1549,10 @@ function App() {
   }
 
   function GetExtraTime(team1, team2) {
-    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
-    let team1Power = Math.pow(team1.power, 2) / base;
-    let team2Power = Math.pow(team2.power, 2) / base;
-    
+    let base = Math.pow(team1.power, 2.5) + Math.pow(team2.power, 2.5);
+    let team1Power = Math.pow(team1.power, 2.5) / base;
+    let team2Power = Math.pow(team2.power, 2.5) / base;
+
     let team1Luck = (Math.random() + Math.random()) * 2 - 1;
     let team2Luck = (Math.random() + Math.random()) * 2 - 1;
 
@@ -1567,9 +1566,9 @@ function App() {
   }
 
   function GetPenalties(team1, team2) {
-    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
-    let team1Power = Math.pow(team1.power, 2) / base;
-    let team2Power = Math.pow(team2.power, 2) / base;
+    let base = Math.pow(team1.power, 2.5) + Math.pow(team2.power, 2.5);
+    let team1Power = Math.pow(team1.power, 2.5) / base;
+    let team2Power = Math.pow(team2.power, 2.5) / base;
 
     let winner = false;
     let team1goals = 0;
@@ -1854,7 +1853,7 @@ function App() {
     let newTeams = DeepClone([...leagues]);
 
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
-      let last = Math.random();
+      let last = Math.random() + Math.random();
       let teamIndices = Array.from(
         { length: newTeams[leagueID].teams.length },
         (_, index) => index
@@ -1864,8 +1863,8 @@ function App() {
       for (let i = 0; i < newTeams[leagueID].teams.length; i++) {
         let teamID = teamIndices[i];
 
-        let current = Math.random();
-        let change = Math.round(limit * (last - current)) / 100.0;
+        let current = Math.random() + Math.random();
+        let change = Math.round(limit * (last - current)) / 200.0;
         last = current;
 
         let newPower = newTeams[leagueID].teams[teamID].power + change;
@@ -1873,8 +1872,8 @@ function App() {
 
         if (newTeams[leagueID].teams[teamID].power > 10)
           newTeams[leagueID].teams[teamID].power = 10;
-        else if (newTeams[leagueID].teams[teamID].power < 2)
-          newTeams[leagueID].teams[teamID].power = 2;
+        else if (newTeams[leagueID].teams[teamID].power < 4)
+          newTeams[leagueID].teams[teamID].power = 4;
       }
 
       newTeams[leagueID].teams.sort((a, b) => {
@@ -1887,15 +1886,15 @@ function App() {
 
   function UpdateExtraTeamsStats() {
     let newTeams = DeepClone([...extrateams]);
-    let last = Math.random();
+    let last = Math.random() + Math.random();
     let teamIndices = Array.from({ length: newTeams.length }, (_, index) => index);
     teamIndices = shuffleArray(teamIndices);
 
     for (let i = 0; i < newTeams.length; i++) {
       let teamID = teamIndices[i];
 
-      let current = Math.random();
-      let change = Math.round(20.0 * (last - current)) / 100.0;
+      let current = Math.random() + Math.random();
+      let change = Math.round(25.0 * (last - current)) / 200.0;
       last = current;
 
       let newPower = newTeams[teamID].power + change;
@@ -1916,7 +1915,7 @@ function App() {
     let allNations = DeepClone([...nations]);
 
     for (let leagueID = 0; leagueID < allNations.length; leagueID++) {
-      let last = Math.random();
+      let last = Math.random() + Math.random();
       let nationIndices = Array.from(
         { length: allNations[leagueID].teams.length },
         (_, index) => index
@@ -1926,8 +1925,8 @@ function App() {
       for (let i = 0; i < allNations[leagueID].teams.length; i++) {
         let nationID = nationIndices[i];
 
-        let current = Math.random();
-        let change = Math.round(40.0 * (last - current)) / 100.0;
+        let current = Math.random() + Math.random();
+        let change = Math.round(50.0 * (last - current)) / 200.0;
         last = current;
 
         let newPower = allNations[leagueID].teams[nationID].power + change;
