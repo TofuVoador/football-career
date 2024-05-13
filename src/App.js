@@ -58,6 +58,12 @@ function App() {
 
   const [currentSeason, setCurrentSeason] = useState({
     year: null,
+    top10: null,
+    topNations: null,
+    topGains: null,
+    topLoss: null,
+    topNationsGains: null,
+    topNationsLoss: null,
     age: null,
     team: null,
     wage: null,
@@ -67,6 +73,7 @@ function App() {
     assists: null,
     overall: null,
     performance: null,
+    awardPoints: null,
     leagueTable: null,
     fame: null,
     marketValue: null,
@@ -134,7 +141,7 @@ function App() {
     let newPlayer = player;
     newPlayer.position = initPos;
 
-    let newTeams = UpdateTeamsStats(25.0);
+    let newTeams = UpdateTeamsStats(25.0).newTeams;
 
     let leagueResults = leagues.map((league) => {
       let leagueResult = {
@@ -217,7 +224,8 @@ function App() {
     }
 
     //change teams power on each season
-    let newTeams = UpdateTeamsStats(50.0);
+    let updatedTeams = UpdateTeamsStats(50.0);
+    let newTeams = updatedTeams.newTeams;
     let newExtraTeams = UpdateExtraTeamsStats();
 
     let allTeams = [];
@@ -232,7 +240,8 @@ function App() {
     let top10 = allTeams.slice(0, 10);
 
     //change nations power on each season
-    let newNat = UpdateNationsStats();
+    let updatedNations = UpdateNationsStats();
+    let newNat = updatedNations.allNations;
     let allNations = [];
     for (let regionID = 0; regionID < newNat.length; regionID++) {
       allNations = allNations.concat([...newNat[regionID].teams]);
@@ -281,6 +290,10 @@ function App() {
       year: year + 1,
       top10: top10,
       topNations: topNations,
+      topGains: updatedTeams.topGains,
+      topLoss: updatedTeams.topLosses,
+      topNationsGains: updatedNations.topGains,
+      topNationsLoss: updatedNations.topLosses,
       age: newPlayer.age,
       team: DeepClone(newPlayer.team),
       wage: newPlayer.wage,
@@ -1851,6 +1864,8 @@ function App() {
 
   function UpdateTeamsStats(limit) {
     let newTeams = DeepClone([...leagues]);
+    let gains = [];
+    let losses = [];
 
     for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
       let last = Math.random() + Math.random();
@@ -1862,26 +1877,40 @@ function App() {
 
       for (let i = 0; i < newTeams[leagueID].teams.length; i++) {
         let teamID = teamIndices[i];
+        let team = newTeams[leagueID].teams[teamID];
 
         let current = Math.random() + Math.random();
         let change = Math.round(limit * (last - current)) / 200.0;
         last = current;
 
-        let newPower = newTeams[leagueID].teams[teamID].power + change;
-        newTeams[leagueID].teams[teamID].power = Math.round(100.0 * newPower) / 100;
+        let newPower = team.power + change;
+        let originalPower = team.power;
+        team.power = Math.round(100.0 * newPower) / 100;
 
-        if (newTeams[leagueID].teams[teamID].power > 10)
-          newTeams[leagueID].teams[teamID].power = 10;
-        else if (newTeams[leagueID].teams[teamID].power < 4)
-          newTeams[leagueID].teams[teamID].power = 4;
+        if (team.power > 10) team.power = 10;
+        else if (team.power < 4) team.power = 4;
+
+        let powerChange = team.power - originalPower;
+        if (powerChange > 0) {
+          gains.push({ team: team.name, change: powerChange });
+        } else if (powerChange < 0) {
+          losses.push({ team: team.name, change: powerChange });
+        }
       }
 
       newTeams[leagueID].teams.sort((a, b) => {
         return b.power - a.power;
       });
     }
+
+    gains.sort((a, b) => b.change - a.change);
+    losses.sort((a, b) => a.change - b.change);
+
+    let topGains = gains.slice(0, 5);
+    let topLosses = losses.slice(0, 5);
+
     setLeagues(newTeams);
-    return newTeams;
+    return { newTeams, topGains, topLosses };
   }
 
   function UpdateExtraTeamsStats() {
@@ -1913,6 +1942,8 @@ function App() {
 
   function UpdateNationsStats() {
     let allNations = DeepClone([...nations]);
+    let gains = [];
+    let losses = [];
 
     for (let leagueID = 0; leagueID < allNations.length; leagueID++) {
       let last = Math.random() + Math.random();
@@ -1924,19 +1955,25 @@ function App() {
 
       for (let i = 0; i < allNations[leagueID].teams.length; i++) {
         let nationID = nationIndices[i];
+        let nation = allNations[leagueID].teams[nationID];
 
         let current = Math.random() + Math.random();
         let change = Math.round(50.0 * (last - current)) / 200.0;
         last = current;
 
-        let newPower = allNations[leagueID].teams[nationID].power + change;
+        let newPower = nation.power + change;
 
-        allNations[leagueID].teams[nationID].power = Math.round(100.0 * newPower) / 100.0;
+        nation.power = Math.round(100.0 * newPower) / 100.0;
 
-        if (allNations[leagueID].teams[nationID].power > 10)
-          allNations[leagueID].teams[nationID].power = 10;
-        else if (allNations[leagueID].teams[nationID].power < 2)
-          allNations[leagueID].teams[nationID].power = 2;
+        if (nation.power > 10) nation.power = 10;
+        else if (nation.power < 2) nation.power = 2;
+
+        let powerChange = nation.power - (newPower - change);
+        if (powerChange > 0) {
+          gains.push({ nation: nation.name, change: powerChange });
+        } else if (powerChange < 0) {
+          losses.push({ nation: nation.name, change: powerChange });
+        }
       }
 
       allNations[leagueID].teams.sort((a, b) => {
@@ -1944,8 +1981,14 @@ function App() {
       });
     }
 
+    gains.sort((a, b) => b.change - a.change);
+    losses.sort((a, b) => a.change - b.change);
+
+    let topGains = gains.slice(0, 5);
+    let topLosses = losses.slice(0, 5);
+
     setNations(allNations);
-    return allNations;
+    return { allNations, topGains, topLosses };
   }
 
   return (

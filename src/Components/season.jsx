@@ -110,6 +110,24 @@ const Season = (props) => {
                 {team.name} ({(Math.round(team.power * 50.0) / 100.0).toFixed(2)})
               </p>
             ))}
+            <details>
+              <summary>Maiores Ganhos</summary>
+              {season.topGains.map((team, index) => (
+                <p key={team + "topClubs" + index}>
+                  {team.team} ({team.change.toFixed(2) > 0 ? "+" : ""}
+                  {(Math.round(team.change * 50.0) / 100.0).toFixed(2)})
+                </p>
+              ))}
+            </details>
+            <details>
+              <summary>Maiores Perdas</summary>
+              {season.topLoss.map((team, index) => (
+                <p key={team + "topClubs" + index}>
+                  {team.team} ({team.change.toFixed(2) > 0 ? "+" : ""}
+                  {(Math.round(team.change * 50.0) / 100.0).toFixed(2)})
+                </p>
+              ))}
+            </details>
           </details>
           <details>
             <summary>Top Seleções</summary>
@@ -118,6 +136,24 @@ const Season = (props) => {
                 {team.name} ({(Math.round(team.power * 50.0) / 100.0).toFixed(2)})
               </p>
             ))}
+            <details>
+              <summary>Maiores Ganhos</summary>
+              {season.topNationsGains.map((team, index) => (
+                <p key={team + "topClubs" + index}>
+                  {team.nation} ({team.change.toFixed(2) > 0 ? "+" : ""}
+                  {(Math.round(team.change * 50.0) / 100.0).toFixed(2)})
+                </p>
+              ))}
+            </details>
+            <details>
+              <summary>Maiores Perdas</summary>
+              {season.topNationsLoss.map((team, index) => (
+                <p key={team + "topClubs" + index}>
+                  {team.nation} ({team.change.toFixed(2) > 0 ? "+" : ""}
+                  {(Math.round(team.change * 50.0) / 100.0).toFixed(2)})
+                </p>
+              ))}
+            </details>
           </details>
           {season.titles.map((title) => {
             if (title.length > 1) {
