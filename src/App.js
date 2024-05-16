@@ -141,7 +141,7 @@ function App() {
     let newPlayer = player;
     newPlayer.position = initPos;
 
-    let newTeams = UpdateTeamsStats(25.0).newTeams;
+    let newTeams = UpdateTeamsStats(20.0).newTeams;
 
     let leagueResults = leagues.map((league) => {
       let leagueResult = {
@@ -224,7 +224,7 @@ function App() {
     }
 
     //change teams power on each season
-    let updatedTeams = UpdateTeamsStats(50.0);
+    let updatedTeams = UpdateTeamsStats(40.0);
     let newTeams = updatedTeams.newTeams;
     let newExtraTeams = UpdateExtraTeamsStats();
 
@@ -1923,14 +1923,14 @@ function App() {
       let teamID = teamIndices[i];
 
       let current = Math.random() + Math.random();
-      let change = Math.round(25.0 * (last - current)) / 200.0;
+      let change = Math.round(20.0 * (last - current)) / 200.0;
       last = current;
 
       let newPower = newTeams[teamID].power + change;
       newTeams[teamID].power = Math.round(100.0 * newPower) / 100.0;
 
       if (newTeams[teamID].power > 10) newTeams[teamID].power = 10;
-      else if (newTeams[teamID].power < 2) newTeams[teamID].power = 2;
+      else if (newTeams[teamID].power < 4) newTeams[teamID].power = 2;
     }
 
     newTeams.sort((a, b) => {
@@ -1958,7 +1958,7 @@ function App() {
         let nation = allNations[leagueID].teams[nationID];
 
         let current = Math.random() + Math.random();
-        let change = Math.round(50.0 * (last - current)) / 200.0;
+        let change = Math.round(40.0 * (last - current)) / 200.0;
         last = current;
 
         let newPower = nation.power + change;
