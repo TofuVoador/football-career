@@ -506,6 +506,8 @@ function App() {
     // Adicionar as equipes extras aos times qualificados
     qualifiedToChamptions = qualifiedToChamptions.concat(extrateams.slice(0, 12));
 
+    console.log(qualifiedToChamptions);
+
     // Obter a posição dos campeões em um grupo específico
     let championsGroup = GetChampionsPosition(
       qualifiedToChamptions,
@@ -661,6 +663,8 @@ function App() {
     }
 
     qualified = qualified.concat(extrateams.slice(12, extrateams.length));
+
+    console.log(qualified);
 
     let group = GetEuropaPosition(qualified, newPlayer.europaQualification ? newPlayer.team : null);
 
@@ -1545,9 +1549,9 @@ function App() {
   }
 
   function GetMatch(team1, team2) {
-    let base = Math.pow(team1.power, Math.log(500)) + Math.pow(team2.power, Math.log(500));
-    let team1Power = Math.pow(team1.power, Math.log(500)) / base;
-    let team2Power = Math.pow(team2.power, Math.log(500)) / base;
+    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
+    let team1Power = Math.pow(team1.power, 2) / base;
+    let team2Power = Math.pow(team2.power, 2) / base;
 
     let team1Luck = (Math.random() + Math.random()) * 4 - 1;
     let team2Luck = (Math.random() + Math.random()) * 4 - 1;
@@ -1562,9 +1566,9 @@ function App() {
   }
 
   function GetExtraTime(team1, team2) {
-    let base = Math.pow(team1.power, Math.log(500)) + Math.pow(team2.power, Math.log(500));
-    let team1Power = Math.pow(team1.power, Math.log(500)) / base;
-    let team2Power = Math.pow(team2.power, Math.log(500)) / base;
+    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
+    let team1Power = Math.pow(team1.power, 2) / base;
+    let team2Power = Math.pow(team2.power, 2) / base;
 
     let team1Luck = (Math.random() + Math.random()) * 2 - 1;
     let team2Luck = (Math.random() + Math.random()) * 2 - 1;
@@ -1579,9 +1583,9 @@ function App() {
   }
 
   function GetPenalties(team1, team2) {
-    let base = Math.pow(team1.power, Math.log(500)) + Math.pow(team2.power, Math.log(500));
-    let team1Power = Math.pow(team1.power, Math.log(500)) / base;
-    let team2Power = Math.pow(team2.power, Math.log(500)) / base;
+    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
+    let team1Power = Math.pow(team1.power, 2) / base;
+    let team2Power = Math.pow(team2.power, 2) / base;
 
     let winner = false;
     let team1goals = 0;

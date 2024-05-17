@@ -2,112 +2,112 @@
   {
     "name": "RB Salzburg",
     "league": "Austrian Bundesliga",
-    "power": 7.2
+    "power": 7.0
   },
   {
     "name": "Shakhtar",
     "league": "Ukrainian PL",
-    "power": 7.2
+    "power": 7.0
   },
   {
     "name": "Galatasaray",
     "league": "Süper Lig",
-    "power": 7.0
+    "power": 6.8
   },
   {
     "name": "Zenit",
     "league": "Russian PL",
-    "power": 7.0
+    "power": 6.8
   },
   {
     "name": "Copenhagen",
     "league": "Danish Superliga",
-    "power": 6.8
+    "power": 6.6
   },
   {
     "name": "Rangers",
     "league": "Scottish Premiership",
-    "power": 6.8
+    "power": 6.6
   },
   {
     "name": "Celtic",
     "league": "Scottish Premiership",
-    "power": 6.6
+    "power": 6.4
   },
   {
     "name": "Olympiacos",
     "league": "Greek Super League",
-    "power": 6.6
+    "power": 6.4
   },
   {
     "name": "Besiktas",
     "league": "Süper Lig",
-    "power": 6.4
+    "power": 6.2
   },
   {
     "name": "Young Boys",
     "league": "Swiss Super League",
-    "power": 6.4
+    "power": 6.2
   },
   {
     "name": "CSKA",
     "league": "Russian PL",
-    "power": 6.2
+    "power": 6.0
   },
   {
     "name": "Malmö FF",
     "league": "Allsvenskan",
-    "power": 6.2
+    "power": 6.0
   },
   {
     "name": "Dynamo Kyiv",
     "league": "Ukrainian PL",
-    "power": 6.0
+    "power": 5.8
   },
   {
     "name": "Fenerbahçe",
     "league": "Süper Lig",
-    "power": 6.0
+    "power": 5.8
   },
   {
     "name": "Basel",
     "league": "Swiss Super League",
-    "power": 5.8
+    "power": 5.6
   },
   {
     "name": "Rapid Vienna",
     "league": "Austrian Bundesliga",
-    "power": 5.8
+    "power": 5.6
   },
   {
     "name": "Dynamo Moscow",
     "league": "Russian PL",
-    "power": 5.6
+    "power": 5.4
   },
   {
     "name": "Rosenborg",
     "league": "Eliteserien",
-    "power": 5.6
+    "power": 5.4
   },
   {
     "name": "Midtjylland",
     "league": "Danish Superliga",
-    "power": 5.4
+    "power": 5.2
   },
   {
     "name": "PAOK",
     "league": "Greek Super League",
-    "power": 5.4
+    "power": 5.2
   },
   {
     "name": "Aberdeen",
     "league": "Scottish Premiership",
-    "power": 5.2
+    "power": 5.0
   },
   {
     "name": "Spartak Moscou",
     "league": "Russian PL",
-    "power": 5.2
+    "power": 5.0
   },
   {
     "name": "Trabzonspor",
