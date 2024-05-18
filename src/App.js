@@ -506,8 +506,6 @@ function App() {
     // Adicionar as equipes extras aos times qualificados
     qualifiedToChamptions = qualifiedToChamptions.concat(extrateams.slice(0, 12));
 
-    console.log(qualifiedToChamptions);
-
     // Obter a posição dos campeões em um grupo específico
     let championsGroup = GetChampionsPosition(
       qualifiedToChamptions,
@@ -663,8 +661,6 @@ function App() {
     }
 
     qualified = qualified.concat(extrateams.slice(12, extrateams.length));
-
-    console.log(qualified);
 
     let group = GetEuropaPosition(qualified, newPlayer.europaQualification ? newPlayer.team : null);
 
@@ -1553,8 +1549,8 @@ function App() {
     let team1Power = Math.pow(team1.power, 2) / base;
     let team2Power = Math.pow(team2.power, 2) / base;
 
-    let team1Luck = (Math.random() + Math.random()) * 4 - 1;
-    let team2Luck = (Math.random() + Math.random()) * 4 - 1;
+    let team1Luck = (Math.random() + Math.random()) * 6 - 2.5;
+    let team2Luck = (Math.random() + Math.random()) * 6 - 2.5;
 
     let team1Score = Math.round(team1Luck * team1Power);
     let team2Score = Math.round(team2Luck * team2Power);
@@ -1570,8 +1566,8 @@ function App() {
     let team1Power = Math.pow(team1.power, 2) / base;
     let team2Power = Math.pow(team2.power, 2) / base;
 
-    let team1Luck = (Math.random() + Math.random()) * 2 - 1;
-    let team2Luck = (Math.random() + Math.random()) * 2 - 1;
+    let team1Luck = (Math.random() + Math.random()) * 2 - 0.5;
+    let team2Luck = (Math.random() + Math.random()) * 2 - 0.5;
 
     let team1Score = Math.round(team1Luck * team1Power);
     let team2Score = Math.round(team2Luck * team2Power);
@@ -1892,7 +1888,7 @@ function App() {
         team.power = Math.round(100.0 * newPower) / 100;
 
         if (team.power > 10) team.power = 10;
-        else if (team.power < 4) team.power = 4;
+        else if (team.power < 2) team.power = 2;
 
         let powerChange = team.power - originalPower;
         if (powerChange > 0) {
@@ -1934,7 +1930,7 @@ function App() {
       newTeams[teamID].power = Math.round(100.0 * newPower) / 100.0;
 
       if (newTeams[teamID].power > 10) newTeams[teamID].power = 10;
-      else if (newTeams[teamID].power < 4) newTeams[teamID].power = 2;
+      else if (newTeams[teamID].power < 2) newTeams[teamID].power = 2;
     }
 
     newTeams.sort((a, b) => {
