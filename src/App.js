@@ -1545,9 +1545,9 @@ function App() {
   }
 
   function GetMatch(team1, team2) {
-    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
-    let team1Power = Math.pow(team1.power, 2) / base;
-    let team2Power = Math.pow(team2.power, 2) / base;
+    let base = Math.pow(team1.power, Math.log(200)) + Math.pow(team2.power, Math.log(200));
+    let team1Power = Math.pow(team1.power, Math.log(200)) / base;
+    let team2Power = Math.pow(team2.power, Math.log(200)) / base;
 
     let goals = Math.random() + Math.random();
 
@@ -1564,9 +1564,9 @@ function App() {
   }
 
   function GetExtraTime(team1, team2) {
-    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
-    let team1Power = Math.pow(team1.power, 2) / base;
-    let team2Power = Math.pow(team2.power, 2) / base;
+    let base = Math.pow(team1.power, Math.log(200)) + Math.pow(team2.power, Math.log(200));
+    let team1Power = Math.pow(team1.power, Math.log(200)) / base;
+    let team2Power = Math.pow(team2.power, Math.log(200)) / base;
 
     let team1Luck = (Math.random() + Math.random()) * 2 - 0.5;
     let team2Luck = (Math.random() + Math.random()) * 2 - 0.5;
@@ -1581,9 +1581,9 @@ function App() {
   }
 
   function GetPenalties(team1, team2) {
-    let base = Math.pow(team1.power, 2) + Math.pow(team2.power, 2);
-    let team1Power = Math.pow(team1.power, 2) / base;
-    let team2Power = Math.pow(team2.power, 2) / base;
+    let base = Math.pow(team1.power, Math.log(200)) + Math.pow(team2.power, Math.log(200));
+    let team1Power = Math.pow(team1.power, Math.log(200)) / base;
+    let team2Power = Math.pow(team2.power, Math.log(200)) / base;
 
     let winner = false;
     let team1goals = 0;
