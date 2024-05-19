@@ -1551,8 +1551,8 @@ function App() {
 
     let goals = Math.random() + Math.random();
 
-    let team1Luck = (Math.random() + Math.random()) * 4 - 2;
-    let team2Luck = (Math.random() + Math.random()) * 4 - 2;
+    let team1Luck = (Math.random() + Math.random()) * 2;
+    let team2Luck = (Math.random() + Math.random()) * 2;
 
     let team1Score = Math.round(goals * team1Luck * team1Power);
     let team2Score = Math.round(goals * team2Luck * team2Power);
