@@ -249,8 +249,8 @@ function App() {
     allNations.sort((a, b) => {
       return b.power - a.power;
     });
-    //creates a list of top 12 nations
-    let topNations = allNations.slice(0, 12);
+    //creates a list of top 10 nations
+    let topNations = allNations.slice(0, 10);
 
     newPlayer.team = allTeams.find((t) => t.name == newPlayer.team.name); //find player's team by name and update
     newPlayer.nation = allNations.find((n) => n.name == newPlayer.nation.name); //find player's nation by name and update
