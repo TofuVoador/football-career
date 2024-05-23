@@ -1165,7 +1165,7 @@ function App() {
       med > 0 &&
       generalPerformance.length >= 2 &&
       newTransfers[0] != null &&
-      contract > 2
+      contract > 1
     ) {
       document.getElementById("decision-transfer1").style.display = "flex";
       if (newTransfers[0].contract.value < newPlayer.wage)
