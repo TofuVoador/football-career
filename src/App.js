@@ -223,6 +223,7 @@ function App() {
       // Renovação do contrato
       newContract = renew.duration; // Nova duração do contrato
       newPlayer.wage = renew.value; // Novo valor do contrato
+      newHistory.push({ team: newPlayer.team.name, year: year + renew.duration });
     } else {
       newPlayer.wage = newPlayer.wage * (1.1 + newPlayer.performance / 10); // Reajuste
     }
