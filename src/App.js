@@ -1203,7 +1203,7 @@ function App() {
       newTransfers.some((t) => t != null && t.team.power < newPlayer.team.power) &&
       contract > 3
     ) {
-      if (newTransfers[1] == null || newTransfers[1].team.power > newPlayer.team.power) {
+      if (newTransfers[0] == null || newTransfers[0].team.power > newPlayer.team.power) {
         document.getElementById("decision-transfer1").style.display = "none";
       } else {
         //proposal 1
