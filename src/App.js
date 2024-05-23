@@ -170,9 +170,13 @@ function App() {
     let newHistory = history;
     let newContract = contract - 1;
 
+    newHistory = newHistory.filter((item) => year - item.year <= 8);
+
+    console.log(newHistory);
+
     if (newTeam != null) {
       // Se houver mudança de time
-      newHistory.push(newTeam.team.name);
+      newHistory.push({ team: newTeam.team.name, year: year + newTeam.contract.duration });
 
       // Verifica se o jogador foi emprestado para o novo time
       if (newTeam.loan) {
@@ -1697,7 +1701,7 @@ function App() {
       let chance = currentPlayer.overall / allTeams[i].power;
 
       let r = RandomNumber(0, 100);
-      if (r < chance && !history.some((t) => t == allTeams[i].name)) {
+      if (r < chance && !history.some((t) => t.team == allTeams[i].name)) {
         interestedTeams.push(allTeams[i]);
         if (interestedTeams.length > 3) break;
       }
