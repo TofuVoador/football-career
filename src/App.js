@@ -172,8 +172,6 @@ function App() {
 
     newHistory = newHistory.filter((item) => year - item.year <= 8);
 
-    console.log(newHistory);
-
     if (newTeam != null) {
       // Se houver mudança de time
       newHistory.push({ team: newTeam.team.name, year: year + newTeam.contract.duration });
@@ -606,7 +604,7 @@ function App() {
               // Se o jogador vencer o torneio, conceder prêmios adicionais
               newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
               newPlayer.fame += 20; // Máximo 4 x 5 + 20 = 40
-              if (year % 4 != 2) newSeason.awardPoints += 3.0; // Máximo 0.6 x 5 + 3.0 = 6.0
+              if (year % 4 != 2 && year % 4 != 0) newSeason.awardPoints += 3.0; // Máximo 0.6 x 5 + 3.0 = 6.0
               triplice++;
             }
           }
@@ -754,6 +752,558 @@ function App() {
 
     newSeason.titles.push([`Europa League${playerEuropaResult}`].concat(europaLeagueDescription));
 
+    if (year % 4 == 0) {
+      newSeason.awardPoints -= 3.0;
+      let playedContinental =
+        newPlayer.overall > 75 + newPlayer.nation.power || (med > 0 && newSeason.performance > 0.5);
+
+      // EUROCOPA
+      phase = 0;
+      playerPhase = 0;
+      let europeanDescription = [];
+
+      let europeanTeams = DeepClone([...nations.find((n) => n.name === "UEFA").teams]);
+      europeanTeams.splice(24);
+
+      let pots = [];
+      for (let i = 0; i < 4; i++) {
+        pots.push(europeanTeams.splice(0, 6));
+      }
+
+      let europeanGroups = [];
+      for (let i = 0; i < 6; i++) {
+        europeanGroups.push([]);
+        for (let j = 0; j < 4; j++) {
+          europeanGroups[i].push(pots[j][i]);
+        }
+      }
+      console.log(europeanGroups);
+      let firstPlaces = [];
+      let secondPlaces = [];
+      let thirdPlaces = [];
+      let thirdPlacesPoints = [];
+
+      // Loop através de todos os grupos
+      for (let groupID = 0; groupID < europeanGroups.length; groupID++) {
+        // Obter a posição do jogador no grupo atual
+        let thisGroup = GetWorldCupPosition(europeanGroups[groupID]);
+        const playerPosition =
+          thisGroup.table.findIndex((team) => team.name == newPlayer.nation.name) + 1;
+
+        // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
+        if (playerPosition > 0) {
+          europeanDescription.push(
+            `${TournamentPath[phase]}: ${playerPosition}º lugar${thisGroup.desc}`
+          );
+        }
+
+        // Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
+        firstPlaces.push(thisGroup.table[0]);
+        secondPlaces.push(thisGroup.table[1]);
+        thirdPlaces.push(thisGroup.table[2]);
+        thirdPlacesPoints.push(thisGroup.points[2]);
+      }
+
+      if (player.nation.continent != "UEFA") europeanDescription.push("Grupos-->Sem Dados");
+
+      thirdPlaces.sort((a, b) => {
+        return (
+          thirdPlacesPoints[thirdPlaces.indexOf(b)] - thirdPlacesPoints[thirdPlaces.indexOf(a)]
+        );
+      });
+
+      // Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
+      let classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 4));
+      phase += 2;
+
+      if (classif.some((t) => t.name == newPlayer.nation.name)) {
+        playerPhase += 2;
+      }
+
+      // Variável para indicar o fim do loop
+      let end = false;
+
+      // Loop principal para simular os jogos do torneio até o final
+      while (!end) {
+        // Limpar variáveis para armazenar informações dos jogos
+        let games = "";
+        let newClassif = [];
+        let playerOpp = "";
+
+        // Loop pelos jogos do torneio atual
+        for (let matchID = 0; matchID < classif.length / 2; matchID++) {
+          // Selecionar os dois times para o jogo atual
+          let team1 = classif[matchID];
+          let team2 = classif[classif.length - (matchID + 1)];
+
+          // Obter o resultado do jogo
+          let game = GetKnockoutResult(team1, team2, false);
+
+          if (team1.name == player.nation.name || team2.name == player.nation.name) {
+            playerOpp = `: ${team1.name == player.nation.name ? team2.name : team1.name}`;
+          }
+
+          // Verificar se o jogador está envolvido no jogo atual
+          if (team1.name == player.nation.name || team2.name == player.nation.name) {
+            // Verificar se o jogador ganhou o jogo
+            if (
+              (game.result && team1.name == player.nation.name) ||
+              (!game.result && team2.name == player.nation.name)
+            ) {
+              playerPhase++;
+              // Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
+              if (playedContinental) {
+                newSeason.awardPoints += 0.6; // Máximo 0.6 x 5 = 3.0
+                newPlayer.fame += 6; // Máximo 6 x 5 = 30
+                if (playerPhase >= TournamentPath.length - 1) {
+                  newPlayer.worldCup.push(`${year}`);
+                  newSeason.awardPoints += 3.0; // Máximo 0.6 x 5 + 3.0 = 6.0
+                  newPlayer.fame += 30; // Máximo 6 x 5 + 30 = 60
+                }
+              }
+            }
+          }
+
+          // Adicionar o resultado do jogo ao histórico geral
+          games += `--> ${game.game}`;
+
+          // Adicionar os vencedores do jogo à nova classificação
+          if (game.result) {
+            newClassif.push(team1);
+          } else {
+            newClassif.push(team2);
+          }
+        }
+
+        // Construir a descrição da fase do torneio
+        europeanDescription.push(`${TournamentPath[phase]}${playerOpp}${games}`);
+
+        // Avançar para a próxima fase e atualizar a classificação
+        phase++;
+        classif = newClassif;
+
+        // Verificar se o torneio chegou ao fim
+        if (phase >= TournamentPath.length - 1) {
+          end = true;
+        }
+      }
+
+      let playerEuropeanDesc = "";
+
+      if (player.nation.continent == "UEFA") {
+        playerEuropeanDesc = `: ${TournamentPath[playerPhase]} ${
+          playedContinental ? "" : " (Não Convocado)"
+        }`;
+      }
+
+      console.log(JSON.parse(JSON.stringify(europeanDescription)));
+
+      newSeason.titles.push([`Eurocopa${playerEuropeanDesc}`].concat(europeanDescription));
+
+      // COPA AMERICA
+      phase = 0;
+      playerPhase = 0;
+      let americanDescription = [];
+
+      let americanTeams = DeepClone([
+        ...nations.find((n) => n.name === "CONMEBOL").teams,
+        ...nations.find((n) => n.name === "CONCACAF").teams,
+      ]);
+
+      americanTeams.sort((a, b) => b.power - a.power);
+
+      let pot1 = shuffleArray(americanTeams.slice(0, 4));
+      let pot2 = shuffleArray(americanTeams.slice(0, 4));
+      let pot3 = shuffleArray(americanTeams.slice(0, 4));
+      let pot4 = shuffleArray(americanTeams.slice(4));
+
+      let americanGroups = [];
+      for (let i = 0; i < 4; i++) {
+        americanGroups.push([pot1[i], pot2[i], pot3[i], pot4[i]]);
+      }
+
+      // Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
+      firstPlaces = [];
+      secondPlaces = [];
+
+      // Loop através de todos os grupos
+      for (let groupID = 0; groupID < americanGroups.length; groupID++) {
+        // Obter a posição do jogador no grupo atual
+        let thisGroup = GetWorldCupPosition(americanGroups[groupID]);
+        const playerPosition =
+          thisGroup.table.findIndex((team) => team.name == newPlayer.nation.name) + 1;
+
+        // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
+        if (playerPosition > 0) {
+          americanDescription.push(
+            `${TournamentPath[phase]}: ${playerPosition}º lugar${thisGroup.desc}`
+          );
+        }
+
+        // Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
+        firstPlaces.push(thisGroup.table[0]);
+        secondPlaces.push(thisGroup.table[1]);
+      }
+
+      if (player.nation.continent != "CONCACAF" && player.nation.continent != "CONMEBOL")
+        americanDescription.push("Grupos-->Sem Dados");
+
+      // Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
+      classif = firstPlaces.concat(secondPlaces);
+      phase += 3;
+      if (classif.some((t) => t.name == newPlayer.nation.name)) {
+        playerPhase += 3;
+      }
+
+      // Variável para indicar o fim do loop
+      end = false;
+
+      // Loop principal para simular os jogos do torneio até o final
+      while (!end) {
+        // Limpar variáveis para armazenar informações dos jogos
+        let games = "";
+        let newClassif = [];
+        let playerOpp = "";
+
+        // Loop pelos jogos do torneio atual
+        for (let matchID = 0; matchID < classif.length / 2; matchID++) {
+          // Selecionar os dois times para o jogo atual
+          let team1 = classif[matchID];
+          let team2 = classif[classif.length - (matchID + 1)];
+
+          // Obter o resultado do jogo
+          let game = GetKnockoutResult(team1, team2, false);
+
+          if (team1.name == player.nation.name || team2.name == player.nation.name) {
+            playerOpp = `: ${team1.name == player.nation.name ? team2.name : team1.name}`;
+          }
+
+          // Verificar se o jogador está envolvido no jogo atual
+          if (team1.name == player.nation.name || team2.name == player.nation.name) {
+            // Verificar se o jogador ganhou o jogo
+            if (
+              (game.result && team1.name == player.nation.name) ||
+              (!game.result && team2.name == player.nation.name)
+            ) {
+              playerPhase++;
+              // Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
+              if (playedContinental) {
+                newSeason.awardPoints += 0.6; // Máximo 0.6 x 5 = 3.0
+                newPlayer.fame += 6; // Máximo 6 x 5 = 30
+                if (playerPhase >= TournamentPath.length - 1) {
+                  newPlayer.worldCup.push(`${year}`);
+                  newSeason.awardPoints += 3.0; // Máximo 0.6 x 5 + 3.0 = 6.0
+                  newPlayer.fame += 30; // Máximo 6 x 5 + 30 = 60
+                }
+              }
+            }
+          }
+
+          // Adicionar o resultado do jogo ao histórico geral
+          games += `--> ${game.game}`;
+
+          // Adicionar os vencedores do jogo à nova classificação
+          if (game.result) {
+            newClassif.push(team1);
+          } else {
+            newClassif.push(team2);
+          }
+        }
+
+        // Construir a descrição da fase do torneio
+        americanDescription.push(`${TournamentPath[phase]}${playerOpp}${games}`);
+
+        // Avançar para a próxima fase e atualizar a classificação
+        phase++;
+        classif = newClassif;
+
+        // Verificar se o torneio chegou ao fim
+        if (phase >= TournamentPath.length - 1) {
+          end = true;
+        }
+      }
+
+      let playerAmericanDesc = "";
+
+      if (player.nation.continent == "CONCACAF" || player.nation.continent == "CONMEBOL") {
+        playerAmericanDesc = `: ${TournamentPath[playerPhase]} ${
+          playedContinental ? "" : " (Não Convocado)"
+        }`;
+      }
+
+      console.log(JSON.parse(JSON.stringify(americanDescription)));
+
+      newSeason.titles.push([`Copa América${playerAmericanDesc}`].concat(americanDescription));
+
+      // COPA DA ÁFRICA
+      phase = 0;
+      playerPhase = 0;
+      let africanDescription = [];
+
+      let africanTeams = DeepClone([...nations.find((n) => n.name === "CAF").teams]);
+
+      let africanPots = [];
+      for (let i = 0; i < 3; i++) {
+        africanPots.push(africanTeams.splice(0, 4));
+      }
+
+      let africanGroups = [];
+      for (let i = 0; i < 4; i++) {
+        africanGroups.push([]);
+        for (let j = 0; j < 3; j++) {
+          africanGroups[i].push(africanPots[j][i]);
+        }
+      }
+      console.log(africanGroups);
+
+      // Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
+      firstPlaces = [];
+      secondPlaces = [];
+
+      // Loop através de todos os grupos
+      for (let groupID = 0; groupID < africanGroups.length; groupID++) {
+        // Obter a posição do jogador no grupo atual
+        let thisGroup = GetWorldCupPosition(africanGroups[groupID]);
+        const playerPosition =
+          thisGroup.table.findIndex((team) => team.name == newPlayer.nation.name) + 1;
+
+        // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
+        if (playerPosition > 0) {
+          africanDescription.push(
+            `${TournamentPath[phase]}: ${playerPosition}º lugar${thisGroup.desc}`
+          );
+        }
+
+        // Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
+        firstPlaces.push(thisGroup.table[0]);
+        secondPlaces.push(thisGroup.table[1]);
+      }
+
+      if (player.nation.continent != "CAF") africanDescription.push("Grupos-->Sem Dados");
+
+      // Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
+      classif = firstPlaces.concat(secondPlaces);
+      phase += 3;
+      if (classif.some((t) => t.name == newPlayer.nation.name)) {
+        playerPhase += 3;
+      }
+
+      // Variável para indicar o fim do loop
+      end = false;
+
+      // Loop principal para simular os jogos do torneio até o final
+      while (!end) {
+        // Limpar variáveis para armazenar informações dos jogos
+        let games = "";
+        let newClassif = [];
+        let playerOpp = "";
+
+        // Loop pelos jogos do torneio atual
+        for (let matchID = 0; matchID < classif.length / 2; matchID++) {
+          // Selecionar os dois times para o jogo atual
+          let team1 = classif[matchID];
+          let team2 = classif[classif.length - (matchID + 1)];
+
+          // Obter o resultado do jogo
+          let game = GetKnockoutResult(team1, team2, false);
+
+          if (team1.name == player.nation.name || team2.name == player.nation.name) {
+            playerOpp = `: ${team1.name == player.nation.name ? team2.name : team1.name}`;
+          }
+
+          // Verificar se o jogador está envolvido no jogo atual
+          if (team1.name == player.nation.name || team2.name == player.nation.name) {
+            // Verificar se o jogador ganhou o jogo
+            if (
+              (game.result && team1.name == player.nation.name) ||
+              (!game.result && team2.name == player.nation.name)
+            ) {
+              playerPhase++;
+              // Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
+              if (playedContinental) {
+                newSeason.awardPoints += 0.6; // Máximo 0.6 x 5 = 3.0
+                newPlayer.fame += 6; // Máximo 6 x 5 = 30
+                if (playerPhase >= TournamentPath.length - 1) {
+                  newPlayer.worldCup.push(`${year}`);
+                  newSeason.awardPoints += 3.0; // Máximo 0.6 x 5 + 3.0 = 6.0
+                  newPlayer.fame += 30; // Máximo 6 x 5 + 30 = 60
+                }
+              }
+            }
+          }
+
+          // Adicionar o resultado do jogo ao histórico geral
+          games += `--> ${game.game}`;
+
+          // Adicionar os vencedores do jogo à nova classificação
+          if (game.result) {
+            newClassif.push(team1);
+          } else {
+            newClassif.push(team2);
+          }
+        }
+
+        // Construir a descrição da fase do torneio
+        africanDescription.push(`${TournamentPath[phase]}${playerOpp}${games}`);
+
+        // Avançar para a próxima fase e atualizar a classificação
+        phase++;
+        classif = newClassif;
+
+        // Verificar se o torneio chegou ao fim
+        if (phase >= TournamentPath.length - 1) {
+          end = true;
+        }
+      }
+
+      let playerAfricanDesc = "";
+
+      if (player.nation.continent == "CAF") {
+        playerAfricanDesc = `: ${TournamentPath[playerPhase]} ${
+          playedContinental ? "" : " (Não Convocado)"
+        }`;
+      }
+
+      console.log(JSON.parse(JSON.stringify(africanDescription)));
+
+      newSeason.titles.push([`Copa da África${playerAfricanDesc}`].concat(africanDescription));
+
+      // COPA DA ÁSIA
+      phase = 0;
+      playerPhase = 0;
+      let asianDescription = [];
+      // 1. get all 12 teams
+      let asianTeams = DeepClone([...nations.find((n) => n.name === "AFC").teams]);
+
+      // 2. separate them into 3 pots of 4
+      let asianPots = [];
+      for (let i = 0; i < 3; i++) {
+        asianPots.push(asianTeams.splice(0, 4));
+      }
+
+      // 3. draw 4 groups of 3.
+      let asianGroups = [];
+      for (let i = 0; i < 4; i++) {
+        asianGroups.push([]);
+        for (let j = 0; j < 3; j++) {
+          asianGroups[i].push(asianPots[j][i]);
+        }
+      }
+      console.log(asianGroups);
+
+      // Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
+      firstPlaces = [];
+      secondPlaces = [];
+
+      // Loop através de todos os grupos
+      for (let groupID = 0; groupID < asianGroups.length; groupID++) {
+        // Obter a posição do jogador no grupo atual
+        let thisGroup = GetWorldCupPosition(asianGroups[groupID]);
+        const playerPosition =
+          thisGroup.table.findIndex((team) => team.name == newPlayer.nation.name) + 1;
+
+        // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
+        if (playerPosition > 0) {
+          asianDescription.push(
+            `${TournamentPath[phase]}: ${playerPosition}º lugar${thisGroup.desc}`
+          );
+        }
+
+        // Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
+        firstPlaces.push(thisGroup.table[0]);
+        secondPlaces.push(thisGroup.table[1]);
+      }
+
+      if (player.nation.continent != "AFC") asianDescription.push("Grupos-->Sem Dados");
+
+      // Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
+      classif = firstPlaces.concat(secondPlaces);
+      phase += 3;
+      if (classif.some((t) => t.name == newPlayer.nation.name)) {
+        playerPhase += 3;
+      }
+
+      // Variável para indicar o fim do loop
+      end = false;
+
+      // Loop principal para simular os jogos do torneio até o final
+      while (!end) {
+        // Limpar variáveis para armazenar informações dos jogos
+        let games = "";
+        let newClassif = [];
+        let playerOpp = "";
+
+        // Loop pelos jogos do torneio atual
+        for (let matchID = 0; matchID < classif.length / 2; matchID++) {
+          // Selecionar os dois times para o jogo atual
+          let team1 = classif[matchID];
+          let team2 = classif[classif.length - (matchID + 1)];
+
+          // Obter o resultado do jogo
+          let game = GetKnockoutResult(team1, team2, false);
+
+          if (team1.name == player.nation.name || team2.name == player.nation.name) {
+            playerOpp = `: ${team1.name == player.nation.name ? team2.name : team1.name}`;
+          }
+
+          // Verificar se o jogador está envolvido no jogo atual
+          if (team1.name == player.nation.name || team2.name == player.nation.name) {
+            // Verificar se o jogador ganhou o jogo
+            if (
+              (game.result && team1.name == player.nation.name) ||
+              (!game.result && team2.name == player.nation.name)
+            ) {
+              playerPhase++;
+              // Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
+              if (playedContinental) {
+                newSeason.awardPoints += 0.6; // Máximo 0.6 x 5 = 3.0
+                newPlayer.fame += 6; // Máximo 6 x 5 = 30
+                if (playerPhase >= TournamentPath.length - 1) {
+                  newPlayer.worldCup.push(`${year}`);
+                  newSeason.awardPoints += 3.0; // Máximo 0.6 x 5 + 3.0 = 6.0
+                  newPlayer.fame += 30; // Máximo 6 x 5 + 30 = 60
+                }
+              }
+            }
+          }
+
+          // Adicionar o resultado do jogo ao histórico geral
+          games += `--> ${game.game}`;
+
+          // Adicionar os vencedores do jogo à nova classificação
+          if (game.result) {
+            newClassif.push(team1);
+          } else {
+            newClassif.push(team2);
+          }
+        }
+
+        // Construir a descrição da fase do torneio
+        asianDescription.push(`${TournamentPath[phase]}${playerOpp}${games}`);
+
+        // Avançar para a próxima fase e atualizar a classificação
+        phase++;
+        classif = newClassif;
+
+        // Verificar se o torneio chegou ao fim
+        if (phase >= TournamentPath.length - 1) {
+          end = true;
+        }
+      }
+
+      let playerAsianDesc = "";
+
+      if (player.nation.continent == "AFC") {
+        playerAsianDesc = `: ${TournamentPath[playerPhase]} ${
+          playedContinental ? "" : " (Não Convocado)"
+        }`;
+      }
+
+      console.log(JSON.parse(JSON.stringify(asianDescription)));
+
+      newSeason.titles.push([`Copa da Ásia${playerAsianDesc}`].concat(asianDescription));
+    }
+
     //World Cup
     if (year % 4 == 2) {
       newSeason.awardPoints -= 3.0;
@@ -877,6 +1427,7 @@ function App() {
       let firstPlaces = [];
       let secondPlaces = [];
       let thirdPlaces = [];
+      let thirdPlacesPoints = [];
 
       // Loop através de todos os grupos
       for (let groupID = 0; groupID < groups.length; groupID++) {
@@ -896,7 +1447,14 @@ function App() {
         firstPlaces.push(thisGroup.table[0]);
         secondPlaces.push(thisGroup.table[1]);
         thirdPlaces.push(thisGroup.table[2]);
+        thirdPlacesPoints.push(thisGroup.points[2]);
       }
+
+      thirdPlaces.sort((a, b) => {
+        return (
+          thirdPlacesPoints[thirdPlaces.indexOf(b)] - thirdPlacesPoints[thirdPlaces.indexOf(a)]
+        );
+      });
 
       // Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
       let classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 8));
@@ -1335,13 +1893,16 @@ function App() {
         let game = GetMatch(newTeams[home], newTeams[away]);
 
         if (game[0] > game[1]) {
-          points[home] += 3;
+          points[home] += 300;
         } else if (game[1] > game[0]) {
-          points[away] += 3;
+          points[away] += 300;
         } else {
-          points[away] += 1;
-          points[home] += 1;
+          points[away] += 100;
+          points[home] += 100;
         }
+
+        points[home] += game[0];
+        points[away] += game[1];
 
         if (
           playerTeam &&
@@ -1458,7 +2019,7 @@ function App() {
     };
   }
 
-  function GetLeaguePosition(teams, playerTeam) {
+  function GetLeaguePosition(teams) {
     let newTeams = DeepClone(teams);
     let points = new Array(newTeams.length).fill(0);
 
@@ -1537,6 +2098,9 @@ function App() {
     table.sort((a, b) => {
       return points[table.indexOf(b)] - points[table.indexOf(a)];
     });
+    points.sort((a, b) => {
+      return points[b] - points[a];
+    });
 
     desc += `--> Tabela`;
     for (let count = 0; count < table.length; count++) {
@@ -1546,6 +2110,7 @@ function App() {
     return {
       table: table,
       desc: desc,
+      points: points,
     };
   }
 
