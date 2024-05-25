@@ -95,6 +95,7 @@ function App() {
     nationalCup: [],
     europa: [],
     champions: [],
+    continentalChampionship: [],
     worldCup: [],
     awards: [],
     ballonDor: [],
@@ -448,11 +449,12 @@ function App() {
             // Incrementando a fase do jogador e concedendo pontos e prêmios adicionais
             playerPhase++;
             newSeason.awardPoints += 0.2; // Máximo 0.2 x 5 = 1.0
-            newPlayer.fame += 2;
+            newPlayer.fame++;
             if (playerPhase >= TournamentPath.length - 1) {
               // Se o jogador venceu o torneio, conceder prêmios adicionais
               newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
               newSeason.awardPoints += 1.0; // Máximo 0.2 x 5 + 1.0 = 2.0
+              newPlayer.fame += 5;
               triplice++;
             }
           }
@@ -861,7 +863,7 @@ function App() {
                 newSeason.awardPoints += 0.5; // Máximo 0.5 x 4 = 2.0
                 newPlayer.fame += 5; // Máximo 5 x 4 = 20
                 if (playerPhase >= TournamentPath.length - 1) {
-                  newPlayer.worldCup.push(`${year}`);
+                  newPlayer.continentalChampionship.push(`${year}`);
                   newSeason.awardPoints += 1.0; // Máximo 0.5 x 4 + 1.0 = 3.0
                   newPlayer.fame += 10; // Máximo 5 x 4 + 10 = 30
                 }
@@ -1002,7 +1004,7 @@ function App() {
                 newSeason.awardPoints += 0.6; // Máximo 0.6 x 3 = 1.8
                 newPlayer.fame += 6; // Máximo 6 x 3 = 18
                 if (playerPhase >= TournamentPath.length - 1) {
-                  newPlayer.worldCup.push(`${year}`);
+                  newPlayer.continentalChampionship.push(`${year}`);
                   newSeason.awardPoints += 1.2; // Máximo 0.6 x 3 + 1.2 = 3.0
                   newPlayer.fame += 12; // Máximo 6 x 3 + 12 = 30
                 }
@@ -1147,7 +1149,7 @@ function App() {
                 newSeason.awardPoints += 0.6; // Máximo 0.6 x 3 = 1.8
                 newPlayer.fame += 6; // Máximo 6 x 3 = 18
                 if (playerPhase >= TournamentPath.length - 1) {
-                  newPlayer.worldCup.push(`${year}`);
+                  newPlayer.continentalChampionship.push(`${year}`);
                   newSeason.awardPoints += 1.2; // Máximo 0.6 x 3 + 1.2 = 3.0
                   newPlayer.fame += 12; // Máximo 6 x 3 + 12 = 30
                 }
@@ -1292,7 +1294,7 @@ function App() {
                 newSeason.awardPoints += 0.6; // Máximo 0.6 x 3 = 1.8
                 newPlayer.fame += 6; // Máximo 6 x 3 = 18
                 if (playerPhase >= TournamentPath.length - 1) {
-                  newPlayer.worldCup.push(`${year}`);
+                  newPlayer.continentalChampionship.push(`${year}`);
                   newSeason.awardPoints += 1.2; // Máximo 0.6 x 3 + 1.2 = 3.0
                   newPlayer.fame += 12; // Máximo 6 x 3 + 12 = 30
                 }
@@ -1680,16 +1682,16 @@ function App() {
       //Golden Shoes
       newPlayer.awards.push(`Chuteiras de Ouro ${year} (${newPlayer.team.name})`);
       newSeason.awardPoints += 1.0;
-      newPlayer.fame += 40;
+      newPlayer.fame += 50;
       newSeason.titles.push(["Chuteira de Ouro"]);
     } else if (
       player.position.title == "GK" &&
-      newSeason.performance * 5 + (newPlayer.overall - 75) / 2 > 10
+      newSeason.awardPoints + newPlayer.overall + newSeason.performance * 2 >= 100
     ) {
       //Golden Gloves
       newPlayer.awards.push(`Luvas de Ouro ${year} (${newPlayer.team.name})`);
       newSeason.awardPoints += 1.0;
-      newPlayer.fame += 40;
+      newPlayer.fame += 50;
       newSeason.titles.push(["Luva de Ouro"]);
     }
 
@@ -1702,12 +1704,12 @@ function App() {
     if (newSeason.awardPoints + newPlayer.overall >= 100) {
       //Ballon D'or
       newPlayer.ballonDor.push(`Ballon D'or ${year} (${newPlayer.team.name})`);
-      newPlayer.fame += 80;
+      newPlayer.fame += 70;
       position = 1;
       newSeason.titles.push([`Ballon D'Or: 1º lugar`]);
     } else if (newSeason.awardPoints + newPlayer.overall >= 91) {
       let pts = Math.floor(newSeason.awardPoints + newPlayer.overall - 91);
-      newPlayer.fame += pts * 4;
+      newPlayer.fame += pts * 3;
       position = 10 - pts;
       newSeason.titles.push([`Ballon D'Or: ${position}º lugar`]);
     }
@@ -1850,8 +1852,6 @@ function App() {
           newPlayer.position.value *
             GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame)
         );
-
-        let contractSalaryAdjustment = 1.0 + RandomNumber(1, 20) / 100.0;
 
         setRenew({
           value: contractValue,
@@ -2772,11 +2772,19 @@ function App() {
           <p>Seleção: {player.nation == null ? "A definir" : player.nation.name}</p>
         </div>
         <details>
-          <summary>Copa do Mundo: {player.worldCup.length}</summary>
-          {player.worldCup.map((wc) => (
+          <summary>Continental: {player.continentalChampionship.length}</summary>
+          {player.continentalChampionship.map((wc) => (
             <p key={wc}>{wc}</p>
           ))}
         </details>
+        <div>
+          <details>
+            <summary>Copa do Mundo: {player.worldCup.length}</summary>
+            {player.worldCup.map((wc) => (
+              <p key={wc}>{wc}</p>
+            ))}
+          </details>
+        </div>
         <div>
           <p>Gols: {player.totalGoals}</p>
           <p>Assistências: {player.totalAssists}</p>
