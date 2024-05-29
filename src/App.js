@@ -1678,7 +1678,7 @@ function App() {
       newSeason.awardPoints += 1.0;
     }
 
-    if (45 + RandomNumber(0, 5) < newSeason.goals) {
+    if (40 + RandomNumber(0, 10) < newSeason.goals) {
       //Golden Shoes
       newPlayer.awards.push(`Chuteiras de Ouro ${year} (${newPlayer.team.name})`);
       newSeason.awardPoints += 1.0;
@@ -1686,7 +1686,7 @@ function App() {
       newSeason.titles.push(["Chuteira de Ouro"]);
     } else if (
       player.position.title == "GK" &&
-      newSeason.awardPoints + newPlayer.overall + newSeason.performance * 2 >= 100
+      newSeason.awardPoints + newPlayer.overall + newSeason.performance * 2.5 >= 100
     ) {
       //Golden Gloves
       newPlayer.awards.push(`Luvas de Ouro ${year} (${newPlayer.team.name})`);
