@@ -281,11 +281,22 @@ function App() {
     newGeneralPerformance.push(newPlayer.performance);
     if (newGeneralPerformance.length > 3) newGeneralPerformance.shift();
 
+    let med = 0;
+    for (let i = 0; i < newGeneralPerformance.length; i++) {
+      med += newGeneralPerformance[i];
+    }
+    med /= newGeneralPerformance.length;
+
     //giving the performance, set how many games did they were the starter player
-    let starting = Math.floor(
-      (newPlayer.overall - (75 + newPlayer.team.power / 2)) / 0.1 +
-        (Math.random() - Math.random()) * 10
-    );
+    let r = (Math.random() - Math.random()) * 10;
+    let starting =
+      Math.floor(
+        ((newPlayer.overall - (70 + newPlayer.team.power)) / 0.12 +
+          r +
+          newPlayer.performance * 5 +
+          med * 5) /
+          2
+      ) * 2;
     if (starting > 100) starting = 100;
     else if (starting < 0) starting = 0;
 
@@ -346,16 +357,18 @@ function App() {
       200.0;
 
     newSeason.goals = Math.floor(
-      goalsOppostunities *
-        (Math.pow(newPlayer.overall, 4) / 65000000.0) *
-        (1.0 + newSeason.performance / 4.0) *
-        (1.0 + (Math.random() - Math.random()) / 4.0)
+      (goalsOppostunities *
+        (Math.pow(newPlayer.overall, 5) / 5900.0) *
+        (1.0 + newSeason.performance / 2) *
+        (1.0 + (Math.random() - Math.random()) / 4.0)) /
+        1000000.0
     );
     newSeason.assists = Math.floor(
-      assistsOppostunities *
-        (Math.pow(newPlayer.overall, 4) / 65000000.0) *
-        (1.0 + newSeason.performance / 4.0) *
-        (1.0 + (Math.random() - Math.random()) / 4.0)
+      (assistsOppostunities *
+        (Math.pow(newPlayer.overall, 5) / 5900.0) *
+        (1.0 + newSeason.performance / 2) *
+        (1.0 + (Math.random() - Math.random()) / 4.0)) /
+        1000000.0
     );
 
     newSeason.awardPoints = newSeason.performance * 2; //min = -2.0 | max = 2.0
@@ -1678,13 +1691,15 @@ function App() {
       newSeason.awardPoints += 1.0;
     }
 
-    if (40 + RandomNumber(0, 10) < newSeason.goals) {
+    if (42 + RandomNumber(0, 10) < newSeason.goals) {
       //Golden Shoes
       newPlayer.awards.push(`Chuteiras de Ouro ${year} (${newPlayer.team.name})`);
       newSeason.awardPoints += 1.0;
       newPlayer.fame += 50;
       newSeason.titles.push(["Chuteira de Ouro"]);
-    } else if (
+    }
+
+    if (
       player.position.title == "GK" &&
       newSeason.awardPoints + newPlayer.overall + newSeason.performance * 2.5 >= 100
     ) {
