@@ -2346,8 +2346,8 @@ function App() {
     for (let index = 0; index < 3; index++) {
       let team = interestedTeams[index];
       if (team) {
-        let contractDuration = RandomNumber(1, 4);
-        contractDuration += currentPlayer.age <= 32 ? RandomNumber(1, 2) : 0;
+        let contractDuration = RandomNumber(1, 2);
+        contractDuration += currentPlayer.age <= 32 ? RandomNumber(1, 4) : 0;
         contractDuration += currentPlayer.age <= 24 ? RandomNumber(1, 2) : 0;
         let expectedOverall =
           GetOverall(
