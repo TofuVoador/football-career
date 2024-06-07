@@ -1881,12 +1881,12 @@ function App() {
       document.getElementById("decision-transfer3").style.display =
         newTransfers[2] == null ? "none" : "flex";
 
-      if (newPlayer.age >= 32) {
+      if (newPlayer.age >= 30) {
         //can retire
         document.getElementById("retire").style.display = "flex";
       }
 
-      if (newPlayer.age >= 36 && newPlayer.overall <= 84) {
+      if (newPlayer.age >= 36 && newPlayer.overall <= 85) {
         //must retire
         document.getElementById("decision-stay").style.display = "none";
         document.getElementById("decision-transfer1").style.display = "none";
