@@ -291,11 +291,7 @@ function App() {
     let r = (Math.random() - Math.random()) * 10;
     let starting =
       Math.floor(
-        ((newPlayer.overall - (70 + newPlayer.team.power)) / 0.12 +
-          r +
-          newPlayer.performance * 5 +
-          med * 5) /
-          2
+        ((newPlayer.overall - (70 + newPlayer.team.power)) * 8 + r + newPlayer.performance * 10) / 2
       ) * 2;
     if (starting > 100) starting = 100;
     else if (starting < 0) starting = 0;
@@ -358,15 +354,15 @@ function App() {
 
     newSeason.goals = Math.floor(
       (goalsOppostunities *
-        (Math.pow(newPlayer.overall, 5) / 5900.0) *
-        (1.0 + newSeason.performance / 2) *
+        (Math.pow(newPlayer.overall, 5) / 5000.0) *
+        (1.0 + newSeason.performance * newSeason.performance) *
         (1.0 + (Math.random() - Math.random()) / 4.0)) /
         1000000.0
     );
     newSeason.assists = Math.floor(
       (assistsOppostunities *
-        (Math.pow(newPlayer.overall, 5) / 5900.0) *
-        (1.0 + newSeason.performance / 2) *
+        (Math.pow(newPlayer.overall, 5) / 5000.0) *
+        (1.0 + newSeason.performance * newSeason.performance) *
         (1.0 + (Math.random() - Math.random()) / 4.0)) /
         1000000.0
     );
@@ -1691,7 +1687,7 @@ function App() {
       newSeason.awardPoints += 1.0;
     }
 
-    if (42 + RandomNumber(0, 10) < newSeason.goals) {
+    if (40 + RandomNumber(0, 10) + RandomNumber(0, 10) < newSeason.goals) {
       //Golden Shoes
       newPlayer.awards.push(`Chuteiras de Ouro ${year} (${newPlayer.team.name})`);
       newSeason.awardPoints += 1.0;
