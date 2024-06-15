@@ -2185,8 +2185,8 @@ function App() {
 
     let goals = Math.random() + Math.random();
 
-    let team1Luck = (Math.random() + Math.random()) * 3 - 1;
-    let team2Luck = (Math.random() + Math.random()) * 3 - 1;
+    let team1Luck = (Math.random() + Math.random()) * 2.5;
+    let team2Luck = (Math.random() + Math.random()) * 2.5;
 
     let team1Score = Math.round(goals * team1Luck * team1Power);
     let team2Score = Math.round(goals * team2Luck * team2Power);
@@ -2204,8 +2204,8 @@ function App() {
 
     let goals = Math.random() + Math.random();
 
-    let team1Luck = (Math.random() + Math.random()) * 2 - 1;
-    let team2Luck = (Math.random() + Math.random()) * 2 - 1;
+    let team1Luck = (Math.random() + Math.random()) * 1.5;
+    let team2Luck = (Math.random() + Math.random()) * 1.5;
 
     let team1Score = Math.round(goals * team1Luck * team1Power);
     let team2Score = Math.round(goals * team2Luck * team2Power);
