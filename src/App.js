@@ -2185,8 +2185,8 @@ function App() {
 
     let goals = Math.random() + Math.random();
 
-    let team1Luck = (Math.random() + Math.random()) * 2;
-    let team2Luck = (Math.random() + Math.random()) * 2;
+    let team1Luck = (Math.random() + Math.random()) * 3 - 1;
+    let team2Luck = (Math.random() + Math.random()) * 3 - 1;
 
     let team1Score = Math.round(goals * team1Luck * team1Power);
     let team2Score = Math.round(goals * team2Luck * team2Power);
@@ -2202,11 +2202,13 @@ function App() {
     let team1Power = Math.pow(team1.power, 2) / base;
     let team2Power = Math.pow(team2.power, 2) / base;
 
-    let team1Luck = (Math.random() + Math.random()) * 2 - 0.5;
-    let team2Luck = (Math.random() + Math.random()) * 2 - 0.5;
+    let goals = Math.random() + Math.random();
 
-    let team1Score = Math.round(team1Luck * team1Power);
-    let team2Score = Math.round(team2Luck * team2Power);
+    let team1Luck = (Math.random() + Math.random()) * 2 - 1;
+    let team2Luck = (Math.random() + Math.random()) * 2 - 1;
+
+    let team1Score = Math.round(goals * team1Luck * team1Power);
+    let team2Score = Math.round(goals * team2Luck * team2Power);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
@@ -2225,8 +2227,8 @@ function App() {
     let count = 0;
     while (!winner) {
       count++;
-      let team1shooter = RandomNumber(0, team1Power * 100);
-      let team2keeper = RandomNumber(0, team2Power * 80);
+      let team1shooter = Math.random() * team1Power * 10;
+      let team2keeper = Math.random() * team2Power * 7;
 
       if (team1shooter > team2keeper) team1goals++;
 
