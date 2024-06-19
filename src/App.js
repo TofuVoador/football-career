@@ -1769,32 +1769,22 @@ function App() {
       document.getElementById("decision-transfer3").style.display = "none";
       document.getElementById("retire").style.display = "none";
     } else if (
-      //if played good midde contract
-      newPlayer.performance > 0.5 &&
-      med > 0 &&
-      generalPerformance.length >= 2 &&
-      newTransfers[0] != null &&
+      //if played good or bad midde contract
+      ((newPlayer.performance > 0.5 && med > 0) || (newPlayer.performance < -0.5 && med < 0)) &&
+      generalPerformance.length >= 3 &&
       contract > 1
     ) {
       document.getElementById("decision-transfer1").style.display = "flex";
       if (newTransfers[0].contract.value < newPlayer.wage)
         newTransfers[0].contract.value = newPlayer.wage;
 
-      if (newTransfers[1] == null) {
-        document.getElementById("decision-transfer2").style.display = "none";
-      } else {
-        document.getElementById("decision-transfer2").style.display = "flex";
-        if (newTransfers[1].contract.value < newPlayer.wage)
-          newTransfers[1].contract.value = newPlayer.wage;
-      }
+      document.getElementById("decision-transfer2").style.display = "flex";
+      if (newTransfers[1].contract.value < newPlayer.wage)
+        newTransfers[1].contract.value = newPlayer.wage;
 
-      if (newTransfers[2] == null) {
-        document.getElementById("decision-transfer3").style.display = "none";
-      } else {
-        document.getElementById("decision-transfer3").style.display = "flex";
-        if (newTransfers[2].contract.value < newPlayer.wage)
-          newTransfers[1].contract.value = newPlayer.wage;
-      }
+      document.getElementById("decision-transfer3").style.display = "flex";
+      if (newTransfers[2].contract.value < newPlayer.wage)
+        newTransfers[1].contract.value = newPlayer.wage;
 
       setRenew({
         value: newPlayer.wage * 1.1,
@@ -1805,14 +1795,14 @@ function App() {
       //cant retire because of the contract
       document.getElementById("retire").style.display = "none";
     } else if (
-      //played bad midde contract
+      //loan
       newPlayer.performance < -0.5 &&
       med < 0 &&
-      (generalPerformance.length >= 2 || newSeason.starting < 50) &&
+      (generalPerformance.length >= 2 || newPlayer.age < 24) &&
       newTransfers.some((t) => t != null && t.team.power < newPlayer.team.power) &&
       contract > 3
     ) {
-      if (newTransfers[0] == null || newTransfers[0].team.power > newPlayer.team.power) {
+      if (newTransfers[0].team.power > newPlayer.team.power) {
         document.getElementById("decision-transfer1").style.display = "none";
       } else {
         //proposal 1
@@ -1822,7 +1812,7 @@ function App() {
         newTransfers[0].contract.value = newPlayer.wage;
       }
 
-      if (newTransfers[1] == null || newTransfers[1].team.power > newPlayer.team.power) {
+      if (newTransfers[1].team.power > newPlayer.team.power) {
         document.getElementById("decision-transfer2").style.display = "none";
       } else {
         //proposal 2
@@ -1832,7 +1822,7 @@ function App() {
         newTransfers[1].contract.value = newPlayer.wage;
       }
 
-      if (newTransfers[2] == null || newTransfers[2].team.power > newPlayer.team.power) {
+      if (newTransfers[2].team.power > newPlayer.team.power) {
         document.getElementById("decision-transfer3").style.display = "none";
       } else {
         //proposal 3
@@ -1851,13 +1841,13 @@ function App() {
       //if contract expired
       contract <= 1
     ) {
-      if (med < 0 && newTransfers[0] != null) {
+      if (med < 0) {
         //cant stay
         document.getElementById("decision-stay").style.display = "none";
       } else {
         //can stay
         document.getElementById("decision-stay").style.display = "flex";
-        let contractDuration = RandomNumber(1, 4);
+        let contractDuration = RandomNumber(1, 2);
 
         let contractValue = Math.round(
           newPlayer.position.value *
@@ -1870,14 +1860,11 @@ function App() {
         });
       }
 
-      document.getElementById("decision-transfer1").style.display =
-        newTransfers[0] == null ? "none" : "flex";
-      document.getElementById("decision-transfer2").style.display =
-        newTransfers[1] == null ? "none" : "flex";
-      document.getElementById("decision-transfer3").style.display =
-        newTransfers[2] == null ? "none" : "flex";
+      document.getElementById("decision-transfer1").style.display = "flex";
+      document.getElementById("decision-transfer2").style.display = "flex";
+      document.getElementById("decision-transfer3").style.display = "flex";
 
-      if (newPlayer.age >= 30) {
+      if (newPlayer.age >= 32) {
         //can retire
         document.getElementById("retire").style.display = "flex";
       }
@@ -2325,18 +2312,18 @@ function App() {
       return b.power - a.power + Math.random();
     });
 
-    allTeams = allTeams.slice(0, allTeams.length / 2);
+    allTeams = allTeams.slice(0, allTeams.length / (3 + currentPlayer.performance));
 
     let interestedTeams = [];
 
-    for (let i = 0; i < allTeams.length; i++) {
-      let chance = currentPlayer.overall / allTeams[i].power;
+    for (let i = 0; i < 3; i++) {
+      let teamID = RandomNumber(0, allTeams.length - 1);
 
-      let r = RandomNumber(0, 100);
-      if (r < chance && !history.some((t) => t.team == allTeams[i].name)) {
-        interestedTeams.push(allTeams[i]);
-        if (interestedTeams.length > 3) break;
+      while (history.some((t) => t.team == allTeams[teamID].name)) {
+        teamID = RandomNumber(0, allTeams.length - 1);
       }
+
+      interestedTeams.push(allTeams[teamID]);
     }
 
     let contracts = [];
@@ -2344,8 +2331,8 @@ function App() {
     for (let index = 0; index < 3; index++) {
       let team = interestedTeams[index];
       if (team) {
-        let contractDuration = RandomNumber(1, 2);
-        contractDuration += currentPlayer.age <= 32 ? RandomNumber(1, 4) : 0;
+        let contractDuration = RandomNumber(1, 4);
+        contractDuration += currentPlayer.age <= 32 ? RandomNumber(1, 2) : 0;
         contractDuration += currentPlayer.age <= 24 ? RandomNumber(1, 2) : 0;
         let expectedOverall =
           GetOverall(
@@ -2405,7 +2392,7 @@ function App() {
       allTeams[randomIndices[2]],
     ];
 
-    let contractDurations = [RandomNumber(2, 6), RandomNumber(2, 6), RandomNumber(2, 6)];
+    let contractDurations = [RandomNumber(2, 8), RandomNumber(2, 8), RandomNumber(2, 8)];
 
     let contractWages = [
       Math.round(posValue * GetWage(GetOverall(0, 18, teams[0].power), teams[0].power, 0)),
