@@ -2316,8 +2316,6 @@ function App() {
       allTeams.length / (4 + currentPlayer.performance)
     );
 
-    console.log(allTeams);
-
     let interestedTeams = [];
 
     for (let i = 0; i < 3; i++) {
