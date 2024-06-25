@@ -2311,7 +2311,12 @@ function App() {
       return b.power - a.power + Math.random();
     });
 
-    allTeams = allTeams.slice(0, allTeams.length / (4 + currentPlayer.performance));
+    allTeams = allTeams.slice(
+      Math.floor(Math.abs(28 - currentPlayer.age)),
+      allTeams.length / (4 + currentPlayer.performance)
+    );
+
+    console.log(allTeams);
 
     let interestedTeams = [];
 
