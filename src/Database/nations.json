@@ -8,7 +8,7 @@
         "continent": "AFC",
         "latitude": 35.68,
         "longitude": 139.69,
-        "power": 7.0,
+        "power": 6.8,
         "distance": 1975
       },
       {
@@ -36,27 +36,27 @@
         "distance": 850
       },
       {
-        "name": "Catar",
-        "continent": "AFC",
-        "latitude": 25.35,
-        "longitude": 51.18,
-        "power": 5.6,
-        "distance": 65
-      },
-      {
         "name": "Arábia Saudita",
         "continent": "AFC",
         "latitude": 24.47,
         "longitude": 39.83,
-        "power": 5.4,
+        "power": 5.6,
         "distance": 1175
+      },
+      {
+        "name": "Catar",
+        "continent": "AFC",
+        "latitude": 25.35,
+        "longitude": 51.18,
+        "power": 5.2,
+        "distance": 65
       },
       {
         "name": "Iraque",
         "continent": "AFC",
         "latitude": 33.22,
         "longitude": 43.68,
-        "power": 5.2,
+        "power": 5.0,
         "distance": 725
       },
       {
@@ -110,7 +110,7 @@
         "continent": "CAF",
         "latitude": 33.81,
         "longitude": -6.65,
-        "power": 7.2,
+        "power": 7.0,
         "distance": 850
       },
       {
@@ -212,7 +212,7 @@
         "continent": "CONCACAF",
         "latitude": 35.97,
         "longitude": -97.46,
-        "power": 6.8,
+        "power": 6.6,
         "distance": 2825
       },
       {
@@ -220,7 +220,7 @@
         "continent": "CONCACAF",
         "latitude": 23.63,
         "longitude": -102.55,
-        "power": 6.6,
+        "power": 6.4,
         "distance": 1625
       },
       {
@@ -228,7 +228,7 @@
         "continent": "CONCACAF",
         "latitude": 46.98,
         "longitude": -93.16,
-        "power": 5.2,
+        "power": 5.4,
         "distance": 2150
       },
       {
@@ -274,7 +274,7 @@
         "continent": "CONMEBOL",
         "latitude": -15.78,
         "longitude": -42.95,
-        "power": 8.8,
+        "power": 8.2,
         "distance": 2425
       },
       {
@@ -290,7 +290,7 @@
         "continent": "CONMEBOL",
         "latitude": 4.57,
         "longitude": -74.3,
-        "power": 6.8,
+        "power": 7.2,
         "distance": 1375
       },
       {
@@ -310,20 +310,20 @@
         "distance": 1225
       },
       {
+        "name": "Venezuela",
+        "continent": "CONMEBOL",
+        "latitude": 6.42,
+        "longitude": -66.59,
+        "power": 5.2,
+        "distance": 1100
+      },
+      {
         "name": "Chile",
         "continent": "CONMEBOL",
         "latitude": -35.68,
         "longitude": -71.54,
         "power": 5.0,
         "distance": 1375
-      },
-      {
-        "name": "Venezuela",
-        "continent": "CONMEBOL",
-        "latitude": 6.42,
-        "longitude": -66.59,
-        "power": 5.0,
-        "distance": 1100
       },
       {
         "name": "Bolívia",
@@ -368,7 +368,7 @@
         "continent": "UEFA",
         "latitude": 51.17,
         "longitude": 10.45,
-        "power": 8.6,
+        "power": 8.8,
         "distance": 625
       },
       {
@@ -376,7 +376,7 @@
         "continent": "UEFA",
         "latitude": 40.46,
         "longitude": -3.75,
-        "power": 8.4,
+        "power": 8.6,
         "distance": 750
       },
       {
@@ -384,7 +384,7 @@
         "continent": "UEFA",
         "latitude": 39.4,
         "longitude": -8.22,
-        "power": 8.2,
+        "power": 8.4,
         "distance": 375
       },
       {
@@ -428,19 +428,19 @@
         "distance": 300
       },
       {
-        "name": "Dinamarca",
-        "continent": "UEFA",
-        "latitude": 56.26,
-        "longitude": 9.5,
-        "power": 7.0,
-        "distance": 325
-      },
-      {
         "name": "Áustria",
         "continent": "UEFA",
         "latitude": 47.52,
         "longitude": 14.55,
-        "power": 6.6,
+        "power": 7.0,
+        "distance": 325
+      },
+      {
+        "name": "Dinamarca",
+        "continent": "UEFA",
+        "latitude": 56.26,
+        "longitude": 9.5,
+        "power": 6.8,
         "distance": 325
       },
       {
@@ -448,16 +448,16 @@
         "continent": "UEFA",
         "latitude": 47.16,
         "longitude": 19.5,
-        "power": 6.4,
+        "power": 6.6,
         "distance": 475
       },
       {
-        "name": "Suécia",
+        "name": "Turquia",
         "continent": "UEFA",
-        "latitude": 58.42,
-        "longitude": 15.44,
+        "latitude": 39.31,
+        "longitude": 30.67,
         "power": 6.2,
-        "distance": 575
+        "distance": 1050
       },
       {
         "name": "Ucrânia",
@@ -468,12 +468,12 @@
         "distance": 925
       },
       {
-        "name": "Turquia",
+        "name": "Suécia",
         "continent": "UEFA",
-        "latitude": 39.31,
-        "longitude": 30.67,
+        "latitude": 58.42,
+        "longitude": 15.44,
         "power": 5.8,
-        "distance": 1050
+        "distance": 575
       },
       {
         "name": "Polônia",
@@ -524,20 +524,20 @@
         "distance": 275
       },
       {
-        "name": "País de Gales",
-        "continent": "UEFA",
-        "latitude": 52.3,
-        "longitude": -3.9,
-        "power": 4.8,
-        "distance": 300
-      },
-      {
         "name": "Eslovênia",
         "continent": "UEFA",
         "latitude": 46.15,
         "longitude": 14.99,
-        "power": 4.6,
+        "power": 4.8,
         "distance": 175
+      },
+      {
+        "name": "País de Gales",
+        "continent": "UEFA",
+        "latitude": 52.3,
+        "longitude": -3.9,
+        "power": 4.6,
+        "distance": 300
       },
       {
         "name": "Noruega",
