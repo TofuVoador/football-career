@@ -16,7 +16,7 @@
         "continent": "AFC",
         "latitude": 32.43,
         "longitude": 53.69,
-        "power": 6.4,
+        "power": 6.2,
         "distance": 1460
       },
       {
@@ -110,7 +110,7 @@
         "continent": "CAF",
         "latitude": 33.81,
         "longitude": -6.65,
-        "power": 7.0,
+        "power": 6.8,
         "distance": 850
       },
       {
@@ -212,7 +212,7 @@
         "continent": "CONCACAF",
         "latitude": 35.97,
         "longitude": -97.46,
-        "power": 6.6,
+        "power": 6.4,
         "distance": 2825
       },
       {
@@ -220,7 +220,7 @@
         "continent": "CONCACAF",
         "latitude": 23.63,
         "longitude": -102.55,
-        "power": 6.4,
+        "power": 6.2,
         "distance": 1625
       },
       {
@@ -290,7 +290,7 @@
         "continent": "CONMEBOL",
         "latitude": 4.57,
         "longitude": -74.3,
-        "power": 7.2,
+        "power": 7.0,
         "distance": 1375
       },
       {
@@ -416,7 +416,7 @@
         "continent": "UEFA",
         "latitude": 50.85,
         "longitude": 4.35,
-        "power": 7.4,
+        "power": 7.2,
         "distance": 150
       },
       {
@@ -424,7 +424,7 @@
         "continent": "UEFA",
         "latitude": 46.81,
         "longitude": 8.23,
-        "power": 7.2,
+        "power": 7.0,
         "distance": 300
       },
       {
@@ -432,7 +432,7 @@
         "continent": "UEFA",
         "latitude": 47.52,
         "longitude": 14.55,
-        "power": 7.0,
+        "power": 6.8,
         "distance": 325
       },
       {
@@ -440,7 +440,7 @@
         "continent": "UEFA",
         "latitude": 56.26,
         "longitude": 9.5,
-        "power": 6.8,
+        "power": 6.6,
         "distance": 325
       },
       {
