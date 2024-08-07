@@ -1,80 +1,80 @@
 [
   {
     "title": "Centroavante",
-    "goalsBonus": 40,
-    "assistsBonus": 17,
+    "goalsMultiplier": 1.0,
+    "assistsMultiplier": 0.45,
     "value": 1
   },
   {
     "title": "Segundo Atacante",
-    "goalsBonus": 36,
-    "assistsBonus": 19,
+    "goalsMultiplier": 0.9,
+    "assistsMultiplier": 0.55,
     "value": 1
   },
   {
     "title": "Ponta Esquerda",
-    "goalsBonus": 32,
-    "assistsBonus": 21,
+    "goalsMultiplier": 0.8,
+    "assistsMultiplier": 0.65,
     "value": 1
   },
   {
     "title": "Ponta Direita",
-    "goalsBonus": 32,
-    "assistsBonus": 21,
+    "goalsMultiplier": 0.8,
+    "assistsMultiplier": 0.65,
     "value": 1
   },
   {
     "title": "Meia-Atacante",
-    "goalsBonus": 28,
-    "assistsBonus": 23,
+    "goalsMultiplier": 0.7,
+    "assistsMultiplier": 0.75,
     "value": 1
   },
   {
     "title": "Meia Esquerda",
-    "goalsBonus": 24,
-    "assistsBonus": 25,
+    "goalsMultiplier": 0.5,
+    "assistsMultiplier": 0.65,
     "value": 0.8
   },
   {
     "title": "Meia Central",
-    "goalsBonus": 24,
-    "assistsBonus": 25,
+    "goalsMultiplier": 0.5,
+    "assistsMultiplier": 0.65,
     "value": 0.8
   },
   {
     "title": "Meia Direita",
-    "goalsBonus": 24,
-    "assistsBonus": 25,
+    "goalsMultiplier": 0.5,
+    "assistsMultiplier": 0.65,
     "value": 0.8
   },
   {
     "title": "Volante",
-    "goalsBonus": 20,
-    "assistsBonus": 21,
+    "goalsMultiplier": 0.4,
+    "assistsMultiplier": 0.55,
     "value": 0.8
   },
   {
     "title": "Lateral Esquerdo",
-    "goalsBonus": 16,
-    "assistsBonus": 17,
+    "goalsMultiplier": 0.3,
+    "assistsMultiplier": 0.45,
     "value": 0.6
   },
   {
     "title": "Lateral Direito",
-    "goalsBonus": 16,
-    "assistsBonus": 17,
+    "goalsMultiplier": 0.3,
+    "assistsMultiplier": 0.45,
     "value": 0.6
   },
   {
     "title": "Zagueiro Central",
-    "goalsBonus": 12,
-    "assistsBonus": 13,
+    "goalsMultiplier": 0.2,
+    "assistsMultiplier": 0.45,
     "value": 0.6
   },
   {
     "title": "Goleiro",
-    "goalsBonus": 4,
-    "assistsBonus": 9,
+    "goalsMultiplier": 0.1,
+    "assistsMultiplier": 0.25,
     "value": 0.6
   }
 ]

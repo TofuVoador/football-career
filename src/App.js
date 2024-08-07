@@ -339,34 +339,9 @@ function App() {
     let newSeason = currentSeason;
 
     //randomize how many goals/assists did they score
-    let goalsOppostunities =
-      (newPlayer.position.goalsBonus *
-        (Math.pow(newPlayer.team.power, 2) +
-          newSeason.starting / 2 +
-          (newSeason.performance + 1) * 25.0)) /
-      200.0;
-    let assistsOppostunities =
-      (newPlayer.position.assistsBonus *
-        (Math.pow(newPlayer.team.power, 2) +
-          newSeason.starting / 2 +
-          (newSeason.performance + 1) * 25.0)) /
-      200.0;
 
-    newSeason.goals = Math.floor(
-      (goalsOppostunities *
-        (Math.pow(newPlayer.overall, 5) / 5000.0) *
-        (1.0 + newSeason.performance * newSeason.performance) *
-        (1.0 + (Math.random() - Math.random()) / 4.0)) /
-        1000000.0
-    );
-    newSeason.assists = Math.floor(
-      (assistsOppostunities *
-        (Math.pow(newPlayer.overall, 5) / 5000.0) *
-        (1.0 + newSeason.performance * newSeason.performance) *
-        (1.0 + (Math.random() - Math.random()) / 4.0)) /
-        1000000.0
-    );
-
+    let goalsOppostunities = 0;
+    let assistsOppostunities = 0;
     newSeason.awardPoints = newSeason.performance * 2; //min = -2.0 | max = 2.0
 
     let med = 0;
@@ -406,6 +381,9 @@ function App() {
       ((playerLeagueResult.championsSpots / 4.0) * (5 - playerPosition)) / 2.0; //max = 2.0
     newSeason.titles.push([`Liga: ${playerPosition}º lugar`].concat(leaguesTopEight));
     newPlayer.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0);
+
+    goalsOppostunities += 10 - playerPosition;
+    assistsOppostunities += 10 - playerPosition;
 
     //if fist place, then won trophy
     if (playerPosition == 1) {
@@ -457,6 +435,8 @@ function App() {
           ) {
             // Incrementando a fase do jogador e concedendo pontos e prêmios adicionais
             playerPhase++;
+            goalsOppostunities += Math.random();
+            assistsOppostunities += Math.random();
             newSeason.awardPoints += 0.2; // Máximo 0.2 x 5 = 1.0
             newPlayer.fame += 2; // Copa Nacional Máximo 2 x 5 = 10
             if (playerPhase >= TournamentPath.length - 1) {
@@ -608,6 +588,8 @@ function App() {
           ) {
             // Incrementar a fase do jogador e conceder pontos e prêmios adicionais
             playerPhase++;
+            goalsOppostunities += Math.random();
+            assistsOppostunities += Math.random();
             newSeason.awardPoints += 0.6; // Máximo 0.6 x 5 = 3.0
             newPlayer.fame += 4; // Champions Máximo 4 x 5 = 20
             if (playerPhase >= TournamentPath.length - 1) {
@@ -724,6 +706,8 @@ function App() {
           ) {
             // Incrementar a fase do jogador e, se vencer o torneio, adicionar à sua lista de realizações
             playerPhase++;
+            goalsOppostunities += Math.random();
+            assistsOppostunities += Math.random();
             newPlayer.fame += 4; // Europa League Máximo 4 x 4 = 16
             if (playerPhase >= TournamentPath.length - 1) {
               newPlayer.europa.push(`${year} (${newPlayer.team.name})`);
@@ -866,6 +850,8 @@ function App() {
               (!game.result && team2.name == player.nation.name)
             ) {
               playerPhase++;
+              goalsOppostunities += Math.random();
+              assistsOppostunities += Math.random();
               // Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
               if (playedContinental) {
                 newSeason.awardPoints += 0.5; // Máximo 0.5 x 4 = 2.0
@@ -1007,6 +993,8 @@ function App() {
               (!game.result && team2.name == player.nation.name)
             ) {
               playerPhase++;
+              goalsOppostunities += Math.random();
+              assistsOppostunities += Math.random();
               // Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
               if (playedContinental) {
                 newSeason.awardPoints += 0.6; // Máximo 0.6 x 3 = 1.8
@@ -1152,6 +1140,8 @@ function App() {
               (!game.result && team2.name == player.nation.name)
             ) {
               playerPhase++;
+              goalsOppostunities += Math.random();
+              assistsOppostunities += Math.random();
               // Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
               if (playedContinental) {
                 newSeason.awardPoints += 0.6; // Máximo 0.6 x 3 = 1.8
@@ -1297,6 +1287,8 @@ function App() {
               (!game.result && team2.name == player.nation.name)
             ) {
               playerPhase++;
+              goalsOppostunities += Math.random();
+              assistsOppostunities += Math.random();
               // Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
               if (playedContinental) {
                 newSeason.awardPoints += 0.6; // Máximo 0.6 x 3 = 1.8
@@ -1540,6 +1532,8 @@ function App() {
               (!game.result && team2.name == player.nation.name)
             ) {
               playerPhase++;
+              goalsOppostunities += Math.random();
+              assistsOppostunities += Math.random();
               // Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
               if (playedWorldCup) {
                 newSeason.awardPoints += 0.6; // Máximo 0.6 x 5 = 3.0
@@ -1668,6 +1662,21 @@ function App() {
 
       setWorldCupHistoryHosts(newWorldCupHistoryHosts);
     }
+
+    let performanceMultiplier = Math.pow(newPlayer.team.power, 2) / 100.0; //adds from 0 to 1.0
+    performanceMultiplier += newSeason.starting / 100.0; //adds from 0 to 1.0
+    performanceMultiplier += newSeason.performance; //adds from -1.0 to 1.0
+    performanceMultiplier += Math.pow(newPlayer.overall, 2) / 10000.0;
+
+    console.log(performanceMultiplier, goalsOppostunities);
+
+    newSeason.goals = Math.floor(
+      newPlayer.position.goalsMultiplier * performanceMultiplier * goalsOppostunities
+    );
+
+    newSeason.assists = Math.floor(
+      newPlayer.position.assistsMultiplier * performanceMultiplier * assistsOppostunities
+    );
 
     //add goals to the carrer summary
     newPlayer.totalGoals += newSeason.goals;
