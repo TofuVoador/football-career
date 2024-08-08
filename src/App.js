@@ -1849,40 +1849,41 @@ function App() {
       //if contract expired
       contract <= 1
     ) {
-      if (med < 0) {
-        //cant stay
-        document.getElementById("decision-stay").style.display = "none";
-      } else {
-        //can stay
-        document.getElementById("decision-stay").style.display = "flex";
-        let contractDuration = RandomNumber(1, 2);
-
-        let contractValue = Math.round(
-          newPlayer.position.value *
-            GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame)
-        );
-
-        setRenew({
-          value: contractValue,
-          duration: contractDuration,
-        });
-      }
-
-      document.getElementById("decision-transfer1").style.display = "flex";
-      document.getElementById("decision-transfer2").style.display = "flex";
-      document.getElementById("decision-transfer3").style.display = "flex";
-
-      if (newPlayer.age >= 32) {
-        //can retire
-        document.getElementById("retire").style.display = "flex";
-      }
-
       if (newPlayer.age >= 36 && newPlayer.overall <= 85) {
         //must retire
+        document.getElementById("retire").style.display = "flex";
         document.getElementById("decision-stay").style.display = "none";
         document.getElementById("decision-transfer1").style.display = "none";
         document.getElementById("decision-transfer2").style.display = "none";
         document.getElementById("decision-transfer3").style.display = "none";
+      } else {
+        if (med < 0) {
+          //cant stay
+          document.getElementById("decision-stay").style.display = "none";
+        } else {
+          //can stay
+          document.getElementById("decision-stay").style.display = "flex";
+          let contractDuration = RandomNumber(1, 2);
+
+          let contractValue = Math.round(
+            newPlayer.position.value *
+              GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame)
+          );
+
+          setRenew({
+            value: contractValue,
+            duration: contractDuration,
+          });
+        }
+
+        document.getElementById("decision-transfer1").style.display = "flex";
+        document.getElementById("decision-transfer2").style.display = "flex";
+        document.getElementById("decision-transfer3").style.display = "flex";
+
+        if (newPlayer.age >= 32) {
+          //can retire
+          document.getElementById("retire").style.display = "flex";
+        }
       }
     } else {
       ChooseTeam();
