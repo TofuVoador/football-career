@@ -13,13 +13,17 @@ const Season = (props) => {
           {season.year}: {season.team.name} (
           {(Math.round(season.team.power * 50.0) / 100.0).toFixed(2)})
         </p>
-        <div className="oval">{season.overall.toFixed(1)}</div>
       </summary>
       <div className="season-stats">
-        {season.age} anos
         <div className="double-column">
-          <div>${FormatarNumero(season.marketValue)}</div>
-          <div>${FormatarNumero(season.wage)}/ano</div>
+          <div>
+            <p>{season.age} anos</p>
+            <p>{season.overall.toFixed(1)}</p>
+          </div>
+          <div>
+            <p>${FormatarNumero(season.marketValue)}</p>
+            <p>${FormatarNumero(season.wage)}/ano</p>
+          </div>
         </div>
         <p style={{ marginTop: "0.5rem" }}>Performance:</p>
         <div
@@ -106,14 +110,28 @@ const Season = (props) => {
           <details>
             <summary>Top Clubes</summary>
             {season.top10.map((team, index) => (
-              <p key={team + "topClubs" + index}>
-                {team.name} ({(Math.round(team.power * 50.0) / 100.0).toFixed(2)})
+              <p
+                key={team + "topClubs" + index}
+                style={{
+                  color:
+                    season.team.name === team.name ? "var(--color-contrast)" : "var(--color-light)",
+                }}
+              >
+                {team.rank}. {team.name} ({(Math.round(team.power * 50.0) / 100.0).toFixed(2)})
               </p>
             ))}
             <details>
               <summary>Maiores Ganhos</summary>
               {season.topGains.map((team, index) => (
-                <p key={team + "topClubs" + index}>
+                <p
+                  key={team + "topClubs" + index}
+                  style={{
+                    color:
+                      season.team.name === team.team
+                        ? "var(--color-contrast)"
+                        : "var(--color-light)",
+                  }}
+                >
                   {team.team} ({team.change.toFixed(2) > 0 ? "+" : ""}
                   {(Math.round(team.change * 50.0) / 100.0).toFixed(2)})
                 </p>
@@ -122,7 +140,15 @@ const Season = (props) => {
             <details>
               <summary>Maiores Perdas</summary>
               {season.topLoss.map((team, index) => (
-                <p key={team + "topClubs" + index}>
+                <p
+                  key={team + "topClubs" + index}
+                  style={{
+                    color:
+                      season.team.name === team.team
+                        ? "var(--color-contrast)"
+                        : "var(--color-light)",
+                  }}
+                >
                   {team.team} ({team.change.toFixed(2) > 0 ? "+" : ""}
                   {(Math.round(team.change * 50.0) / 100.0).toFixed(2)})
                 </p>
@@ -132,14 +158,30 @@ const Season = (props) => {
           <details>
             <summary>Top Seleções</summary>
             {season.topNations.map((team, index) => (
-              <p key={team + "topNations" + index}>
-                {team.name} ({(Math.round(team.power * 50.0) / 100.0).toFixed(2)})
+              <p
+                key={team + "topNations" + index}
+                style={{
+                  color:
+                    season.nation.name === team.name
+                      ? "var(--color-contrast)"
+                      : "var(--color-light)",
+                }}
+              >
+                {team.rank}. {team.name} ({(Math.round(team.power * 50.0) / 100.0).toFixed(2)})
               </p>
             ))}
             <details>
               <summary>Maiores Ganhos</summary>
               {season.topNationsGains.map((team, index) => (
-                <p key={team + "topClubs" + index}>
+                <p
+                  key={team + "topClubs" + index}
+                  style={{
+                    color:
+                      season.nation.name === team.name
+                        ? "var(--color-contrast)"
+                        : "var(--color-light)",
+                  }}
+                >
                   {team.nation} ({team.change.toFixed(2) > 0 ? "+" : ""}
                   {(Math.round(team.change * 50.0) / 100.0).toFixed(2)})
                 </p>
@@ -148,7 +190,15 @@ const Season = (props) => {
             <details>
               <summary>Maiores Perdas</summary>
               {season.topNationsLoss.map((team, index) => (
-                <p key={team + "topClubs" + index}>
+                <p
+                  key={team + "topClubs" + index}
+                  style={{
+                    color:
+                      season.nation.name === team.name
+                        ? "var(--color-contrast)"
+                        : "var(--color-light)",
+                  }}
+                >
                   {team.nation} ({team.change.toFixed(2) > 0 ? "+" : ""}
                   {(Math.round(team.change * 50.0) / 100.0).toFixed(2)})
                 </p>

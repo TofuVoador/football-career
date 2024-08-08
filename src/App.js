@@ -241,7 +241,20 @@ function App() {
       return b.power - a.power;
     });
     //creates a list of top 10 teams
-    let top10 = allTeams.slice(0, 10);
+    let top10 = allTeams.slice(0, 10).map((team, index) => ({
+      ...team,
+      rank: index + 1, // Rank starts from 1
+    }));
+    if (!top10.some((t) => t.name === newPlayer.team.name)) {
+      const playerTeam = allTeams.find((t) => t.name === newPlayer.team.name);
+      const playerRanking = allTeams.findIndex((t) => t.name === newPlayer.team.name) + 1;
+      if (playerTeam) {
+        top10.push({
+          ...playerTeam,
+          rank: playerRanking,
+        });
+      }
+    }
 
     //change nations power on each season
     let updatedNations = UpdateNationsStats();
@@ -254,7 +267,20 @@ function App() {
       return b.power - a.power;
     });
     //creates a list of top 10 nations
-    let topNations = allNations.slice(0, 10);
+    let topNations = allNations.slice(0, 10).map((team, index) => ({
+      ...team,
+      rank: index + 1, // Rank starts from 1
+    }));
+    if (!topNations.some((t) => t.name === newPlayer.nation.name)) {
+      const playerTeam = allNations.find((t) => t.name === newPlayer.nation.name);
+      const playerRanking = allNations.findIndex((t) => t.name === newPlayer.nation.name) + 1;
+      if (playerTeam) {
+        topNations.push({
+          ...playerTeam,
+          rank: playerRanking,
+        });
+      }
+    }
 
     newPlayer.team = allTeams.find((t) => t.name == newPlayer.team.name); //find player's team by name and update
     newPlayer.nation = allNations.find((n) => n.name == newPlayer.nation.name); //find player's nation by name and update
@@ -307,6 +333,7 @@ function App() {
       topNationsLoss: updatedNations.topLosses,
       age: newPlayer.age,
       team: DeepClone(newPlayer.team),
+      nation: DeepClone(newPlayer.nation),
       wage: newPlayer.wage,
       starting: starting,
       titles: [],
@@ -1668,8 +1695,6 @@ function App() {
     performanceMultiplier += newSeason.performance; //adds from -1.0 to 1.0
     performanceMultiplier += Math.pow(newPlayer.overall, 2) / 10000.0;
 
-    console.log(performanceMultiplier, goalsOppostunities);
-
     newSeason.goals = Math.floor(
       newPlayer.position.goalsMultiplier * performanceMultiplier * goalsOppostunities
     );
@@ -2542,8 +2567,8 @@ function App() {
     gains.sort((a, b) => b.change - a.change);
     losses.sort((a, b) => a.change - b.change);
 
-    let topGains = gains.slice(0, 5);
-    let topLosses = losses.slice(0, 5);
+    let topGains = gains.slice(0, 10);
+    let topLosses = losses.slice(0, 10);
 
     setLeagues(newTeams);
     return { newTeams, topGains, topLosses };
@@ -2620,8 +2645,8 @@ function App() {
     gains.sort((a, b) => b.change - a.change);
     losses.sort((a, b) => a.change - b.change);
 
-    let topGains = gains.slice(0, 5);
-    let topLosses = losses.slice(0, 5);
+    let topGains = gains.slice(0, 10);
+    let topLosses = losses.slice(0, 10);
 
     setNations(allNations);
     return { allNations, topGains, topLosses };
