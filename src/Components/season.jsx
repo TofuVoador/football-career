@@ -13,12 +13,12 @@ const Season = (props) => {
           {season.year}: {season.team.name} (
           {(Math.round(season.team.power * 50.0) / 100.0).toFixed(2)})
         </p>
+        <p className="oval">{season.overall.toFixed(1)}</p>
       </summary>
       <div className="season-stats">
         <div className="double-column">
           <div>
             <p>{season.age} anos</p>
-            <p>{season.overall.toFixed(1)}</p>
           </div>
           <div>
             <p>${FormatarNumero(season.marketValue)}</p>
