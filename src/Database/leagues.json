@@ -7,12 +7,12 @@
       {
         "name": "Bayern München",
         "league": "Bundesliga",
-        "power": 9.0
+        "power": 9.2
       },
       {
         "name": "Bor. Dortmund",
         "league": "Bundesliga",
-        "power": 8.0
+        "power": 8.2
       },
       {
         "name": "Leverkusen",
@@ -22,17 +22,17 @@
       {
         "name": "RB Leipzig",
         "league": "Bundesliga",
-        "power": 7.0
+        "power": 7.2
       },
       {
         "name": "Frankfurt",
         "league": "Bundesliga",
-        "power": 6.2
+        "power": 6.0
       },
       {
         "name": "Freiburg",
         "league": "Bundesliga",
-        "power": 6.0
+        "power": 5.8
       },
       {
         "name": "Stuttgart",
@@ -57,7 +57,7 @@
       {
         "name": "Mainz",
         "league": "Bundesliga",
-        "power": 5.0
+        "power": 5.2
       },
       {
         "name": "Werder Bremen",
@@ -67,7 +67,7 @@
       {
         "name": "Bor. Mönchengladbach",
         "league": "Bundesliga",
-        "power": 4.8
+        "power": 5.0
       },
       {
         "name": "Augsburg",
@@ -181,22 +181,22 @@
       {
         "name": "Union Saint-Gilloise",
         "league": "Jupiler Pro League",
-        "power": 6.8
+        "power": 6.4
       },
       {
         "name": "Antwerp",
         "league": "Jupiler Pro League",
-        "power": 6.4
+        "power": 6.2
       },
       {
         "name": "Club Brugge",
         "league": "Jupiler Pro League",
-        "power": 6.2
+        "power": 6.0
       },
       {
         "name": "Genk",
         "league": "Jupiler Pro League",
-        "power": 6.0
+        "power": 5.8
       },
       {
         "name": "Anderlecht",
@@ -268,22 +268,22 @@
       {
         "name": "Real Madrid",
         "league": "La Liga",
-        "power": 9.4
+        "power": 9.6
       },
       {
         "name": "At. de Madrid",
         "league": "La Liga",
-        "power": 8.2
+        "power": 8.6
       },
       {
         "name": "Barcelona",
         "league": "La Liga",
-        "power": 7.4
+        "power": 8.0
       },
       {
         "name": "Real Sociedad",
         "league": "La Liga",
-        "power": 6.8
+        "power": 7.2
       },
       {
         "name": "Ath. Bilbao",
@@ -365,7 +365,7 @@
       {
         "name": "Lille",
         "league": "Ligue 1",
-        "power": 6.4
+        "power": 6.2
       },
       {
         "name": "Lens",
@@ -442,7 +442,7 @@
       {
         "name": "Man. City",
         "league": "Premier League",
-        "power": 9.2
+        "power": 9.0
       },
       {
         "name": "Arsenal",
@@ -455,19 +455,19 @@
         "power": 8.0
       },
       {
-        "name": "Tottenham",
+        "name": "Man. United",
         "league": "Premier League",
-        "power": 7.2
+        "power": 7.6
       },
       {
-        "name": "Man. United",
+        "name": "Tottenham",
         "league": "Premier League",
         "power": 7.0
       },
       {
         "name": "Aston Villa",
         "league": "Premier League",
-        "power": 6.6
+        "power": 6.8
       },
       {
         "name": "Newcastle",
@@ -539,22 +539,22 @@
       {
         "name": "Sporting",
         "league": "Primeira Liga",
-        "power": 7.0
+        "power": 6.8
       },
       {
         "name": "Braga",
         "league": "Primeira Liga",
-        "power": 6.2
+        "power": 6.0
       },
       {
         "name": "Vitória de Guimarães",
         "league": "Primeira Liga",
-        "power": 6.0
+        "power": 5.8
       },
       {
         "name": "Arouca",
         "league": "Primeira Liga",
-        "power": 5.8
+        "power": 5.6
       },
       {
         "name": "Famalicão",
@@ -616,7 +616,7 @@
       {
         "name": "Inter de Milão",
         "league": "Serie A",
-        "power": 8.6
+        "power": 8.8
       },
       {
         "name": "Milan",
@@ -626,22 +626,22 @@
       {
         "name": "Juventus",
         "league": "Serie A",
-        "power": 7.2
+        "power": 7.4
       },
       {
         "name": "Lazio",
         "league": "Serie A",
-        "power": 6.8
+        "power": 7.0
       },
       {
         "name": "Atalanta",
         "league": "Serie A",
-        "power": 6.6
+        "power": 6.8
       },
       {
         "name": "Napoli",
         "league": "Serie A",
-        "power": 6.4
+        "power": 6.6
       },
       {
         "name": "Roma",
