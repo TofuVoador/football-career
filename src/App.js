@@ -1802,10 +1802,11 @@ function App() {
       document.getElementById("decision-transfer3").style.display = "none";
       document.getElementById("retire").style.display = "none";
     } else if (
-      //if played good or bad midde contract
+      //if played good or bad middle contract
       ((newPlayer.performance > 0.5 && med > 0) || (newPlayer.performance < -0.5 && med < 0)) &&
       generalPerformance.length >= 3 &&
-      contract > 1
+      contract > 1 &&
+      newPlayer.age < 35
     ) {
       document.getElementById("decision-transfer1").style.display = "flex";
       if (newTransfers[0].contract.value < newPlayer.wage)
@@ -1833,7 +1834,8 @@ function App() {
       med < 0 &&
       (generalPerformance.length >= 2 || newPlayer.age < 24) &&
       newTransfers.some((t) => t != null && t.team.power < newPlayer.team.power) &&
-      contract > 3
+      contract > 3 &&
+      newPlayer.age < 35
     ) {
       if (newTransfers[0].team.power > newPlayer.team.power) {
         document.getElementById("decision-transfer1").style.display = "none";
