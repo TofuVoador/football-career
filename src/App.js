@@ -1371,7 +1371,7 @@ function App() {
       playerPhase = 0;
       let worldCupDescription = [];
       let newWorldCupHistoryHosts = worldCupHistoryHosts;
-      let currentHosts = newWorldCupHistoryHosts[newWorldCupHistoryHosts.length - 1];
+      let currentHosts = newWorldCupHistoryHosts[newWorldCupHistoryHosts.length - 2];
 
       let worldCupHostDescription = "Hosts";
       for (let hostID = 0; hostID < currentHosts.length; hostID++) {
@@ -1617,7 +1617,7 @@ function App() {
       let countriesHosts = newWorldCupHistoryHosts.flatMap((wc) => wc);
       let currentMainHost = allNations.filter((n) => n.name == currentHosts[0])[0];
       let lastMainHost = allNations.filter(
-        (n) => n.name == newWorldCupHistoryHosts[newWorldCupHistoryHosts.length - 2][0]
+        (n) => n.name == newWorldCupHistoryHosts[newWorldCupHistoryHosts.length - 1][0]
       )[0];
 
       let validTeams = allNations
