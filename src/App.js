@@ -505,7 +505,7 @@ function App() {
     playerPhase = 0;
 
     let championsDescription = [];
-    let qualifiedToChamptions = [];
+    let qualifiedToChampions = [];
 
     // Obter os principais times de cada liga
     for (let leagueID = 0; leagueID < leagues.length; leagueID++) {
@@ -519,16 +519,16 @@ function App() {
       let leagueQualified = league.filter((team) => leagueQualifiedNames.includes(team.name));
 
       for (let teamID = 0; teamID < lastLeagueResults[leagueID].championsSpots; teamID++) {
-        qualifiedToChamptions.push(leagueQualified[teamID]);
+        qualifiedToChampions.push(leagueQualified[teamID]);
       }
     }
 
     // Adicionar as equipes extras aos times qualificados
-    qualifiedToChamptions = qualifiedToChamptions.concat(extrateams.slice(0, 12));
+    qualifiedToChampions = qualifiedToChampions.concat(extrateams.slice(0, 12));
 
     // Obter a posição dos campeões em um grupo específico
     let championsGroup = GetChampionsPosition(
-      qualifiedToChamptions,
+      qualifiedToChampions,
       newPlayer.championsQualification ? newPlayer.team : null
     );
 
@@ -1720,7 +1720,7 @@ function App() {
       newSeason.awardPoints += 1.0;
     }
 
-    if (40 + RandomNumber(0, 10) + RandomNumber(0, 10) < newSeason.goals) {
+    if (35 + RandomNumber(0, 5) + RandomNumber(0, 5) < newSeason.goals) {
       //Golden Shoes
       newPlayer.awards.push(`Chuteiras de Ouro ${year} (${newPlayer.team.name})`);
       newSeason.awardPoints += 1.0;
@@ -1729,8 +1729,8 @@ function App() {
     }
 
     if (
-      player.position.title == "GK" &&
-      newSeason.awardPoints + newPlayer.overall + newSeason.performance * 2.5 >= 100
+      player.position.title == "Goleiro" &&
+      newSeason.awardPoints + newPlayer.overall + newSeason.performance * 2 >= 99
     ) {
       //Golden Gloves
       newPlayer.awards.push(`Luvas de Ouro ${year} (${newPlayer.team.name})`);

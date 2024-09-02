@@ -27,12 +27,12 @@
       {
         "name": "Frankfurt",
         "league": "Bundesliga",
-        "power": 6.0
+        "power": 6.2
       },
       {
         "name": "Freiburg",
         "league": "Bundesliga",
-        "power": 5.8
+        "power": 6.0
       },
       {
         "name": "Stuttgart",
@@ -94,7 +94,7 @@
       {
         "name": "PSV",
         "league": "Eredivisie",
-        "power": 6.8
+        "power": 6.6
       },
       {
         "name": "Feyenoord",
@@ -104,17 +104,17 @@
       {
         "name": "Ajax",
         "league": "Eredivisie",
-        "power": 6.4
+        "power": 6.2
       },
       {
         "name": "Twente",
         "league": "Eredivisie",
-        "power": 6.2
+        "power": 6.0
       },
       {
         "name": "AZ",
         "league": "Eredivisie",
-        "power": 6.0
+        "power": 5.8
       },
       {
         "name": "Utrecht",
@@ -181,12 +181,12 @@
       {
         "name": "Union Saint-Gilloise",
         "league": "Jupiler Pro League",
-        "power": 6.4
+        "power": 6.2
       },
       {
         "name": "Antwerp",
         "league": "Jupiler Pro League",
-        "power": 6.2
+        "power": 6.0
       },
       {
         "name": "Club Brugge",
@@ -268,7 +268,7 @@
       {
         "name": "Real Madrid",
         "league": "La Liga",
-        "power": 9.6
+        "power": 9.4
       },
       {
         "name": "At. de Madrid",
@@ -283,12 +283,12 @@
       {
         "name": "Real Sociedad",
         "league": "La Liga",
-        "power": 7.2
+        "power": 7.0
       },
       {
         "name": "Ath. Bilbao",
         "league": "La Liga",
-        "power": 6.6
+        "power": 6.8
       },
       {
         "name": "Real Betis",
@@ -365,12 +365,12 @@
       {
         "name": "Lille",
         "league": "Ligue 1",
-        "power": 6.2
+        "power": 6.4
       },
       {
         "name": "Lens",
         "league": "Ligue 1",
-        "power": 6.0
+        "power": 6.2
       },
       {
         "name": "Ol. de Marseille",
@@ -462,7 +462,7 @@
       {
         "name": "Tottenham",
         "league": "Premier League",
-        "power": 7.0
+        "power": 7.2
       },
       {
         "name": "Aston Villa",
@@ -646,7 +646,7 @@
       {
         "name": "Roma",
         "league": "Serie A",
-        "power": 6.2
+        "power": 6.4
       },
       {
         "name": "Bologna",

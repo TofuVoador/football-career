@@ -2,79 +2,79 @@
   {
     "title": "Centroavante",
     "goalsMultiplier": 1.0,
-    "assistsMultiplier": 0.45,
+    "assistsMultiplier": 0.25,
     "value": 1
   },
   {
     "title": "Segundo Atacante",
     "goalsMultiplier": 0.9,
-    "assistsMultiplier": 0.55,
+    "assistsMultiplier": 0.35,
     "value": 1
   },
   {
     "title": "Ponta Esquerda",
     "goalsMultiplier": 0.8,
-    "assistsMultiplier": 0.65,
+    "assistsMultiplier": 0.45,
     "value": 1
   },
   {
     "title": "Ponta Direita",
     "goalsMultiplier": 0.8,
-    "assistsMultiplier": 0.65,
+    "assistsMultiplier": 0.45,
     "value": 1
   },
   {
     "title": "Meia-Atacante",
-    "goalsMultiplier": 0.7,
+    "goalsMultiplier": 0.4,
     "assistsMultiplier": 0.75,
     "value": 1
   },
   {
     "title": "Meia Esquerda",
-    "goalsMultiplier": 0.5,
-    "assistsMultiplier": 0.65,
+    "goalsMultiplier": 0.35,
+    "assistsMultiplier": 0.5,
     "value": 0.8
   },
   {
     "title": "Meia Central",
-    "goalsMultiplier": 0.5,
-    "assistsMultiplier": 0.65,
+    "goalsMultiplier": 0.35,
+    "assistsMultiplier": 0.5,
     "value": 0.8
   },
   {
     "title": "Meia Direita",
-    "goalsMultiplier": 0.5,
-    "assistsMultiplier": 0.65,
+    "goalsMultiplier": 0.35,
+    "assistsMultiplier": 0.5,
     "value": 0.8
   },
   {
     "title": "Volante",
-    "goalsMultiplier": 0.4,
-    "assistsMultiplier": 0.55,
+    "goalsMultiplier": 0.25,
+    "assistsMultiplier": 0.4,
     "value": 0.8
   },
   {
     "title": "Lateral Esquerdo",
-    "goalsMultiplier": 0.3,
-    "assistsMultiplier": 0.45,
+    "goalsMultiplier": 0.2,
+    "assistsMultiplier": 0.35,
     "value": 0.6
   },
   {
     "title": "Lateral Direito",
-    "goalsMultiplier": 0.3,
-    "assistsMultiplier": 0.45,
+    "goalsMultiplier": 0.2,
+    "assistsMultiplier": 0.35,
     "value": 0.6
   },
   {
     "title": "Zagueiro Central",
     "goalsMultiplier": 0.2,
-    "assistsMultiplier": 0.45,
+    "assistsMultiplier": 0.15,
     "value": 0.6
   },
   {
     "title": "Goleiro",
-    "goalsMultiplier": 0.1,
-    "assistsMultiplier": 0.25,
+    "goalsMultiplier": 0.05,
+    "assistsMultiplier": 0.15,
     "value": 0.6
   }
 ]
