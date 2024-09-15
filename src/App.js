@@ -409,8 +409,10 @@ function App() {
     newSeason.titles.push([`Liga: ${playerPosition}º lugar`].concat(leaguesTopEight));
     newPlayer.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0);
 
-    goalsOppostunities += 10 - playerPosition;
-    assistsOppostunities += 10 - playerPosition;
+    goalsOppostunities += (20 - playerPosition) / 2;
+    assistsOppostunities += (20 - playerPosition) / 2;
+
+    console.log((20 - playerPosition) / 2)
 
     //if fist place, then won trophy
     if (playerPosition == 1) {
@@ -1691,9 +1693,11 @@ function App() {
     }
 
     let performanceMultiplier = Math.pow(newPlayer.team.power, 2) / 100.0; //adds from 0 to 1.0
+    performanceMultiplier += Math.pow(newPlayer.overall, 2) / 10000.0;
     performanceMultiplier += newSeason.starting / 100.0; //adds from 0 to 1.0
     performanceMultiplier += newSeason.performance; //adds from -1.0 to 1.0
-    performanceMultiplier += Math.pow(newPlayer.overall, 2) / 10000.0;
+
+    console.log(performanceMultiplier)
 
     newSeason.goals = Math.floor(
       newPlayer.position.goalsMultiplier * performanceMultiplier * goalsOppostunities
@@ -1702,6 +1706,9 @@ function App() {
     newSeason.assists = Math.floor(
       newPlayer.position.assistsMultiplier * performanceMultiplier * assistsOppostunities
     );
+
+    if(newSeason.goals < 0) newSeason.goals = 0;
+    if(newSeason.assists < 0) newSeason.assists = 0;
 
     //add goals to the carrer summary
     newPlayer.totalGoals += newSeason.goals;
@@ -1720,7 +1727,10 @@ function App() {
       newSeason.awardPoints += 1.0;
     }
 
-    if (35 + RandomNumber(0, 5) + RandomNumber(0, 5) < newSeason.goals) {
+    let goldenBootsGoals = 35 + RandomNumber(0, 5) + RandomNumber(0, 5);
+    goldenBootsGoals += (year % 4 == 2) ? 5 : 0;
+
+    if (goldenBootsGoals <= newSeason.goals) {
       //Golden Shoes
       newPlayer.awards.push(`Chuteiras de Ouro ${year} (${newPlayer.team.name})`);
       newSeason.awardPoints += 1.0;
