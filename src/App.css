@@ -1,7 +1,7 @@
 header {
   background-color: var(--color-dark);
   color: var(--color-contrast);
-  width: 100vw;
+  width: 100%;
   min-width: 300px;
   padding: 1rem;
 }
@@ -18,9 +18,8 @@ footer {
   align-items: center;
   background-color: var(--color-dark);
   color: var(--color-light);
-  width: 100vw;
-  height: 5vh;
-  margin-top: 1rem;
+  width: 100%;
+  padding: 1rem;
   min-width: 300px;
 }
 
