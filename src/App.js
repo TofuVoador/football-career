@@ -2831,14 +2831,14 @@ function App() {
         </section>
         <section className="stats">
           <h1>Carreira</h1>
-          <div>
+          <div className="stats-div">
             Fama: {StarPath[Math.min(Math.floor(player.fame / 100), StarPath.length - 1)]}
             <div
               style={{
-                width: "300px",
+                position: "relative",  // This ensures absolute positioning works inside it
+                width: "100%",
                 height: "1rem",
                 backgroundColor: "var(--color-medium)",
-                alignItems: "flex-start",
               }}
             >
               <div
@@ -2849,12 +2849,13 @@ function App() {
                   margin: "0",
                 }}
               />
+              
               <span
                 style={{
-                  position: "relative",
-                  top: "-100%", // Centraliza verticalmente
-                  left: "50%", // Centraliza horizontalmente
-                  transform: "translate(-50%, -50%)", // Centraliza completamente
+                  position: "absolute",  // Use absolute for easier centering
+                  top: "50%",            // Center vertically
+                  left: "50%",           // Center horizontally
+                  transform: "translate(-50%, -50%)",  // This will center perfectly
                   color: "var(--color-dark)",
                 }}
               >
@@ -2864,61 +2865,81 @@ function App() {
             <p>Posição: {player.position == null ? "A definir" : player.position.title}</p>
             <p>Seleção: {player.nation == null ? "A definir" : player.nation.name}</p>
           </div> 
-          <div>
-            <details>
-              <summary>Continental: {player.continentalChampionship.length}</summary>
-              {player.continentalChampionship.map((wc) => (
-                <p key={wc}>{wc}</p>
-              ))}
-            </details>
-            <details>
-              <summary>Copa do Mundo: {player.worldCup.length}</summary>
-              {player.worldCup.map((wc) => (
-                <p key={wc}>{wc}</p>
-              ))}
-            </details>
+          <div className="stats-div">
+            <div className="stats-div-div">
+              <details>
+                <summary>Continental: {player.continentalChampionship.length}</summary>
+                <div>
+                  {player.continentalChampionship.map((wc) => (
+                    <p key={wc}>{wc}</p>
+                  ))}
+                </div>
+              </details>
+              <details>
+                <summary>Copa do Mundo: {player.worldCup.length}</summary>
+                <div>
+                  {player.worldCup.map((wc) => (
+                    <p key={wc}>{wc}</p>
+                  ))}
+                </div>
+              </details>
+            </div>
           </div>
-          <div>
+          <div className="stats-div">
             <p>Gols: {player.totalGoals}</p>
             <p>Assistências: {player.totalAssists}</p>
           </div>
-          <div>
-            <details>
-              <summary>Ligas: {player.leagueTitles.length}</summary>
-              {player.leagueTitles.map((l) => (
-                <p key={l}>{l}</p>
-              ))}
-            </details>
-            <details>
-              <summary>Copas Nacionais: {player.nationalCup.length}</summary>
-              {player.nationalCup.map((nc) => (
-                <p key={nc}>{nc}</p>
-              ))}
-            </details>
-            <details>
-              <summary>Champions League: {player.champions.length}</summary>
-              {player.champions.map((ch) => (
-                <p key={ch}>{ch}</p>
-              ))}
-            </details>
-            <details>
-              <summary>Europa League: {player.europa.length}</summary>
-              {player.europa.map((el) => (
-                <p key={el}>{el}</p>
-              ))}
-            </details>
-            <details>
-              <summary>Premiações: {player.awards.length}</summary>
-              {player.awards.map((a) => (
-                <p key={a}>{a}</p>
-              ))}
-            </details>
-            <details>
-              <summary>Bola de Ouro: {player.ballonDor.length}</summary>
-              {player.ballonDor.map((b) => (
-                <p key={b}>{b}</p>
-              ))}
-            </details>
+          <div className="stats-div">
+            <div className="stats-div-div">
+              <details>
+                <summary className="titles-title">Ligas: {player.leagueTitles.length}</summary>
+                <div>
+                  {player.leagueTitles.map((l) => (
+                    <p key={l}>{l}</p>
+                  ))}
+                </div>
+              </details>
+              <details>
+                <summary>Copas Nacionais: {player.nationalCup.length}</summary>
+                <div>
+                  {player.nationalCup.map((nc) => (
+                    <p key={nc}>{nc}</p>
+                  ))}
+                </div>
+              </details>
+              <details>
+                <summary>Champions League: {player.champions.length}</summary>
+                <div>
+                  {player.champions.map((ch) => (
+                    <p key={ch}>{ch}</p>
+                  ))}
+                </div>
+              </details>
+              <details>
+                <summary>Europa League: {player.europa.length}</summary>
+                <div>
+                  {player.europa.map((el) => (
+                    <p key={el}>{el}</p>
+                  ))}
+                </div>
+              </details>
+              <details>
+                <summary>Premiações: {player.awards.length}</summary>
+                <div>
+                  {player.awards.map((a) => (
+                    <p key={a}>{a}</p>
+                  ))}
+                </div>
+              </details>
+              <details>
+                <summary>Bola de Ouro: {player.ballonDor.length}</summary>
+                <div>
+                  {player.ballonDor.map((b) => (
+                    <p key={b}>{b}</p>
+                  ))}
+                </div>
+              </details>
+            </div>
           </div>
         </section>
       </main>
