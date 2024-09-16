@@ -65,6 +65,7 @@ function App() {
     topNationsGains: null,
     topNationsLoss: null,
     age: null,
+    positionInClub: null,
     team: null,
     wage: null,
     starting: null,
@@ -86,6 +87,7 @@ function App() {
     team: null,
     contractTeam: null,
     position: null,
+    positionInClub: null,
     wage: 1,
     overall: 70,
     performance: 0,
@@ -156,7 +158,7 @@ function App() {
 
     setLastLeagueResults(leagueResults);
     setPlayer(newPlayer);
-    setTransfers(GetInitTeams(initPos.value, newTeams));
+    setTransfers(GetInitTeams(initPos.value, newTeams, newPlayer));
   }
 
   function ChooseTeam(newTeam = null) {
@@ -196,6 +198,7 @@ function App() {
       newContract = newTeam.contract.duration;
       newPlayer.marketValue = newTeam.transferValue;
       newPlayer.wage = newTeam.contract.value;
+      newPlayer.positionInClub = Positions.find(position => position.abbreviation === newTeam.position);
 
       let lp = 99; // Inicializa o valor padrão de "lp"
 
@@ -223,6 +226,7 @@ function App() {
       newContract = renew.duration; // Nova duração do contrato
       newPlayer.wage = renew.value; // Novo valor do contrato
       newHistory.push({ team: newPlayer.team.name, year: year + renew.duration });
+      newPlayer.positionInClub = Positions.find(position => position.abbreviation === renew.position);
     } else {
       newPlayer.wage = newPlayer.wage * (1.1 + newPlayer.performance / 10); // Reajuste
     }
@@ -332,6 +336,7 @@ function App() {
       topNationsGains: updatedNations.topGains,
       topNationsLoss: updatedNations.topLosses,
       age: newPlayer.age,
+      positionInClub: newPlayer.positionInClub,
       team: DeepClone(newPlayer.team),
       nation: DeepClone(newPlayer.nation),
       wage: newPlayer.wage,
@@ -411,8 +416,6 @@ function App() {
 
     goalsOppostunities += (20 - playerPosition) / 2;
     assistsOppostunities += (20 - playerPosition) / 2;
-
-    console.log((20 - playerPosition) / 2)
 
     //if fist place, then won trophy
     if (playerPosition == 1) {
@@ -1697,14 +1700,12 @@ function App() {
     performanceMultiplier += newSeason.starting / 100.0; //adds from 0 to 1.0
     performanceMultiplier += newSeason.performance; //adds from -1.0 to 1.0
 
-    console.log(performanceMultiplier)
-
     newSeason.goals = Math.floor(
-      newPlayer.position.goalsMultiplier * performanceMultiplier * goalsOppostunities
+      newPlayer.positionInClub.goalsMultiplier * performanceMultiplier * goalsOppostunities
     );
 
     newSeason.assists = Math.floor(
-      newPlayer.position.assistsMultiplier * performanceMultiplier * assistsOppostunities
+      newPlayer.positionInClub.assistsMultiplier * performanceMultiplier * assistsOppostunities
     );
 
     if(newSeason.goals < 0) newSeason.goals = 0;
@@ -1796,9 +1797,18 @@ function App() {
       newTransfers = [newPlayer.contractTeam];
 
       if (med > 0) {
+        let newPosition;
+        if (newPlayer.position.abbreviation !== "GO" && Math.random() < 0.2) {
+            let relatedPositions = newPlayer.position.related;
+            newPosition = relatedPositions[RandomNumber(0, relatedPositions.length - 1)];
+        } else {
+            newPosition = newPlayer.position.abbreviation;
+        }
+
         setRenew({
           value: newPlayer.contractTeam.contract.value,
           duration: newPlayer.contractTeam.contract.duration,
+          position: newPosition
         });
         document.getElementById("decision-stay").style.display = "flex";
       } else {
@@ -1830,9 +1840,18 @@ function App() {
       if (newTransfers[2].contract.value < newPlayer.wage)
         newTransfers[1].contract.value = newPlayer.wage;
 
+      let newPosition;
+          if (newPlayer.position.abbreviation !== "GO" && Math.random() < 0.2) {
+              let relatedPositions = newPlayer.position.related;
+              newPosition = relatedPositions[RandomNumber(0, relatedPositions.length - 1)];
+          } else {
+              newPosition = newPlayer.position.abbreviation;
+          }
+
       setRenew({
         value: newPlayer.wage * 1.1,
         duration: contract - 1,
+        position: newPosition
       });
 
       document.getElementById("decision-stay").style.display = "flex";
@@ -1907,9 +1926,19 @@ function App() {
               GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame)
           );
 
+          // 20% chance to switch position
+          let newPosition;
+          if (newPlayer.position.abbreviation !== "GO" && Math.random() < 0.2) {
+              let relatedPositions = newPlayer.position.related;
+              newPosition = relatedPositions[RandomNumber(0, relatedPositions.length - 1)];
+          } else {
+              newPosition = newPlayer.position.abbreviation;
+          }
+
           setRenew({
             value: contractValue,
             duration: contractDuration,
+            position: newPosition
           });
         }
 
@@ -2347,155 +2376,165 @@ function App() {
 
   function GetNewTeams(currentPlayer) {
     let allTeams = leagues.reduce((acumulador, liga) => {
-      return acumulador.concat(liga.teams);
+        return acumulador.concat(liga.teams);
     }, []);
 
     allTeams.sort((a, b) => {
-      return b.power - a.power + Math.random();
+        return b.power - a.power + Math.random();
     });
 
     allTeams = allTeams.slice(
-      Math.floor(Math.abs(28 - currentPlayer.age)),
-      allTeams.length / (4 + currentPlayer.performance)
+        Math.floor(Math.abs(28 - currentPlayer.age)),
+        allTeams.length / (4 + currentPlayer.performance)
     );
 
     let interestedTeams = [];
 
     for (let i = 0; i < 3; i++) {
-      let teamID = RandomNumber(0, allTeams.length - 1);
+        let teamID = RandomNumber(0, allTeams.length - 1);
 
-      while (history.some((t) => t.team == allTeams[teamID].name)) {
-        teamID = RandomNumber(0, allTeams.length - 1);
-      }
+        while (history.some((t) => t.team == allTeams[teamID].name)) {
+            teamID = RandomNumber(0, allTeams.length - 1);
+        }
 
-      let team = allTeams[teamID];
+        let team = allTeams[teamID];
 
-      interestedTeams.push(team);
-      allTeams = allTeams.filter((t) => t.name != team.name);
+        interestedTeams.push(team);
+        allTeams = allTeams.filter((t) => t.name != team.name);
     }
 
     let contracts = [];
 
     for (let index = 0; index < 3; index++) {
-      let team = interestedTeams[index];
-      if (team) {
-        let contractDuration = RandomNumber(1, 4);
-        contractDuration += currentPlayer.age <= 32 ? RandomNumber(1, 2) : 0;
-        contractDuration += currentPlayer.age <= 24 ? RandomNumber(1, 2) : 0;
-        let expectedOverall =
-          GetOverall(
-            currentPlayer.potential,
-            currentPlayer.age + Math.round(contractDuration / 2),
-            team.power
-          ) + currentPlayer.performance;
-        let contractValue = Math.round(
-          currentPlayer.position.value *
-            GetWage(currentPlayer.overall, team.power, currentPlayer.fame)
-        );
-        let contract = {
-          value: contractValue,
-          duration: contractDuration,
-        };
-        let transferValue = Math.round(
-          currentPlayer.position.value * GetTransferValue(expectedOverall, team.power)
-        );
+        let team = interestedTeams[index];
+        if (team) {
+            let contractDuration = RandomNumber(1, 4);
+            contractDuration += currentPlayer.age <= 32 ? RandomNumber(1, 2) : 0;
+            contractDuration += currentPlayer.age <= 24 ? RandomNumber(1, 2) : 0;
+            let expectedOverall = GetOverall(
+                currentPlayer.potential,
+                currentPlayer.age + Math.round(contractDuration / 2),
+                team.power
+            ) + currentPlayer.performance;
+            let contractValue = Math.round(
+                currentPlayer.position.value *
+                GetWage(currentPlayer.overall, team.power, currentPlayer.fame)
+            );
+            let contract = {
+                value: contractValue,
+                duration: contractDuration,
+            };
+            let transferValue = Math.round(
+                currentPlayer.position.value * GetTransferValue(expectedOverall, team.power)
+            );
 
-        contracts.push({
-          team: team,
-          contract: contract,
-          transferValue: transferValue,
-          loan: false,
-        });
-      } else {
-        contracts.push(null);
-      }
+            // 20% chance to switch position
+            let newPosition;
+            if (currentPlayer.position.abbreviation !== "GO" && Math.random() < 0.2) {
+                let relatedPositions = currentPlayer.position.related;
+                newPosition = relatedPositions[RandomNumber(0, relatedPositions.length - 1)];
+            } else {
+                newPosition = currentPlayer.position.abbreviation;
+            }
+
+            contracts.push({
+                team: team,
+                contract: contract,
+                transferValue: transferValue,
+                loan: false,
+                position: newPosition
+            });
+        } else {
+            contracts.push(null);
+        }
     }
 
     return contracts;
   }
 
-  function GetInitTeams(posValue, newTeams) {
+  function GetInitTeams(posValue, newTeams, currentPlayer) {
     let allTeams = newTeams.reduce((acumulador, liga) => {
-      return acumulador.concat(liga.teams);
+        return acumulador.concat(liga.teams);
     }, []);
 
     allTeams.sort((a, b) => {
-      return b.power - a.power + Math.random();
+        return b.power - a.power + Math.random();
     });
 
     allTeams = allTeams.slice(0, allTeams.length / 2);
 
     const randomIndices = [];
     while (randomIndices.length < 3) {
-      const randomIndex = Math.floor(Math.random() * allTeams.length);
-      if (!randomIndices.includes(randomIndex)) {
-        randomIndices.push(randomIndex);
-      }
+        const randomIndex = Math.floor(Math.random() * allTeams.length);
+        if (!randomIndices.includes(randomIndex)) {
+            randomIndices.push(randomIndex);
+        }
     }
 
-    //randomize a play
+    // Randomize a play
     let teams = [
-      allTeams[randomIndices[0]],
-      allTeams[randomIndices[1]],
-      allTeams[randomIndices[2]],
+        allTeams[randomIndices[0]],
+        allTeams[randomIndices[1]],
+        allTeams[randomIndices[2]],
     ];
 
     let contractDurations = [RandomNumber(2, 8), RandomNumber(2, 8), RandomNumber(2, 8)];
 
     let contractWages = [
-      Math.round(posValue * GetWage(GetOverall(0, 18, teams[0].power), teams[0].power, 0)),
-      Math.round(posValue * GetWage(GetOverall(0, 18, teams[1].power), teams[1].power, 0)),
-      Math.round(posValue * GetWage(GetOverall(0, 18, teams[2].power), teams[2].power, 0)),
+        Math.round(posValue * GetWage(GetOverall(0, 18, teams[0].power), teams[0].power, 0)),
+        Math.round(posValue * GetWage(GetOverall(0, 18, teams[1].power), teams[1].power, 0)),
+        Math.round(posValue * GetWage(GetOverall(0, 18, teams[2].power), teams[2].power, 0)),
     ];
 
     let contracts = [
-      {
-        value: contractWages[0],
-        duration: contractDurations[0],
-      },
-      {
-        value: contractWages[1],
-        duration: contractDurations[1],
-      },
-      {
-        value: contractWages[2],
-        duration: contractDurations[2],
-      },
+        {
+            value: contractWages[0],
+            duration: contractDurations[0],
+        },
+        {
+            value: contractWages[1],
+            duration: contractDurations[1],
+        },
+        {
+            value: contractWages[2],
+            duration: contractDurations[2],
+        },
     ];
 
     let expectedOveralls = [
-      GetOverall(0, 18 + contractDurations[0] / 2, teams[0].power),
-      GetOverall(0, 18 + contractDurations[1] / 2, teams[1].power),
-      GetOverall(0, 18 + contractDurations[2] / 2, teams[2].power),
+        GetOverall(0, 18 + contractDurations[0] / 2, teams[0].power),
+        GetOverall(0, 18 + contractDurations[1] / 2, teams[1].power),
+        GetOverall(0, 18 + contractDurations[2] / 2, teams[2].power),
     ];
 
     let transferValues = [
-      Math.round(posValue * GetTransferValue(expectedOveralls[0], teams[0].power)),
-      Math.round(posValue * GetTransferValue(expectedOveralls[1], teams[1].power)),
-      Math.round(posValue * GetTransferValue(expectedOveralls[2], teams[2].power)),
+        Math.round(posValue * GetTransferValue(expectedOveralls[0], teams[0].power)),
+        Math.round(posValue * GetTransferValue(expectedOveralls[1], teams[1].power)),
+        Math.round(posValue * GetTransferValue(expectedOveralls[2], teams[2].power)),
     ];
 
-    return [
-      {
-        team: teams[0],
-        contract: contracts[0],
-        transferValue: transferValues[0],
-        loan: false,
-      },
-      {
-        team: teams[1],
-        contract: contracts[1],
-        transferValue: transferValues[1],
-        loan: false,
-      },
-      {
-        team: teams[2],
-        contract: contracts[2],
-        transferValue: transferValues[2],
-        loan: false,
-      },
-    ];
+    // 20% chance to switch position
+    let updatedContracts = contracts.map((contract, index) => {
+        let newPosition;
+        if (currentPlayer.position.abbreviation !== "GO" && Math.random() < 0.2) {
+            let relatedPositions = currentPlayer.position.related;
+            newPosition = relatedPositions[RandomNumber(0, relatedPositions.length - 1)];
+        } else {
+            newPosition = currentPlayer.position.abbreviation;
+        }
+
+        return {
+            team: teams[index],
+            contract: contract,
+            transferValue: transferValues[index],
+            loan: false,
+            position: newPosition
+        };
+    });
+
+    return updatedContracts;
   }
+
 
   function GetNewNation() {
     let newNat = DeepClone(Nations);
@@ -2718,8 +2757,9 @@ function App() {
           <p>Continuar em {player.team == null ? "null" : player.team.name}</p>
           <p>
             {player.team == null ? "null" : (player.team.power / 2).toFixed(2)}⭐ | $
-            {FormatarNumero(renew.value)}/ano |{" "}
-            {renew.duration + " " + (renew.duration > 1 ? "anos" : "ano")}
+            {FormatarNumero(renew.value)} |{" "}
+            {renew.duration}🕗 |{" "}
+            {renew.position}
           </p>
         </a>
         <a className="d-alert" id="decision-transfer1" onClick={() => ChooseTeam(transfers[0])}>
@@ -2730,8 +2770,9 @@ function App() {
               </p>
               <p>
                 {(transfers[0].team.power / 2).toFixed(2)}⭐ | $
-                {FormatarNumero(transfers[0].contract.value)}/ano | {transfers[0].contract.duration}{" "}
-                anos
+                {FormatarNumero(transfers[0].contract.value)} |{" "}
+                {transfers[0].contract.duration}🕗 |{" "}
+                {transfers[0].position}
               </p>
             </>
           ) : (
@@ -2746,8 +2787,9 @@ function App() {
               </p>
               <p>
                 {(transfers[1].team.power / 2).toFixed(2)}⭐ | $
-                {FormatarNumero(transfers[1].contract.value)}/ano | {transfers[1].contract.duration}{" "}
-                anos
+                {FormatarNumero(transfers[1].contract.value)} |{" "}
+                {transfers[1].contract.duration}🕗 |{" "}
+                {transfers[1].position}
               </p>
             </>
           ) : (
@@ -2762,8 +2804,9 @@ function App() {
               </p>
               <p>
                 {(transfers[2].team.power / 2).toFixed(2)}⭐ | $
-                {FormatarNumero(transfers[2].contract.value)}/ano | {transfers[2].contract.duration}{" "}
-                anos
+                {FormatarNumero(transfers[2].contract.value)} |{" "}
+                {transfers[2].contract.duration}🕗 |{" "}
+                {transfers[2].position}
               </p>
             </>
           ) : (

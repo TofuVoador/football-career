@@ -10,8 +10,7 @@ const Season = (props) => {
     <details className="season" key={season.year} open={open}>
       <summary className="season-title">
         <p>
-          {season.year}: {season.team.name} (
-          {(Math.round(season.team.power * 50.0) / 100.0).toFixed(2)})
+          {season.year}: {season.team.name} ({season.positionInClub.abbreviation})
         </p>
         <p className="oval">{season.overall.toFixed(1)}</p>
       </summary>
@@ -19,6 +18,7 @@ const Season = (props) => {
         <div className="double-column">
           <div>
             <p>{season.age} anos</p>
+            <p>{season.positionInClub.title}</p>
           </div>
           <div>
             <p>${FormatarNumero(season.marketValue)}</p>
