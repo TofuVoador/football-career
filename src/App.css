@@ -1,39 +1,56 @@
 header {
   background-color: var(--color-dark);
-  color: var(--color-light);
-  width: 100%;
+  color: var(--color-contrast);
+  width: 100vw;
+  min-width: 300px;
   padding: 1rem;
+}
+
+header ol {
+  color: var(--color-light);
 }
 
 footer {
-  position: fixed;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  position: fixed;
   bottom: 0;
+  justify-content: center;
+  align-items: center;
   background-color: var(--color-dark);
   color: var(--color-light);
-  width: 100%;
+  width: 100vw;
   height: 5vh;
+  margin-top: 1rem;
+  min-width: 300px;
 }
 
-.career,
-.choices,
-.stats {
-  padding: 1rem;
-  margin: 1rem;
+main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  min-width: 300px;
+}
+
+section {
+  padding: 1rem 1rem 0 1rem;
   display: flex;
   flex-direction: column;
   align-items: center;
-  color: var(--color-light);
+  justify-content: center;
+  width: 100%;
+  max-width: 450px;
+  min-width: 300px;
 }
 
-.career-container {
+.season-container {
   width: 100%;
-  padding: 1rem 0 0 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding-top: 1rem;
+}
+
+.choices h3 {
+  color: var(--color-contrast);
 }
 
 .choices a {
@@ -41,14 +58,12 @@ footer {
   padding: 1rem;
   color: var(--color-contrast);
   background-color: var(--color-medium);
-  border-radius: 2rem;
+  border-radius: 1rem;
   width: 100%;
-  max-width: 800px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: 0.2s;
 }
 
 .choices a:hover {
@@ -63,48 +78,25 @@ footer {
 
 .chart div {
   width: 100%;
-  max-width: 1000px;
+  max-width: 450px;
+  margin: 0.5rem;
+  padding: 0.5rem;
+}
+
+.stats {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  color: var(--color-light);
 }
 
 .stats div {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0.5rem;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-@media (max-width: 900px) {
-  header h1,
-  .stats h1 {
-    font-size: 20px;
-  }
-
-  header h3,
-  .stats div p {
-    font-size: 15px;
-  }
-
-  header ol {
-    font-size: 10px;
-  }
-
-  .choices a {
-    font-size: 15px;
-  }
-
-  .stats div {
-    margin: 0.5rem;
-  }
-
-  .choices a {
-    margin-bottom: 0.5rem;
-    padding: 0.5rem;
-  }
-
-  .career,
-  .choices,
-  .stats {
-    padding: 0.5rem;
-    margin: 0.5rem;
-  }
-}

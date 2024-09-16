@@ -8,18 +8,14 @@
 
 * {
   box-sizing: border-box;
-  font-family: Verdana, Arial, Tahoma, Serif;
+  font-family: Verdana, Tahoma, Arial, Serif;
   margin: 0;
   padding: 0;
   scroll-behavior: smooth;
-}
-
-h1 {
-  font-size: 2rem;
+  font-size: 1rem;
 }
 
 body {
   background-color: var(--color-background);
-  margin: 0;
-  padding: 0 0 5vh 0;
+  margin-bottom: 10vh;
 }

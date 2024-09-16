@@ -46,6 +46,8 @@ function App() {
     const parent = parentRef.current;
     if (!parent) return;
 
+    console.log(parent.lastElementChild)
+
     const target = parent.lastElementChild;
     if (target)
       target.scrollIntoView({
@@ -2717,219 +2719,209 @@ function App() {
           <li>Boa sorte e divirta-se</li>
         </ol>
       </header>
-      <div className="career" ref={parentRef}>
-        {seasons.map((s, index) => (
-          <div key={index} className="career-container">
-            <Season season={s} open={index >= seasons.length - 1} />
-          </div>
-        ))}
-      </div>
-      <div className="choices" id="init-nation">
-        <h3 style={{ marginBottom: "1rem" }}>Escolha o país do jogador:</h3>
-        <a className="d-alert" onClick={() => ChooseNation(initNation[0])}>
-          {initNation[0].name}
-        </a>
-        <a className="d-alert" onClick={() => ChooseNation(initNation[1])}>
-          {initNation[1].name}
-        </a>
-        <a className="d-alert" onClick={() => ChooseNation(initNation[2])}>
-          {initNation[2].name}
-        </a>
-      </div>
-      <div className="choices" id="init-pos" style={{ display: "none" }}>
-        <h3 style={{ marginBottom: "1rem" }}>Escolha a posição do jogador:</h3>
-        <a className="d-alert" onClick={() => ChoosePos(initPos[0])}>
-          {initPos[0].title}
-        </a>
-        <a className="d-alert" onClick={() => ChoosePos(initPos[1])}>
-          {initPos[1].title}
-        </a>
-        <a className="d-alert" onClick={() => ChoosePos(initPos[2])}>
-          {initPos[2].title}
-        </a>
-      </div>
-      <div className="choices" id="team-choice" style={{ display: "none" }}>
-        <a
-          className="d-stay"
-          id="decision-stay"
-          style={{ display: "none" }}
-          onClick={() => ChooseTeam()}
-        >
-          <p>Continuar em {player.team == null ? "null" : player.team.name}</p>
-          <p>
-            {player.team == null ? "null" : (player.team.power / 2).toFixed(2)}⭐ | $
-            {FormatarNumero(renew.value)} |{" "}
-            {renew.duration} 🕗 |{" "}
-            {renew.position}
-          </p>
-        </a>
-        <a className="d-alert" id="decision-transfer1" onClick={() => ChooseTeam(transfers[0])}>
-          {transfers[0] ? (
-            <>
-              <p>
-                {transfers[0].loan ? "Empréstimo" : "Transferir"} para {transfers[0].team.name}
-              </p>
-              <p>
-                {(transfers[0].team.power / 2).toFixed(2)}⭐ | $
-                {FormatarNumero(transfers[0].contract.value)} |{" "}
-                {transfers[0].contract.duration} 🕗 |{" "}
-                {transfers[0].position}
-              </p>
-            </>
-          ) : (
-            <p>null</p>
-          )}
-        </a>
-        <a className="d-alert" id="decision-transfer2" onClick={() => ChooseTeam(transfers[1])}>
-          {transfers[1] ? (
-            <>
-              <p>
-                {transfers[1].loan ? "Empréstimo" : "Transferir"} para {transfers[1].team.name}
-              </p>
-              <p>
-                {(transfers[1].team.power / 2).toFixed(2)}⭐ | $
-                {FormatarNumero(transfers[1].contract.value)} |{" "}
-                {transfers[1].contract.duration} 🕗 |{" "}
-                {transfers[1].position}
-              </p>
-            </>
-          ) : (
-            <p>null</p>
-          )}
-        </a>
-        <a className="d-alert" id="decision-transfer3" onClick={() => ChooseTeam(transfers[2])}>
-          {transfers[2] ? (
-            <>
-              <p>
-                {transfers[2].loan ? "Empréstimo" : "Transferir"} para {transfers[2].team.name}
-              </p>
-              <p>
-                {(transfers[2].team.power / 2).toFixed(2)}⭐ | $
-                {FormatarNumero(transfers[2].contract.value)} |{" "}
-                {transfers[2].contract.duration} 🕗 |{" "}
-                {transfers[2].position}
-              </p>
-            </>
-          ) : (
-            <p>null</p>
-          )}
-        </a>
-        <a className="d-alert" id="retire" style={{ display: "none" }} onClick={() => Retire()}>
-          Aposentar-se
-        </a>
-      </div>
-      <div className="choices" id="continue" style={{ display: "none" }}>
-        <a className="d-stay" onClick={() => Continue()}>
-          Simular Temporada ({contract} {contract > 1 ? "anos restantes" : "ano restante"})
-        </a>
-      </div>
-      <div className="chart" id="chart" style={{ display: "none" }}>
-        <ChartComponent data={seasons} />
-      </div>
-      <div className="stats">
-        <h1>Carreira</h1>
-        <div>
-          Fama: {StarPath[Math.min(Math.floor(player.fame / 100), StarPath.length - 1)]}
-          <div
-            style={{
-              width: "300px",
-              height: "20px",
-              backgroundColor: "var(--color-medium)",
-              borderRadius: "10px",
-              alignItems: "flex-start",
-            }}
+      <main>
+        <section className="career" ref={parentRef}>
+          {seasons.map((s, index) => (
+            <div key={index} className="season-container">
+              <Season season={s} open={index >= seasons.length - 1} />
+            </div>
+          ))}
+        </section>
+        <section className="choices" id="init-nation">
+          <h3 style={{ marginBottom: "1rem" }}>Escolha o país do jogador:</h3>
+          <a className="d-alert" onClick={() => ChooseNation(initNation[0])}>
+            {initNation[0].name}
+          </a>
+          <a className="d-alert" onClick={() => ChooseNation(initNation[1])}>
+            {initNation[1].name}
+          </a>
+          <a className="d-alert" onClick={() => ChooseNation(initNation[2])}>
+            {initNation[2].name}
+          </a>
+        </section>
+        <section className="choices" id="init-pos" style={{ display: "none" }}>
+          <h3 style={{ marginBottom: "1rem" }}>Escolha a posição do jogador:</h3>
+          <a className="d-alert" onClick={() => ChoosePos(initPos[0])}>
+            {initPos[0].title}
+          </a>
+          <a className="d-alert" onClick={() => ChoosePos(initPos[1])}>
+            {initPos[1].title}
+          </a>
+          <a className="d-alert" onClick={() => ChoosePos(initPos[2])}>
+            {initPos[2].title}
+          </a>
+        </section>
+        <section className="choices" id="team-choice" style={{ display: "none" }}>
+          <a
+            className="d-stay"
+            id="decision-stay"
+            style={{ display: "none" }}
+            onClick={() => ChooseTeam()}
           >
+            <p>Continuar em {player.team == null ? "null" : player.team.name}</p>
+            <p>
+              {player.team == null ? "null" : (player.team.power / 2).toFixed(2)}⭐ | $
+              {FormatarNumero(renew.value)} |{" "}
+              {renew.duration} 🕗 |{" "}
+              {renew.position}
+            </p>
+          </a>
+          <a className="d-alert" id="decision-transfer1" onClick={() => ChooseTeam(transfers[0])}>
+            {transfers[0] ? (
+              <>
+                <p>
+                  {transfers[0].loan ? "Empréstimo" : "Transferir"} para {transfers[0].team.name}
+                </p>
+                <p>
+                  {(transfers[0].team.power / 2).toFixed(2)}⭐ | $
+                  {FormatarNumero(transfers[0].contract.value)} |{" "}
+                  {transfers[0].contract.duration} 🕗 |{" "}
+                  {transfers[0].position}
+                </p>
+              </>
+            ) : (
+              <p>null</p>
+            )}
+          </a>
+          <a className="d-alert" id="decision-transfer2" onClick={() => ChooseTeam(transfers[1])}>
+            {transfers[1] ? (
+              <>
+                <p>
+                  {transfers[1].loan ? "Empréstimo" : "Transferir"} para {transfers[1].team.name}
+                </p>
+                <p>
+                  {(transfers[1].team.power / 2).toFixed(2)}⭐ | $
+                  {FormatarNumero(transfers[1].contract.value)} |{" "}
+                  {transfers[1].contract.duration} 🕗 |{" "}
+                  {transfers[1].position}
+                </p>
+              </>
+            ) : (
+              <p>null</p>
+            )}
+          </a>
+          <a className="d-alert" id="decision-transfer3" onClick={() => ChooseTeam(transfers[2])}>
+            {transfers[2] ? (
+              <>
+                <p>
+                  {transfers[2].loan ? "Empréstimo" : "Transferir"} para {transfers[2].team.name}
+                </p>
+                <p>
+                  {(transfers[2].team.power / 2).toFixed(2)}⭐ | $
+                  {FormatarNumero(transfers[2].contract.value)} |{" "}
+                  {transfers[2].contract.duration} 🕗 |{" "}
+                  {transfers[2].position}
+                </p>
+              </>
+            ) : (
+              <p>null</p>
+            )}
+          </a>
+          <a className="d-alert" id="retire" style={{ display: "none" }} onClick={() => Retire()}>
+            Aposentar-se
+          </a>
+        </section>
+        <section className="choices" id="continue" style={{ display: "none" }}>
+          <a className="d-stay" onClick={() => Continue()}>
+            Simular ({contract} {contract > 1 ? "anos restantes" : "ano restante"})
+          </a>
+        </section>
+        <section className="chart" id="chart" style={{ display: "none" }}>
+          <ChartComponent data={seasons} />
+        </section>
+        <section className="stats">
+          <h1>Carreira</h1>
+          <div>
+            Fama: {StarPath[Math.min(Math.floor(player.fame / 100), StarPath.length - 1)]}
             <div
               style={{
-                width: `${Math.floor(Math.min(player.fame, 1000) % 100)}%`,
-                minHeight: "20px",
-                backgroundColor: `${player.fame < 1000 ? "var(--color-contrast)" : "gold"}`,
-                borderRadius: "10px",
-                margin: "0",
-              }}
-            />
-            <span
-              style={{
-                position: "relative",
-                top: "-50%", // Centraliza verticalmente
-                left: "50%", // Centraliza horizontalmente
-                transform: "translate(-50%, -50%)", // Centraliza completamente
-                color: "var(--color-dark)",
+                width: "300px",
+                height: "1rem",
+                backgroundColor: "var(--color-medium)",
+                alignItems: "flex-start",
               }}
             >
-              {Math.floor(player.fame)}
-            </span>
+              <div
+                style={{
+                  width: `${Math.floor(Math.min(player.fame, 1000) % 100)}%`,
+                  minHeight: "1rem",
+                  backgroundColor: `${player.fame < 1000 ? "var(--color-contrast)" : "gold"}`,
+                  margin: "0",
+                }}
+              />
+              <span
+                style={{
+                  position: "relative",
+                  top: "-100%", // Centraliza verticalmente
+                  left: "50%", // Centraliza horizontalmente
+                  transform: "translate(-50%, -50%)", // Centraliza completamente
+                  color: "var(--color-dark)",
+                }}
+              >
+                {Math.floor(player.fame)}
+              </span>
+            </div>
+            <p>Posição: {player.position == null ? "A definir" : player.position.title}</p>
+            <p>Seleção: {player.nation == null ? "A definir" : player.nation.name}</p>
+          </div> 
+          <div>
+            <details>
+              <summary>Continental: {player.continentalChampionship.length}</summary>
+              {player.continentalChampionship.map((wc) => (
+                <p key={wc}>{wc}</p>
+              ))}
+            </details>
+            <details>
+              <summary>Copa do Mundo: {player.worldCup.length}</summary>
+              {player.worldCup.map((wc) => (
+                <p key={wc}>{wc}</p>
+              ))}
+            </details>
           </div>
-          <p>Posição: {player.position == null ? "A definir" : player.position.title}</p>
-          <p>Seleção: {player.nation == null ? "A definir" : player.nation.name}</p>
-        </div>
-        <details>
-          <summary>Continental: {player.continentalChampionship.length}</summary>
-          {player.continentalChampionship.map((wc) => (
-            <p key={wc}>{wc}</p>
-          ))}
-        </details>
-        <div>
-          <details>
-            <summary>Copa do Mundo: {player.worldCup.length}</summary>
-            {player.worldCup.map((wc) => (
-              <p key={wc}>{wc}</p>
-            ))}
-          </details>
-        </div>
-        <div>
-          <p>Gols: {player.totalGoals}</p>
-          <p>Assistências: {player.totalAssists}</p>
-        </div>
-        <div>
-          <details>
-            <summary>Ligas: {player.leagueTitles.length}</summary>
-            {player.leagueTitles.map((l) => (
-              <p key={l}>{l}</p>
-            ))}
-          </details>
-        </div>
-        <div>
-          <details>
-            <summary>Copas Nacionais: {player.nationalCup.length}</summary>
-            {player.nationalCup.map((nc) => (
-              <p key={nc}>{nc}</p>
-            ))}
-          </details>
-        </div>
-        <div>
-          <details>
-            <summary>Champions League: {player.champions.length}</summary>
-            {player.champions.map((ch) => (
-              <p key={ch}>{ch}</p>
-            ))}
-          </details>
-        </div>
-        <div>
-          <details>
-            <summary>Europa League: {player.europa.length}</summary>
-            {player.europa.map((el) => (
-              <p key={el}>{el}</p>
-            ))}
-          </details>
-        </div>
-        <div>
-          <details>
-            <summary>Premiações: {player.awards.length}</summary>
-            {player.awards.map((a) => (
-              <p key={a}>{a}</p>
-            ))}
-          </details>
-        </div>
-        <div>
-          <details>
-            <summary>Bola de Ouro: {player.ballonDor.length}</summary>
-            {player.ballonDor.map((b) => (
-              <p key={b}>{b}</p>
-            ))}
-          </details>
-        </div>
-      </div>
+          <div>
+            <p>Gols: {player.totalGoals}</p>
+            <p>Assistências: {player.totalAssists}</p>
+          </div>
+          <div>
+            <details>
+              <summary>Ligas: {player.leagueTitles.length}</summary>
+              {player.leagueTitles.map((l) => (
+                <p key={l}>{l}</p>
+              ))}
+            </details>
+            <details>
+              <summary>Copas Nacionais: {player.nationalCup.length}</summary>
+              {player.nationalCup.map((nc) => (
+                <p key={nc}>{nc}</p>
+              ))}
+            </details>
+            <details>
+              <summary>Champions League: {player.champions.length}</summary>
+              {player.champions.map((ch) => (
+                <p key={ch}>{ch}</p>
+              ))}
+            </details>
+            <details>
+              <summary>Europa League: {player.europa.length}</summary>
+              {player.europa.map((el) => (
+                <p key={el}>{el}</p>
+              ))}
+            </details>
+            <details>
+              <summary>Premiações: {player.awards.length}</summary>
+              {player.awards.map((a) => (
+                <p key={a}>{a}</p>
+              ))}
+            </details>
+            <details>
+              <summary>Bola de Ouro: {player.ballonDor.length}</summary>
+              {player.ballonDor.map((b) => (
+                <p key={b}>{b}</p>
+              ))}
+            </details>
+          </div>
+        </section>
+      </main>
       <footer>
         <p>Por Gustavo Amamia Kumagai</p>
       </footer>
