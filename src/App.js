@@ -189,6 +189,7 @@ function App() {
             duration: newContract - newTeam.contract.duration,
           },
           transferValue: newTeam.transferValue,
+          position: newPlayer.positionInClub.abbreviation,
           loan: false,
         };
       }
@@ -1822,9 +1823,9 @@ function App() {
       document.getElementById("decision-transfer3").style.display = "none";
       document.getElementById("retire").style.display = "none";
     } else if (
-      //if played good or bad middle contract
-      ((newPlayer.performance > 0.5 && med > 0) || (newPlayer.performance < -0.5 && med < 0)) &&
-      generalPerformance.length >= 3 &&
+      //if played good middle contract
+      newPlayer.performance > 0.5 && med > 0 &&
+      generalPerformance.length >= 2 &&
       contract > 1 &&
       newPlayer.age < 35
     ) {
@@ -1841,12 +1842,12 @@ function App() {
         newTransfers[1].contract.value = newPlayer.wage;
 
       let newPosition;
-          if (newPlayer.position.abbreviation !== "GO" && Math.random() < 0.2) {
-              let relatedPositions = newPlayer.position.related;
-              newPosition = relatedPositions[RandomNumber(0, relatedPositions.length - 1)];
-          } else {
-              newPosition = newPlayer.position.abbreviation;
-          }
+      if (newPlayer.position.abbreviation !== "GO" && Math.random() < 0.2) {
+          let relatedPositions = newPlayer.position.related;
+          newPosition = relatedPositions[RandomNumber(0, relatedPositions.length - 1)];
+      } else {
+          newPosition = newPlayer.position.abbreviation;
+      }
 
       setRenew({
         value: newPlayer.wage * 1.1,
