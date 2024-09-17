@@ -46,8 +46,6 @@ function App() {
     const parent = parentRef.current;
     if (!parent) return;
 
-    console.log(parent.lastElementChild)
-
     const target = parent.lastElementChild;
     if (target)
       target.scrollIntoView({
@@ -1744,7 +1742,7 @@ function App() {
 
     if (
       player.position.title == "Goleiro" &&
-      newSeason.awardPoints + newPlayer.overall + newSeason.performance * 2 >= 99
+      newSeason.awardPoints + newSeason.performance + newPlayer.overall / 10 >= 15
     ) {
       //Golden Gloves
       newPlayer.awards.push(`Luvas de Ouro ${year} (${newPlayer.team.name})`);
