@@ -65,7 +65,7 @@
         "power": 5.0
       },
       {
-        "name": "Bor. Mönchengladbach",
+        "name": "Mönchengladbach",
         "league": "Bundesliga",
         "power": 5.0
       },
@@ -179,7 +179,7 @@
     "europaSpots": 2,
     "teams": [
       {
-        "name": "Union Saint-Gilloise",
+        "name": "Union",
         "league": "Jupiler Pro League",
         "power": 6.2
       },
@@ -373,7 +373,7 @@
         "power": 6.2
       },
       {
-        "name": "Ol. de Marseille",
+        "name": "Marseille",
         "league": "Ligue 1",
         "power": 5.8
       },
@@ -547,7 +547,7 @@
         "power": 6.0
       },
       {
-        "name": "Vitória de Guimarães",
+        "name": "Vitória",
         "league": "Primeira Liga",
         "power": 5.8
       },
