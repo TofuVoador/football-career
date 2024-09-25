@@ -174,19 +174,12 @@ function App() {
 
   function ChoosePos() {
     // Get the selected position
-    const selectedIndex = document.getElementById("position-select").selectedIndex;
-
-    // Check if a position is selected
-    if (selectedIndex === -1) {
-        alert("Please select a position."); // Alert if no position is selected
-        return; // Exit the function if no position is selected
-    }
+    const positionDropdown = document.getElementById("position-select");
+    const selectedPosition = Positions.find((position) => position.title == positionDropdown.value)
 
     // Change display
     document.getElementById("team-choice").style.display = "flex";
     document.getElementById("init-pos").style.display = "none";
-
-    const selectedPosition = Positions[selectedIndex]; // Use the positions array
   
     let newPlayer = { ...player }; // Clone the player object
     newPlayer.position = selectedPosition; // Assign the selected position
@@ -2799,7 +2792,6 @@ function App() {
         <section className="choices" id="init-pos" style={{ display: "none" }}>
           <h3 style={{ marginBottom: "1rem" }}>Escolha a posição do jogador:</h3>
           <select id="position-select">
-            <option value="">Selecione uma Posição</option>
             {Positions.map((position, index) => (
               <option key={index} value={position.title}>
                 {position.title}
