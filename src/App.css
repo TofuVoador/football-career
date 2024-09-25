@@ -52,7 +52,7 @@ section {
   color: var(--color-contrast);
 }
 
-.choices a {
+.choices a, .choices select {
   margin-bottom: 1rem;
   padding: 1rem;
   color: var(--color-contrast);

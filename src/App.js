@@ -125,27 +125,74 @@ function App() {
 
   const [renew, setRenew] = useState({ value: 0, duration: 0, salaryAdjustment: 0 });
 
-  function ChooseNation(initNation) {
-    //change display
-    document.getElementById("init-pos").style.display = "flex";
-    document.getElementById("init-nation").style.display = "none";
+  function ChooseNation() {
+    const continentDropdown = document.getElementById("continent-dropdown");
+    const nationDropdown = document.getElementById("nation-dropdown");
 
-    let newPlayer = player;
-    newPlayer.nation = initNation;
+    // Find the selected continent
+    const selectedContinent = nations.find((continent) => continent.name === continentDropdown.value);
+    
+    // Find the selected nation within the chosen continent
+    const selectedNation = selectedContinent ? selectedContinent.teams.find((nation) => nation.name === nationDropdown.value) : null;
 
-    setPlayer(newPlayer);
+    // Check if both the continent and nation are selected
+    if (selectedContinent && selectedNation) {
+        // Change display
+        document.getElementById("init-pos").style.display = "flex";
+        document.getElementById("init-nation").style.display = "none";
+
+        // Create a new player object with the selected nation
+        let newPlayer = { ...player };  // Assuming 'player' is defined in your scope
+        newPlayer.nation = selectedNation;
+
+        // Set the player with the new nation
+        setPlayer(newPlayer);
+    } else {
+        alert("Selecione um País.");
+    }
+  } 
+    
+  function updateNationDropdown() {
+    const continentDropdown = document.getElementById("continent-dropdown");
+    const nationDropdown = document.getElementById("nation-dropdown");
+    const selectedContinent = continentDropdown.value;
+  
+    // Clear previous nations
+    nationDropdown.innerHTML = '<option value="">Selecione uma Nação</option>';
+  
+    // Find nations for the selected continent
+    const continentData = nations.find(cont => cont.name === selectedContinent);
+    if (continentData) {
+      continentData.teams.forEach(team => {
+        const option = document.createElement("option");
+        option.value = team.name;
+        option.textContent = team.name;
+        nationDropdown.appendChild(option);
+      });
+    }
   }
 
-  function ChoosePos(initPos) {
-    //change display
+  function ChoosePos() {
+    // Get the selected position
+    const selectedIndex = document.getElementById("position-select").selectedIndex;
+
+    // Check if a position is selected
+    if (selectedIndex === -1) {
+        alert("Please select a position."); // Alert if no position is selected
+        return; // Exit the function if no position is selected
+    }
+
+    // Change display
     document.getElementById("team-choice").style.display = "flex";
     document.getElementById("init-pos").style.display = "none";
 
-    let newPlayer = player;
-    newPlayer.position = initPos;
-
+    const selectedPosition = Positions[selectedIndex]; // Use the positions array
+  
+    let newPlayer = { ...player }; // Clone the player object
+    newPlayer.position = selectedPosition; // Assign the selected position
+  
     let newTeams = UpdateTeamsStats(20.0).newTeams;
-
+  
     let leagueResults = leagues.map((league) => {
       let leagueResult = {
         name: league.name,
@@ -155,11 +202,11 @@ function App() {
       };
       return leagueResult;
     });
-
-    setLastLeagueResults(leagueResults);
-    setPlayer(newPlayer);
-    setTransfers(GetInitTeams(initPos.value, newTeams, newPlayer));
-  }
+  
+    setLastLeagueResults(leagueResults); // Update league results
+    setPlayer(newPlayer); // Update the player state
+    setTransfers(GetInitTeams(selectedPosition.value, newTeams, newPlayer)); // Use selectedPosition
+  }  
 
   function ChooseTeam(newTeam = null) {
     //change display
@@ -2719,7 +2766,6 @@ function App() {
           <li>Escolha seus dados iniciais.</li>
           <li>Escolha qual proposta você aceitará.</li>
           <li>O jogo simulará a partir do que você escolheu</li>
-          <li>Você pode recarregar a página até aparecer os atributos iniciais desejados</li>
           <li>Boa sorte e divirta-se</li>
         </ol>
       </header>
@@ -2732,27 +2778,39 @@ function App() {
           ))}
         </section>
         <section className="choices" id="init-nation">
-          <h3 style={{ marginBottom: "1rem" }}>Escolha o país do jogador:</h3>
-          <a className="d-alert" onClick={() => ChooseNation(initNation[0])}>
-            {initNation[0].name}
-          </a>
-          <a className="d-alert" onClick={() => ChooseNation(initNation[1])}>
-            {initNation[1].name}
-          </a>
-          <a className="d-alert" onClick={() => ChooseNation(initNation[2])}>
-            {initNation[2].name}
+          <select id="continent-dropdown" onChange={() => updateNationDropdown()}>
+            <option value="">Selecione uma Confederação</option>
+            <option value="AFC">AFC</option>
+            <option value="CAF">CAF</option>
+            <option value="CONCACAF">CONCACAF</option>
+            <option value="CONMEBOL">CONMEBOL</option>
+            <option value="UEFA">UEFA</option>
+          </select>
+          <select id="nation-dropdown">
+            <option value="">Selecione uma Nação</option>
+          </select>
+          <a
+            className="confirm-button"
+            onClick={() => ChooseNation()}
+          >
+            Confirmar
           </a>
         </section>
         <section className="choices" id="init-pos" style={{ display: "none" }}>
           <h3 style={{ marginBottom: "1rem" }}>Escolha a posição do jogador:</h3>
-          <a className="d-alert" onClick={() => ChoosePos(initPos[0])}>
-            {initPos[0].title}
-          </a>
-          <a className="d-alert" onClick={() => ChoosePos(initPos[1])}>
-            {initPos[1].title}
-          </a>
-          <a className="d-alert" onClick={() => ChoosePos(initPos[2])}>
-            {initPos[2].title}
+          <select id="position-select">
+            <option value="">Selecione uma Posição</option>
+            {Positions.map((position, index) => (
+              <option key={index} value={position.title}>
+                {position.title}
+              </option>
+            ))}
+          </select>
+          <a
+            className="confirm-button"
+            onClick={() => ChoosePos()}
+          >
+            Confirmar
           </a>
         </section>
         <section className="choices" id="team-choice" style={{ display: "none" }}>
