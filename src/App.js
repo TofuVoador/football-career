@@ -1887,18 +1887,10 @@ function App() {
       if (newTransfers[2].contract.value < newPlayer.wage)
         newTransfers[1].contract.value = newPlayer.wage;
 
-      let newPosition;
-      if (newPlayer.position.abbreviation !== "GO" && Math.random() < 0.2) {
-          let relatedPositions = newPlayer.position.related;
-          newPosition = relatedPositions[RandomNumber(0, relatedPositions.length - 1)];
-      } else {
-          newPosition = newPlayer.position.abbreviation;
-      }
-
       setRenew({
         value: newPlayer.wage * 1.1,
         duration: contract - 1,
-        position: newPosition
+        position: newPlayer.position.abbreviation
       });
 
       document.getElementById("decision-stay").style.display = "flex";
