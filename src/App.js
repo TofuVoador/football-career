@@ -452,7 +452,7 @@ function App() {
     const playerPosition =
       playerLeagueResult.result.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
     newSeason.awardPoints +=
-      ((playerLeagueResult.championsSpots / 4.0) * (5 - playerPosition)) / 2.0; //max = 2.0
+      ((playerLeagueResult.championsSpots / 4.0) * (7 - playerPosition)) / 2.0; //max = 3.0
     newSeason.titles.push([`Liga: ${playerPosition}º lugar`].concat(leaguesTopEight));
     newPlayer.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0);
 
@@ -1679,8 +1679,6 @@ function App() {
       let currentMainHost = allNations.find((n) => n.name === (currentWorldCup?.hosts[0] || ""));
       let lastMainHost = allNations.find((n) => n.name === (lastWorldCup?.hosts[0] || ""));
 
-      console.log(currentMainHost, lastMainHost)
-
       let validTeams = allNations.filter((team) => {
         const distance = calculateDistance(
           currentMainHost?.latitude || 0,
@@ -1698,8 +1696,6 @@ function App() {
         return !countriesHosts.includes(team.name) && distance >= 5000 && distance2 >= 2500;
       });
 
-      console.log(JSON.parse(JSON.stringify(validTeams)))
-
       let chosenHosts = [];
 
       let chosenID = RandomNumber(0, validTeams.length - 1);
@@ -1713,8 +1709,6 @@ function App() {
               !countriesHosts.includes(team.name) && 
               team.name !== mainHost.name;
       })
-
-      console.log(JSON.parse(JSON.stringify(validTeams)))
 
       let numberOfAdditionalHosts = RandomNumber(
         !!validTeams.length,
@@ -1730,8 +1724,6 @@ function App() {
       newWorldCupHistoryHosts.shift();
 
       setWorldCupHistoryHosts(newWorldCupHistoryHosts);
-
-      console.log(newWorldCupHistoryHosts)
     }
 
     let performanceMultiplier = Math.pow(newPlayer.overall, 2) / 8000.0; //adds from 0 to 1.0
