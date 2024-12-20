@@ -175,7 +175,7 @@ function App() {
   function ChoosePos() {
     // Get the selected position
     const positionDropdown = document.getElementById("position-select");
-    const selectedPosition = Positions.find((position) => position.title == positionDropdown.value)
+    const selectedPosition = Positions.find((position) => position.title === positionDropdown.value)
 
     // Change display
     document.getElementById("team-choice").style.display = "flex";
@@ -215,7 +215,7 @@ function App() {
 
     newHistory = newHistory.filter((item) => year - item.year <= 8);
 
-    if (newTeam != null) {
+    if (newTeam !== null) {
       // Se houver mudança de time
       newHistory.push({ team: newTeam.team.name, year: year + newTeam.contract.duration });
 
@@ -245,7 +245,7 @@ function App() {
 
       let newLeagueResults =
         lastLeagueResults.find((league) => league.name === newPlayer.team.league) || [];
-      lp = newLeagueResults.result.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
+      lp = newLeagueResults.result.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
 
       // Verifica se o jogador se classificou no ano passado
       if (lp <= newLeagueResults.championsSpots) {
@@ -327,8 +327,8 @@ function App() {
       }
     }
 
-    newPlayer.team = allTeams.find((t) => t.name == newPlayer.team.name); //find player's team by name and update
-    newPlayer.nation = allNations.find((n) => n.name == newPlayer.nation.name); //find player's nation by name and update
+    newPlayer.team = allTeams.find((t) => t.name === newPlayer.team.name); //find player's team by name and update
+    newPlayer.nation = allNations.find((n) => n.name === newPlayer.nation.name); //find player's nation by name and update
 
     // Filtra os valores de transferValue que são números
     const transferValues = transfers.map((transfer) => transfer?.transferValue);
@@ -433,6 +433,7 @@ function App() {
         europaSpots: league.europaSpots,
         result: GetLeaguePosition(league.teams),
       };
+      console.log(league.name + ": " + leagueResult.result.table[0].name + " (" + leagueResult.result.table[0].power + ")")
       return leagueResult;
     });
 
@@ -449,7 +450,7 @@ function App() {
     }
 
     const playerPosition =
-      playerLeagueResult.result.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
+      playerLeagueResult.result.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
     newSeason.awardPoints +=
       ((playerLeagueResult.championsSpots / 4.0) * (5 - playerPosition)) / 2.0; //max = 2.0
     newSeason.titles.push([`Liga: ${playerPosition}º lugar`].concat(leaguesTopEight));
@@ -459,7 +460,7 @@ function App() {
     assistsOpportunities += (21 - playerPosition);
 
     //if fist place, then won trophy
-    if (playerPosition == 1) {
+    if (playerPosition === 1) {
       newPlayer.leagueTitles.push(`${year} (${newPlayer.team.name})`);
       triplice++;
     }
@@ -499,12 +500,12 @@ function App() {
         let game = GetKnockoutResult(team1, team2, isFinal);
 
         // Verificando se o jogador está envolvido no jogo atual
-        if (team1.name == newPlayer.team.name || team2.name == newPlayer.team.name) {
-          playerOpp = `: ${team1.name == newPlayer.team.name ? team2.name : team1.name}`;
+        if (team1.name === newPlayer.team.name || team2.name === newPlayer.team.name) {
+          playerOpp = `: ${team1.name === newPlayer.team.name ? team2.name : team1.name}`;
           // Verificando se o jogador ganhou o jogo
           if (
-            (game.result && team1.name == newPlayer.team.name) ||
-            (!game.result && team2.name == newPlayer.team.name)
+            (game.result && team1.name === newPlayer.team.name) ||
+            (!game.result && team2.name === newPlayer.team.name)
           ) {
             // Incrementando a fase do jogador e concedendo pontos e prêmios adicionais
             playerPhase++;
@@ -540,7 +541,7 @@ function App() {
         end = true;
       }
     }
-
+    
     newSeason.titles.push(
       [`Copa Nacional: ${TournamentPath[playerPhase]}`].concat(nationalCupDescription)
     );
@@ -578,7 +579,7 @@ function App() {
     );
 
     const playerChampionsPos =
-      championsGroup.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
+      championsGroup.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
 
     if(playerChampionsPos > 0) {
       goalsOpportunities += (36 - playerChampionsPos) / 10;
@@ -599,7 +600,7 @@ function App() {
     phase++;
 
     // Verificar se o novo jogador está entre os classificados para os playoffs
-    if (playoffsClassif.some((t) => t.name == newPlayer.team.name)) {
+    if (playoffsClassif.some((t) => t.name === newPlayer.team.name)) {
       playerPhase++;
     }
 
@@ -614,8 +615,8 @@ function App() {
       let team2 = playoffsClassif[playoffsClassif.length - (matchID + 1)];
       let game = GetKnockoutResult(team1, team2, true);
 
-      if (team1.name == newPlayer.team.name || team2.name == newPlayer.team.name) {
-        playerOpp = `: ${team1.name == newPlayer.team.name ? team2.name : team1.name}`;
+      if (team1.name === newPlayer.team.name || team2.name === newPlayer.team.name) {
+        playerOpp = `: ${team1.name === newPlayer.team.name ? team2.name : team1.name}`;
       }
 
       games += `--> ${game.game}`;
@@ -629,7 +630,7 @@ function App() {
 
     championsDescription.push(`${TournamentPath[phase]}${playerOpp}${games}`);
 
-    if (classifToKnockout.some((t) => t.name == newPlayer.team.name)) {
+    if (classifToKnockout.some((t) => t.name === newPlayer.team.name)) {
       playerPhase++;
     }
 
@@ -656,12 +657,12 @@ function App() {
         );
 
         // Verificar se o jogador está envolvido no jogo atual
-        if (team1.name == newPlayer.team.name || team2.name == newPlayer.team.name) {
-          playerOpp = `: ${team1.name == newPlayer.team.name ? team2.name : team1.name}`;
+        if (team1.name === newPlayer.team.name || team2.name === newPlayer.team.name) {
+          playerOpp = `: ${team1.name === newPlayer.team.name ? team2.name : team1.name}`;
           // Verificar se o jogador ganhou o jogo
           if (
-            (game.result && team1.name == newPlayer.team.name) ||
-            (!game.result && team2.name == newPlayer.team.name)
+            (game.result && team1.name === newPlayer.team.name) ||
+            (!game.result && team2.name === newPlayer.team.name)
           ) {
             // Incrementar a fase do jogador e conceder pontos e prêmios adicionais
             playerPhase++;
@@ -673,7 +674,7 @@ function App() {
               // Se o jogador vencer o torneio, conceder prêmios adicionais
               newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
               newPlayer.fame += 20; // Máximo 4 x 5 + 20 = 40
-              if (year % 4 != 2) newSeason.awardPoints += 1.0; // Máximo 0.6 x 5 + 1.0 = 4.0
+              if (year % 4 !== 2) newSeason.awardPoints += 1.0; // Máximo 0.6 x 5 + 1.0 = 4.0
               triplice++;
             }
           }
@@ -699,6 +700,7 @@ function App() {
 
       // Verificar se o torneio chegou ao fim
       if (phase >= TournamentPath.length - 1) {
+        console.log("Champions League: " + newClassif[0].name + " (" + newClassif[0].power + ")")
         end = true;
       }
     }
@@ -737,7 +739,7 @@ function App() {
     let group = GetEuropaPosition(qualified, newPlayer.europaQualification ? newPlayer.team : null);
 
     const playerEuropaPosition =
-      group.table.findIndex((team) => team.name == newPlayer.team.name) + 1;
+      group.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
 
       if(playerEuropaPosition > 0) {
         goalsOpportunities += (32 - playerChampionsPos) / 10;
@@ -752,7 +754,7 @@ function App() {
 
     let classif = DeepClone([...group.table]).splice(0, 16);
 
-    if (classif.some((t) => t.name == newPlayer.team.name)) {
+    if (classif.some((t) => t.name === newPlayer.team.name)) {
       playerPhase += 2;
     }
 
@@ -779,12 +781,12 @@ function App() {
         );
 
         // Verificar se o jogador está envolvido no jogo atual
-        if (team1.name == newPlayer.team.name || team2.name == newPlayer.team.name) {
-          playerOpp = `: ${team1.name == newPlayer.team.name ? team2.name : team1.name}`;
+        if (team1.name === newPlayer.team.name || team2.name === newPlayer.team.name) {
+          playerOpp = `: ${team1.name === newPlayer.team.name ? team2.name : team1.name}`;
           // Verificar se o jogador ganhou o jogo
           if (
-            (game.result && team1.name == newPlayer.team.name) ||
-            (!game.result && team2.name == newPlayer.team.name)
+            (game.result && team1.name === newPlayer.team.name) ||
+            (!game.result && team2.name === newPlayer.team.name)
           ) {
             // Incrementar a fase do jogador e, se vencer o torneio, adicionar à sua lista de realizações
             playerPhase++;
@@ -828,7 +830,7 @@ function App() {
 
     newSeason.titles.push([`Europa League${playerEuropaResult}`].concat(europaLeagueDescription));
 
-    if (year % 4 == 0) {
+    if (year % 4 === 0) {
       newSeason.awardPoints -= 2.0;
       let playedContinental =
         newPlayer.overall > 75 + newPlayer.nation.power || (med > 0 && newSeason.performance > 0.5);
@@ -864,12 +866,12 @@ function App() {
         // Obter a posição do jogador no grupo atual
         let thisGroup = GetWorldCupPosition(
           europeanGroups[groupID],
-          europeanGroups[groupID].some((t) => t.name == newPlayer.nation.name)
+          europeanGroups[groupID].some((t) => t.name === newPlayer.nation.name)
             ? newPlayer.nation
             : null
         );
         const playerPosition =
-          thisGroup.table.findIndex((team) => team.name == newPlayer.nation.name) + 1;
+          thisGroup.table.findIndex((team) => team.name === newPlayer.nation.name) + 1;
 
         // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
         if (playerPosition > 0) {
@@ -885,7 +887,7 @@ function App() {
         thirdPlacesPoints.push(thisGroup.points[2]);
       }
 
-      if (player.nation.continent != "UEFA") europeanDescription.push("Grupos-->Sem Dados");
+      if (player.nation.continent !== "UEFA") europeanDescription.push("Grupos-->Sem Dados");
 
       thirdPlaces.sort((a, b) => {
         return (
@@ -897,7 +899,7 @@ function App() {
       let classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 4));
       phase += 2;
 
-      if (classif.some((t) => t.name == newPlayer.nation.name)) {
+      if (classif.some((t) => t.name === newPlayer.nation.name)) {
         playerPhase += 2;
       }
 
@@ -920,16 +922,16 @@ function App() {
           // Obter o resultado do jogo
           let game = GetKnockoutResult(team1, team2, false);
 
-          if (team1.name == player.nation.name || team2.name == player.nation.name) {
-            playerOpp = `: ${team1.name == player.nation.name ? team2.name : team1.name}`;
+          if (team1.name === player.nation.name || team2.name === player.nation.name) {
+            playerOpp = `: ${team1.name === player.nation.name ? team2.name : team1.name}`;
           }
 
           // Verificar se o jogador está envolvido no jogo atual
-          if (team1.name == player.nation.name || team2.name == player.nation.name) {
+          if (team1.name === player.nation.name || team2.name === player.nation.name) {
             // Verificar se o jogador ganhou o jogo
             if (
-              (game.result && team1.name == player.nation.name) ||
-              (!game.result && team2.name == player.nation.name)
+              (game.result && team1.name === player.nation.name) ||
+              (!game.result && team2.name === player.nation.name)
             ) {
               playerPhase++;
               goalsOpportunities += Math.random();
@@ -973,7 +975,7 @@ function App() {
 
       let playerEuropeanDesc = "";
 
-      if (player.nation.continent == "UEFA") {
+      if (player.nation.continent === "UEFA") {
         playerEuropeanDesc = `: ${TournamentPath[playerPhase]} ${
           playedContinental ? "" : " (Não Convocado)"
         }`;
@@ -1015,12 +1017,12 @@ function App() {
         // Obter a posição do jogador no grupo atual
         let thisGroup = GetWorldCupPosition(
           americanGroups[groupID],
-          americanGroups[groupID].some((t) => t.name == newPlayer.nation.name)
+          americanGroups[groupID].some((t) => t.name === newPlayer.nation.name)
             ? newPlayer.nation
             : null
         );
         const playerPosition =
-          thisGroup.table.findIndex((team) => team.name == newPlayer.nation.name) + 1;
+          thisGroup.table.findIndex((team) => team.name === newPlayer.nation.name) + 1;
 
         // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
         if (playerPosition > 0) {
@@ -1034,13 +1036,13 @@ function App() {
         secondPlaces.push(thisGroup.table[1]);
       }
 
-      if (player.nation.continent != "CONCACAF" && player.nation.continent != "CONMEBOL")
+      if (player.nation.continent !== "CONCACAF" && player.nation.continent !== "CONMEBOL")
         americanDescription.push("Grupos-->Sem Dados");
 
       // Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
       classif = firstPlaces.concat(secondPlaces);
       phase += 3;
-      if (classif.some((t) => t.name == newPlayer.nation.name)) {
+      if (classif.some((t) => t.name === newPlayer.nation.name)) {
         playerPhase += 3;
       }
 
@@ -1063,16 +1065,16 @@ function App() {
           // Obter o resultado do jogo
           let game = GetKnockoutResult(team1, team2, false);
 
-          if (team1.name == player.nation.name || team2.name == player.nation.name) {
-            playerOpp = `: ${team1.name == player.nation.name ? team2.name : team1.name}`;
+          if (team1.name === player.nation.name || team2.name === player.nation.name) {
+            playerOpp = `: ${team1.name === player.nation.name ? team2.name : team1.name}`;
           }
 
           // Verificar se o jogador está envolvido no jogo atual
-          if (team1.name == player.nation.name || team2.name == player.nation.name) {
+          if (team1.name === player.nation.name || team2.name === player.nation.name) {
             // Verificar se o jogador ganhou o jogo
             if (
-              (game.result && team1.name == player.nation.name) ||
-              (!game.result && team2.name == player.nation.name)
+              (game.result && team1.name === player.nation.name) ||
+              (!game.result && team2.name === player.nation.name)
             ) {
               playerPhase++;
               goalsOpportunities += Math.random();
@@ -1116,7 +1118,7 @@ function App() {
 
       let playerAmericanDesc = "";
 
-      if (player.nation.continent == "CONCACAF" || player.nation.continent == "CONMEBOL") {
+      if (player.nation.continent === "CONCACAF" || player.nation.continent === "CONMEBOL") {
         playerAmericanDesc = `: ${TournamentPath[playerPhase]} ${
           playedContinental ? "" : " (Não Convocado)"
         }`;
@@ -1155,12 +1157,12 @@ function App() {
         // Obter a posição do jogador no grupo atual
         let thisGroup = GetWorldCupPosition(
           africanGroups[groupID],
-          africanGroups[groupID].some((t) => t.name == newPlayer.nation.name)
+          africanGroups[groupID].some((t) => t.name === newPlayer.nation.name)
             ? newPlayer.nation
             : null
         );
         const playerPosition =
-          thisGroup.table.findIndex((team) => team.name == newPlayer.nation.name) + 1;
+          thisGroup.table.findIndex((team) => team.name === newPlayer.nation.name) + 1;
 
         // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
         if (playerPosition > 0) {
@@ -1176,7 +1178,7 @@ function App() {
         thirdPlacesPoints.push(thisGroup.points[2]);
       }
 
-      if (player.nation.continent != "CAF") africanDescription.push("Grupos-->Sem Dados");
+      if (player.nation.continent !== "CAF") africanDescription.push("Grupos-->Sem Dados");
 
       thirdPlaces.sort((a, b) => {
         return (
@@ -1187,7 +1189,7 @@ function App() {
       // Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
       classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 2));
       phase += 3;
-      if (classif.some((t) => t.name == newPlayer.nation.name)) {
+      if (classif.some((t) => t.name === newPlayer.nation.name)) {
         playerPhase += 3;
       }
 
@@ -1210,16 +1212,16 @@ function App() {
           // Obter o resultado do jogo
           let game = GetKnockoutResult(team1, team2, false);
 
-          if (team1.name == player.nation.name || team2.name == player.nation.name) {
-            playerOpp = `: ${team1.name == player.nation.name ? team2.name : team1.name}`;
+          if (team1.name === player.nation.name || team2.name === player.nation.name) {
+            playerOpp = `: ${team1.name === player.nation.name ? team2.name : team1.name}`;
           }
 
           // Verificar se o jogador está envolvido no jogo atual
-          if (team1.name == player.nation.name || team2.name == player.nation.name) {
+          if (team1.name === player.nation.name || team2.name === player.nation.name) {
             // Verificar se o jogador ganhou o jogo
             if (
-              (game.result && team1.name == player.nation.name) ||
-              (!game.result && team2.name == player.nation.name)
+              (game.result && team1.name === player.nation.name) ||
+              (!game.result && team2.name === player.nation.name)
             ) {
               playerPhase++;
               goalsOpportunities += Math.random();
@@ -1263,7 +1265,7 @@ function App() {
 
       let playerAfricanDesc = "";
 
-      if (player.nation.continent == "CAF") {
+      if (player.nation.continent === "CAF") {
         playerAfricanDesc = `: ${TournamentPath[playerPhase]} ${
           playedContinental ? "" : " (Não Convocado)"
         }`;
@@ -1302,12 +1304,12 @@ function App() {
         // Obter a posição do jogador no grupo atual
         let thisGroup = GetWorldCupPosition(
           asianGroups[groupID],
-          asianGroups[groupID].some((t) => t.name == newPlayer.nation.name)
+          asianGroups[groupID].some((t) => t.name === newPlayer.nation.name)
             ? newPlayer.nation
             : null
         );
         const playerPosition =
-          thisGroup.table.findIndex((team) => team.name == newPlayer.nation.name) + 1;
+          thisGroup.table.findIndex((team) => team.name === newPlayer.nation.name) + 1;
 
         // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
         if (playerPosition > 0) {
@@ -1323,7 +1325,7 @@ function App() {
         thirdPlacesPoints.push(thisGroup.points[2]);
       }
 
-      if (player.nation.continent != "AFC") asianDescription.push("Grupos-->Sem Dados");
+      if (player.nation.continent !== "AFC") asianDescription.push("Grupos-->Sem Dados");
 
       thirdPlaces.sort((a, b) => {
         return (
@@ -1334,7 +1336,7 @@ function App() {
       // Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
       classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 2));
       phase += 3;
-      if (classif.some((t) => t.name == newPlayer.nation.name)) {
+      if (classif.some((t) => t.name === newPlayer.nation.name)) {
         playerPhase += 3;
       }
 
@@ -1357,16 +1359,16 @@ function App() {
           // Obter o resultado do jogo
           let game = GetKnockoutResult(team1, team2, false);
 
-          if (team1.name == player.nation.name || team2.name == player.nation.name) {
-            playerOpp = `: ${team1.name == player.nation.name ? team2.name : team1.name}`;
+          if (team1.name === player.nation.name || team2.name === player.nation.name) {
+            playerOpp = `: ${team1.name === player.nation.name ? team2.name : team1.name}`;
           }
 
           // Verificar se o jogador está envolvido no jogo atual
-          if (team1.name == player.nation.name || team2.name == player.nation.name) {
+          if (team1.name === player.nation.name || team2.name === player.nation.name) {
             // Verificar se o jogador ganhou o jogo
             if (
-              (game.result && team1.name == player.nation.name) ||
-              (!game.result && team2.name == player.nation.name)
+              (game.result && team1.name === player.nation.name) ||
+              (!game.result && team2.name === player.nation.name)
             ) {
               playerPhase++;
               goalsOpportunities += Math.random();
@@ -1410,7 +1412,7 @@ function App() {
 
       let playerAsianDesc = "";
 
-      if (player.nation.continent == "AFC") {
+      if (player.nation.continent === "AFC") {
         playerAsianDesc = `: ${TournamentPath[playerPhase]} ${
           playedContinental ? "" : " (Não Convocado)"
         }`;
@@ -1420,13 +1422,13 @@ function App() {
     }
 
     //World Cup
-    if (year % 4 == 2) {
+    if (year % 4 === 2) {
       newSeason.awardPoints -= 3.0;
       phase = 0;
       playerPhase = 0;
       let worldCupDescription = [];
       let newWorldCupHistoryHosts = worldCupHistoryHosts;
-      let currentHosts = newWorldCupHistoryHosts[newWorldCupHistoryHosts.length - 2];
+      let currentHosts = newWorldCupHistoryHosts.find((h) => h.year === year).hosts;
 
       let worldCupHostDescription = "Hosts";
       for (let hostID = 0; hostID < currentHosts.length; hostID++) {
@@ -1489,7 +1491,7 @@ function App() {
       allClassifNations = hostsAreFirst.concat(allClassifNations);
 
       // Verificar se a nação do novo jogador está entre as nações qualificadas para a Copa do Mundo
-      let classifToWorldCup = allClassifNations.some((t) => t.name == newPlayer.nation.name);
+      let classifToWorldCup = allClassifNations.some((t) => t.name === newPlayer.nation.name);
 
       if (!classifToWorldCup) worldCupDescription.push("Grupos-->Sem Dados");
 
@@ -1508,27 +1510,27 @@ function App() {
       for (let potID = 0; potID < pots.length; potID++) {
         for (let GroupID = 0; GroupID < 12; GroupID++) {
           let validNations = pots[potID].filter(
-            (n) => !groups[GroupID].some((opp) => opp.continent == n.continent)
+            (n) => !groups[GroupID].some((opp) => opp.continent === n.continent)
           );
 
           if (validNations.length > 0) {
             let randomIndex = RandomNumber(0, validNations.length - 1);
             groups[GroupID].push(validNations[randomIndex]);
 
-            pots[potID] = pots[potID].filter((n) => validNations[randomIndex] != n);
+            pots[potID] = pots[potID].filter((n) => validNations[randomIndex] !== n);
           } else {
             //if there is no other nation available, try repeating Europe
-            validNations = pots[potID].filter((n) => n.continent == "UEFA");
+            validNations = pots[potID].filter((n) => n.continent === "UEFA");
             if (validNations.length > 0) {
               let randomIndex = RandomNumber(0, validNations.length - 1);
               groups[GroupID].push(validNations[randomIndex]);
-              pots[potID] = pots[potID].filter((n) => validNations[randomIndex] != n);
+              pots[potID] = pots[potID].filter((n) => validNations[randomIndex] !== n);
             } else {
               validNations = pots[potID];
               if (validNations.length > 0) {
                 let randomIndex = RandomNumber(0, validNations.length - 1);
                 groups[GroupID].push(validNations[randomIndex]);
-                pots[potID] = pots[potID].filter((n) => validNations[randomIndex] != n);
+                pots[potID] = pots[potID].filter((n) => validNations[randomIndex] !== n);
               } else {
                 //if can't make a group
                 throw new Error("Não foi possível gerar o grupo para a copa", groups);
@@ -1549,10 +1551,10 @@ function App() {
         // Obter a posição do jogador no grupo atual
         let thisGroup = GetWorldCupPosition(
           groups[groupID],
-          groups[groupID].some((t) => t.name == newPlayer.nation.name) ? newPlayer.nation : null
+          groups[groupID].some((t) => t.name === newPlayer.nation.name) ? newPlayer.nation : null
         );
         const playerPosition =
-          thisGroup.table.findIndex((team) => team.name == newPlayer.nation.name) + 1;
+          thisGroup.table.findIndex((team) => team.name === newPlayer.nation.name) + 1;
 
         // Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
         if (playerPosition > 0) {
@@ -1579,7 +1581,7 @@ function App() {
       phase++;
 
       // Verificar se o jogador avançou para a próxima fase
-      if (classif.some((t) => t.name == newPlayer.nation.name)) {
+      if (classif.some((t) => t.name === newPlayer.nation.name)) {
         playerPhase++;
       }
 
@@ -1602,16 +1604,16 @@ function App() {
           // Obter o resultado do jogo
           let game = GetKnockoutResult(team1, team2, false);
 
-          if (team1.name == player.nation.name || team2.name == player.nation.name) {
-            playerOpp = `: ${team1.name == player.nation.name ? team2.name : team1.name}`;
+          if (team1.name === player.nation.name || team2.name === player.nation.name) {
+            playerOpp = `: ${team1.name === player.nation.name ? team2.name : team1.name}`;
           }
 
           // Verificar se o jogador está envolvido no jogo atual
-          if (team1.name == player.nation.name || team2.name == player.nation.name) {
+          if (team1.name === player.nation.name || team2.name === player.nation.name) {
             // Verificar se o jogador ganhou o jogo
             if (
-              (game.result && team1.name == player.nation.name) ||
-              (!game.result && team2.name == player.nation.name)
+              (game.result && team1.name === player.nation.name) ||
+              (!game.result && team2.name === player.nation.name)
             ) {
               playerPhase++;
               goalsOpportunities += Math.random();
@@ -1668,30 +1670,35 @@ function App() {
         allNations = allNations.concat([...nations[regionID].teams]);
       }
 
-      let countriesHosts = newWorldCupHistoryHosts.flatMap((wc) => wc);
-      let currentMainHost = allNations.filter((n) => n.name == currentHosts[0])[0];
-      let lastMainHost = allNations.filter(
-        (n) => n.name == newWorldCupHistoryHosts[newWorldCupHistoryHosts.length - 1][0]
-      )[0];
+      let countriesHosts = newWorldCupHistoryHosts.flatMap((wc) => wc.hosts);
+      let furthestYear = Math.max(...newWorldCupHistoryHosts.map((wc) => wc.year));
 
-      let validTeams = allNations
-        .filter((team) => !countriesHosts.includes(team.name))
-        .filter((team) => {
-          const distance = calculateDistance(
-            currentMainHost.latitude,
-            currentMainHost.longitude,
-            team.latitude,
-            team.longitude
-          );
-          const distance2 = calculateDistance(
-            lastMainHost.latitude,
-            lastMainHost.longitude,
-            team.latitude,
-            team.longitude
-          );
+      let currentWorldCup = newWorldCupHistoryHosts.find((wc) => wc.year === furthestYear);
+      let lastWorldCup = newWorldCupHistoryHosts.find((wc) => wc.year === furthestYear - 4);
 
-          return distance >= 5000 && distance2 >= 2500;
-        });
+      let currentMainHost = allNations.find((n) => n.name === (currentWorldCup?.hosts[0] || ""));
+      let lastMainHost = allNations.find((n) => n.name === (lastWorldCup?.hosts[0] || ""));
+
+      console.log(currentMainHost, lastMainHost)
+
+      let validTeams = allNations.filter((team) => {
+        const distance = calculateDistance(
+          currentMainHost?.latitude || 0,
+          currentMainHost?.longitude || 0,
+          team.latitude,
+          team.longitude
+        );
+        const distance2 = calculateDistance(
+          lastMainHost?.latitude || 0,
+          lastMainHost?.longitude || 0,
+          team.latitude,
+          team.longitude
+        );
+
+        return !countriesHosts.includes(team.name) && distance >= 5000 && distance2 >= 2500;
+      });
+
+      console.log(JSON.parse(JSON.stringify(validTeams)))
 
       let chosenHosts = [];
 
@@ -1701,32 +1708,13 @@ function App() {
 
       // Verifica quais estão próximos
       validTeams = allNations
-        .filter((team) => {
-          const distance = calculateDistance(
-            mainHost.latitude,
-            mainHost.longitude,
-            team.latitude,
-            team.longitude
-          );
-          let maxDist = 200 + (mainHost.distance + team.distance) / 2;
-          return distance <= maxDist;
-        })
-        .filter((n) => !countriesHosts.includes(n.name) && n.name != mainHost.name)
-        .sort((a, b) => {
-          let bDist = calculateDistance(
-            mainHost.latitude,
-            mainHost.longitude,
-            b.latitude,
-            b.longitude
-          );
-          let aDist = calculateDistance(
-            mainHost.latitude,
-            mainHost.longitude,
-            a.latitude,
-            a.longitude
-          );
-          return aDist - bDist;
-        });
+      .filter((team) => {
+        return mainHost.borders.includes(team.name) && 
+              !countriesHosts.includes(team.name) && 
+              team.name !== mainHost.name;
+      })
+
+      console.log(JSON.parse(JSON.stringify(validTeams)))
 
       let numberOfAdditionalHosts = RandomNumber(
         !!validTeams.length,
@@ -1738,10 +1726,12 @@ function App() {
         chosenHosts.push(chosenHost);
       }
 
-      newWorldCupHistoryHosts.push(chosenHosts.map((t) => t.name));
+      newWorldCupHistoryHosts.push({year: furthestYear + 4, hosts: chosenHosts.map((t) => t.name)});
       newWorldCupHistoryHosts.shift();
 
       setWorldCupHistoryHosts(newWorldCupHistoryHosts);
+
+      console.log(newWorldCupHistoryHosts)
     }
 
     let performanceMultiplier = Math.pow(newPlayer.overall, 2) / 8000.0; //adds from 0 to 1.0
@@ -1777,7 +1767,7 @@ function App() {
 
     let awardScore = newSeason.awardPoints + newPlayer.overall;
     if (
-      player.position.title == "Goleiro" &&
+      player.position.title === "Goleiro" &&
       awardScore >= 90 + (Math.random() + Math.random()) * 5 &&
       newSeason.performance >= 0.0
     ) {
@@ -1788,7 +1778,7 @@ function App() {
     }
 
     let goldenBootsGoals = 35 + RandomNumber(0, 5);
-    goldenBootsGoals += (year % 4 == 2) ? 5 : 0;
+    goldenBootsGoals += (year % 4 === 2) ? 5 : 0;
 
     if (goldenBootsGoals <= newSeason.goals) {
       //Golden Shoes
@@ -1838,7 +1828,7 @@ function App() {
 
     if (
       //if ended loan
-      newPlayer.contractTeam != null &&
+      newPlayer.contractTeam !== null &&
       contract <= 1
     ) {
       newTransfers = [newPlayer.contractTeam];
@@ -1901,7 +1891,7 @@ function App() {
       newPlayer.performance < -0.5 &&
       med < 0 &&
       (generalPerformance.length >= 2 || newPlayer.age < 24) &&
-      newTransfers.some((t) => t != null && t.team.power < newPlayer.team.power) &&
+      newTransfers.some((t) => t !== null && t.team.power < newPlayer.team.power) &&
       contract > 3 &&
       newPlayer.age < 35
     ) {
@@ -2051,7 +2041,7 @@ function App() {
 
         if (
           playerTeam &&
-          (playerTeam.name == newTeams[home].name || playerTeam.name == newTeams[away].name)
+          (playerTeam.name === newTeams[home].name || playerTeam.name === newTeams[away].name)
         ) {
           desc += `-->${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}`;
         }
@@ -2125,7 +2115,7 @@ function App() {
 
         if (
           playerTeam &&
-          (playerTeam.name == newTeams[home].name || playerTeam.name == newTeams[away].name)
+          (playerTeam.name === newTeams[home].name || playerTeam.name === newTeams[away].name)
         ) {
           desc += `-->${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}`;
         }
@@ -2185,7 +2175,7 @@ function App() {
 
           if (
             playerTeam &&
-            (playerTeam.name == newTeams[home].name || playerTeam.name == newTeams[away].name)
+            (playerTeam.name === newTeams[home].name || playerTeam.name === newTeams[away].name)
           ) {
             desc += `-->${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}`;
           }
@@ -2231,7 +2221,7 @@ function App() {
 
         if (
           playerTeam &&
-          (playerTeam.name == newTeams[home].name || playerTeam.name == newTeams[away].name)
+          (playerTeam.name === newTeams[home].name || playerTeam.name === newTeams[away].name)
         ) {
           desc += `-->${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}`;
         }
@@ -2287,8 +2277,8 @@ function App() {
     let team1Luck = 3 * (Math.random() + Math.random()) * (Math.random() + Math.random());
     let team2Luck = 3 * (Math.random() + Math.random()) * (Math.random() + Math.random());
 
-    let team1Score = Math.round(team1Luck * team1Power);
-    let team2Score = Math.round(team2Luck * team2Power);
+    let team1Score = Math.floor(team1Luck * team1Power);
+    let team2Score = Math.floor(team2Luck * team2Power);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
@@ -2301,11 +2291,11 @@ function App() {
     let team1Power = Math.pow(team1.power, 2) / base;
     let team2Power = Math.pow(team2.power, 2) / base;
 
-    let team1Luck = 1.5 * (Math.random() + Math.random()) * (Math.random() + Math.random());
-    let team2Luck = 1.5 * (Math.random() + Math.random()) * (Math.random() + Math.random());
+    let team1Luck = 3 * (Math.random() + Math.random());
+    let team2Luck = 3 * (Math.random() + Math.random());
 
-    let team1Score = Math.round(team1Luck * team1Power);
-    let team2Score = Math.round(team2Luck * team2Power);
+    let team1Score = Math.floor(team1Luck * team1Power);
+    let team2Score = Math.floor(team2Luck * team2Power);
 
     if (team1Score < 0) team1Score = 0;
     if (team2Score < 0) team2Score = 0;
@@ -2325,7 +2315,7 @@ function App() {
     while (!winner) {
       count++;
       let team1shooter = Math.random() * team1Power * 10;
-      let team2keeper = Math.random() * team2Power * 7;
+      let team2keeper = Math.random() * team2Power * 6;
 
       if (team1shooter > team2keeper) team1goals++;
 
@@ -2340,7 +2330,7 @@ function App() {
       if (team2shooter > team1keeper) team2goals++;
 
       if (
-        (count > 5 && team1goals != team2goals) ||
+        (count > 5 && team1goals !== team2goals) ||
         (count <= 5 && Math.abs(team1goals - team2goals) > 5 - count)
       ) {
         winner = true;
@@ -2364,12 +2354,12 @@ function App() {
       teamGoals1 += game2[1];
       teamGoals2 += game2[0];
 
-      if (teamGoals1 == teamGoals2) {
+      if (teamGoals1 === teamGoals2) {
         let extra = GetExtraTime(team2, team1);
         teamGoals1 += extra[1];
         teamGoals2 += extra[0];
 
-        if (teamGoals1 == teamGoals2) {
+        if (teamGoals1 === teamGoals2) {
           let penalties = GetPenalties(team2, team1);
           gameDesc += `->${team2.name} ${game2[0] + extra[0]} (${penalties[0]}) x (${
             penalties[1]
@@ -2391,12 +2381,12 @@ function App() {
           team2.name
         }${gameDesc}`;
       }
-    } else if (teamGoals1 == teamGoals2) {
+    } else if (teamGoals1 === teamGoals2) {
       let extra = GetExtraTime(team1, team2);
       teamGoals1 += extra[0];
       teamGoals2 += extra[1];
 
-      if (teamGoals1 == teamGoals2) {
+      if (teamGoals1 === teamGoals2) {
         let penalties = GetPenalties(team1, team2);
         gameDesc = `${team1.name} ${teamGoals1} (${penalties[0]}) x (${penalties[1]}) ${teamGoals2} ${team2.name}`;
         teamGoals1 += penalties[0];
@@ -2432,14 +2422,14 @@ function App() {
     for (let i = 0; i < 3; i++) {
         let teamID = RandomNumber(0, allTeams.length - 1);
 
-        while (history.some((t) => t.team == allTeams[teamID].name)) {
+        while (history.some((t) => t.team === allTeams[teamID].name)) {
             teamID = RandomNumber(0, allTeams.length - 1);
         }
 
         let team = allTeams[teamID];
 
         interestedTeams.push(team);
-        allTeams = allTeams.filter((t) => t.name != team.name);
+        allTeams = allTeams.filter((t) => t.name !== team.name);
     }
 
     let contracts = [];
@@ -2804,9 +2794,9 @@ function App() {
             style={{ display: "none" }}
             onClick={() => ChooseTeam()}
           >
-            <p>Continuar em {player.team == null ? "null" : player.team.name}</p>
+            <p>Continuar em {player.team === null ? "null" : player.team.name}</p>
             <p>
-              {player.team == null ? "null" : (player.team.power / 2).toFixed(2)}⭐ | $
+              {player.team === null ? "null" : (player.team.power / 2).toFixed(2)}⭐ | $
               {FormatarNumero(renew.value)} |{" "}
               {renew.duration} 🕗 |{" "}
               {renew.position}
@@ -2908,8 +2898,8 @@ function App() {
                 {Math.floor(player.fame)}
               </span>
             </div>
-            <p>Posição: {player.position == null ? "A definir" : player.position.title}</p>
-            <p>Seleção: {player.nation == null ? "A definir" : player.nation.name}</p>
+            <p>Posição: {player.position === null ? "A definir" : player.position.title}</p>
+            <p>Seleção: {player.nation === null ? "A definir" : player.nation.name}</p>
           </div> 
           <div className="stats-div">
             <div className="stats-div-div">
