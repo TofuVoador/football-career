@@ -415,7 +415,7 @@ function App() {
 
     let goalsOpportunities = 0;
     let assistsOpportunities = 0;
-    newSeason.awardPoints = newSeason.performance * 2; //min = -2.0 | max = 2.0
+    newSeason.awardPoints = newSeason.performance; //min = -1.0 | max = 1.0
 
     let med = 0;
     for (let i = 0; i < generalPerformance.length; i++) {
@@ -452,7 +452,7 @@ function App() {
     const playerPosition =
       playerLeagueResult.result.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
     newSeason.awardPoints +=
-      ((playerLeagueResult.championsSpots / 4.0) * (7 - playerPosition)) / 2.0; //max = 3.0
+      ((playerLeagueResult.championsSpots / 4.0) * (5 - playerPosition)) / 2.0; //max = 2.0
     newSeason.titles.push([`Liga: ${playerPosition}º lugar`].concat(leaguesTopEight));
     newPlayer.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0);
 
@@ -668,13 +668,13 @@ function App() {
             playerPhase++;
             goalsOpportunities += Math.random();
             assistsOpportunities += Math.random();
-            newSeason.awardPoints += 0.6; // Máximo 0.6 x 5 = 3.0
+            newSeason.awardPoints += 0.8; // Máximo 0.8 x 5 = 4.0
             newPlayer.fame += 4; // Champions Máximo 4 x 5 = 20
             if (playerPhase >= TournamentPath.length - 1) {
               // Se o jogador vencer o torneio, conceder prêmios adicionais
               newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
               newPlayer.fame += 20; // Máximo 4 x 5 + 20 = 40
-              if (year % 4 !== 2) newSeason.awardPoints += 1.0; // Máximo 0.6 x 5 + 1.0 = 4.0
+              if (year % 4 !== 2) newSeason.awardPoints += 1.0; // Máximo 0.8 x 5 + 1.0 = 5.0
               triplice++;
             }
           }
