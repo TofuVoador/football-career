@@ -854,7 +854,7 @@ function App() {
 			let playedContinental =
 				newPlayer.overall > 75 + newPlayer.nation.power &&
 				(newPlayer.team.power >= newPlayer.nation.power - 2 ||
-					(med > 0 && newSeason.performance > 0 && generalPerformance.length >= 2));
+					(med > 0 && newSeason.performance > 0.0 && generalPerformance.length >= 2));
 
 			// EUROCOPA
 			phase = 0;
@@ -1808,15 +1808,15 @@ function App() {
 		let position = -1;
 		if (awardScore >= 99) {
 			//POTS D'or
-			newPlayer.playerOfTheSeason.push(`Player Of The Season ${year} (${newPlayer.team.name})`);
+			newPlayer.playerOfTheSeason.push(`Jogador da Temporada ${year} (${newPlayer.team.name})`);
 			newPlayer.fame += 80;
 			position = 1;
-			newSeason.titles.push([`Player Of The Season: 1º lugar`]);
+			newSeason.titles.push([`Jogador da Temporada: 1º lugar`]);
 		} else if (awardScore >= 90) {
 			let pts = Math.floor(awardScore - 90);
 			newPlayer.fame += pts * 2;
 			position = 10 - pts;
-			newSeason.titles.push([`Player Of The Season: ${position}º lugar`]);
+			newSeason.titles.push([`Jogador da Temporada: ${position}º lugar`]);
 		}
 
 		newPlayer.fame += newSeason.performance * 20;
@@ -3020,7 +3020,7 @@ function App() {
 								</div>
 							</details>
 							<details>
-								<summary>Bola de Ouro: {player.playerOfTheSeason.length}</summary>
+								<summary>Jogador da Temporada: {player.playerOfTheSeason.length}</summary>
 								<div>
 									{player.playerOfTheSeason.map((b) => (
 										<p key={b}>{b}</p>
