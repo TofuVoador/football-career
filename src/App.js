@@ -852,14 +852,9 @@ function App() {
 		if (year % 4 === 0) {
 			newSeason.awardPoints -= 2.0;
 			let playedContinental =
-				(newPlayer.overall > 75 + newPlayer.nation.power &&
-					newPlayer.team.power >= newPlayer.nation.power - 1) ||
-				(med > 0 && newSeason.performance > 0.5);
-			console.log(
-				newPlayer.overall > 75 + newPlayer.nation.power,
-				newPlayer.team.power >= newPlayer.nation.power - 1,
-				med > 0 && newSeason.performance > 0.5
-			);
+				newPlayer.overall > 75 + newPlayer.nation.power &&
+				(newPlayer.team.power >= newPlayer.nation.power - 2 ||
+					(med > 0 && newSeason.performance > 0 && generalPerformance.length >= 2));
 
 			// EUROCOPA
 			phase = 0;
@@ -1523,14 +1518,9 @@ function App() {
 
 			//was called by the manager
 			let playedWorldCup =
-				(newPlayer.overall > 75 + newPlayer.nation.power &&
-					newPlayer.team.power >= newPlayer.nation.power - 1) ||
-				(med > 0 && newSeason.performance > 0.5);
-			console.log(
-				newPlayer.overall > 75 + newPlayer.nation.power,
-				newPlayer.team.power >= newPlayer.nation.power - 1,
-				med > 0 && newSeason.performance > 0.5
-			);
+				newPlayer.overall > 75 + newPlayer.nation.power &&
+				(newPlayer.team.power >= newPlayer.nation.power - 2 ||
+					(med > 0 && newSeason.performance > 0 && generalPerformance.length >= 2));
 
 			//create four pots to the group draw
 			let pots = Array.from({ length: 4 }, (_, potID) =>
