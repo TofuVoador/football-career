@@ -1953,7 +1953,10 @@ function App() {
 			//if contract expired
 			contract <= 1
 		) {
-			if (newPlayer.age >= newPlayer.peak + 6) {
+			if (
+				newPlayer.age >= newPlayer.peak + 6 &&
+				newPlayer.overall < 85 + newPlayer.potential / 10
+			) {
 				//must retire
 				document.getElementById("retire").style.display = "flex";
 				document.getElementById("decision-stay").style.display = "none";
@@ -1994,7 +1997,7 @@ function App() {
 				document.getElementById("decision-transfer2").style.display = "flex";
 				document.getElementById("decision-transfer3").style.display = "flex";
 
-				if (newPlayer.age >= newPlayer.peak + 4) {
+				if (newPlayer.age >= newPlayer.peak + 6) {
 					//can retire
 					document.getElementById("retire").style.display = "flex";
 				}
@@ -2531,9 +2534,15 @@ function App() {
 		let contractDurations = [RandomNumber(2, 8), RandomNumber(2, 8), RandomNumber(2, 8)];
 
 		let contractWages = [
-			Math.round(posValue * GetWage(GetOverall(0, 18, teams[0].power, 28), teams[0].power, 0)),
-			Math.round(posValue * GetWage(GetOverall(0, 18, teams[1].power, 28), teams[1].power, 0)),
-			Math.round(posValue * GetWage(GetOverall(0, 18, teams[2].power, 28), teams[2].power, 0)),
+			Math.round(
+				posValue * GetWage(GetOverall(0, 18, teams[0].power, currentPlayer.peak), teams[0].power, 0)
+			),
+			Math.round(
+				posValue * GetWage(GetOverall(0, 18, teams[1].power, currentPlayer.peak), teams[1].power, 0)
+			),
+			Math.round(
+				posValue * GetWage(GetOverall(0, 18, teams[2].power, currentPlayer.peak), teams[2].power, 0)
+			),
 		];
 
 		let contracts = [
@@ -2552,9 +2561,9 @@ function App() {
 		];
 
 		let expectedOveralls = [
-			GetOverall(0, 18 + contractDurations[0] / 2, teams[0].power, 28),
-			GetOverall(0, 18 + contractDurations[1] / 2, teams[1].power, 28),
-			GetOverall(0, 18 + contractDurations[2] / 2, teams[2].power, 28),
+			GetOverall(0, 18 + contractDurations[0] / 2, teams[0].power, currentPlayer.peak),
+			GetOverall(0, 18 + contractDurations[1] / 2, teams[1].power, currentPlayer.peak),
+			GetOverall(0, 18 + contractDurations[2] / 2, teams[2].power, currentPlayer.peak),
 		];
 
 		let transferValues = [
@@ -2597,9 +2606,9 @@ function App() {
 	}
 
 	function GetOverall(potential, age, teamPower, peak) {
-		return 88 + (potential + teamPower * 4 - (peak - age) ** 2) / 10;
-		//88 + (20 + 40) / 10 = 94
-		//88 + (0 + 20) / 10 = 90
+		return 82 + teamPower + (potential - (peak - age) ** 2) / 10;
+		//82 + 10 + 2 = 94
+		//82 + 5 + 0 = 87
 	}
 
 	function GetWage(currentOverall, teamPower, fame) {

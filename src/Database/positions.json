@@ -26,8 +26,8 @@
 		"assistsMultiplier": 0.45,
 		"value": 1,
 		"related": ["SA", "CA", "PD", "ME"],
-		"peakMin": 24,
-		"peakMax": 28
+		"peakMin": 26,
+		"peakMax": 30
 	},
 	{
 		"title": "Ponta Direita",
@@ -36,8 +36,8 @@
 		"assistsMultiplier": 0.45,
 		"value": 1,
 		"related": ["SA", "CA", "PE", "MD"],
-		"peakMin": 24,
-		"peakMax": 28
+		"peakMin": 26,
+		"peakMax": 30
 	},
 	{
 		"title": "Meia-Atacante",
