@@ -2479,7 +2479,7 @@ function App() {
 						currentPlayer.potential,
 						currentPlayer.age + Math.round(contractDuration / 2),
 						team.power,
-						newPosition.peak
+						28
 					) + currentPlayer.performance;
 				let contractValue = Math.round(
 					currentPlayer.position.value *
@@ -2546,12 +2546,7 @@ function App() {
 			const contractDuration = RandomNumber(2, 8);
 
 			// Calculate expected overall during the contract
-			const expectedOverall = GetOverall(
-				0,
-				18 + contractDuration / 2,
-				team.power,
-				newPosition.peak
-			);
+			const expectedOverall = GetOverall(0, 18 + contractDuration / 2, team.power, 28);
 
 			// Contract wage
 			const contractValue = Math.round(posValue * GetWage(expectedOverall, team.power, 0));
