@@ -6,8 +6,7 @@
 		"assistsMultiplier": 0.25,
 		"value": 1,
 		"related": ["SA", "PE", "PD"],
-		"peakMin": 26,
-		"peakMax": 30
+		"peak": 28
 	},
 	{
 		"title": "Segundo Atacante",
@@ -16,8 +15,7 @@
 		"assistsMultiplier": 0.35,
 		"value": 1,
 		"related": ["CA", "MA", "PE", "PD"],
-		"peakMin": 26,
-		"peakMax": 30
+		"peak": 30
 	},
 	{
 		"title": "Ponta Esquerda",
@@ -26,8 +24,7 @@
 		"assistsMultiplier": 0.45,
 		"value": 1,
 		"related": ["SA", "CA", "PD", "ME"],
-		"peakMin": 26,
-		"peakMax": 30
+		"peak": 28
 	},
 	{
 		"title": "Ponta Direita",
@@ -36,8 +33,7 @@
 		"assistsMultiplier": 0.45,
 		"value": 1,
 		"related": ["SA", "CA", "PE", "MD"],
-		"peakMin": 26,
-		"peakMax": 30
+		"peak": 28
 	},
 	{
 		"title": "Meia-Atacante",
@@ -46,8 +42,7 @@
 		"assistsMultiplier": 0.75,
 		"value": 1,
 		"related": ["SA", "MC", "ME", "MD"],
-		"peakMin": 26,
-		"peakMax": 30
+		"peak": 30
 	},
 	{
 		"title": "Meia Esquerda",
@@ -56,8 +51,7 @@
 		"assistsMultiplier": 0.5,
 		"value": 0.8,
 		"related": ["MA", "MC", "PE", "LE"],
-		"peakMin": 26,
-		"peakMax": 30
+		"peak": 28
 	},
 	{
 		"title": "Meia Central",
@@ -66,8 +60,7 @@
 		"assistsMultiplier": 0.5,
 		"value": 0.8,
 		"related": ["MA", "ME", "MD", "VO"],
-		"peakMin": 26,
-		"peakMax": 30
+		"peak": 30
 	},
 	{
 		"title": "Meia Direita",
@@ -76,8 +69,7 @@
 		"assistsMultiplier": 0.5,
 		"value": 0.8,
 		"related": ["MA", "MC", "PD", "LD"],
-		"peakMin": 26,
-		"peakMax": 30
+		"peak": 28
 	},
 	{
 		"title": "Volante",
@@ -86,8 +78,7 @@
 		"assistsMultiplier": 0.4,
 		"value": 0.8,
 		"related": ["MC", "ZC", "LE", "LD"],
-		"peakMin": 28,
-		"peakMax": 32
+		"peak": 30
 	},
 	{
 		"title": "Lateral Esquerdo",
@@ -96,8 +87,7 @@
 		"assistsMultiplier": 0.35,
 		"value": 0.6,
 		"related": ["LD", "ME", "VO", "ZC"],
-		"peakMin": 26,
-		"peakMax": 30
+		"peak": 28
 	},
 	{
 		"title": "Lateral Direito",
@@ -106,8 +96,7 @@
 		"assistsMultiplier": 0.35,
 		"value": 0.6,
 		"related": ["LE", "MD", "VO", "ZC"],
-		"peakMin": 26,
-		"peakMax": 30
+		"peak": 28
 	},
 	{
 		"title": "Zagueiro Central",
@@ -116,8 +105,7 @@
 		"assistsMultiplier": 0.15,
 		"value": 0.6,
 		"related": ["VO", "LE", "LD"],
-		"peakMin": 28,
-		"peakMax": 32
+		"peak": 30
 	},
 	{
 		"title": "Goleiro",
@@ -126,7 +114,6 @@
 		"assistsMultiplier": 0.15,
 		"value": 0.6,
 		"related": [],
-		"peakMin": 30,
-		"peakMax": 34
+		"peak": 30
 	}
 ]
