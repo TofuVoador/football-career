@@ -843,6 +843,7 @@ function App() {
 			// Verificar se o torneio chegou ao fim
 			if (phase >= TournamentPath.length - 1) {
 				end = true;
+				console.log("Europa League: " + newClassif[0].name + " (" + newClassif[0].power + ")");
 			}
 		}
 
@@ -994,6 +995,7 @@ function App() {
 				// Verificar se o torneio chegou ao fim
 				if (phase >= TournamentPath.length - 1) {
 					end = true;
+					console.log("Eurocopa: " + newClassif[0].name + " (" + newClassif[0].power + ")");
 				}
 			}
 
@@ -1137,6 +1139,7 @@ function App() {
 				// Verificar se o torneio chegou ao fim
 				if (phase >= TournamentPath.length - 1) {
 					end = true;
+					console.log("Copa América: " + newClassif[0].name + " (" + newClassif[0].power + ")");
 				}
 			}
 
@@ -1284,6 +1287,7 @@ function App() {
 				// Verificar se o torneio chegou ao fim
 				if (phase >= TournamentPath.length - 1) {
 					end = true;
+					console.log("Copa da África: " + newClassif[0].name + " (" + newClassif[0].power + ")");
 				}
 			}
 
@@ -1431,6 +1435,7 @@ function App() {
 				// Verificar se o torneio chegou ao fim
 				if (phase >= TournamentPath.length - 1) {
 					end = true;
+					console.log("Copa da Ásia: " + newClassif[0].name + " (" + newClassif[0].power + ")");
 				}
 			}
 
@@ -1676,6 +1681,7 @@ function App() {
 				// Verificar se o torneio chegou ao fim
 				if (phase >= TournamentPath.length - 1) {
 					end = true;
+					console.log("Copa do Mundo: " + newClassif[0].name + " (" + newClassif[0].power + ")");
 				}
 			}
 
