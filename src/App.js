@@ -2779,11 +2779,11 @@ function App() {
 						id="continent-dropdown"
 						onChange={() => updateNationDropdown()}>
 						<option value="">Selecione uma Confederação</option>
-						<option value="AFC">AFC</option>
-						<option value="CAF">CAF</option>
-						<option value="CONCACAF">CONCACAF</option>
-						<option value="CONMEBOL">CONMEBOL</option>
-						<option value="UEFA">UEFA</option>
+						<option value="AFC">Ásia e Oceania</option>
+						<option value="CAF">África</option>
+						<option value="CONCACAF">América do Norte</option>
+						<option value="CONMEBOL">América do Sul</option>
+						<option value="UEFA">Europa</option>
 					</select>
 					<select id="nation-dropdown">
 						<option value="">Selecione uma Nação</option>
@@ -2826,7 +2826,7 @@ function App() {
 						<p>Continuar em {player.team === null ? "null" : player.team.name}</p>
 						<p>
 							{player.team === null ? "null" : (player.team.power / 2).toFixed(2)}⭐ | $
-							{FormatarNumero(renew.value)} | {renew.duration} 🕗 | {renew.position}
+							{FormatarNumero(renew.value)} 💰 | {renew.duration} 🕗 | {renew.position} 👕
 						</p>
 					</a>
 					<a
@@ -2840,8 +2840,8 @@ function App() {
 								</p>
 								<p>
 									{(transfers[0].team.power / 2).toFixed(2)}⭐ | $
-									{FormatarNumero(transfers[0].contract.value)} | {transfers[0].contract.duration}{" "}
-									🕗 | {transfers[0].position}
+									{FormatarNumero(transfers[0].contract.value)} 💰 |{" "}
+									{transfers[0].contract.duration} 🕗 | {transfers[0].position} 👕
 								</p>
 							</>
 						) : (
@@ -2859,8 +2859,8 @@ function App() {
 								</p>
 								<p>
 									{(transfers[1].team.power / 2).toFixed(2)}⭐ | $
-									{FormatarNumero(transfers[1].contract.value)} | {transfers[1].contract.duration}{" "}
-									🕗 | {transfers[1].position}
+									{FormatarNumero(transfers[1].contract.value)} 💰 |{" "}
+									{transfers[1].contract.duration} 🕗 | {transfers[1].position} 👕
 								</p>
 							</>
 						) : (
@@ -2878,8 +2878,8 @@ function App() {
 								</p>
 								<p>
 									{(transfers[2].team.power / 2).toFixed(2)}⭐ | $
-									{FormatarNumero(transfers[2].contract.value)} | {transfers[2].contract.duration}{" "}
-									🕗 | {transfers[2].position}
+									{FormatarNumero(transfers[2].contract.value)} 💰 |{" "}
+									{transfers[2].contract.duration} 🕗 | {transfers[2].position} 👕
 								</p>
 							</>
 						) : (
