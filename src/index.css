@@ -17,10 +17,6 @@
 	font-size: 1rem;
 }
 
-font-sans {
-	font-family: "Montserrat", sans-serif;
-}
-
 body {
 	background-color: var(--color-background);
 	margin-bottom: 10vh;

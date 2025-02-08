@@ -65,7 +65,7 @@
 				"power": 4.6
 			},
 			{
-				"name": "Sint-Truidense VV",
+				"name": "Sint-Truidense",
 				"league": "Belgian Pro League",
 				"power": 4.5
 			},
@@ -147,7 +147,7 @@
 				"power": 6.0
 			},
 			{
-				"name": "Bor. Mönchengladbach",
+				"name": "Mönchengladbach",
 				"league": "Bundesliga",
 				"power": 5.9
 			},
@@ -363,7 +363,7 @@
 				"power": 6.9
 			},
 			{
-				"name": "Ol. de Marseille",
+				"name": "Marseille",
 				"league": "Ligue 1",
 				"power": 6.5
 			},
@@ -393,7 +393,7 @@
 				"power": 5.3
 			},
 			{
-				"name": "Stade Brestois",
+				"name": "Brestois",
 				"league": "Ligue 1",
 				"power": 5.2
 			},
@@ -547,7 +547,7 @@
 				"power": 7.3
 			},
 			{
-				"name": "Vitória de Guimarães",
+				"name": "Vitória",
 				"league": "Primeira Liga",
 				"power": 5.9
 			},

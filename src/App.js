@@ -81,7 +81,7 @@ function App() {
 	});
 
 	const [player, setPlayer] = useState({
-		potential: RandomNumber(0, 10) + RandomNumber(0, 10),
+		potential: RandomNumber(0, 15) + RandomNumber(0, 15),
 		age: 17,
 		nation: null,
 		team: null,
@@ -377,7 +377,7 @@ function App() {
 		let r = (Math.random() - Math.random()) * 10;
 		let starting =
 			Math.floor(
-				((newPlayer.overall - (70 + newPlayer.team.power)) * 8 + r + newPlayer.performance * 10) / 2
+				((newPlayer.overall - (75 + newPlayer.team.power)) * 8 + r + newPlayer.performance * 10) / 2
 			) * 2;
 		if (starting > 100) starting = 100;
 		else if (starting < 0) starting = 0;
@@ -430,7 +430,7 @@ function App() {
 
 		let goalsOpportunities = 0;
 		let assistsOpportunities = 0;
-		newSeason.awardPoints = newSeason.performance; //min = -1.0 | max = 1.0
+		newSeason.awardPoints = Math.round(Math.random() * 100) / 100;
 
 		let med = 0;
 		for (let i = 0; i < generalPerformance.length; i++) {
@@ -524,6 +524,12 @@ function App() {
 				// Verificando se o jogador está envolvido no jogo atual
 				if (team1.name === newPlayer.team.name || team2.name === newPlayer.team.name) {
 					playerOpp = `: ${team1.name === newPlayer.team.name ? team2.name : team1.name}`;
+
+					goalsOpportunities += Math.random();
+					assistsOpportunities += Math.random();
+					newSeason.awardPoints += 0.4; // Máximo 0.4 x 4 = 1.6
+					newPlayer.fame += 2; // Copa Nacional Máximo 2 x 4 = 8
+
 					// Verificando se o jogador ganhou o jogo
 					if (
 						(game.result && team1.name === newPlayer.team.name) ||
@@ -531,13 +537,11 @@ function App() {
 					) {
 						// Incrementando a fase do jogador e concedendo pontos e prêmios adicionais
 						playerPhase++;
-						goalsOpportunities += Math.random();
-						assistsOpportunities += Math.random();
-						newSeason.awardPoints += 0.4; // Máximo 0.4 x 5 = 2.0
-						newPlayer.fame += 2; // Copa Nacional Máximo 2 x 5 = 10
 						if (playerPhase >= TournamentPath.length - 1) {
 							// Se o jogador venceu o torneio, conceder prêmios adicionais
 							newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
+							newSeason.awardPoints += 0.4; // Máximo 0.4 x 4 + 0.4 = 2.0
+							newPlayer.fame += 2; // Copa Nacional Máximo 2 x 4 + 2 = 10
 							triplice++;
 						}
 					}
@@ -681,6 +685,12 @@ function App() {
 				// Verificar se o jogador está envolvido no jogo atual
 				if (team1.name === newPlayer.team.name || team2.name === newPlayer.team.name) {
 					playerOpp = `: ${team1.name === newPlayer.team.name ? team2.name : team1.name}`;
+
+					goalsOpportunities += Math.random();
+					assistsOpportunities += Math.random();
+					newSeason.awardPoints += 1.0; // Máximo 1.0 x 4 = 4.0
+					newPlayer.fame += 5; // Champions Máximo 5 x 4 = 20
+
 					// Verificar se o jogador ganhou o jogo
 					if (
 						(game.result && team1.name === newPlayer.team.name) ||
@@ -688,15 +698,11 @@ function App() {
 					) {
 						// Incrementar a fase do jogador e conceder pontos e prêmios adicionais
 						playerPhase++;
-						goalsOpportunities += Math.random();
-						assistsOpportunities += Math.random();
-						newSeason.awardPoints += 0.8; // Máximo 0.8 x 5 = 4.0
-						newPlayer.fame += 4; // Champions Máximo 4 x 5 = 20
 						if (playerPhase >= TournamentPath.length - 1) {
 							// Se o jogador vencer o torneio, conceder prêmios adicionais
 							newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
 							newPlayer.fame += 20; // Máximo 4 x 5 + 20 = 40
-							if (year % 4 !== 2) newSeason.awardPoints += 1.0; // Máximo 0.8 x 5 + 1.0 = 5.0
+							newSeason.awardPoints += 1.0; // Máximo 0.8 x 5 + 1.0 = 5.0
 							triplice++;
 						}
 					}
@@ -814,11 +820,9 @@ function App() {
 						playerPhase++;
 						goalsOpportunities += Math.random();
 						assistsOpportunities += Math.random();
-						newPlayer.fame += 4; // Europa League Máximo 4 x 4 = 16
 						if (playerPhase >= TournamentPath.length - 1) {
 							newPlayer.europa.push(`${year} (${newPlayer.team.name})`);
 						}
-						newPlayer.fame += 4; // Europa League Máximo 4 x 4 + 4 = 20
 					}
 				}
 
@@ -953,18 +957,21 @@ function App() {
 
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
+						if (playedContinental) {
+							goalsOpportunities += Math.random();
+							assistsOpportunities += Math.random();
+							newSeason.awardPoints += 0.4; // Máximo 0.4 x 4 = 1.6
+							newPlayer.fame += 4; // Copa Máximo 4 x 4 = 16
+						}
+
 						// Verificar se o jogador ganhou o jogo
 						if (
 							(game.result && team1.name === player.nation.name) ||
 							(!game.result && team2.name === player.nation.name)
 						) {
 							playerPhase++;
-							goalsOpportunities += Math.random();
-							assistsOpportunities += Math.random();
 							// Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
 							if (playedContinental) {
-								newSeason.awardPoints += 0.4; // Máximo 0.4 x 4 = 1.6
-								newPlayer.fame += 4; // Copa Máximo 4 x 4 = 16
 								if (playerPhase >= TournamentPath.length - 1) {
 									newPlayer.continentalChampionship.push(`${year}`);
 									newSeason.awardPoints += 0.4; // Máximo 0.4 x 4 + 0.4 = 2.0
@@ -1097,18 +1104,21 @@ function App() {
 
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
+						if (playedContinental) {
+							goalsOpportunities += Math.random();
+							assistsOpportunities += Math.random();
+							newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 = 1.5
+							newPlayer.fame += 5; // Copa América Máximo 5 x 3 = 15
+						}
+
 						// Verificar se o jogador ganhou o jogo
 						if (
 							(game.result && team1.name === player.nation.name) ||
 							(!game.result && team2.name === player.nation.name)
 						) {
 							playerPhase++;
-							goalsOpportunities += Math.random();
-							assistsOpportunities += Math.random();
 							// Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
 							if (playedContinental) {
-								newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 = 1.5
-								newPlayer.fame += 5; // Copa América Máximo 5 x 3 = 15
 								if (playerPhase >= TournamentPath.length - 1) {
 									newPlayer.continentalChampionship.push(`${year}`);
 									newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 + 0.5 = 2.0
@@ -1245,18 +1255,20 @@ function App() {
 
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
+						if (playedContinental) {
+							goalsOpportunities += Math.random();
+							assistsOpportunities += Math.random();
+							newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 = 1.5
+							newPlayer.fame += 5; // Copa África Máximo 5 x 3 = 15
+						}
 						// Verificar se o jogador ganhou o jogo
 						if (
 							(game.result && team1.name === player.nation.name) ||
 							(!game.result && team2.name === player.nation.name)
 						) {
 							playerPhase++;
-							goalsOpportunities += Math.random();
-							assistsOpportunities += Math.random();
 							// Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
 							if (playedContinental) {
-								newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 = 1.5
-								newPlayer.fame += 5; // Copa África Máximo 5 x 3 = 15
 								if (playerPhase >= TournamentPath.length - 1) {
 									newPlayer.continentalChampionship.push(`${year}`);
 									newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 + 0.5 = 2.0
@@ -1393,18 +1405,21 @@ function App() {
 
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
+						if (playedContinental) {
+							goalsOpportunities += Math.random();
+							assistsOpportunities += Math.random();
+							newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 = 1.5
+							newPlayer.fame += 5; // Copa Ásia Máximo 5 x 3 = 15
+						}
+
 						// Verificar se o jogador ganhou o jogo
 						if (
 							(game.result && team1.name === player.nation.name) ||
 							(!game.result && team2.name === player.nation.name)
 						) {
 							playerPhase++;
-							goalsOpportunities += Math.random();
-							assistsOpportunities += Math.random();
 							// Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
 							if (playedContinental) {
-								newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 = 1.5
-								newPlayer.fame += 5; // Copa Ásia Máximo 5 x 3 = 15
 								if (playerPhase >= TournamentPath.length - 1) {
 									newPlayer.continentalChampionship.push(`${year}`);
 									newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 + 0.5 = 2.0
@@ -1640,20 +1655,24 @@ function App() {
 
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
+						if (playedWorldCup) {
+							goalsOpportunities += Math.random();
+							assistsOpportunities += Math.random();
+							newSeason.awardPoints += 0.5; // Máximo 0.5 x 5 = 2.5
+							newPlayer.fame += 6; // Máximo 6 x 5 = 30
+						}
+
 						// Verificar se o jogador ganhou o jogo
 						if (
 							(game.result && team1.name === player.nation.name) ||
 							(!game.result && team2.name === player.nation.name)
 						) {
 							playerPhase++;
-							goalsOpportunities += Math.random();
-							assistsOpportunities += Math.random();
 							// Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
 							if (playedWorldCup) {
-								newSeason.awardPoints += 0.8; // Máximo 0.8 x 5 = 4.0
-								newPlayer.fame += 6; // Máximo 6 x 5 = 30
 								if (playerPhase >= TournamentPath.length - 1) {
 									newPlayer.worldCup.push(`${year}`);
+									newSeason.awardPoints += 0.5; // Máximo 0.5 x 5 + 0.5 = 3.0
 									newPlayer.fame += 30; // Máximo 6 x 5 + 30 = 60
 								}
 							}
@@ -1761,7 +1780,7 @@ function App() {
 			setWorldCupHistoryHosts(newWorldCupHistoryHosts);
 		}
 
-		let performanceMultiplier = Math.pow(newPlayer.overall, 2) / 8000.0; //adds from 0 to 1.0
+		let performanceMultiplier = Math.pow(newPlayer.overall, 2) / 9000.0; //adds from 0 to 1.0
 		performanceMultiplier *= (25 + newSeason.starting) / 125.0; //multiply from 0.2 to 1.00
 		performanceMultiplier *= 1.0 + newSeason.performance / 2; //multiply from 0.5 to 1.5
 
@@ -1792,10 +1811,15 @@ function App() {
 			newSeason.titles.push(["Tríplice Coroa"]);
 		}
 
-		let awardScore = newSeason.awardPoints + newPlayer.overall;
+		let awardScore =
+			Math.round(
+				(newSeason.awardPoints + newPlayer.overall / 10 + newSeason.performance * 2) * 100
+			) / 100;
+
+		console.log("Award Points: " + Math.round(awardScore * 100) / 100 + "/20.0");
 		if (
 			player.position.title === "Goleiro" &&
-			awardScore >= 90 + (Math.random() + Math.random()) * 5 &&
+			awardScore >= 10 + Math.random() * 5 &&
 			newSeason.performance >= 0.0
 		) {
 			//Golden Gloves
@@ -1815,14 +1839,14 @@ function App() {
 		}
 
 		let position = -1;
-		if (awardScore >= 99) {
+		if (awardScore >= 19) {
 			//POTS D'or
-			newPlayer.playerOfTheSeason.push(`Jogador da Temporada ${year} (${newPlayer.team.name})`);
+			newPlayer.playerOfTheSeason.push(`${year} (${newPlayer.team.name})`);
 			newPlayer.fame += 80;
 			position = 1;
 			newSeason.titles.push([`Jogador da Temporada: 1º lugar`]);
-		} else if (awardScore >= 90) {
-			let pts = Math.floor(awardScore - 90);
+		} else if (awardScore >= 10) {
+			let pts = Math.floor(awardScore - 10);
 			newPlayer.fame += pts * 2;
 			position = 10 - pts;
 			newSeason.titles.push([`Jogador da Temporada: ${position}º lugar`]);
@@ -1964,7 +1988,7 @@ function App() {
 		) {
 			if (
 				newPlayer.age >= newPlayer.positionInClub.peak + 6 &&
-				newPlayer.overall < 85 + newPlayer.potential / 10
+				newPlayer.overall < 88 + newPlayer.potential / 10
 			) {
 				//must retire
 				document.getElementById("retire").style.display = "flex";
@@ -2588,15 +2612,15 @@ function App() {
 	}
 
 	function GetOverall(potential, age, teamPower, peak) {
-		return 82 + teamPower + (potential - (peak - age) ** 2) / 10;
-		//82 + 10 + 2 = 94
-		//82 + 5 + 0 = 87
+		return 85 + teamPower + (potential - (peak - age) ** 2) / 10;
+		//85 + 10 + 3 = 98
+		//85 + 5 + 0 = 90
 	}
 
 	function GetWage(currentOverall, teamPower, fame) {
 		return (
 			(fame * 2 + 200) *
-			(currentOverall - 60) ** 3 *
+			(currentOverall - 70) ** 3 *
 			(1 + (Math.random() - Math.random()) / 10.0) *
 			(1 + teamPower / 50.0)
 		);
@@ -2604,7 +2628,7 @@ function App() {
 
 	function GetTransferValue(expectedOverall, teamPower) {
 		return (
-			((expectedOverall - 50) ** 10 / 100000000) *
+			((expectedOverall - 60) ** 10 / 100000000) *
 			(1 + (Math.random() - Math.random()) / 10.0) *
 			(1 + teamPower / 50.0)
 		);
