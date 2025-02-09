@@ -1819,7 +1819,7 @@ function App() {
 		console.log("Award Points: " + Math.round(awardScore * 100) / 100 + "/20.0");
 		if (
 			player.position.title === "Goleiro" &&
-			awardScore >= 10 + Math.random() * 5 &&
+			awardScore >= 12 + Math.random() * 5 &&
 			newSeason.performance >= 0.0
 		) {
 			//Golden Gloves
