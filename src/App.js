@@ -689,7 +689,7 @@ function App() {
 					goalsOpportunities += Math.random();
 					assistsOpportunities += Math.random();
 					newSeason.awardPoints += 1.0; // Máximo 1.0 x 4 = 4.0
-					newPlayer.fame += 5; // Champions Máximo 5 x 4 = 20
+					newPlayer.fame += 4; // Champions Máximo 4 x 4 = 16
 
 					// Verificar se o jogador ganhou o jogo
 					if (
@@ -701,7 +701,7 @@ function App() {
 						if (playerPhase >= TournamentPath.length - 1) {
 							// Se o jogador vencer o torneio, conceder prêmios adicionais
 							newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
-							newPlayer.fame += 20; // Máximo 5 x 4 + 20 = 40
+							newPlayer.fame += 4; // Máximo 4 x 4 + 4 = 20
 							newSeason.awardPoints += 1.0; // Máximo 0.8 x 5 + 1.0 = 5.0
 							triplice++;
 						}
@@ -1673,7 +1673,7 @@ function App() {
 								if (playerPhase >= TournamentPath.length - 1) {
 									newPlayer.worldCup.push(`${year}`);
 									newSeason.awardPoints += 0.5; // Máximo 0.5 x 5 + 0.5 = 3.0
-									newPlayer.fame += 20; // Máximo 4 x 5 + 20 = 40
+									newPlayer.fame += 10; // Máximo 4 x 5 + 20 = 30
 								}
 							}
 						}
@@ -1824,7 +1824,7 @@ function App() {
 		) {
 			//Golden Gloves
 			newPlayer.awards.push(`Luvas de Ouro ${year} (${newPlayer.team.name})`);
-			newPlayer.fame += 40;
+			newPlayer.fame += 30;
 			newSeason.titles.push(["Luva de Ouro"]);
 		}
 
@@ -1834,7 +1834,7 @@ function App() {
 		if (goldenBootsGoals <= newSeason.goals) {
 			//Golden Shoes
 			newPlayer.awards.push(`Chuteiras de Ouro ${year} (${newPlayer.team.name})`);
-			newPlayer.fame += 40;
+			newPlayer.fame += 30;
 			newSeason.titles.push(["Chuteira de Ouro"]);
 		}
 
@@ -1842,7 +1842,7 @@ function App() {
 		if (awardScore >= 19) {
 			//POTS D'or
 			newPlayer.playerOfTheSeason.push(`${year} (${newPlayer.team.name})`);
-			newPlayer.fame += 80;
+			newPlayer.fame += 50;
 			position = 1;
 			newSeason.titles.push([`Jogador da Temporada: 1º lugar`]);
 		} else if (awardScore >= 10) {
@@ -2947,7 +2947,7 @@ function App() {
 							}}>
 							<div
 								style={{
-									width: `${Math.floor(Math.min(player.fame, 1000) % 100)}%`,
+									width: `${player.fame < 1000 ? Math.floor(player.fame) % 100 : 100}%`,
 									minHeight: "1rem",
 									backgroundColor: `${player.fame < 1000 ? "var(--color-contrast)" : "gold"}`,
 									margin: "0",
