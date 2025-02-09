@@ -476,7 +476,7 @@ function App() {
 		newSeason.awardPoints +=
 			((playerLeagueResult.championsSpots / 4.0) * (5 - playerPosition)) / 2.0; //max = 2.0
 		newSeason.titles.push([`Liga: ${playerPosition}º lugar`].concat(leaguesTopEight));
-		newPlayer.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0);
+		newPlayer.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0); //max = 10
 
 		goalsOpportunities += 21 - playerPosition;
 		assistsOpportunities += 21 - playerPosition;
@@ -701,7 +701,7 @@ function App() {
 						if (playerPhase >= TournamentPath.length - 1) {
 							// Se o jogador vencer o torneio, conceder prêmios adicionais
 							newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
-							newPlayer.fame += 20; // Máximo 4 x 5 + 20 = 40
+							newPlayer.fame += 20; // Máximo 5 x 4 + 20 = 40
 							newSeason.awardPoints += 1.0; // Máximo 0.8 x 5 + 1.0 = 5.0
 							triplice++;
 						}
@@ -1659,7 +1659,7 @@ function App() {
 							goalsOpportunities += Math.random();
 							assistsOpportunities += Math.random();
 							newSeason.awardPoints += 0.5; // Máximo 0.5 x 5 = 2.5
-							newPlayer.fame += 6; // Máximo 6 x 5 = 30
+							newPlayer.fame += 4; // Máximo 4 x 5 = 20
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1673,7 +1673,7 @@ function App() {
 								if (playerPhase >= TournamentPath.length - 1) {
 									newPlayer.worldCup.push(`${year}`);
 									newSeason.awardPoints += 0.5; // Máximo 0.5 x 5 + 0.5 = 3.0
-									newPlayer.fame += 30; // Máximo 6 x 5 + 30 = 60
+									newPlayer.fame += 20; // Máximo 4 x 5 + 20 = 40
 								}
 							}
 						}
