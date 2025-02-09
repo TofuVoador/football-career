@@ -528,7 +528,7 @@ function App() {
 					goalsOpportunities += Math.random();
 					assistsOpportunities += Math.random();
 					newSeason.awardPoints += 0.4; // Máximo 0.4 x 4 = 1.6
-					newPlayer.fame += 2; // Copa Nacional Máximo 2 x 4 = 8
+					newPlayer.fame += 1; // Copa Nacional Máximo 1 x 4 = 4
 
 					// Verificando se o jogador ganhou o jogo
 					if (
@@ -541,7 +541,7 @@ function App() {
 							// Se o jogador venceu o torneio, conceder prêmios adicionais
 							newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
 							newSeason.awardPoints += 0.4; // Máximo 0.4 x 4 + 0.4 = 2.0
-							newPlayer.fame += 2; // Copa Nacional Máximo 2 x 4 + 2 = 10
+							newPlayer.fame += 6; // Copa Nacional Máximo 1 x 4 + 6 = 10
 							triplice++;
 						}
 					}
@@ -689,7 +689,7 @@ function App() {
 					goalsOpportunities += Math.random();
 					assistsOpportunities += Math.random();
 					newSeason.awardPoints += 1.0; // Máximo 1.0 x 4 = 4.0
-					newPlayer.fame += 4; // Champions Máximo 4 x 4 = 16
+					newPlayer.fame += 3; // Champions Máximo 3 x 4 = 12
 
 					// Verificar se o jogador ganhou o jogo
 					if (
@@ -701,7 +701,7 @@ function App() {
 						if (playerPhase >= TournamentPath.length - 1) {
 							// Se o jogador vencer o torneio, conceder prêmios adicionais
 							newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
-							newPlayer.fame += 4; // Máximo 4 x 4 + 4 = 20
+							newPlayer.fame += 8; // Máximo 3 x 4 + 8 = 20
 							newSeason.awardPoints += 1.0; // Máximo 0.8 x 5 + 1.0 = 5.0
 							triplice++;
 						}
@@ -961,7 +961,7 @@ function App() {
 							goalsOpportunities += Math.random();
 							assistsOpportunities += Math.random();
 							newSeason.awardPoints += 0.4; // Máximo 0.4 x 4 = 1.6
-							newPlayer.fame += 4; // Copa Máximo 4 x 4 = 16
+							newPlayer.fame += 3; // Copa Máximo 3 x 4 = 12
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -975,7 +975,7 @@ function App() {
 								if (playerPhase >= TournamentPath.length - 1) {
 									newPlayer.continentalChampionship.push(`${year}`);
 									newSeason.awardPoints += 0.4; // Máximo 0.4 x 4 + 0.4 = 2.0
-									newPlayer.fame += 4; // Máximo 4 x 4 + 4 = 20
+									newPlayer.fame += 8; // Máximo 3 x 4 + 8 = 20
 								}
 							}
 						}
@@ -1108,7 +1108,7 @@ function App() {
 							goalsOpportunities += Math.random();
 							assistsOpportunities += Math.random();
 							newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 = 1.5
-							newPlayer.fame += 5; // Copa América Máximo 5 x 3 = 15
+							newPlayer.fame += 4; // Copa América Máximo 4 x 3 = 12
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1122,7 +1122,7 @@ function App() {
 								if (playerPhase >= TournamentPath.length - 1) {
 									newPlayer.continentalChampionship.push(`${year}`);
 									newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 + 0.5 = 2.0
-									newPlayer.fame += 5; // Máximo 5 x 3 + 5 = 20
+									newPlayer.fame += 8; // Máximo 4 x 3 + 8 = 20
 								}
 							}
 						}
@@ -1259,7 +1259,7 @@ function App() {
 							goalsOpportunities += Math.random();
 							assistsOpportunities += Math.random();
 							newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 = 1.5
-							newPlayer.fame += 5; // Copa África Máximo 5 x 3 = 15
+							newPlayer.fame += 4; // Copa África Máximo 4 x 3 = 12
 						}
 						// Verificar se o jogador ganhou o jogo
 						if (
@@ -1272,7 +1272,7 @@ function App() {
 								if (playerPhase >= TournamentPath.length - 1) {
 									newPlayer.continentalChampionship.push(`${year}`);
 									newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 + 0.5 = 2.0
-									newPlayer.fame += 5; // Máximo 5 x 3 + 5 = 20
+									newPlayer.fame += 8; // Máximo 4 x 3 + 8 = 20
 								}
 							}
 						}
@@ -1409,7 +1409,7 @@ function App() {
 							goalsOpportunities += Math.random();
 							assistsOpportunities += Math.random();
 							newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 = 1.5
-							newPlayer.fame += 5; // Copa Ásia Máximo 5 x 3 = 15
+							newPlayer.fame += 4; // Copa Ásia Máximo 4 x 3 = 12
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1423,7 +1423,7 @@ function App() {
 								if (playerPhase >= TournamentPath.length - 1) {
 									newPlayer.continentalChampionship.push(`${year}`);
 									newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 + 0.5 = 2.0
-									newPlayer.fame += 5; // Máximo 5 x 3 + 5 = 20
+									newPlayer.fame += 8; // Máximo 4 x 3 + 8 = 20
 								}
 							}
 						}
@@ -1659,7 +1659,7 @@ function App() {
 							goalsOpportunities += Math.random();
 							assistsOpportunities += Math.random();
 							newSeason.awardPoints += 0.5; // Máximo 0.5 x 5 = 2.5
-							newPlayer.fame += 4; // Máximo 4 x 5 = 20
+							newPlayer.fame += 3; // Máximo 3 x 5 = 15
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1673,7 +1673,7 @@ function App() {
 								if (playerPhase >= TournamentPath.length - 1) {
 									newPlayer.worldCup.push(`${year}`);
 									newSeason.awardPoints += 0.5; // Máximo 0.5 x 5 + 0.5 = 3.0
-									newPlayer.fame += 10; // Máximo 4 x 5 + 20 = 30
+									newPlayer.fame += 15; // Máximo 4 x 5 + 20 = 30
 								}
 							}
 						}
@@ -1782,7 +1782,7 @@ function App() {
 
 		let performanceMultiplier = Math.pow(newPlayer.overall, 2) / 9000.0; //adds from 0 to 1.0
 		performanceMultiplier *= (25 + newSeason.starting) / 125.0; //multiply from 0.2 to 1.00
-		performanceMultiplier *= 1.0 + newSeason.performance / 2; //multiply from 0.5 to 1.5
+		performanceMultiplier *= 1.0 + newSeason.performance; //multiply from 0.0 to 2.0
 
 		newSeason.goals = Math.floor(
 			newPlayer.positionInClub.goalsMultiplier * performanceMultiplier * goalsOpportunities
