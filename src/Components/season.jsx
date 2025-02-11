@@ -231,14 +231,21 @@ const Season = (props) => {
 																let inners = innerDetails.slice(1);
 																return (
 																	<details key={season.year + innerDetails[0]}>
-																		<summary>{innerDetails[0]}</summary>
+																		<summary
+																			style={{
+																				color:
+																					innerDetails[0].includes(season.team.name) ||
+																					innerDetails[0].includes(season.nation.name)
+																						? "var(--color-contrast)"
+																						: "var(--color-light)",
+																			}}>
+																			{innerDetails[0]}
+																		</summary>
 																		{inners.map((innerMatch) => (
 																			<p
 																				key={season.year + innerMatch}
 																				style={{
-																					color: innerMatch.includes(season.team.name)
-																						? "var(--color-contrast)"
-																						: "var(--color-light)",
+																					color: "var(--color-light)",
 																				}}>
 																				{innerMatch}
 																			</p>
@@ -250,9 +257,11 @@ const Season = (props) => {
 																	<p
 																		key={season.year + match}
 																		style={{
-																			color: match.includes(season.team.name)
-																				? "var(--color-contrast)"
-																				: "var(--color-light)",
+																			color:
+																				match.includes(season.team.name) ||
+																				match.includes(season.nation.name)
+																					? "var(--color-contrast)"
+																					: "var(--color-light)",
 																		}}>
 																		{match}
 																	</p>
