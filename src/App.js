@@ -478,8 +478,8 @@ function App() {
 		newSeason.titles.push([`Liga: ${playerPosition}º lugar`].concat(leaguesTopEight));
 		newPlayer.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0); //max = 10
 
-		goalsOpportunities += 21 - playerPosition;
-		assistsOpportunities += 21 - playerPosition;
+		goalsOpportunities += 25 - playerPosition;
+		assistsOpportunities += 25 - playerPosition;
 
 		//if fist place, then won trophy
 		if (playerPosition === 1) {
@@ -608,8 +608,8 @@ function App() {
 			championsGroup.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
 
 		if (playerChampionsPos > 0) {
-			goalsOpportunities += (36 - playerChampionsPos) / 10;
-			assistsOpportunities += (36 - playerChampionsPos) / 10;
+			goalsOpportunities += (36 - playerChampionsPos) / 8;
+			assistsOpportunities += (36 - playerChampionsPos) / 8;
 		}
 
 		// Construir a descrição da fase do torneio
@@ -770,8 +770,8 @@ function App() {
 			group.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
 
 		if (playerEuropaPosition > 0) {
-			goalsOpportunities += (32 - playerChampionsPos) / 10;
-			assistsOpportunities += (32 - playerChampionsPos) / 10;
+			goalsOpportunities += (32 - playerChampionsPos) / 8;
+			assistsOpportunities += (32 - playerChampionsPos) / 8;
 		}
 
 		europaLeagueDescription.push(
@@ -1782,7 +1782,7 @@ function App() {
 
 		let performanceMultiplier = Math.pow(newPlayer.overall, 2) / 9000.0; //adds from 0 to 1.0
 		performanceMultiplier *= (25 + newSeason.starting) / 125.0; //multiply from 0.2 to 1.00
-		performanceMultiplier *= 1.0 + newSeason.performance; //multiply from 0.0 to 2.0
+		performanceMultiplier *= 1.0 + newSeason.performance / 2.0; //multiply from 0.5 to 1.5
 
 		newSeason.goals = Math.floor(
 			newPlayer.positionInClub.goalsMultiplier * performanceMultiplier * goalsOpportunities
