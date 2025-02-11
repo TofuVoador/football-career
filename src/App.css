@@ -66,9 +66,38 @@ section {
 	justify-content: center;
 }
 
+.choices {
+	margin-top: 1rem;
+}
+
 .choices a:hover {
 	background-color: var(--color-light);
 	cursor: pointer;
+}
+
+.choices .contract {
+	margin-bottom: 1.5rem;
+	padding: 1rem 1rem 0 1rem;
+}
+
+.contract-info {
+	display: flex;
+	justify-content: space-between;
+	position: relative;
+	top: 0.5rem;
+	gap: 0.5rem;
+	width: 100%;
+}
+
+.contract-info div {
+	background-color: var(--color-dark);
+	text-align: center;
+	font-size: small;
+	display: flex;
+	align-items: center;
+	padding: 0.2rem 0.4rem;
+	border-radius: 1rem;
+	border: 1px var(--color-contrast) solid;
 }
 
 .chart {

@@ -2843,18 +2843,20 @@ function App() {
 					id="team-choice"
 					style={{ display: "none" }}>
 					<a
-						className="d-stay"
+						className="d-stay contract"
 						id="decision-stay"
 						style={{ display: "none" }}
 						onClick={() => ChooseTeam()}>
 						<p>Continuar em {player.team === null ? "null" : player.team.name}</p>
-						<p>
-							{player.team === null ? "null" : (player.team.power / 2).toFixed(2)}⭐ | $
-							{FormatarNumero(renew.value)} 💰 | {renew.duration} 🕗 | {renew.position} 👕
-						</p>
+						<div className="contract-info">
+							<div>{player.team === null ? "null" : (player.team.power / 2).toFixed(2)} ⭐</div>
+							<div>${FormatarNumero(renew.value)} 💰</div>
+							<div>{renew.duration} 🕗</div>
+							<div>{renew.position} 👕</div>
+						</div>
 					</a>
 					<a
-						className="d-alert"
+						className="d-alert contract"
 						id="decision-transfer1"
 						onClick={() => ChooseTeam(transfers[0])}>
 						{transfers[0] ? (
@@ -2862,18 +2864,19 @@ function App() {
 								<p>
 									{transfers[0].loan ? "Empréstimo" : "Transferir"} para {transfers[0].team.name}
 								</p>
-								<p>
-									{(transfers[0].team.power / 2).toFixed(2)}⭐ | $
-									{FormatarNumero(transfers[0].contract.value)} 💰 |{" "}
-									{transfers[0].contract.duration} 🕗 | {transfers[0].position} 👕
-								</p>
+								<div className="contract-info">
+									<div>{(transfers[0].team.power / 2).toFixed(2)} ⭐</div>
+									<div>${FormatarNumero(transfers[0].contract.value)} 💰</div>
+									<div>{transfers[0].contract.duration} 🕗</div>
+									<div>{transfers[0].position} 👕</div>
+								</div>
 							</>
 						) : (
 							<p>null</p>
 						)}
 					</a>
 					<a
-						className="d-alert"
+						className="d-alert contract"
 						id="decision-transfer2"
 						onClick={() => ChooseTeam(transfers[1])}>
 						{transfers[1] ? (
@@ -2881,18 +2884,19 @@ function App() {
 								<p>
 									{transfers[1].loan ? "Empréstimo" : "Transferir"} para {transfers[1].team.name}
 								</p>
-								<p>
-									{(transfers[1].team.power / 2).toFixed(2)}⭐ | $
-									{FormatarNumero(transfers[1].contract.value)} 💰 |{" "}
-									{transfers[1].contract.duration} 🕗 | {transfers[1].position} 👕
-								</p>
+								<div className="contract-info">
+									<div>{(transfers[1].team.power / 2).toFixed(2)} ⭐</div>
+									<div>${FormatarNumero(transfers[1].contract.value)} 💰</div>
+									<div>{transfers[1].contract.duration} 🕗</div>
+									<div>{transfers[1].position} 👕</div>
+								</div>
 							</>
 						) : (
 							<p>null</p>
 						)}
 					</a>
 					<a
-						className="d-alert"
+						className="d-alert contract"
 						id="decision-transfer3"
 						onClick={() => ChooseTeam(transfers[2])}>
 						{transfers[2] ? (
@@ -2900,11 +2904,12 @@ function App() {
 								<p>
 									{transfers[2].loan ? "Empréstimo" : "Transferir"} para {transfers[2].team.name}
 								</p>
-								<p>
-									{(transfers[2].team.power / 2).toFixed(2)}⭐ | $
-									{FormatarNumero(transfers[2].contract.value)} 💰 |{" "}
-									{transfers[2].contract.duration} 🕗 | {transfers[2].position} 👕
-								</p>
+								<div className="contract-info">
+									<div>{(transfers[2].team.power / 2).toFixed(2)}⭐</div>
+									<div>${FormatarNumero(transfers[2].contract.value)} 💰</div>
+									<div>{transfers[2].contract.duration} 🕗</div>
+									<div>{transfers[2].position} 👕</div>
+								</div>
 							</>
 						) : (
 							<p>null</p>
