@@ -123,7 +123,7 @@ function App() {
 	const initPos = shuffleArray(DeepClone(Positions));
 	const [initNation, setInitNation] = useState(GetNewNation());
 
-	const [renew, setRenew] = useState({ value: 0, duration: 0, salaryAdjustment: 0 });
+	const [renew, setRenew] = useState({ value: 0, duration: 0, addition: null, position: null });
 
 	function ChooseNation() {
 		const continentDropdown = document.getElementById("continent-dropdown");
@@ -270,16 +270,15 @@ function App() {
 				newPlayer.championsQualification = false;
 				newPlayer.europaQualification = false;
 			}
-		} else if (newContract <= 0) {
+		} else if (newContract <= 0 || renew.addition != null) {
 			// Renovação do contrato
-			newContract = renew.duration; // Nova duração do contrato
+			newContract = renew.duration + renew.addition; // Nova duração do contrato
 			newPlayer.wage = renew.value; // Novo valor do contrato
-			newHistory.push({ team: newPlayer.team.name, year: year + renew.duration });
 			newPlayer.positionInClub = Positions.find(
 				(position) => position.abbreviation === renew.position
 			);
-		} else {
-			newPlayer.wage = newPlayer.wage * (1.1 + newPlayer.performance / 10); // Reajuste
+
+			setRenew({ value: 0, duration: 0, addition: null, position: null });
 		}
 
 		//change teams power on each season
@@ -1896,6 +1895,7 @@ function App() {
 				setRenew({
 					value: newPlayer.contractTeam.contract.value,
 					duration: newPlayer.contractTeam.contract.duration,
+					addition: null,
 					position: newPosition,
 				});
 				document.getElementById("decision-stay").style.display = "flex";
@@ -1929,10 +1929,16 @@ function App() {
 			if (newTransfers[2].contract.value < newPlayer.wage)
 				newTransfers[1].contract.value = newPlayer.wage;
 
+			let newWage = GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame);
+
+			let contractAddition = 0;
+			if (contract <= 3) contractAddition = RandomNumber(1, 3);
+
 			setRenew({
-				value: newPlayer.wage * 1.1,
+				value: newWage,
 				duration: contract - 1,
-				position: newPlayer.position.abbreviation,
+				addition: contractAddition,
+				position: newPlayer.positionInClub.abbreviation,
 			});
 
 			document.getElementById("decision-stay").style.display = "flex";
@@ -2022,6 +2028,7 @@ function App() {
 					setRenew({
 						value: contractValue,
 						duration: contractDuration,
+						addition: null,
 						position: newPosition,
 					});
 				}
@@ -2847,11 +2854,16 @@ function App() {
 						id="decision-stay"
 						style={{ display: "none" }}
 						onClick={() => ChooseTeam()}>
-						<p>Continuar em {player.team === null ? "null" : player.team.name}</p>
+						<p>
+							{player.team === null ? "null" : player.team.name} (
+							{player.team === null ? "null" : (player.team.power / 2).toFixed(2)})
+						</p>
 						<div className="contract-info">
-							<div>{player.team === null ? "null" : (player.team.power / 2).toFixed(2)} ⭐</div>
 							<div>${FormatarNumero(renew.value)} 💰</div>
-							<div>{renew.duration} 🕗</div>
+							<div>
+								{renew.duration}
+								{renew.addition != null && renew.addition > 0 ? ` + ${renew.addition}` : ""} 🕗
+							</div>
 							<div>{renew.position} 👕</div>
 						</div>
 					</a>
@@ -2861,11 +2873,11 @@ function App() {
 						onClick={() => ChooseTeam(transfers[0])}>
 						{transfers[0] ? (
 							<>
+								{transfers[0].loan ? <div>Empréstimo</div> : ""}
 								<p>
-									{transfers[0].loan ? "Empréstimo" : "Transferir"} para {transfers[0].team.name}
+									{transfers[0].team.name} ({(transfers[0].team.power / 2).toFixed(2)})
 								</p>
 								<div className="contract-info">
-									<div>{(transfers[0].team.power / 2).toFixed(2)} ⭐</div>
 									<div>${FormatarNumero(transfers[0].contract.value)} 💰</div>
 									<div>{transfers[0].contract.duration} 🕗</div>
 									<div>{transfers[0].position} 👕</div>
@@ -2881,11 +2893,11 @@ function App() {
 						onClick={() => ChooseTeam(transfers[1])}>
 						{transfers[1] ? (
 							<>
+								{transfers[1].loan ? <div>Empréstimo</div> : ""}
 								<p>
-									{transfers[1].loan ? "Empréstimo" : "Transferir"} para {transfers[1].team.name}
+									{transfers[1].team.name} ({(transfers[1].team.power / 2).toFixed(2)})
 								</p>
 								<div className="contract-info">
-									<div>{(transfers[1].team.power / 2).toFixed(2)} ⭐</div>
 									<div>${FormatarNumero(transfers[1].contract.value)} 💰</div>
 									<div>{transfers[1].contract.duration} 🕗</div>
 									<div>{transfers[1].position} 👕</div>
@@ -2901,11 +2913,11 @@ function App() {
 						onClick={() => ChooseTeam(transfers[2])}>
 						{transfers[2] ? (
 							<>
+								{transfers[2].loan ? <div>Empréstimo</div> : ""}
 								<p>
-									{transfers[2].loan ? "Empréstimo" : "Transferir"} para {transfers[2].team.name}
+									{transfers[2].team.name} ({(transfers[2].team.power / 2).toFixed(2)})
 								</p>
 								<div className="contract-info">
-									<div>{(transfers[2].team.power / 2).toFixed(2)}⭐</div>
 									<div>${FormatarNumero(transfers[2].contract.value)} 💰</div>
 									<div>{transfers[2].contract.duration} 🕗</div>
 									<div>{transfers[2].position} 👕</div>

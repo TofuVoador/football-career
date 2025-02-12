@@ -90,6 +90,8 @@ section {
 }
 
 .contract-info div {
+	flex: 1;
+	justify-content: center;
 	background-color: var(--color-dark);
 	text-align: center;
 	font-size: small;
