@@ -376,7 +376,7 @@ function App() {
 		let r = (Math.random() - Math.random()) * 10;
 		let starting =
 			Math.floor(
-				((newPlayer.overall - (75 + newPlayer.team.power)) * 8 + r + newPlayer.performance * 10) / 2
+				((newPlayer.overall - (75 + newPlayer.team.power)) * 10 + r + newPlayer.performance * 5) / 2
 			) * 2;
 		if (starting > 100) starting = 100;
 		else if (starting < 0) starting = 0;
@@ -429,7 +429,7 @@ function App() {
 
 		let goalsOpportunities = 0;
 		let assistsOpportunities = 0;
-		newSeason.awardPoints = Math.round(Math.random() * 100) / 100;
+		newSeason.awardPoints = Math.round(Math.random() * 100 + newSeason.starting) / 100;
 
 		let med = 0;
 		for (let i = 0; i < generalPerformance.length; i++) {
@@ -607,8 +607,8 @@ function App() {
 			championsGroup.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
 
 		if (playerChampionsPos > 0) {
-			goalsOpportunities += (36 - playerChampionsPos) / 8;
-			assistsOpportunities += (36 - playerChampionsPos) / 8;
+			goalsOpportunities += (36 - playerChampionsPos) / 6;
+			assistsOpportunities += (36 - playerChampionsPos) / 6;
 		}
 
 		// Construir a descrição da fase do torneio
@@ -687,7 +687,7 @@ function App() {
 
 					goalsOpportunities += Math.random();
 					assistsOpportunities += Math.random();
-					newSeason.awardPoints += 1.0; // Máximo 1.0 x 4 = 4.0
+					newSeason.awardPoints += 0.8; // Máximo 0.8 x 4 = 3.2
 					newPlayer.fame += 3; // Champions Máximo 3 x 4 = 12
 
 					// Verificar se o jogador ganhou o jogo
@@ -701,7 +701,7 @@ function App() {
 							// Se o jogador vencer o torneio, conceder prêmios adicionais
 							newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
 							newPlayer.fame += 8; // Máximo 3 x 4 + 8 = 20
-							newSeason.awardPoints += 1.0; // Máximo 0.8 x 5 + 1.0 = 5.0
+							newSeason.awardPoints += 0.8; // Máximo 0.8 x 4 + 0.8 = 4.0
 							triplice++;
 						}
 					}
@@ -769,8 +769,8 @@ function App() {
 			group.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
 
 		if (playerEuropaPosition > 0) {
-			goalsOpportunities += (32 - playerChampionsPos) / 8;
-			assistsOpportunities += (32 - playerChampionsPos) / 8;
+			goalsOpportunities += (32 - playerChampionsPos) / 6;
+			assistsOpportunities += (32 - playerChampionsPos) / 6;
 		}
 
 		europaLeagueDescription.push(
@@ -1818,7 +1818,7 @@ function App() {
 		console.log("Award Points: " + Math.round(awardScore * 100) / 100 + "/20.0");
 		if (
 			player.position.title === "Goleiro" &&
-			awardScore >= 12 + Math.random() * 5 &&
+			awardScore >= 16 + Math.random() * 2 &&
 			newSeason.performance >= 0.0
 		) {
 			//Golden Gloves
@@ -1927,7 +1927,7 @@ function App() {
 
 			document.getElementById("decision-transfer3").style.display = "flex";
 			if (newTransfers[2].contract.value < newPlayer.wage)
-				newTransfers[1].contract.value = newPlayer.wage;
+				newTransfers[2].contract.value = newPlayer.wage;
 
 			let newWage = GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame);
 
@@ -1992,10 +1992,7 @@ function App() {
 			//if contract expired
 			contract <= 1
 		) {
-			if (
-				newPlayer.age >= newPlayer.positionInClub.peak + 6 &&
-				newPlayer.overall < 88 + newPlayer.potential / 10
-			) {
+			if (newPlayer.age >= newPlayer.positionInClub.peak + 8) {
 				//must retire
 				document.getElementById("retire").style.display = "flex";
 				document.getElementById("decision-stay").style.display = "none";
