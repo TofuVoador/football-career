@@ -477,8 +477,8 @@ function App() {
 		newSeason.titles.push([`Liga: ${playerPosition}º lugar`].concat(leaguesTopEight));
 		newPlayer.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0); //max = 10
 
-		goalsOpportunities += 25 - playerPosition;
-		assistsOpportunities += 25 - playerPosition;
+		goalsOpportunities += 21 - playerPosition;
+		assistsOpportunities += 21 - playerPosition;
 
 		//if fist place, then won trophy
 		if (playerPosition === 1) {
@@ -524,8 +524,8 @@ function App() {
 				if (team1.name === newPlayer.team.name || team2.name === newPlayer.team.name) {
 					playerOpp = `: ${team1.name === newPlayer.team.name ? team2.name : team1.name}`;
 
-					goalsOpportunities += Math.random();
-					assistsOpportunities += Math.random();
+					goalsOpportunities++;
+					assistsOpportunities++;
 					newSeason.awardPoints += 0.4; // Máximo 0.4 x 4 = 1.6
 					newPlayer.fame += 1; // Copa Nacional Máximo 1 x 4 = 4
 
@@ -607,8 +607,8 @@ function App() {
 			championsGroup.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
 
 		if (playerChampionsPos > 0) {
-			goalsOpportunities += (36 - playerChampionsPos) / 6;
-			assistsOpportunities += (36 - playerChampionsPos) / 6;
+			goalsOpportunities += (16 - playerChampionsPos) / 3;
+			assistsOpportunities += (16 - playerChampionsPos) / 3;
 		}
 
 		// Construir a descrição da fase do torneio
@@ -685,8 +685,8 @@ function App() {
 				if (team1.name === newPlayer.team.name || team2.name === newPlayer.team.name) {
 					playerOpp = `: ${team1.name === newPlayer.team.name ? team2.name : team1.name}`;
 
-					goalsOpportunities += Math.random();
-					assistsOpportunities += Math.random();
+					goalsOpportunities++;
+					assistsOpportunities++;
 					newSeason.awardPoints += 0.8; // Máximo 0.8 x 4 = 3.2
 					newPlayer.fame += 3; // Champions Máximo 3 x 4 = 12
 
@@ -769,8 +769,8 @@ function App() {
 			group.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
 
 		if (playerEuropaPosition > 0) {
-			goalsOpportunities += (32 - playerChampionsPos) / 6;
-			assistsOpportunities += (32 - playerChampionsPos) / 6;
+			goalsOpportunities += (10 - playerChampionsPos) / 3;
+			assistsOpportunities += (10 - playerChampionsPos) / 3;
 		}
 
 		europaLeagueDescription.push(
@@ -817,8 +817,8 @@ function App() {
 					) {
 						// Incrementar a fase do jogador e, se vencer o torneio, adicionar à sua lista de realizações
 						playerPhase++;
-						goalsOpportunities += Math.random();
-						assistsOpportunities += Math.random();
+						goalsOpportunities++;
+						assistsOpportunities++;
 						if (playerPhase >= TournamentPath.length - 1) {
 							newPlayer.europa.push(`${year} (${newPlayer.team.name})`);
 						}
@@ -957,8 +957,8 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							goalsOpportunities += Math.random();
-							assistsOpportunities += Math.random();
+							goalsOpportunities++;
+							assistsOpportunities++;
 							newSeason.awardPoints += 0.4; // Máximo 0.4 x 4 = 1.6
 							newPlayer.fame += 3; // Copa Máximo 3 x 4 = 12
 						}
@@ -1104,8 +1104,8 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							goalsOpportunities += Math.random();
-							assistsOpportunities += Math.random();
+							goalsOpportunities++;
+							assistsOpportunities++;
 							newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 = 1.5
 							newPlayer.fame += 4; // Copa América Máximo 4 x 3 = 12
 						}
@@ -1255,8 +1255,8 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							goalsOpportunities += Math.random();
-							assistsOpportunities += Math.random();
+							goalsOpportunities++;
+							assistsOpportunities++;
 							newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 = 1.5
 							newPlayer.fame += 4; // Copa África Máximo 4 x 3 = 12
 						}
@@ -1405,8 +1405,8 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							goalsOpportunities += Math.random();
-							assistsOpportunities += Math.random();
+							goalsOpportunities++;
+							assistsOpportunities++;
 							newSeason.awardPoints += 0.5; // Máximo 0.5 x 3 = 1.5
 							newPlayer.fame += 4; // Copa Ásia Máximo 4 x 3 = 12
 						}
@@ -1655,8 +1655,8 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedWorldCup) {
-							goalsOpportunities += Math.random();
-							assistsOpportunities += Math.random();
+							goalsOpportunities++;
+							assistsOpportunities++;
 							newSeason.awardPoints += 0.5; // Máximo 0.5 x 5 = 2.5
 							newPlayer.fame += 3; // Máximo 3 x 5 = 15
 						}
@@ -1780,7 +1780,7 @@ function App() {
 		}
 
 		let performanceMultiplier = Math.pow(newPlayer.overall, 2) / 9000.0; //adds from 0 to 1.0
-		performanceMultiplier *= (25 + newSeason.starting) / 125.0; //multiply from 0.2 to 1.00
+		performanceMultiplier *= (20 + newSeason.starting) / 100.0; //multiply from 0.2 to 1.20
 		performanceMultiplier *= 1.0 + newSeason.performance / 2.0; //multiply from 0.5 to 1.5
 
 		newSeason.goals = Math.floor(
