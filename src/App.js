@@ -477,8 +477,6 @@ function App() {
 		newSeason.titles.push([`Liga: ${playerPosition}º lugar`].concat(leaguesTopEight));
 		newPlayer.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0); //max = 10
 
-		console.log(playerLeagueResult.result.table);
-
 		goalsOpportunities += 16 - playerPosition;
 		assistsOpportunities += 16 - playerPosition;
 
@@ -607,8 +605,6 @@ function App() {
 
 		const playerChampionsPos =
 			championsGroup.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
-
-		console.log(championsGroup.table);
 
 		if (playerChampionsPos > 0) {
 			goalsOpportunities += (25 - playerChampionsPos) / 5;
@@ -1785,7 +1781,8 @@ function App() {
 
 		let performanceMultiplier = Math.pow(newPlayer.overall, 2) / 9000.0; //adds from 0 to 1.0
 		performanceMultiplier *= (20 + newSeason.starting) / 100.0; //multiply from 0.2 to 1.20
-		performanceMultiplier *= 1.0 + newSeason.performance / 2.0; //multiply from 0.5 to 1.5
+		performanceMultiplier *=
+			1.0 + Math.sign(newSeason.performance) * (newSeason.performance * newSeason.performance); //multiply from 0.0 to 2.0
 
 		newSeason.goals = Math.floor(
 			newPlayer.positionInClub.goalsMultiplier * performanceMultiplier * goalsOpportunities
