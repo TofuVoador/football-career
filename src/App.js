@@ -1466,7 +1466,7 @@ function App() {
 
 		//World Cup
 		if (year % 4 === 2) {
-			newSeason.awardPoints -= 3.0;
+			newSeason.awardPoints -= 2.0;
 			phase = 0;
 			playerPhase = 0;
 			let worldCupDescription = [];
