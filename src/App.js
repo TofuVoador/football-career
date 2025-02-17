@@ -1818,7 +1818,7 @@ function App() {
 			Math.round(
 				(newSeason.awardPoints +
 					newPlayer.overall / 10 +
-					newSeason.performance +
+					newSeason.performance * 2 +
 					Math.min(newSeason.starting / 10, 8) * 1.25) *
 					100
 			) / 100;
