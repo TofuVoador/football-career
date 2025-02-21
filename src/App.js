@@ -208,7 +208,6 @@ function App() {
 	}
 
 	function ChooseTeam(newTeam = null) {
-		console.log(JSON.parse(JSON.stringify(newTeam)));
 		//change display
 		document.getElementById("team-choice").style.display = "none";
 		document.getElementById("continue").style.display = "flex";
@@ -1942,6 +1941,7 @@ function App() {
 				newTransfers[2].contract.value = newPlayer.wage;
 
 			let newWage = GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame);
+			if (newWage < newPlayer.wage) newWage = newPlayer.wage;
 
 			let contractAddition = 0;
 			if (contract <= 3) contractAddition = RandomNumber(1, 3);
