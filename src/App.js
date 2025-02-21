@@ -208,6 +208,7 @@ function App() {
 	}
 
 	function ChooseTeam(newTeam = null) {
+		console.log(JSON.parse(JSON.stringify(newTeam)));
 		//change display
 		document.getElementById("team-choice").style.display = "none";
 		document.getElementById("continue").style.display = "flex";
@@ -270,6 +271,8 @@ function App() {
 				newPlayer.championsQualification = false;
 				newPlayer.europaQualification = false;
 			}
+
+			setRenew({ value: 0, duration: 0, addition: null, position: null });
 		} else if (newContract <= 0 || renew.addition != null) {
 			// Renovação do contrato
 			newContract = renew.duration + renew.addition; // Nova duração do contrato
@@ -1883,6 +1886,7 @@ function App() {
 
 		//trasnfer window
 		let newTransfers = GetNewTeams(newPlayer);
+		let newRenew = { value: 0, duration: 0, addition: null, position: null };
 
 		if (
 			//if ended loan
@@ -1900,12 +1904,12 @@ function App() {
 					newPosition = newPlayer.position.abbreviation;
 				}
 
-				setRenew({
+				newRenew = {
 					value: newPlayer.contractTeam.contract.value,
 					duration: newPlayer.contractTeam.contract.duration,
 					addition: null,
 					position: newPosition,
-				});
+				};
 				document.getElementById("decision-stay").style.display = "flex";
 			} else {
 				document.getElementById("decision-stay").style.display = "none";
@@ -1942,12 +1946,12 @@ function App() {
 			let contractAddition = 0;
 			if (contract <= 3) contractAddition = RandomNumber(1, 3);
 
-			setRenew({
+			newRenew = {
 				value: newWage,
 				duration: contract - 1,
 				addition: contractAddition,
 				position: newPlayer.positionInClub.abbreviation,
-			});
+			};
 
 			document.getElementById("decision-stay").style.display = "flex";
 			//cant retire because of the contract
@@ -2030,12 +2034,12 @@ function App() {
 						newPosition = newPlayer.position.abbreviation;
 					}
 
-					setRenew({
+					newRenew = {
 						value: contractValue,
 						duration: contractDuration,
 						addition: null,
 						position: newPosition,
-					});
+					};
 				}
 
 				document.getElementById("decision-transfer1").style.display = "flex";
@@ -2054,6 +2058,7 @@ function App() {
 		setLastLeagueResults(leagueResults);
 		setPlayer(newPlayer);
 		setTransfers(newTransfers);
+		setRenew(newRenew);
 
 		//set Seasons
 		const newSeasons = [...seasons, newSeason];
