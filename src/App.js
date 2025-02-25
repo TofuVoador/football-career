@@ -146,11 +146,7 @@ function App() {
 			document.getElementById("init-nation").style.display = "none";
 
 			// Create a new player object with the selected nation
-			let newPlayer = { ...player }; // Assuming 'player' is defined in your scope
-			newPlayer.nation = selectedNation;
-
-			// Set the player with the new nation
-			setPlayer(newPlayer);
+			player.nation = selectedNation;
 		} else {
 			alert("Selecione um País.");
 		}
@@ -187,8 +183,7 @@ function App() {
 		document.getElementById("team-choice").style.display = "flex";
 		document.getElementById("init-pos").style.display = "none";
 
-		let newPlayer = { ...player }; // Clone the player object
-		newPlayer.position = selectedPosition; // Assign the selected position
+		player.position = selectedPosition; // Assign the selected position
 
 		let newTeams = UpdateTeamsStats(20.0).newTeams;
 
@@ -203,8 +198,7 @@ function App() {
 		});
 
 		setLastLeagueResults(leagueResults); // Update league results
-		setPlayer(newPlayer); // Update the player state
-		setTransfers(GetInitTeams(selectedPosition.value, newTeams, newPlayer)); // Use selectedPosition
+		setTransfers(GetInitTeams(selectedPosition.value, newTeams, player)); // Use selectedPosition
 	}
 
 	function ChooseTeam(newTeam = null) {
@@ -212,9 +206,10 @@ function App() {
 		document.getElementById("team-choice").style.display = "none";
 		document.getElementById("continue").style.display = "flex";
 
+		console.log(player);
+
 		//load
-		let newPlayer = player;
-		newPlayer.age++;
+		player.age++;
 		let newGeneralPerformance = generalPerformance;
 		let newHistory = history;
 		let newContract = contract - 1;
@@ -228,55 +223,55 @@ function App() {
 			// Verifica se o jogador foi emprestado para o novo time
 			if (newTeam.loan) {
 				// Atualiza os detalhes do contrato do jogador se ele estiver emprestado
-				newPlayer.contractTeam = {
-					team: newPlayer.team,
+				player.contractTeam = {
+					team: player.team,
 					contract: {
 						value: newTeam.contract.value,
 						duration: newContract - newTeam.contract.duration,
 					},
 					transferValue: newTeam.transferValue,
-					position: newPlayer.positionInClub.abbreviation,
+					position: player.positionInClub.abbreviation,
 					loan: false,
 				};
 			}
 
 			newGeneralPerformance = [];
-			newPlayer.team = newTeam.team;
+			player.team = newTeam.team;
 			newContract = newTeam.contract.duration;
-			newPlayer.marketValue = newTeam.transferValue;
-			newPlayer.wage = newTeam.contract.value;
-			newPlayer.positionInClub = Positions.find(
+			player.marketValue = newTeam.transferValue;
+			player.wage = newTeam.contract.value;
+			player.positionInClub = Positions.find(
 				(position) => position.abbreviation === newTeam.position
 			);
 
 			let lp = 99; // Inicializa o valor padrão de "lp"
 
 			let newLeagueResults =
-				lastLeagueResults.find((league) => league.name === newPlayer.team.league) || [];
-			lp = newLeagueResults.result.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
+				lastLeagueResults.find((league) => league.name === player.team.league) || [];
+			lp = newLeagueResults.result.table.findIndex((team) => team.name === player.team.name) + 1;
 
 			// Verifica se o jogador se classificou no ano passado
 			if (lp <= newLeagueResults.championsSpots) {
 				// Para os campeões
-				newPlayer.championsQualification = true;
-				newPlayer.europaQualification = false;
-				newPlayer.lastLeaguePosition = lp;
+				player.championsQualification = true;
+				player.europaQualification = false;
+				player.lastLeaguePosition = lp;
 			} else if (lp <= newLeagueResults.championsSpots + newLeagueResults.europaSpots) {
 				// Para a Liga Europa
-				newPlayer.championsQualification = false;
-				newPlayer.europaQualification = true;
+				player.championsQualification = false;
+				player.europaQualification = true;
 			} else {
 				// Não foi classificado
-				newPlayer.championsQualification = false;
-				newPlayer.europaQualification = false;
+				player.championsQualification = false;
+				player.europaQualification = false;
 			}
 
 			setRenew({ value: 0, duration: 0, addition: null, position: null });
 		} else if (newContract <= 0 || renew.addition != null) {
 			// Renovação do contrato
 			newContract = renew.duration + renew.addition; // Nova duração do contrato
-			newPlayer.wage = renew.value; // Novo valor do contrato
-			newPlayer.positionInClub = Positions.find(
+			player.wage = renew.value; // Novo valor do contrato
+			player.positionInClub = Positions.find(
 				(position) => position.abbreviation === renew.position
 			);
 
@@ -301,9 +296,9 @@ function App() {
 			...team,
 			rank: index + 1, // Rank starts from 1
 		}));
-		if (!top10.some((t) => t.name === newPlayer.team.name)) {
-			const playerTeam = allTeams.find((t) => t.name === newPlayer.team.name);
-			const playerRanking = allTeams.findIndex((t) => t.name === newPlayer.team.name) + 1;
+		if (!top10.some((t) => t.name === player.team.name)) {
+			const playerTeam = allTeams.find((t) => t.name === player.team.name);
+			const playerRanking = allTeams.findIndex((t) => t.name === player.team.name) + 1;
 			if (playerTeam) {
 				top10.push({
 					...playerTeam,
@@ -327,9 +322,9 @@ function App() {
 			...team,
 			rank: index + 1, // Rank starts from 1
 		}));
-		if (!topNations.some((t) => t.name === newPlayer.nation.name)) {
-			const playerTeam = allNations.find((t) => t.name === newPlayer.nation.name);
-			const playerRanking = allNations.findIndex((t) => t.name === newPlayer.nation.name) + 1;
+		if (!topNations.some((t) => t.name === player.nation.name)) {
+			const playerTeam = allNations.find((t) => t.name === player.nation.name);
+			const playerRanking = allNations.findIndex((t) => t.name === player.nation.name) + 1;
 			if (playerTeam) {
 				topNations.push({
 					...playerTeam,
@@ -338,8 +333,8 @@ function App() {
 			}
 		}
 
-		newPlayer.team = allTeams.find((t) => t.name === newPlayer.team.name); //find player's team by name and update
-		newPlayer.nation = allNations.find((n) => n.name === newPlayer.nation.name); //find player's nation by name and update
+		player.team = allTeams.find((t) => t.name === player.team.name); //find player's team by name and update
+		player.nation = allNations.find((n) => n.name === player.nation.name); //find player's nation by name and update
 
 		// Filtra os valores de transferValue que são números
 		const transferValues = transfers.map((transfer) => transfer?.transferValue);
@@ -349,23 +344,18 @@ function App() {
 
 		if (validTransferValues.length > 0) {
 			// Calcula o maior valor de transferValue
-			newPlayer.marketValue = Math.max(...validTransferValues);
+			player.marketValue = Math.max(...validTransferValues);
 		}
 
 		//calcule the player's performance
-		newPlayer.performance = Math.round(100.0 * (Math.random() - Math.random())) / 100.0;
+		player.performance = Math.round(100.0 * (Math.random() - Math.random())) / 100.0;
 
-		newPlayer.overall =
-			GetOverall(
-				newPlayer.potential,
-				newPlayer.age,
-				newPlayer.team.power,
-				newPlayer.positionInClub.peak
-			) +
-			newPlayer.performance * 2;
+		player.overall =
+			GetOverall(player.potential, player.age, player.team.power, player.positionInClub.peak) +
+			player.performance * 2;
 
 		//set performance over team
-		newGeneralPerformance.push(newPlayer.performance);
+		newGeneralPerformance.push(player.performance);
 		if (newGeneralPerformance.length > 3) newGeneralPerformance.shift();
 
 		let med = 0;
@@ -378,7 +368,7 @@ function App() {
 		let r = (Math.random() - Math.random()) * 10;
 		let starting =
 			Math.floor(
-				((newPlayer.overall - (75 + newPlayer.team.power)) * 10 + r + newPlayer.performance * 5) / 2
+				((player.overall - (75 + player.team.power)) * 10 + r + player.performance * 5) / 2
 			) * 2;
 		if (starting > 100) starting = 100;
 		else if (starting < 0) starting = 0;
@@ -392,28 +382,27 @@ function App() {
 			topLoss: updatedTeams.topLosses,
 			topNationsGains: updatedNations.topGains,
 			topNationsLoss: updatedNations.topLosses,
-			age: newPlayer.age,
-			positionInClub: newPlayer.positionInClub,
-			team: DeepClone(newPlayer.team),
-			nation: DeepClone(newPlayer.nation),
-			wage: newPlayer.wage,
+			age: player.age,
+			positionInClub: player.positionInClub,
+			team: DeepClone(player.team),
+			nation: DeepClone(player.nation),
+			wage: player.wage,
 			starting: starting,
 			titles: [],
 			goals: 0,
 			assists: 0,
-			overall: newPlayer.overall,
-			performance: newPlayer.performance,
+			overall: player.overall,
+			performance: player.performance,
 			awardPoints: 0,
 			leagueTable: [],
-			fame: newPlayer.fame,
-			marketValue: newPlayer.marketValue,
+			fame: player.fame,
+			marketValue: player.marketValue,
 		};
 
 		//save
 		setCurrentSeason(newSeason);
 		setYear(year + 1);
 		setContract(newContract);
-		setPlayer(newPlayer);
 		setGeneralPerformance(newGeneralPerformance);
 		setHistory(newHistory);
 	}
@@ -424,7 +413,7 @@ function App() {
 		document.getElementById("continue").style.display = "none";
 
 		//load
-		let newPlayer = player;
+
 		let newSeason = currentSeason;
 
 		//randomize how many goals/assists did they score
@@ -460,7 +449,7 @@ function App() {
 			return leagueResult;
 		});
 
-		let playerLeagueResult = leagueResults.find((league) => league.name === newPlayer.team.league);
+		let playerLeagueResult = leagueResults.find((league) => league.name === player.team.league);
 
 		//top eight from each league
 		let leaguesTopEight = [];
@@ -473,20 +462,20 @@ function App() {
 		}
 
 		const playerPosition =
-			playerLeagueResult.result.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
+			playerLeagueResult.result.table.findIndex((team) => team.name === player.team.name) + 1;
 		newSeason.awardPoints += Math.max(
 			0,
 			((playerLeagueResult.championsSpots / 4.0) * (7 - playerPosition)) / 2.0
 		); //max = 3.0
 		newSeason.titles.push([`Liga: ${playerPosition}º lugar`].concat(leaguesTopEight));
-		newPlayer.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0); //max = 10
+		player.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0); //max = 10
 
 		goalsOpportunities += 16 - playerPosition;
 		assistsOpportunities += 16 - playerPosition;
 
 		//if fist place, then won trophy
 		if (playerPosition === 1) {
-			newPlayer.leagueTitles.push(`${year} (${newPlayer.team.name})`);
+			player.leagueTitles.push(`${year} (${player.team.name})`);
 			triplice++;
 		}
 
@@ -495,7 +484,7 @@ function App() {
 		let phase = 2;
 		let playerPhase = 2;
 
-		let league = leagues.find((league) => league.name === newPlayer.team.league);
+		let league = leagues.find((league) => league.name === player.team.league);
 
 		//get opponents for national cup
 		let pot3 = DeepClone([...league.teams]);
@@ -525,26 +514,26 @@ function App() {
 				let game = GetKnockoutResult(team1, team2, isFinal);
 
 				// Verificando se o jogador está envolvido no jogo atual
-				if (team1.name === newPlayer.team.name || team2.name === newPlayer.team.name) {
-					playerOpp = `: ${team1.name === newPlayer.team.name ? team2.name : team1.name}`;
+				if (team1.name === player.team.name || team2.name === player.team.name) {
+					playerOpp = `: ${team1.name === player.team.name ? team2.name : team1.name}`;
 
 					goalsOpportunities += Math.round(Math.random() * 100) / 100;
 					assistsOpportunities += Math.round(Math.random() * 100) / 100;
 					newSeason.awardPoints += 0.6; // Máximo 0.6 x 4 = 2.4
-					newPlayer.fame += 1; // Copa Nacional Máximo 1 x 4 = 4
+					player.fame += 1; // Copa Nacional Máximo 1 x 4 = 4
 
 					// Verificando se o jogador ganhou o jogo
 					if (
-						(game.result && team1.name === newPlayer.team.name) ||
-						(!game.result && team2.name === newPlayer.team.name)
+						(game.result && team1.name === player.team.name) ||
+						(!game.result && team2.name === player.team.name)
 					) {
 						// Incrementando a fase do jogador e concedendo pontos e prêmios adicionais
 						playerPhase++;
 						if (playerPhase >= TournamentPath.length - 1) {
 							// Se o jogador venceu o torneio, conceder prêmios adicionais
-							newPlayer.nationalCup.push(`${year} (${newPlayer.team.name})`);
+							player.nationalCup.push(`${year} (${player.team.name})`);
 							newSeason.awardPoints += 0.6; // Máximo 0.6 x 4 + 0.6 = 3.0
-							newPlayer.fame += 6; // Copa Nacional Máximo 1 x 4 + 6 = 10
+							player.fame += 6; // Copa Nacional Máximo 1 x 4 + 6 = 10
 							triplice++;
 						}
 					}
@@ -604,11 +593,11 @@ function App() {
 		// Obter a posição dos campeões em um grupo específico
 		let championsGroup = GetChampionsPosition(
 			qualifiedToChampions,
-			newPlayer.championsQualification ? newPlayer.team : null
+			player.championsQualification ? player.team : null
 		);
 
 		const playerChampionsPos =
-			championsGroup.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
+			championsGroup.table.findIndex((team) => team.name === player.team.name) + 1;
 
 		if (playerChampionsPos > 0) {
 			goalsOpportunities += (25 - playerChampionsPos) / 5;
@@ -630,7 +619,7 @@ function App() {
 		phase++;
 
 		// Verificar se o novo jogador está entre os classificados para os playoffs
-		if (playoffsClassif.some((t) => t.name === newPlayer.team.name)) {
+		if (playoffsClassif.some((t) => t.name === player.team.name)) {
 			playerPhase++;
 		}
 
@@ -645,8 +634,8 @@ function App() {
 			let team2 = playoffsClassif[playoffsClassif.length - (matchID + 1)];
 			let game = GetKnockoutResult(team1, team2, true);
 
-			if (team1.name === newPlayer.team.name || team2.name === newPlayer.team.name) {
-				playerOpp = `: ${team1.name === newPlayer.team.name ? team2.name : team1.name}`;
+			if (team1.name === player.team.name || team2.name === player.team.name) {
+				playerOpp = `: ${team1.name === player.team.name ? team2.name : team1.name}`;
 			}
 
 			games += `--> ${game.game}`;
@@ -660,7 +649,7 @@ function App() {
 
 		championsDescription.push(`${TournamentPath[phase]}${playerOpp}${games}`);
 
-		if (classifToKnockout.some((t) => t.name === newPlayer.team.name)) {
+		if (classifToKnockout.some((t) => t.name === player.team.name)) {
 			playerPhase++;
 		}
 
@@ -687,25 +676,25 @@ function App() {
 				);
 
 				// Verificar se o jogador está envolvido no jogo atual
-				if (team1.name === newPlayer.team.name || team2.name === newPlayer.team.name) {
-					playerOpp = `: ${team1.name === newPlayer.team.name ? team2.name : team1.name}`;
+				if (team1.name === player.team.name || team2.name === player.team.name) {
+					playerOpp = `: ${team1.name === player.team.name ? team2.name : team1.name}`;
 
 					goalsOpportunities += Math.round(Math.random() * 100) / 100;
 					assistsOpportunities += Math.round(Math.random() * 100) / 100;
 					newSeason.awardPoints += 0.6; // Máximo 1.0 + 0.6 x 4 = 3.4
-					newPlayer.fame += 3; // Champions Máximo 3 x 4 = 12
+					player.fame += 3; // Champions Máximo 3 x 4 = 12
 
 					// Verificar se o jogador ganhou o jogo
 					if (
-						(game.result && team1.name === newPlayer.team.name) ||
-						(!game.result && team2.name === newPlayer.team.name)
+						(game.result && team1.name === player.team.name) ||
+						(!game.result && team2.name === player.team.name)
 					) {
 						// Incrementar a fase do jogador e conceder pontos e prêmios adicionais
 						playerPhase++;
 						if (playerPhase >= TournamentPath.length - 1) {
 							// Se o jogador vencer o torneio, conceder prêmios adicionais
-							newPlayer.champions.push(`${year} (${newPlayer.team.name})`);
-							newPlayer.fame += 8; // Máximo 3 x 4 + 8 = 20
+							player.champions.push(`${year} (${player.team.name})`);
+							player.fame += 8; // Máximo 3 x 4 + 8 = 20
 							newSeason.awardPoints += 0.6; // Máximo 1.0 + 0.6 x 4 + 0.6 = 4.0
 							triplice++;
 						}
@@ -737,7 +726,7 @@ function App() {
 			}
 		}
 
-		let playerChampionsResult = newPlayer.championsQualification
+		let playerChampionsResult = player.championsQualification
 			? `: ${TournamentPath[playerPhase]}`
 			: "";
 		newSeason.titles.push(
@@ -768,10 +757,10 @@ function App() {
 
 		qualified = qualified.concat(extrateams.slice(12, extrateams.length));
 
-		let group = GetEuropaPosition(qualified, newPlayer.europaQualification ? newPlayer.team : null);
+		let group = GetEuropaPosition(qualified, player.europaQualification ? player.team : null);
 
 		const playerEuropaPosition =
-			group.table.findIndex((team) => team.name === newPlayer.team.name) + 1;
+			group.table.findIndex((team) => team.name === player.team.name) + 1;
 
 		if (playerEuropaPosition > 0) {
 			goalsOpportunities += (20 - playerChampionsPos) / 5;
@@ -786,7 +775,7 @@ function App() {
 
 		let classif = DeepClone([...group.table]).splice(0, 16);
 
-		if (classif.some((t) => t.name === newPlayer.team.name)) {
+		if (classif.some((t) => t.name === player.team.name)) {
 			playerPhase += 2;
 		}
 
@@ -813,19 +802,19 @@ function App() {
 				);
 
 				// Verificar se o jogador está envolvido no jogo atual
-				if (team1.name === newPlayer.team.name || team2.name === newPlayer.team.name) {
-					playerOpp = `: ${team1.name === newPlayer.team.name ? team2.name : team1.name}`;
+				if (team1.name === player.team.name || team2.name === player.team.name) {
+					playerOpp = `: ${team1.name === player.team.name ? team2.name : team1.name}`;
 					// Verificar se o jogador ganhou o jogo
 					if (
-						(game.result && team1.name === newPlayer.team.name) ||
-						(!game.result && team2.name === newPlayer.team.name)
+						(game.result && team1.name === player.team.name) ||
+						(!game.result && team2.name === player.team.name)
 					) {
 						// Incrementar a fase do jogador e, se vencer o torneio, adicionar à sua lista de realizações
 						playerPhase++;
 						goalsOpportunities += Math.round(Math.random() * 100) / 100;
 						assistsOpportunities += Math.round(Math.random() * 100) / 100;
 						if (playerPhase >= TournamentPath.length - 1) {
-							newPlayer.europa.push(`${year} (${newPlayer.team.name})`);
+							player.europa.push(`${year} (${player.team.name})`);
 						}
 					}
 				}
@@ -855,17 +844,15 @@ function App() {
 			}
 		}
 
-		let playerEuropaResult = newPlayer.europaQualification
-			? `: ${TournamentPath[playerPhase]}`
-			: "";
+		let playerEuropaResult = player.europaQualification ? `: ${TournamentPath[playerPhase]}` : "";
 
 		newSeason.titles.push([`Europa League${playerEuropaResult}`].concat(europaLeagueDescription));
 
 		if (year % 4 === 0) {
 			newSeason.awardPoints -= 2.0;
 			let playedContinental =
-				newPlayer.overall > 75 + newPlayer.nation.power &&
-				(newPlayer.team.power >= newPlayer.nation.power - 2 ||
+				player.overall > 75 + player.nation.power &&
+				(player.team.power >= player.nation.power - 2 ||
 					(med > 0 && newSeason.performance > 0.0 && generalPerformance.length >= 2));
 
 			// EUROCOPA
@@ -899,12 +886,10 @@ function App() {
 				// Obter a posição do jogador no grupo atual
 				let thisGroup = GetWorldCupPosition(
 					europeanGroups[groupID],
-					europeanGroups[groupID].some((t) => t.name === newPlayer.nation.name)
-						? newPlayer.nation
-						: null
+					europeanGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null
 				);
 				const playerPosition =
-					thisGroup.table.findIndex((team) => team.name === newPlayer.nation.name) + 1;
+					thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
 
 				// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
 				if (playerPosition > 0) {
@@ -932,7 +917,7 @@ function App() {
 			let classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 4));
 			phase += 2;
 
-			if (classif.some((t) => t.name === newPlayer.nation.name)) {
+			if (classif.some((t) => t.name === player.nation.name)) {
 				playerPhase += 2;
 			}
 
@@ -965,7 +950,7 @@ function App() {
 							goalsOpportunities += Math.round(Math.random() * 100) / 100;
 							assistsOpportunities += Math.round(Math.random() * 100) / 100;
 							newSeason.awardPoints += 0.6; // Máximo 0.4 x 4 = 2.4
-							newPlayer.fame += 3; // Copa Máximo 3 x 4 = 12
+							player.fame += 3; // Copa Máximo 3 x 4 = 12
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -977,9 +962,9 @@ function App() {
 							// Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
 							if (playedContinental) {
 								if (playerPhase >= TournamentPath.length - 1) {
-									newPlayer.continentalChampionship.push(`${year}`);
+									player.continentalChampionship.push(`${year}`);
 									newSeason.awardPoints += 0.6; // Máximo 0.6 x 4 + 0.6 = 3.0
-									newPlayer.fame += 8; // Máximo 3 x 4 + 8 = 20
+									player.fame += 8; // Máximo 3 x 4 + 8 = 20
 								}
 							}
 						}
@@ -1054,12 +1039,10 @@ function App() {
 				// Obter a posição do jogador no grupo atual
 				let thisGroup = GetWorldCupPosition(
 					americanGroups[groupID],
-					americanGroups[groupID].some((t) => t.name === newPlayer.nation.name)
-						? newPlayer.nation
-						: null
+					americanGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null
 				);
 				const playerPosition =
-					thisGroup.table.findIndex((team) => team.name === newPlayer.nation.name) + 1;
+					thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
 
 				// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
 				if (playerPosition > 0) {
@@ -1079,7 +1062,7 @@ function App() {
 			// Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
 			classif = firstPlaces.concat(secondPlaces);
 			phase += 3;
-			if (classif.some((t) => t.name === newPlayer.nation.name)) {
+			if (classif.some((t) => t.name === player.nation.name)) {
 				playerPhase += 3;
 			}
 
@@ -1112,7 +1095,7 @@ function App() {
 							goalsOpportunities += Math.round(Math.random() * 100) / 100;
 							assistsOpportunities += Math.round(Math.random() * 100) / 100;
 							newSeason.awardPoints += 0.8; // Máximo 0.8 x 3 = 2.4
-							newPlayer.fame += 4; // Copa América Máximo 4 x 3 = 12
+							player.fame += 4; // Copa América Máximo 4 x 3 = 12
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1124,9 +1107,9 @@ function App() {
 							// Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
 							if (playedContinental) {
 								if (playerPhase >= TournamentPath.length - 1) {
-									newPlayer.continentalChampionship.push(`${year}`);
+									player.continentalChampionship.push(`${year}`);
 									newSeason.awardPoints += 0.6; // Máximo 0.8 x 3 + 0.6 = 3.0
-									newPlayer.fame += 8; // Máximo 4 x 3 + 8 = 20
+									player.fame += 8; // Máximo 4 x 3 + 8 = 20
 								}
 							}
 						}
@@ -1198,12 +1181,10 @@ function App() {
 				// Obter a posição do jogador no grupo atual
 				let thisGroup = GetWorldCupPosition(
 					africanGroups[groupID],
-					africanGroups[groupID].some((t) => t.name === newPlayer.nation.name)
-						? newPlayer.nation
-						: null
+					africanGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null
 				);
 				const playerPosition =
-					thisGroup.table.findIndex((team) => team.name === newPlayer.nation.name) + 1;
+					thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
 
 				// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
 				if (playerPosition > 0) {
@@ -1230,7 +1211,7 @@ function App() {
 			// Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
 			classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 2));
 			phase += 3;
-			if (classif.some((t) => t.name === newPlayer.nation.name)) {
+			if (classif.some((t) => t.name === player.nation.name)) {
 				playerPhase += 3;
 			}
 
@@ -1263,7 +1244,7 @@ function App() {
 							goalsOpportunities += Math.round(Math.random() * 100) / 100;
 							assistsOpportunities += Math.round(Math.random() * 100) / 100;
 							newSeason.awardPoints += 0.8; // Máximo 0.8 x 3 = 2.4
-							newPlayer.fame += 4; // Copa África Máximo 4 x 3 = 12
+							player.fame += 4; // Copa África Máximo 4 x 3 = 12
 						}
 						// Verificar se o jogador ganhou o jogo
 						if (
@@ -1274,9 +1255,9 @@ function App() {
 							// Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
 							if (playedContinental) {
 								if (playerPhase >= TournamentPath.length - 1) {
-									newPlayer.continentalChampionship.push(`${year}`);
+									player.continentalChampionship.push(`${year}`);
 									newSeason.awardPoints += 0.6; // Máximo 0.8 x 3 + 0.6 = 3.0
-									newPlayer.fame += 8; // Máximo 4 x 3 + 8 = 20
+									player.fame += 8; // Máximo 4 x 3 + 8 = 20
 								}
 							}
 						}
@@ -1348,12 +1329,10 @@ function App() {
 				// Obter a posição do jogador no grupo atual
 				let thisGroup = GetWorldCupPosition(
 					asianGroups[groupID],
-					asianGroups[groupID].some((t) => t.name === newPlayer.nation.name)
-						? newPlayer.nation
-						: null
+					asianGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null
 				);
 				const playerPosition =
-					thisGroup.table.findIndex((team) => team.name === newPlayer.nation.name) + 1;
+					thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
 
 				// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
 				if (playerPosition > 0) {
@@ -1380,7 +1359,7 @@ function App() {
 			// Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
 			classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 2));
 			phase += 3;
-			if (classif.some((t) => t.name === newPlayer.nation.name)) {
+			if (classif.some((t) => t.name === player.nation.name)) {
 				playerPhase += 3;
 			}
 
@@ -1413,7 +1392,7 @@ function App() {
 							goalsOpportunities += Math.round(Math.random() * 100) / 100;
 							assistsOpportunities += Math.round(Math.random() * 100) / 100;
 							newSeason.awardPoints += 0.8; // Máximo 0.8 x 3 = 2.4
-							newPlayer.fame += 4; // Copa Ásia Máximo 4 x 3 = 12
+							player.fame += 4; // Copa Ásia Máximo 4 x 3 = 12
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1425,9 +1404,9 @@ function App() {
 							// Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
 							if (playedContinental) {
 								if (playerPhase >= TournamentPath.length - 1) {
-									newPlayer.continentalChampionship.push(`${year}`);
+									player.continentalChampionship.push(`${year}`);
 									newSeason.awardPoints += 0.6; // Máximo 0.8 x 3 + 0.6 = 3.0
-									newPlayer.fame += 8; // Máximo 4 x 3 + 8 = 20
+									player.fame += 8; // Máximo 4 x 3 + 8 = 20
 								}
 							}
 						}
@@ -1539,14 +1518,14 @@ function App() {
 			allClassifNations = hostsAreFirst.concat(allClassifNations);
 
 			// Verificar se a nação do novo jogador está entre as nações qualificadas para a Copa do Mundo
-			let classifToWorldCup = allClassifNations.some((t) => t.name === newPlayer.nation.name);
+			let classifToWorldCup = allClassifNations.some((t) => t.name === player.nation.name);
 
 			if (!classifToWorldCup) worldCupDescription.push("Grupos-->Sem Dados");
 
 			//was called by the manager
 			let playedWorldCup =
-				newPlayer.overall > 75 + newPlayer.nation.power &&
-				(newPlayer.team.power >= newPlayer.nation.power - 2 ||
+				player.overall > 75 + player.nation.power &&
+				(player.team.power >= player.nation.power - 2 ||
 					(med > 0 && newSeason.performance > 0 && generalPerformance.length >= 2));
 
 			//create four pots to the group draw
@@ -1600,10 +1579,10 @@ function App() {
 				// Obter a posição do jogador no grupo atual
 				let thisGroup = GetWorldCupPosition(
 					groups[groupID],
-					groups[groupID].some((t) => t.name === newPlayer.nation.name) ? newPlayer.nation : null
+					groups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null
 				);
 				const playerPosition =
-					thisGroup.table.findIndex((team) => team.name === newPlayer.nation.name) + 1;
+					thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
 
 				// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
 				if (playerPosition > 0) {
@@ -1630,7 +1609,7 @@ function App() {
 			phase++;
 
 			// Verificar se o jogador avançou para a próxima fase
-			if (classif.some((t) => t.name === newPlayer.nation.name)) {
+			if (classif.some((t) => t.name === player.nation.name)) {
 				playerPhase++;
 			}
 
@@ -1663,7 +1642,7 @@ function App() {
 							goalsOpportunities += Math.round(Math.random() * 100) / 100;
 							assistsOpportunities += Math.round(Math.random() * 100) / 100;
 							newSeason.awardPoints += 0.5; // Máximo 0.5 x 5 = 2.5
-							newPlayer.fame += 3; // Máximo 3 x 5 = 15
+							player.fame += 3; // Máximo 3 x 5 = 15
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1675,9 +1654,9 @@ function App() {
 							// Verificar se o jogador ganhou a Copa do Mundo e conceder prêmios adicionais
 							if (playedWorldCup) {
 								if (playerPhase >= TournamentPath.length - 1) {
-									newPlayer.worldCup.push(`${year}`);
+									player.worldCup.push(`${year}`);
 									newSeason.awardPoints += 0.5; // Máximo 0.5 x 5 + 0.5 = 3.0
-									newPlayer.fame += 15; // Máximo 4 x 5 + 20 = 30
+									player.fame += 15; // Máximo 4 x 5 + 20 = 30
 								}
 							}
 						}
@@ -1784,42 +1763,42 @@ function App() {
 			setWorldCupHistoryHosts(newWorldCupHistoryHosts);
 		}
 
-		let performanceMultiplier = Math.pow(newPlayer.overall, 2) / 9000.0; //adds from 0 to 1.0
+		let performanceMultiplier = Math.pow(player.overall, 2) / 9000.0; //adds from 0 to 1.0
 		performanceMultiplier *= (20 + newSeason.starting) / 100.0; //multiply from 0.2 to 1.20
 		performanceMultiplier *=
 			1.0 + Math.sign(newSeason.performance) * (newSeason.performance * newSeason.performance); //multiply from 0.0 to 2.0
 
 		newSeason.goals = Math.floor(
-			newPlayer.positionInClub.goalsMultiplier * performanceMultiplier * goalsOpportunities
+			player.positionInClub.goalsMultiplier * performanceMultiplier * goalsOpportunities
 		);
 
 		newSeason.assists = Math.floor(
-			newPlayer.positionInClub.assistsMultiplier * performanceMultiplier * assistsOpportunities
+			player.positionInClub.assistsMultiplier * performanceMultiplier * assistsOpportunities
 		);
 
 		if (newSeason.goals < 0) newSeason.goals = 0;
 		if (newSeason.assists < 0) newSeason.assists = 0;
 
 		//add goals to the carrer summary
-		newPlayer.totalGoals += newSeason.goals;
-		newPlayer.totalAssists += newSeason.assists;
+		player.totalGoals += newSeason.goals;
+		player.totalAssists += newSeason.assists;
 
 		//post season results
 		if (RandomNumber(1, 1000) <= newSeason.goals / 4 - 1) {
 			//Puskás
-			newPlayer.awards.push(`Puskás ${year} (${newPlayer.team.name})`);
+			player.awards.push(`Puskás ${year} (${player.team.name})`);
 			newSeason.titles.push(["Puskás"]);
 		}
 
 		if (triplice >= 3) {
-			newPlayer.awards.push(`Tríplice Coroa ${year} (${newPlayer.team.name})`);
+			player.awards.push(`Tríplice Coroa ${year} (${player.team.name})`);
 			newSeason.titles.push(["Tríplice Coroa"]);
 		}
 
 		let awardScore =
 			Math.round(
 				(newSeason.awardPoints +
-					newPlayer.overall / 10 +
+					player.overall / 10 +
 					newSeason.performance * 2 +
 					Math.min(newSeason.starting / 10, 8) * 1.25) *
 					100
@@ -1832,8 +1811,8 @@ function App() {
 			newSeason.performance >= 0.0
 		) {
 			//Golden Gloves
-			newPlayer.awards.push(`Luvas de Ouro ${year} (${newPlayer.team.name})`);
-			newPlayer.fame += 30;
+			player.awards.push(`Luvas de Ouro ${year} (${player.team.name})`);
+			player.fame += 30;
 			newSeason.titles.push(["Luva de Ouro"]);
 		}
 
@@ -1842,70 +1821,70 @@ function App() {
 
 		if (goldenBootsGoals <= newSeason.goals) {
 			//Golden Shoes
-			newPlayer.awards.push(`Chuteiras de Ouro ${year} (${newPlayer.team.name})`);
-			newPlayer.fame += 30;
+			player.awards.push(`Chuteiras de Ouro ${year} (${player.team.name})`);
+			player.fame += 30;
 			newSeason.titles.push(["Chuteira de Ouro"]);
 		}
 
 		let position = -1;
 		if (awardScore >= 29) {
 			//POTS D'or
-			newPlayer.playerOfTheSeason.push(`${year} (${newPlayer.team.name})`);
-			newPlayer.fame += 50;
+			player.playerOfTheSeason.push(`${year} (${player.team.name})`);
+			player.fame += 50;
 			position = 1;
 			newSeason.titles.push([`Jogador da Temporada: 1º lugar`]);
 		} else if (awardScore >= 20) {
 			let pts = Math.floor(awardScore - 20);
-			newPlayer.fame += pts * 2;
+			player.fame += pts * 2;
 			position = 10 - pts;
 			newSeason.titles.push([`Jogador da Temporada: ${position}º lugar`]);
 		}
 
-		newPlayer.fame += newSeason.performance * 20;
+		player.fame += newSeason.performance * 20;
 
-		newPlayer.fame += newSeason.goals / 5.0;
-		newPlayer.fame += newSeason.assists / 5.0;
+		player.fame += newSeason.goals / 5.0;
+		player.fame += newSeason.assists / 5.0;
 
 		//setup next season
 		if (playerPosition <= league.championsSpots) {
-			newPlayer.championsQualification = true;
-			newPlayer.europaQualification = false;
-			newPlayer.lastLeaguePosition = playerPosition;
+			player.championsQualification = true;
+			player.europaQualification = false;
+			player.lastLeaguePosition = playerPosition;
 		} else if (playerPosition <= league.championsSpots + league.europaSpots) {
-			newPlayer.championsQualification = false;
-			newPlayer.europaQualification = true;
+			player.championsQualification = false;
+			player.europaQualification = true;
 		} else {
-			newPlayer.championsQualification = false;
-			newPlayer.europaQualification = false;
+			player.championsQualification = false;
+			player.europaQualification = false;
 		}
 
-		if (newPlayer.fame < 0) newPlayer.fame = 0;
+		if (player.fame < 0) player.fame = 0;
 
-		newSeason.fame = newPlayer.fame;
+		newSeason.fame = player.fame;
 
 		//trasnfer window
-		let newTransfers = GetNewTeams(newPlayer);
+		let newTransfers = GetNewTeams(player);
 		let newRenew = { value: 0, duration: 0, addition: null, position: null };
 
 		if (
 			//if ended loan
-			newPlayer.contractTeam !== null &&
+			player.contractTeam !== null &&
 			contract <= 1
 		) {
-			newTransfers = [newPlayer.contractTeam];
+			newTransfers = [player.contractTeam];
 
 			if (med > 0) {
 				let newPosition;
-				if (newPlayer.position.abbreviation !== "GO" && Math.random() < 0.2) {
-					let relatedPositions = newPlayer.position.related;
+				if (player.position.abbreviation !== "GO" && Math.random() < 0.2) {
+					let relatedPositions = player.position.related;
 					newPosition = relatedPositions[RandomNumber(0, relatedPositions.length - 1)];
 				} else {
-					newPosition = newPlayer.position.abbreviation;
+					newPosition = player.position.abbreviation;
 				}
 
 				newRenew = {
-					value: newPlayer.contractTeam.contract.value,
-					duration: newPlayer.contractTeam.contract.duration,
+					value: player.contractTeam.contract.value,
+					duration: player.contractTeam.contract.duration,
 					addition: null,
 					position: newPosition,
 				};
@@ -1914,7 +1893,7 @@ function App() {
 				document.getElementById("decision-stay").style.display = "none";
 			}
 
-			newPlayer.contractTeam = null;
+			player.contractTeam = null;
 
 			document.getElementById("decision-transfer1").style.display = "flex";
 			document.getElementById("decision-transfer2").style.display = "none";
@@ -1922,26 +1901,26 @@ function App() {
 			document.getElementById("retire").style.display = "none";
 		} else if (
 			//if played good middle contract
-			newPlayer.performance > 0.5 &&
+			player.performance > 0.5 &&
 			med > 0 &&
 			generalPerformance.length >= 2 &&
 			contract > 1 &&
-			newPlayer.age < 35
+			player.age < 35
 		) {
 			document.getElementById("decision-transfer1").style.display = "flex";
-			if (newTransfers[0].contract.value < newPlayer.wage)
-				newTransfers[0].contract.value = newPlayer.wage;
+			if (newTransfers[0].contract.value < player.wage)
+				newTransfers[0].contract.value = player.wage;
 
 			document.getElementById("decision-transfer2").style.display = "flex";
-			if (newTransfers[1].contract.value < newPlayer.wage)
-				newTransfers[1].contract.value = newPlayer.wage;
+			if (newTransfers[1].contract.value < player.wage)
+				newTransfers[1].contract.value = player.wage;
 
 			document.getElementById("decision-transfer3").style.display = "flex";
-			if (newTransfers[2].contract.value < newPlayer.wage)
-				newTransfers[2].contract.value = newPlayer.wage;
+			if (newTransfers[2].contract.value < player.wage)
+				newTransfers[2].contract.value = player.wage;
 
-			let newWage = GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame);
-			if (newWage < newPlayer.wage) newWage = newPlayer.wage;
+			let newWage = GetWage(player.overall, player.team.power, player.fame);
+			if (newWage < player.wage) newWage = player.wage;
 
 			let contractAddition = 0;
 			if (contract <= 3) contractAddition = RandomNumber(1, 3);
@@ -1950,7 +1929,7 @@ function App() {
 				value: newWage,
 				duration: contract - 1,
 				addition: contractAddition,
-				position: newPlayer.positionInClub.abbreviation,
+				position: player.positionInClub.abbreviation,
 			};
 
 			document.getElementById("decision-stay").style.display = "flex";
@@ -1958,41 +1937,41 @@ function App() {
 			document.getElementById("retire").style.display = "none";
 		} else if (
 			//loan
-			newPlayer.performance < -0.5 &&
+			player.performance < -0.5 &&
 			med < 0 &&
-			(generalPerformance.length >= 2 || newPlayer.age < 24) &&
-			newTransfers.some((t) => t !== null && t.team.power < newPlayer.team.power) &&
+			(generalPerformance.length >= 2 || player.age < 24) &&
+			newTransfers.some((t) => t !== null && t.team.power < player.team.power) &&
 			contract > 3 &&
-			newPlayer.age < 35
+			player.age < 35
 		) {
-			if (newTransfers[0].team.power > newPlayer.team.power) {
+			if (newTransfers[0].team.power > player.team.power) {
 				document.getElementById("decision-transfer1").style.display = "none";
 			} else {
 				//proposal 1
 				document.getElementById("decision-transfer1").style.display = "flex";
 				newTransfers[0].loan = true;
 				newTransfers[0].contract.duration = RandomNumber(1, 2);
-				newTransfers[0].contract.value = newPlayer.wage;
+				newTransfers[0].contract.value = player.wage;
 			}
 
-			if (newTransfers[1].team.power > newPlayer.team.power) {
+			if (newTransfers[1].team.power > player.team.power) {
 				document.getElementById("decision-transfer2").style.display = "none";
 			} else {
 				//proposal 2
 				document.getElementById("decision-transfer2").style.display = "flex";
 				newTransfers[1].loan = true;
 				newTransfers[1].contract.duration = RandomNumber(1, 2);
-				newTransfers[1].contract.value = newPlayer.wage;
+				newTransfers[1].contract.value = player.wage;
 			}
 
-			if (newTransfers[2].team.power > newPlayer.team.power) {
+			if (newTransfers[2].team.power > player.team.power) {
 				document.getElementById("decision-transfer3").style.display = "none";
 			} else {
 				//proposal 3
 				document.getElementById("decision-transfer3").style.display = "flex";
 				newTransfers[2].loan = true;
 				newTransfers[2].contract.duration = RandomNumber(1, 2);
-				newTransfers[2].contract.value = newPlayer.wage;
+				newTransfers[2].contract.value = player.wage;
 			}
 
 			//cant stay
@@ -2004,7 +1983,7 @@ function App() {
 			//if contract expired
 			contract <= 1
 		) {
-			if (newPlayer.age >= newPlayer.positionInClub.peak + 8) {
+			if (player.age >= player.positionInClub.peak + 8) {
 				//must retire
 				document.getElementById("retire").style.display = "flex";
 				document.getElementById("decision-stay").style.display = "none";
@@ -2021,17 +2000,16 @@ function App() {
 					let contractDuration = RandomNumber(1, 2);
 
 					let contractValue = Math.round(
-						newPlayer.position.value *
-							GetWage(newPlayer.overall, newPlayer.team.power, newPlayer.fame)
+						player.position.value * GetWage(player.overall, player.team.power, player.fame)
 					);
 
 					// 20% chance to switch position
 					let newPosition;
-					if (newPlayer.position.abbreviation !== "GO" && Math.random() < 0.2) {
-						let relatedPositions = newPlayer.position.related;
+					if (player.position.abbreviation !== "GO" && Math.random() < 0.2) {
+						let relatedPositions = player.position.related;
 						newPosition = relatedPositions[RandomNumber(0, relatedPositions.length - 1)];
 					} else {
-						newPosition = newPlayer.position.abbreviation;
+						newPosition = player.position.abbreviation;
 					}
 
 					newRenew = {
@@ -2046,7 +2024,7 @@ function App() {
 				document.getElementById("decision-transfer2").style.display = "flex";
 				document.getElementById("decision-transfer3").style.display = "flex";
 
-				if (newPlayer.age >= newPlayer.positionInClub.peak + 6) {
+				if (player.age >= player.positionInClub.peak + 6) {
 					//can retire
 					document.getElementById("retire").style.display = "flex";
 				}
@@ -2056,7 +2034,6 @@ function App() {
 		}
 
 		setLastLeagueResults(leagueResults);
-		setPlayer(newPlayer);
 		setTransfers(newTransfers);
 		setRenew(newRenew);
 
