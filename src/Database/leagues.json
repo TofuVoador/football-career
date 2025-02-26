@@ -3,6 +3,7 @@
 		"name": "Belgian Pro League",
 		"championsSpots": 2,
 		"europaSpots": 2,
+		"country": "Bélgica",
 		"teams": [
 			{
 				"name": "Genk",
@@ -90,6 +91,7 @@
 		"name": "Bundesliga",
 		"championsSpots": 4,
 		"europaSpots": 4,
+		"country": "Alemanha",
 		"teams": [
 			{
 				"name": "Bayern München",
@@ -177,6 +179,7 @@
 		"name": "Eredivisie",
 		"championsSpots": 2,
 		"europaSpots": 2,
+		"country": "Países Baixos",
 		"teams": [
 			{
 				"name": "PSV",
@@ -264,6 +267,7 @@
 		"name": "La Liga",
 		"championsSpots": 4,
 		"europaSpots": 4,
+		"country": "Espanha",
 		"teams": [
 			{
 				"name": "Real Madrid",
@@ -351,6 +355,7 @@
 		"name": "Ligue 1",
 		"championsSpots": 2,
 		"europaSpots": 2,
+		"country": "França",
 		"teams": [
 			{
 				"name": "PSG",
@@ -438,6 +443,7 @@
 		"name": "Premier League",
 		"championsSpots": 4,
 		"europaSpots": 4,
+		"country": "Inglaterra",
 		"teams": [
 			{
 				"name": "Arsenal",
@@ -525,6 +531,7 @@
 		"name": "Primeira Liga",
 		"championsSpots": 2,
 		"europaSpots": 2,
+		"country": "Portugal",
 		"teams": [
 			{
 				"name": "Sporting",
@@ -612,6 +619,7 @@
 		"name": "Serie A",
 		"championsSpots": 4,
 		"europaSpots": 4,
+		"country": "Itália",
 		"teams": [
 			{
 				"name": "Inter de Milão",

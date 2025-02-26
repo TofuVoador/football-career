@@ -19,7 +19,6 @@ const Season = (props) => {
 					</p>
 				</div>
 				<div className="overal">
-					<p>{season.overall.toFixed(1)}</p>
 					<p>{season.positionInClub.abbreviation}</p>
 				</div>
 			</summary>

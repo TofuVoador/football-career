@@ -72,7 +72,6 @@ function App() {
 		titles: null,
 		goals: null,
 		assists: null,
-		overall: null,
 		performance: null,
 		awardPoints: null,
 		leagueTable: null,
@@ -89,7 +88,6 @@ function App() {
 		position: null,
 		positionInClub: null,
 		wage: 1,
-		overall: 70,
 		performance: 0,
 		totalGoals: 0,
 		totalAssists: 0,
@@ -198,7 +196,7 @@ function App() {
 		});
 
 		setLastLeagueResults(leagueResults); // Update league results
-		setTransfers(GetInitTeams(selectedPosition.value, newTeams, player)); // Use selectedPosition
+		setTransfers(GetInitTeams(selectedPosition.value, newTeams, player, player.nation)); // Use selectedPosition
 	}
 
 	function ChooseTeam(newTeam = null) {
@@ -348,10 +346,6 @@ function App() {
 		//calcule the player's performance
 		player.performance = Math.round(100.0 * (Math.random() - Math.random())) / 100.0;
 
-		player.overall =
-			GetOverall(player.potential, player.age, player.team.power, player.positionInClub.peak) +
-			player.performance * 2;
-
 		//set performance over team
 		newGeneralPerformance.push(player.performance);
 		if (newGeneralPerformance.length > 3) newGeneralPerformance.shift();
@@ -366,7 +360,12 @@ function App() {
 		let r = (Math.random() - Math.random()) * 10;
 		let starting =
 			Math.floor(
-				((player.overall - (75 + player.team.power)) * 10 + r + player.performance * 5) / 2
+				(150 -
+					player.team.power * 5 -
+					0.8 * (player.positionInClub.peak - player.age) ** 2 +
+					r +
+					player.performance * 5) /
+					2
 			) * 2;
 		if (starting > 100) starting = 100;
 		else if (starting < 0) starting = 0;
@@ -389,7 +388,6 @@ function App() {
 			titles: [],
 			goals: 0,
 			assists: 0,
-			overall: player.overall,
 			performance: player.performance,
 			awardPoints: 0,
 			leagueTable: [],
@@ -845,9 +843,9 @@ function App() {
 		if (year % 4 === 0) {
 			currentSeason.awardPoints -= 2.0;
 			let playedContinental =
-				player.overall > 75 + player.nation.power &&
+				currentSeason.starting >= 50 &&
 				(player.team.power >= player.nation.power - 2 ||
-					(med > 0 && currentSeason.performance > 0.0 && generalPerformance.length >= 2));
+					(med > 0 && currentSeason.performance > 0.2 && generalPerformance.length >= 2));
 
 			// EUROCOPA
 			phase = 0;
@@ -1518,9 +1516,9 @@ function App() {
 
 			//was called by the manager
 			let playedWorldCup =
-				player.overall > 75 + player.nation.power &&
+				currentSeason.starting >= 50 &&
 				(player.team.power >= player.nation.power - 2 ||
-					(med > 0 && currentSeason.performance > 0 && generalPerformance.length >= 2));
+					(med > 0 && currentSeason.performance > 0.2 && generalPerformance.length >= 2));
 
 			//create four pots to the group draw
 			let pots = Array.from({ length: 4 }, (_, potID) =>
@@ -1757,12 +1755,11 @@ function App() {
 			setWorldCupHistoryHosts(newWorldCupHistoryHosts);
 		}
 
-		let performanceMultiplier = Math.pow(player.overall, 2) / 9000.0; //adds from 0 to 1.0
-		performanceMultiplier *= (20 + currentSeason.starting) / 100.0; //multiply from 0.2 to 1.20
-		performanceMultiplier *=
-			1.0 +
-			Math.sign(currentSeason.performance) *
-				(currentSeason.performance * currentSeason.performance); //multiply from 0.0 to 2.0
+		let performanceMultiplier =
+			((20 + currentSeason.starting) / 100.0) *
+			(1.0 +
+				Math.sign(currentSeason.performance) *
+					(currentSeason.performance * currentSeason.performance));
 
 		currentSeason.goals = Math.floor(
 			player.positionInClub.goalsMultiplier * performanceMultiplier * goalsOpportunities
@@ -1794,13 +1791,12 @@ function App() {
 		let awardScore =
 			Math.round(
 				(currentSeason.awardPoints +
-					player.overall / 10 +
 					currentSeason.performance * 2 +
 					Math.min(currentSeason.starting / 10, 8) * 1.25) *
 					100
 			) / 100;
 
-		console.log("Award Points: " + Math.round(awardScore * 100) / 100 + "/30.0");
+		console.log("Award Points: " + Math.round(awardScore * 10) / 10 + "/30.0");
 		if (
 			player.position.title === "Goleiro" &&
 			awardScore >= 25 + Math.random() * 3 &&
@@ -1915,11 +1911,17 @@ function App() {
 			if (newTransfers[2].contract.value < player.wage)
 				newTransfers[2].contract.value = player.wage;
 
-			let newWage = GetWage(player.overall, player.team.power, player.fame);
-			if (newWage < player.wage) newWage = player.wage;
-
 			let contractAddition = 0;
 			if (contract <= 3) contractAddition = RandomNumber(1, 3);
+
+			let newWage = GetWage(
+				player.performance,
+				player.positionInClub.value,
+				player.age,
+				player.team.power,
+				player.fame
+			);
+			if (newWage < player.wage) newWage = player.wage;
 
 			newRenew = {
 				value: newWage,
@@ -1995,8 +1997,12 @@ function App() {
 					document.getElementById("decision-stay").style.display = "flex";
 					let contractDuration = RandomNumber(1, 2);
 
-					let contractValue = Math.round(
-						player.position.value * GetWage(player.overall, player.team.power, player.fame)
+					let contractValue = GetWage(
+						player.performance,
+						player.positionInClub.value,
+						player.age,
+						player.team.power,
+						player.fame
 					);
 
 					// 20% chance to switch position
@@ -2494,23 +2500,24 @@ function App() {
 				let contractDuration = RandomNumber(1, 4);
 				contractDuration += currentPlayer.age <= 32 ? RandomNumber(1, 2) : 0;
 				contractDuration += currentPlayer.age <= 24 ? RandomNumber(1, 2) : 0;
-				let expectedOverall =
-					GetOverall(
-						currentPlayer.potential,
-						currentPlayer.age + Math.round(contractDuration / 2),
-						team.power,
-						28
-					) + currentPlayer.performance;
-				let contractValue = Math.round(
-					currentPlayer.position.value *
-						GetWage(currentPlayer.overall, team.power, currentPlayer.fame)
+
+				let contractValue = GetWage(
+					currentPlayer.performance,
+					Positions.find((pos) => pos.abbreviation == newPosition).value,
+					currentPlayer.age,
+					team.power,
+					currentPlayer.fame
 				);
 				let contract = {
 					value: contractValue,
 					duration: contractDuration,
 				};
-				let transferValue = Math.round(
-					currentPlayer.position.value * GetTransferValue(expectedOverall, team.power)
+				let transferValue = GetTransferValue(
+					currentPlayer.performance,
+					currentPlayer.position.value,
+					currentPlayer.age,
+					team.power,
+					currentPlayer.fame
 				);
 
 				contracts.push({
@@ -2528,7 +2535,7 @@ function App() {
 		return contracts;
 	}
 
-	function GetInitTeams(posValue, newTeams, currentPlayer) {
+	function GetInitTeams(posValue, newTeams, currentPlayer, country) {
 		// Step 1: Aggregate all teams
 		let allTeams = newTeams.reduce((acumulador, liga) => {
 			return acumulador.concat(liga.teams);
@@ -2542,6 +2549,19 @@ function App() {
 
 		// Step 4: Select 3 unique random teams
 		const selectedTeams = [];
+
+		if (country) {
+			let countryLeague = newTeams.find((league) => league.country == country.name);
+			if (countryLeague) {
+				let availableTeams = allTeams.filter((team) => countryLeague.teams.includes(team));
+				if (availableTeams.length > 0) {
+					let selectedHome = availableTeams[Math.floor(Math.random() * availableTeams.length)];
+					selectedTeams.push(selectedHome);
+					allTeams = allTeams.filter((team) => team.name != selectedHome.name);
+				}
+			}
+		}
+
 		const usedIndices = new Set();
 		while (selectedTeams.length < 3) {
 			const randomIndex = Math.floor(Math.random() * allTeams.length);
@@ -2565,14 +2585,26 @@ function App() {
 			// Contract duration
 			const contractDuration = RandomNumber(2, 8);
 
-			// Calculate expected overall during the contract
-			const expectedOverall = GetOverall(0, 18 + contractDuration / 2, team.power, 28);
-
 			// Contract wage
-			const contractValue = Math.round(posValue * GetWage(expectedOverall, team.power, 0));
+			const contractValue = GetWage(
+				currentPlayer.performance,
+				posValue,
+				currentPlayer.age,
+				team.power,
+				currentPlayer.fame
+			);
 
 			// Transfer value
-			const transferValue = Math.round(posValue * GetTransferValue(expectedOverall, team.power));
+			const transferValue = Math.round(
+				posValue *
+					GetTransferValue(
+						currentPlayer.performance,
+						currentPlayer.position.value,
+						currentPlayer.age,
+						team.power,
+						currentPlayer.fame
+					)
+			);
 
 			// Return structured contract
 			return {
@@ -2601,27 +2633,60 @@ function App() {
 		return allNat;
 	}
 
-	function GetOverall(potential, age, teamPower, peak) {
-		return 85 + teamPower + (potential - (peak - age) ** 2) / 10;
-		//85 + 10 + 3 = 98
-		//85 + 5 + 0 = 90
+	function GetWage(performance, positionMultiplier, age, teamPower, fame) {
+		// Base wage (adjust based on currency/league standards)
+		const baseWage = 100000; // Example: €10,000/week
+
+		// Performance multiplier (0.5x to 1.5x)
+		const performanceMultiplier = 1.0 + performance * 0.2;
+
+		// Age curve: Peaks at age 27 (1.0x), declines after 30
+		const ageFactor = 20.0 - Math.abs(age - 28);
+
+		// Club power multiplier (1.0x to 2.0x)
+		const clubMultiplier = teamPower / 5; // ClubPower=10 → 2.0x
+
+		// Fame multiplier (2x to 22x)
+		const fameMultiplier = (100 + fame) / 50; // Fame=1000 → 20x
+
+		// Final wage calculation
+		const wage =
+			baseWage *
+			performanceMultiplier *
+			positionMultiplier *
+			ageFactor *
+			clubMultiplier *
+			fameMultiplier;
+
+		return Math.round(wage);
 	}
 
-	function GetWage(currentOverall, teamPower, fame) {
-		return (
-			(fame * 2 + 200) *
-			(currentOverall - 70) ** 3 *
-			(1 + (Math.random() - Math.random()) / 10.0) *
-			(1 + teamPower / 50.0)
-		);
-	}
+	function GetTransferValue(performance, positionMultiplier, age, clubPower, fame) {
+		// Base value (adjust based on league standards)
+		const baseValue = 1000000; // Example: €1,000,000
 
-	function GetTransferValue(expectedOverall, teamPower) {
-		return (
-			((expectedOverall - 60) ** 10 / 100000000) *
-			(1 + (Math.random() - Math.random()) / 10.0) *
-			(1 + teamPower / 50.0)
-		);
+		// Performance multiplier (0.5x to 1.5x)
+		const performanceMultiplier = 1.0 + performance * 0.1;
+
+		// Age curve: Younger players have higher value (peaks at 22)
+		const ageFactor = Math.max(0.5, 30.0 - 1.5 * (age - 24));
+
+		// Club power multiplier (1.0x to 2.0x)
+		const clubMultiplier = clubPower / 5; // ClubPower=10 → 2.0x
+
+		// Fame multiplier (0.5x to 5x)
+		const fameMultiplier = (100 + fame) / 200; // Fame=1000 → 5x
+
+		// Final transfer value calculation
+		const transferValue =
+			baseValue *
+			performanceMultiplier *
+			positionMultiplier *
+			ageFactor *
+			clubMultiplier *
+			fameMultiplier;
+
+		return Math.round(transferValue);
 	}
 
 	function Retire() {
