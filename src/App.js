@@ -80,7 +80,7 @@ function App() {
 	});
 
 	const [player, setPlayer] = useState({
-		potential: RandomNumber(0, 15) + RandomNumber(0, 15),
+		potential: (RandomNumber(0, 10) + RandomNumber(0, 10)) / 2,
 		age: 17,
 		nation: null,
 		team: null,
@@ -360,12 +360,13 @@ function App() {
 		let r = (Math.random() - Math.random()) * 10;
 		let starting =
 			Math.floor(
-				(150 -
+				(100 -
 					player.team.power * 5 -
 					0.8 * (player.positionInClub.peak - player.age) ** 2 +
 					r +
 					player.performance * 5) /
-					2
+					2 +
+					player.potential * 5
 			) * 2;
 		if (starting > 100) starting = 100;
 		else if (starting < 0) starting = 0;
@@ -408,8 +409,7 @@ function App() {
 		document.getElementById("team-choice").style.display = "flex";
 		document.getElementById("continue").style.display = "none";
 
-		let goalsOpportunities = 0;
-		let assistsOpportunities = 0;
+		let opportunities = 0;
 		currentSeason.awardPoints = 0;
 
 		let med = 0;
@@ -460,8 +460,7 @@ function App() {
 		currentSeason.titles.push([`Liga: ${playerPosition}º lugar`].concat(leaguesTopEight));
 		player.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0); //max = 10
 
-		goalsOpportunities += 16 - playerPosition;
-		assistsOpportunities += 16 - playerPosition;
+		opportunities += 16 - playerPosition;
 
 		//if fist place, then won trophy
 		if (playerPosition === 1) {
@@ -507,8 +506,7 @@ function App() {
 				if (team1.name === player.team.name || team2.name === player.team.name) {
 					playerOpp = `: ${team1.name === player.team.name ? team2.name : team1.name}`;
 
-					goalsOpportunities += Math.round(Math.random() * 100) / 100;
-					assistsOpportunities += Math.round(Math.random() * 100) / 100;
+					opportunities += Math.round(Math.random() * 100) / 100;
 					currentSeason.awardPoints += 0.6; // Máximo 0.6 x 4 = 2.4
 					player.fame += 1; // Copa Nacional Máximo 1 x 4 = 4
 
@@ -590,8 +588,7 @@ function App() {
 			championsGroup.table.findIndex((team) => team.name === player.team.name) + 1;
 
 		if (playerChampionsPos > 0) {
-			goalsOpportunities += (25 - playerChampionsPos) / 5;
-			assistsOpportunities += (25 - playerChampionsPos) / 5;
+			opportunities += (20 - playerChampionsPos) / 5;
 			currentSeason.awardPoints += Math.max(0, 11 - playerChampionsPos) / 10;
 		}
 
@@ -669,8 +666,7 @@ function App() {
 				if (team1.name === player.team.name || team2.name === player.team.name) {
 					playerOpp = `: ${team1.name === player.team.name ? team2.name : team1.name}`;
 
-					goalsOpportunities += Math.round(Math.random() * 100) / 100;
-					assistsOpportunities += Math.round(Math.random() * 100) / 100;
+					opportunities += Math.round(Math.random() * 100) / 100;
 					currentSeason.awardPoints += 0.6; // Máximo 1.0 + 0.6 x 4 = 3.4
 					player.fame += 3; // Champions Máximo 3 x 4 = 12
 
@@ -753,8 +749,7 @@ function App() {
 			group.table.findIndex((team) => team.name === player.team.name) + 1;
 
 		if (playerEuropaPosition > 0) {
-			goalsOpportunities += (20 - playerChampionsPos) / 5;
-			assistsOpportunities += (20 - playerChampionsPos) / 5;
+			opportunities += (20 - playerEuropaPosition) / 5;
 		}
 
 		europaLeagueDescription.push(
@@ -801,8 +796,7 @@ function App() {
 					) {
 						// Incrementar a fase do jogador e, se vencer o torneio, adicionar à sua lista de realizações
 						playerPhase++;
-						goalsOpportunities += Math.round(Math.random() * 100) / 100;
-						assistsOpportunities += Math.round(Math.random() * 100) / 100;
+						opportunities += Math.round(Math.random() * 100) / 100;
 						if (playerPhase >= TournamentPath.length - 1) {
 							player.europa.push(`${year} (${player.team.name})`);
 						}
@@ -939,8 +933,7 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							goalsOpportunities += Math.round(Math.random() * 100) / 100;
-							assistsOpportunities += Math.round(Math.random() * 100) / 100;
+							opportunities += Math.round(Math.random() * 100) / 100;
 							currentSeason.awardPoints += 0.6; // Máximo 0.4 x 4 = 2.4
 							player.fame += 3; // Copa Máximo 3 x 4 = 12
 						}
@@ -1084,8 +1077,7 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							goalsOpportunities += Math.round(Math.random() * 100) / 100;
-							assistsOpportunities += Math.round(Math.random() * 100) / 100;
+							opportunities += Math.round(Math.random() * 100) / 100;
 							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 = 2.4
 							player.fame += 4; // Copa América Máximo 4 x 3 = 12
 						}
@@ -1233,8 +1225,7 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							goalsOpportunities += Math.round(Math.random() * 100) / 100;
-							assistsOpportunities += Math.round(Math.random() * 100) / 100;
+							opportunities += Math.round(Math.random() * 100) / 100;
 							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 = 2.4
 							player.fame += 4; // Copa África Máximo 4 x 3 = 12
 						}
@@ -1381,8 +1372,7 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							goalsOpportunities += Math.round(Math.random() * 100) / 100;
-							assistsOpportunities += Math.round(Math.random() * 100) / 100;
+							opportunities += Math.round(Math.random() * 100) / 100;
 							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 = 2.4
 							player.fame += 4; // Copa Ásia Máximo 4 x 3 = 12
 						}
@@ -1631,8 +1621,7 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedWorldCup) {
-							goalsOpportunities += Math.round(Math.random() * 100) / 100;
-							assistsOpportunities += Math.round(Math.random() * 100) / 100;
+							opportunities += Math.round(Math.random() * 100) / 100;
 							currentSeason.awardPoints += 0.5; // Máximo 0.5 x 5 = 2.5
 							player.fame += 3; // Máximo 3 x 5 = 15
 						}
@@ -1755,18 +1744,21 @@ function App() {
 			setWorldCupHistoryHosts(newWorldCupHistoryHosts);
 		}
 
-		let performanceMultiplier =
-			((20 + currentSeason.starting) / 100.0) *
-			(1.0 +
-				Math.sign(currentSeason.performance) *
-					(currentSeason.performance * currentSeason.performance));
+		let performanceMultiplier = (20 + currentSeason.starting) / 100.0;
+		performanceMultiplier *=
+			1.0 +
+			Math.sign(currentSeason.performance) *
+				(currentSeason.performance * currentSeason.performance);
 
 		currentSeason.goals = Math.floor(
-			player.positionInClub.goalsMultiplier * performanceMultiplier * goalsOpportunities
+			player.positionInClub.goalsMultiplier *
+				performanceMultiplier *
+				opportunities *
+				(0.5 + player.potential * 0.1)
 		);
 
 		currentSeason.assists = Math.floor(
-			player.positionInClub.assistsMultiplier * performanceMultiplier * assistsOpportunities
+			player.positionInClub.assistsMultiplier * performanceMultiplier * opportunities
 		);
 
 		if (currentSeason.goals < 0) currentSeason.goals = 0;
@@ -1792,14 +1784,15 @@ function App() {
 			Math.round(
 				(currentSeason.awardPoints +
 					currentSeason.performance * 2 +
-					Math.min(currentSeason.starting / 10, 8) * 1.25) *
+					Math.min(currentSeason.starting / 10, 8) +
+					player.potential / 5) *
 					100
 			) / 100;
 
-		console.log("Award Points: " + Math.round(awardScore * 10) / 10 + "/30.0");
+		console.log("Award Points: " + Math.round(awardScore * 10) / 10 + "/20.0");
 		if (
 			player.position.title === "Goleiro" &&
-			awardScore >= 25 + Math.random() * 3 &&
+			awardScore >= 15 + Math.random() * 3 &&
 			currentSeason.performance >= 0.0
 		) {
 			//Golden Gloves
@@ -1819,14 +1812,14 @@ function App() {
 		}
 
 		let position = -1;
-		if (awardScore >= 29) {
+		if (awardScore >= 19) {
 			//POTS D'or
 			player.playerOfTheSeason.push(`${year} (${player.team.name})`);
 			player.fame += 50;
 			position = 1;
 			currentSeason.titles.push([`Jogador da Temporada: 1º lugar`]);
-		} else if (awardScore >= 20) {
-			let pts = Math.floor(awardScore - 20);
+		} else if (awardScore >= 10) {
+			let pts = Math.floor(awardScore - 10);
 			player.fame += pts * 2;
 			position = 10 - pts;
 			currentSeason.titles.push([`Jogador da Temporada: ${position}º lugar`]);
@@ -2517,7 +2510,8 @@ function App() {
 					currentPlayer.position.value,
 					currentPlayer.age,
 					team.power,
-					currentPlayer.fame
+					currentPlayer.fame,
+					currentPlayer.potential
 				);
 
 				contracts.push({
@@ -2602,7 +2596,8 @@ function App() {
 						currentPlayer.position.value,
 						currentPlayer.age,
 						team.power,
-						currentPlayer.fame
+						currentPlayer.fame,
+						currentPlayer.potential
 					)
 			);
 
@@ -2661,7 +2656,7 @@ function App() {
 		return Math.round(wage);
 	}
 
-	function GetTransferValue(performance, positionMultiplier, age, clubPower, fame) {
+	function GetTransferValue(performance, positionMultiplier, age, clubPower, fame, potential) {
 		// Base value (adjust based on league standards)
 		const baseValue = 1000000; // Example: €1,000,000
 
@@ -2669,13 +2664,15 @@ function App() {
 		const performanceMultiplier = 1.0 + performance * 0.1;
 
 		// Age curve: Younger players have higher value (peaks at 22)
-		const ageFactor = Math.max(0.5, 30.0 - 1.5 * (age - 24));
+		const ageFactor = Math.max(0.5, 20.0 - 1.5 * (age - 24));
 
 		// Club power multiplier (1.0x to 2.0x)
 		const clubMultiplier = clubPower / 5; // ClubPower=10 → 2.0x
 
 		// Fame multiplier (0.5x to 5x)
 		const fameMultiplier = (100 + fame) / 200; // Fame=1000 → 5x
+
+		const potentialMultiplier = (potential * potential) / 10;
 
 		// Final transfer value calculation
 		const transferValue =
@@ -2684,7 +2681,8 @@ function App() {
 			positionMultiplier *
 			ageFactor *
 			clubMultiplier *
-			fameMultiplier;
+			fameMultiplier *
+			potentialMultiplier;
 
 		return Math.round(transferValue);
 	}
