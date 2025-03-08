@@ -8,7 +8,7 @@
 				"continent": "AFC",
 				"latitude": 24.47,
 				"longitude": 39.83,
-				"power": 5.4,
+				"power": 4.4,
 				"borders": ["Egito", "Jordânia"]
 			},
 			{
@@ -16,7 +16,7 @@
 				"continent": "AFC",
 				"latitude": -33.21,
 				"longitude": 140.73,
-				"power": 6.8,
+				"power": 6.6,
 				"borders": []
 			},
 			{
@@ -24,7 +24,7 @@
 				"continent": "AFC",
 				"latitude": 25.35,
 				"longitude": 51.18,
-				"power": 6.0,
+				"power": 5.0,
 				"borders": ["Arábia Saudita", "Emirados Árabes Unidos"]
 			},
 			{
@@ -32,7 +32,7 @@
 				"continent": "AFC",
 				"latitude": 31.18,
 				"longitude": 116.48,
-				"power": 5.0,
+				"power": 4.0,
 				"borders": ["Coreia do Sul", "Japão"]
 			},
 			{
@@ -48,7 +48,7 @@
 				"continent": "AFC",
 				"latitude": 23.71,
 				"longitude": 43.09,
-				"power": 5.2,
+				"power": 4.2,
 				"borders": ["Arábia Saudita", "Omã", "Catar"]
 			},
 			{
@@ -56,7 +56,7 @@
 				"continent": "AFC",
 				"latitude": 32.43,
 				"longitude": 53.69,
-				"power": 7.4,
+				"power": 7.6,
 				"borders": ["Iraque"]
 			},
 			{
@@ -64,7 +64,7 @@
 				"continent": "AFC",
 				"latitude": 33.22,
 				"longitude": 43.68,
-				"power": 5.6,
+				"power": 4.6,
 				"borders": ["Arábia Saudita", "Irã"]
 			},
 			{
@@ -72,7 +72,7 @@
 				"continent": "AFC",
 				"latitude": 35.68,
 				"longitude": 139.69,
-				"power": 8.0,
+				"power": 8.2,
 				"borders": ["China", "Coreia do Sul"]
 			},
 			{
@@ -80,7 +80,7 @@
 				"continent": "AFC",
 				"latitude": 30.59,
 				"longitude": 36.28,
-				"power": 5.2,
+				"power": 4.2,
 				"borders": ["Arábia Saudita", "Egito"]
 			},
 			{
@@ -88,7 +88,7 @@
 				"continent": "AFC",
 				"latitude": 21.51,
 				"longitude": 55.92,
-				"power": 5.0,
+				"power": 4.0,
 				"borders": ["Emirados Árabes Unidos"]
 			},
 			{
@@ -96,7 +96,7 @@
 				"continent": "AFC",
 				"latitude": 40.5,
 				"longitude": 68.92,
-				"power": 5.4,
+				"power": 4.4,
 				"borders": []
 			}
 		]
@@ -110,7 +110,7 @@
 				"continent": "CAF",
 				"latitude": -30.56,
 				"longitude": 22.94,
-				"power": 5.6,
+				"power": 4.6,
 				"borders": []
 			},
 			{
@@ -118,7 +118,7 @@
 				"continent": "CAF",
 				"latitude": 36.25,
 				"longitude": 4.59,
-				"power": 6.4,
+				"power": 5.8,
 				"borders": ["Tunísia", "Marrocos", "Espanha"]
 			},
 			{
@@ -126,7 +126,7 @@
 				"continent": "CAF",
 				"latitude": 7.37,
 				"longitude": 12.35,
-				"power": 6.0,
+				"power": 5.0,
 				"borders": ["Nigéria"]
 			},
 			{
@@ -134,7 +134,7 @@
 				"continent": "CAF",
 				"latitude": 7.54,
 				"longitude": -5.55,
-				"power": 6.2,
+				"power": 5.2,
 				"borders": ["Gana", "Mali"]
 			},
 			{
@@ -142,7 +142,7 @@
 				"continent": "CAF",
 				"latitude": 30.53,
 				"longitude": 31.18,
-				"power": 6.8,
+				"power": 6.6,
 				"borders": ["Jordânia"]
 			},
 			{
@@ -150,7 +150,7 @@
 				"continent": "CAF",
 				"latitude": 7.95,
 				"longitude": -1.02,
-				"power": 5.0,
+				"power": 4.0,
 				"borders": ["Costa do Marfim"]
 			},
 			{
@@ -158,7 +158,7 @@
 				"continent": "CAF",
 				"latitude": 12.86,
 				"longitude": -5.91,
-				"power": 5.6,
+				"power": 4.6,
 				"borders": ["Costa do Marfim", "Senegal"]
 			},
 			{
@@ -166,7 +166,7 @@
 				"continent": "CAF",
 				"latitude": 33.81,
 				"longitude": -6.65,
-				"power": 7.8,
+				"power": 8.0,
 				"borders": ["Argélia", "Espanha"]
 			},
 			{
@@ -174,7 +174,7 @@
 				"continent": "CAF",
 				"latitude": 9.08,
 				"longitude": 8.68,
-				"power": 6.2,
+				"power": 5.4,
 				"borders": ["Camarões"]
 			},
 			{
@@ -182,7 +182,7 @@
 				"continent": "CAF",
 				"latitude": -5.53,
 				"longitude": 22.78,
-				"power": 5.4,
+				"power": 4.4,
 				"borders": []
 			},
 			{
@@ -190,7 +190,7 @@
 				"continent": "CAF",
 				"latitude": 14.5,
 				"longitude": -14.45,
-				"power": 7.6,
+				"power": 7.8,
 				"borders": ["Mali"]
 			},
 			{
@@ -198,7 +198,7 @@
 				"continent": "CAF",
 				"latitude": 33.89,
 				"longitude": 9.53,
-				"power": 5.8,
+				"power": 4.8,
 				"borders": ["Argélia", "Itália"]
 			}
 		]
@@ -212,7 +212,7 @@
 				"continent": "CONCACAF",
 				"latitude": 46.98,
 				"longitude": -93.16,
-				"power": 6.6,
+				"power": 6.2,
 				"borders": ["Estados Unidos"]
 			},
 			{
@@ -220,7 +220,7 @@
 				"continent": "CONCACAF",
 				"latitude": 9.75,
 				"longitude": -83.75,
-				"power": 5.8,
+				"power": 4.8,
 				"borders": ["Panamá"]
 			},
 			{
@@ -228,7 +228,7 @@
 				"continent": "CONCACAF",
 				"latitude": 35.97,
 				"longitude": -97.46,
-				"power": 7.6,
+				"power": 8.0,
 				"borders": ["Canadá", "México"]
 			},
 			{
@@ -236,7 +236,7 @@
 				"continent": "CONCACAF",
 				"latitude": 18.11,
 				"longitude": -77.3,
-				"power": 5.2,
+				"power": 4.2,
 				"borders": []
 			},
 			{
@@ -244,7 +244,7 @@
 				"continent": "CONCACAF",
 				"latitude": 23.63,
 				"longitude": -102.55,
-				"power": 7.2,
+				"power": 7.4,
 				"borders": ["Estados Unidos"]
 			},
 			{
@@ -252,7 +252,7 @@
 				"continent": "CONCACAF",
 				"latitude": 8.54,
 				"longitude": -80.78,
-				"power": 6.4,
+				"power": 5.6,
 				"borders": ["Costa Rica", "Colômbia"]
 			}
 		]
@@ -266,7 +266,7 @@
 				"continent": "CONMEBOL",
 				"latitude": -32.89,
 				"longitude": -64.18,
-				"power": 9.6,
+				"power": 9.4,
 				"borders": ["Chile", "Bolívia", "Paraguai", "Brasil"]
 			},
 			{
@@ -274,7 +274,7 @@
 				"continent": "CONMEBOL",
 				"latitude": -16.29,
 				"longitude": -63.59,
-				"power": 5.0,
+				"power": 4.0,
 				"borders": ["Argentina", "Chile", "Paraguai", "Brasil", "Peru"]
 			},
 			{
@@ -282,7 +282,7 @@
 				"continent": "CONMEBOL",
 				"latitude": -15.78,
 				"longitude": -42.95,
-				"power": 8.6,
+				"power": 9.0,
 				"borders": [
 					"Argentina",
 					"Bolívia",
@@ -299,7 +299,7 @@
 				"continent": "CONMEBOL",
 				"latitude": -35.68,
 				"longitude": -71.54,
-				"power": 5.8,
+				"power": 4.8,
 				"borders": ["Argentina", "Bolívia"]
 			},
 			{
@@ -307,7 +307,7 @@
 				"continent": "CONMEBOL",
 				"latitude": 4.57,
 				"longitude": -74.3,
-				"power": 8.0,
+				"power": 8.2,
 				"borders": ["Venezuela", "Brasil", "Peru", "Equador"]
 			},
 			{
@@ -323,7 +323,7 @@
 				"continent": "CONMEBOL",
 				"latitude": -23.44,
 				"longitude": -58.44,
-				"power": 5.6,
+				"power": 4.6,
 				"borders": ["Argentina", "Bolívia", "Brasil"]
 			},
 			{
@@ -331,7 +331,7 @@
 				"continent": "CONMEBOL",
 				"latitude": -9.19,
 				"longitude": -75.02,
-				"power": 6.8,
+				"power": 6.4,
 				"borders": ["Colômbia", "Brasil", "Bolívia", "Chile", "Equador"]
 			},
 			{
@@ -339,7 +339,7 @@
 				"continent": "CONMEBOL",
 				"latitude": -32.52,
 				"longitude": -55.77,
-				"power": 8.2,
+				"power": 8.4,
 				"borders": ["Argentina", "Brasil"]
 			},
 			{
@@ -347,7 +347,7 @@
 				"continent": "CONMEBOL",
 				"latitude": 6.42,
 				"longitude": -66.59,
-				"power": 6.0,
+				"power": 5.0,
 				"borders": ["Colômbia", "Brasil", "Guyana"]
 			}
 		]
@@ -361,7 +361,7 @@
 				"continent": "UEFA",
 				"latitude": 41.18,
 				"longitude": 19.56,
-				"power": 5.2,
+				"power": 4.2,
 				"borders": ["Grécia"]
 			},
 			{
@@ -369,7 +369,7 @@
 				"continent": "UEFA",
 				"latitude": 51.17,
 				"longitude": 10.45,
-				"power": 8.8,
+				"power": 9.0,
 				"borders": [
 					"Dinamarca",
 					"Polônia",
@@ -386,7 +386,7 @@
 				"continent": "UEFA",
 				"latitude": 47.52,
 				"longitude": 14.55,
-				"power": 7.2,
+				"power": 7.4,
 				"borders": ["Alemanha", "República Tcheca", "Eslováquia", "Hungria", "Eslovênia", "Itália"]
 			},
 			{
@@ -394,7 +394,7 @@
 				"continent": "UEFA",
 				"latitude": 50.85,
 				"longitude": 4.35,
-				"power": 8.4,
+				"power": 8.6,
 				"borders": ["França", "Países Baixos", "Alemanha", "Inglaterra"]
 			},
 			{
@@ -402,7 +402,7 @@
 				"continent": "UEFA",
 				"latitude": 45.1,
 				"longitude": 15.2,
-				"power": 8.2,
+				"power": 8.4,
 				"borders": ["Eslovênia", "Hungria", "Sérvia"]
 			},
 			{
@@ -410,7 +410,7 @@
 				"continent": "UEFA",
 				"latitude": 56.26,
 				"longitude": 9.5,
-				"power": 7.4,
+				"power": 7.6,
 				"borders": ["Alemanha", "Suécia", "Noruega"]
 			},
 			{
@@ -418,7 +418,7 @@
 				"continent": "UEFA",
 				"latitude": 56.49,
 				"longitude": -4.2,
-				"power": 6.2,
+				"power": 5.4,
 				"borders": ["Inglaterra"]
 			},
 			{
@@ -426,7 +426,7 @@
 				"continent": "UEFA",
 				"latitude": 48.67,
 				"longitude": 19.7,
-				"power": 6.2,
+				"power": 5.2,
 				"borders": ["República Tcheca", "Polônia", "Ucrânia", "Hungria", "Áustria"]
 			},
 			{
@@ -434,7 +434,7 @@
 				"continent": "UEFA",
 				"latitude": 46.15,
 				"longitude": 14.99,
-				"power": 5.8,
+				"power": 4.8,
 				"borders": ["Áustria", "Itália", "Croácia", "Hungria"]
 			},
 			{
@@ -458,7 +458,7 @@
 				"continent": "UEFA",
 				"latitude": 38.24,
 				"longitude": 22.94,
-				"power": 6.4,
+				"power": 5.8,
 				"borders": ["Albânia", "Turquia"]
 			},
 			{
@@ -474,7 +474,7 @@
 				"continent": "UEFA",
 				"latitude": 52.36,
 				"longitude": -1.17,
-				"power": 9.0,
+				"power": 9.2,
 				"borders": ["Escócia", "País de Gales", "Irlanda", "França", "Bélgica", "Países Baixos"]
 			},
 			{
@@ -482,7 +482,7 @@
 				"continent": "UEFA",
 				"latitude": 53.42,
 				"longitude": -8.24,
-				"power": 5.4,
+				"power": 4.4,
 				"borders": ["Inglaterra", "País de Gales"]
 			},
 			{
@@ -490,7 +490,7 @@
 				"continent": "UEFA",
 				"latitude": 41.89,
 				"longitude": 12.48,
-				"power": 8.4,
+				"power": 8.6,
 				"borders": ["França", "Suíça", "Áustria", "Eslovênia", "Tunísia", "Croácia"]
 			},
 			{
@@ -498,7 +498,7 @@
 				"continent": "UEFA",
 				"latitude": 60.49,
 				"longitude": 8.48,
-				"power": 6.0,
+				"power": 5.0,
 				"borders": ["Suécia", "Dinamarca"]
 			},
 			{
@@ -506,7 +506,7 @@
 				"continent": "UEFA",
 				"latitude": 52.3,
 				"longitude": -3.9,
-				"power": 6.6,
+				"power": 6.0,
 				"borders": ["Inglaterra", "Irlanda"]
 			},
 			{
@@ -514,7 +514,7 @@
 				"continent": "UEFA",
 				"latitude": 52.13,
 				"longitude": 5.29,
-				"power": 8.6,
+				"power": 8.8,
 				"borders": ["Bélgica", "Alemanha", "Inglaterra"]
 			},
 			{
@@ -522,7 +522,7 @@
 				"continent": "UEFA",
 				"latitude": 51.92,
 				"longitude": 19.14,
-				"power": 6.6,
+				"power": 6.2,
 				"borders": ["Alemanha", "República Tcheca", "Eslováquia", "Ucrânia"]
 			},
 			{
@@ -538,7 +538,7 @@
 				"continent": "UEFA",
 				"latitude": 49.82,
 				"longitude": 15.47,
-				"power": 6.4,
+				"power": 5.6,
 				"borders": ["Alemanha", "Polônia", "Eslováquia", "Áustria"]
 			},
 			{
@@ -546,7 +546,7 @@
 				"continent": "UEFA",
 				"latitude": 45.94,
 				"longitude": 24.97,
-				"power": 6.6,
+				"power": 6.0,
 				"borders": ["Ucrânia", "Sérvia", "Hungria"]
 			},
 			{
@@ -554,7 +554,7 @@
 				"continent": "UEFA",
 				"latitude": 44.02,
 				"longitude": 21.0,
-				"power": 6.8,
+				"power": 6.4,
 				"borders": ["Hungria", "Romênia"]
 			},
 			{
@@ -562,7 +562,7 @@
 				"continent": "UEFA",
 				"latitude": 58.42,
 				"longitude": 15.44,
-				"power": 7.0,
+				"power": 6.8,
 				"borders": ["Noruega", "Dinamarca"]
 			},
 			{
@@ -578,7 +578,7 @@
 				"continent": "UEFA",
 				"latitude": 39.31,
 				"longitude": 30.67,
-				"power": 7.0,
+				"power": 6.8,
 				"borders": ["Grécia"]
 			},
 			{
