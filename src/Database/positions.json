@@ -110,8 +110,8 @@
 	{
 		"title": "Goleiro",
 		"abbreviation": "GO",
-		"goalsMultiplier": 0.05,
-		"assistsMultiplier": 0.15,
+		"goalsMultiplier": 0.04,
+		"assistsMultiplier": 0.1,
 		"value": 0.6,
 		"related": [],
 		"peak": 30
