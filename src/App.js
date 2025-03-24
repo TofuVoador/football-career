@@ -847,7 +847,10 @@ function App() {
 			let europeanDescription = [];
 
 			let europeanTeams = DeepClone([...nations.find((n) => n.name === "UEFA").teams]);
+			europeanTeams = europeanTeams.sort((a, b) => b.power - a.power - Math.random());
 			europeanTeams.splice(24);
+
+			let nationEuroClassif = europeanTeams.some((t) => t.name === player.nation.name);
 
 			let europeanPots = [];
 			for (let i = 0; i < 4; i++) {
@@ -891,7 +894,8 @@ function App() {
 				thirdPlacesPoints.push(thisGroup.points[2]);
 			}
 
-			if (player.nation.continent !== "UEFA") europeanDescription.push("Grupos-->Sem Dados");
+			if (player.nation.continent !== "UEFA" || !nationEuroClassif)
+				europeanDescription.push("Grupos-->Sem Dados");
 
 			thirdPlaces.sort((a, b) => {
 				return (
@@ -982,7 +986,7 @@ function App() {
 
 			let playerEuropeanDesc = "";
 
-			if (player.nation.continent === "UEFA") {
+			if (player.nation.continent === "UEFA" && nationEuroClassif) {
 				playerEuropeanDesc = `: ${TournamentPath[playerPhase]} ${
 					playedContinental ? "" : " (Não Convocado)"
 				}`;
@@ -2057,7 +2061,7 @@ function App() {
 		let newTeams = DeepClone(teams);
 		//sort by power
 		newTeams.sort((a, b) => {
-			return a.power - b.power + Math.random();
+			return b.power - a.power - Math.random();
 		});
 
 		let points = new Array(newTeams.length).fill(0);
@@ -2453,7 +2457,7 @@ function App() {
 		}, []);
 
 		allTeams.sort((a, b) => {
-			return b.power - a.power + Math.random();
+			return b.power - a.power - Math.random();
 		});
 
 		allTeams = allTeams.slice(
@@ -2536,7 +2540,7 @@ function App() {
 		}, []);
 
 		// Step 2: Sort teams
-		allTeams.sort((a, b) => b.power - a.power + Math.random());
+		allTeams.sort((a, b) => b.power - a.power - Math.random());
 
 		// Step 3: Slice top half of teams
 		allTeams = allTeams.slice(0, allTeams.length / 2);
