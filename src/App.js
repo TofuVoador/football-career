@@ -190,7 +190,7 @@ function App() {
 				name: league.name,
 				championsSpots: league.championsSpots,
 				europaSpots: league.europaSpots,
-				result: GetLeaguePosition(league.teams),
+				result: GetLeaguePosition(shuffleArray(league.teams)),
 			};
 			return leagueResult;
 		});
@@ -426,7 +426,7 @@ function App() {
 				name: league.name,
 				championsSpots: league.championsSpots,
 				europaSpots: league.europaSpots,
-				result: GetLeaguePosition(league.teams),
+				result: GetLeaguePosition(shuffleArray(league.teams)),
 			};
 			console.log(
 				league.name +
@@ -477,6 +477,7 @@ function App() {
 
 		//get opponents for national cup
 		let pot3 = DeepClone([...league.teams]);
+		pot3 = pot3.sort((a, b) => b.power - a.power - Math.random());
 		let pot1 = pot3.splice(0, pot3.length / 4);
 		let pot2 = pot3.splice(0, pot3.length / 3);
 
@@ -838,8 +839,7 @@ function App() {
 			currentSeason.awardPoints -= 2.0;
 			let playedContinental =
 				currentSeason.starting >= 50 &&
-				(player.team.power >= player.nation.power - 2 ||
-					(med > 0 && currentSeason.performance > 0.2 && generalPerformance.length >= 2));
+				player.team.power >= player.nation.power - (2 + currentSeason.performance);
 
 			// EUROCOPA
 			phase = 0;
@@ -1004,7 +1004,7 @@ function App() {
 				...nations.find((n) => n.name === "CONCACAF").teams,
 			]);
 
-			americanTeams.sort((a, b) => b.power - a.power);
+			americanTeams.sort((a, b) => b.power - a.power - Math.random());
 
 			let americanPots = [];
 			for (let i = 0; i < 4; i++) {
@@ -1144,6 +1144,7 @@ function App() {
 			let africanDescription = [];
 
 			let africanTeams = DeepClone([...nations.find((n) => n.name === "CAF").teams]);
+			africanTeams = africanTeams.sort((a, b) => b.power - a.power - Math.random());
 
 			let africanPots = [];
 			for (let i = 0; i < 4; i++) {
@@ -1291,6 +1292,7 @@ function App() {
 			let asianDescription = [];
 			// 1. get all 12 teams
 			let asianTeams = DeepClone([...nations.find((n) => n.name === "AFC").teams]);
+			asianTeams = asianTeams.sort((a, b) => b.power - a.power - Math.random());
 
 			let asianPots = [];
 			for (let i = 0; i < 4; i++) {
@@ -1498,7 +1500,7 @@ function App() {
 
 			// Ordenar todas as nações qualificadas para a Copa do Mundo por poder
 			allClassifNations.sort((a, b) => {
-				return b.power - a.power;
+				return b.power - a.power - Math.random();
 			});
 
 			allClassifNations = hostsAreFirst.concat(allClassifNations);
@@ -1511,8 +1513,7 @@ function App() {
 			//was called by the manager
 			let playedWorldCup =
 				currentSeason.starting >= 50 &&
-				(player.team.power >= player.nation.power - 2 ||
-					(med > 0 && currentSeason.performance > 0.2 && generalPerformance.length >= 2));
+				player.team.power >= player.nation.power - (2 + currentSeason.performance);
 
 			//create four pots to the group draw
 			let pots = Array.from({ length: 4 }, (_, potID) =>
