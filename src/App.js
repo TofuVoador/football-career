@@ -171,6 +171,7 @@ function App() {
 	}
 
 	function ChoosePos() {
+		console.log(player.potential);
 		// Get the selected position
 		const positionDropdown = document.getElementById("position-select");
 		const selectedPosition = Positions.find(
@@ -361,12 +362,12 @@ function App() {
 		let starting =
 			Math.floor(
 				(100 -
-					player.team.power * 5 -
+					player.team.power * 4 -
 					0.8 * (player.positionInClub.peak - player.age) ** 2 +
 					r +
-					player.performance * 5) /
+					player.performance * 10) /
 					2 +
-					player.potential * 5
+					player.potential * 4
 			) * 2;
 		if (starting > 100) starting = 100;
 		else if (starting < 0) starting = 0;
@@ -1917,7 +1918,8 @@ function App() {
 				player.positionInClub.value,
 				player.age,
 				player.team.power,
-				player.fame
+				player.fame,
+				player.potential
 			);
 			if (newWage < player.wage) newWage = player.wage;
 
@@ -2000,7 +2002,8 @@ function App() {
 						player.positionInClub.value,
 						player.age,
 						player.team.power,
-						player.fame
+						player.fame,
+						player.potential
 					);
 
 					// 20% chance to switch position
@@ -2504,7 +2507,8 @@ function App() {
 					Positions.find((pos) => pos.abbreviation == newPosition).value,
 					currentPlayer.age,
 					team.power,
-					currentPlayer.fame
+					currentPlayer.fame,
+					currentPlayer.potential
 				);
 				let contract = {
 					value: contractValue,
@@ -2590,7 +2594,8 @@ function App() {
 				posValue,
 				currentPlayer.age,
 				team.power,
-				currentPlayer.fame
+				currentPlayer.fame,
+				currentPlayer.potential
 			);
 
 			// Transfer value
@@ -2633,53 +2638,44 @@ function App() {
 		return allNat;
 	}
 
-	function GetWage(performance, positionMultiplier, age, teamPower, fame) {
-		// Base wage (adjust based on currency/league standards)
-		const baseWage = 100000; // Example: €10,000/week
+	function GetWage(performance, positionMultiplier, age, teamPower, fame, potential) {
+		const baseWage = 10000;
 
-		// Performance multiplier (0.5x to 1.5x)
 		const performanceMultiplier = 1.0 + performance * 0.2;
 
-		// Age curve: Peaks at age 27 (1.0x), declines after 30
-		const ageFactor = 20.0 - Math.abs(age - 28);
+		const ageFactor = 22.0 - Math.abs(age - 28);
 
-		// Club power multiplier (1.0x to 2.0x)
-		const clubMultiplier = teamPower / 5; // ClubPower=10 → 2.0x
+		const clubMultiplier = teamPower / 5;
 
-		// Fame multiplier (2x to 22x)
-		const fameMultiplier = (100 + fame) / 50; // Fame=1000 → 20x
+		const fameMultiplier = (100 + fame) / 50;
 
-		// Final wage calculation
+		const potentialMultiplier = (potential * potential) / 10;
+
 		const wage =
 			baseWage *
 			performanceMultiplier *
 			positionMultiplier *
 			ageFactor *
 			clubMultiplier *
-			fameMultiplier;
+			fameMultiplier *
+			potentialMultiplier;
 
 		return Math.round(wage);
 	}
 
 	function GetTransferValue(performance, positionMultiplier, age, clubPower, fame, potential) {
-		// Base value (adjust based on league standards)
-		const baseValue = 1000000; // Example: €1,000,000
+		const baseValue = 1000000;
 
-		// Performance multiplier (0.5x to 1.5x)
 		const performanceMultiplier = 1.0 + performance * 0.1;
 
-		// Age curve: Younger players have higher value (peaks at 22)
 		const ageFactor = Math.max(0.5, 20.0 - 1.5 * (age - 24));
 
-		// Club power multiplier (1.0x to 2.0x)
-		const clubMultiplier = clubPower / 5; // ClubPower=10 → 2.0x
+		const clubMultiplier = clubPower / 5;
 
-		// Fame multiplier (0.5x to 5x)
-		const fameMultiplier = (100 + fame) / 200; // Fame=1000 → 5x
+		const fameMultiplier = (100 + fame) / 200;
 
 		const potentialMultiplier = (potential * potential) / 10;
 
-		// Final transfer value calculation
 		const transferValue =
 			baseValue *
 			performanceMultiplier *
