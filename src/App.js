@@ -80,7 +80,7 @@ function App() {
 	});
 
 	const [player, setPlayer] = useState({
-		potential: (RandomNumber(0, 10) + RandomNumber(0, 10)) / 2,
+		potential: (RandomNumber(1, 10) + RandomNumber(1, 10)) / 2,
 		age: 17,
 		nation: null,
 		team: null,
@@ -171,7 +171,6 @@ function App() {
 	}
 
 	function ChoosePos() {
-		console.log(player.potential);
 		// Get the selected position
 		const positionDropdown = document.getElementById("position-select");
 		const selectedPosition = Positions.find(
