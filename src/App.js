@@ -125,6 +125,7 @@ function App() {
 	const [renew, setRenew] = useState({ value: 0, duration: 0, addition: null, position: null });
 
 	function ChooseNation() {
+		console.log(player.potential);
 		const continentDropdown = document.getElementById("continent-dropdown");
 		const nationDropdown = document.getElementById("nation-dropdown");
 
@@ -358,14 +359,14 @@ function App() {
 		med /= newGeneralPerformance.length;
 
 		//giving the performance, set how many games did they were the starter player
-		let r = (Math.random() - Math.random()) * 10;
+		let r = Math.random() * 10;
 		let starting =
 			Math.floor(
 				((player.performance / 5 + 1) *
 					(100 -
 						player.team.power * 4 +
 						player.potential * 4 -
-						0.8 * (player.positionInClub.peak - player.age) ** 2 +
+						0.7 * (player.positionInClub.peak - player.age) ** 2 +
 						r)) /
 					2
 			) * 2;
@@ -375,8 +376,14 @@ function App() {
 		let remaining = 100 - starting;
 
 		let subbed =
-			Math.floor((player.positionInClub.subRate * (player.performance / 2 + 1) * remaining) / 2) *
-			2;
+			Math.floor(
+				(player.positionInClub.subRate *
+					(1 + player.performance / 5) *
+					(1 + player.fame / 1000) *
+					remaining +
+					r) /
+					2
+			) * 2;
 		if (subbed > remaining) subbed = remaining;
 		else if (subbed < 0) subbed = 0;
 
@@ -517,7 +524,7 @@ function App() {
 				if (team1.name === player.team.name || team2.name === player.team.name) {
 					playerOpp = `: ${team1.name === player.team.name ? team2.name : team1.name}`;
 
-					opportunities += Math.round(Math.random() * 100) / 100;
+					opportunities++;
 					currentSeason.awardPoints += 0.6; // Máximo 0.6 x 4 = 2.4
 					player.fame += 1; // Copa Nacional Máximo 1 x 4 = 4
 
@@ -599,7 +606,7 @@ function App() {
 			championsGroup.table.findIndex((team) => team.name === player.team.name) + 1;
 
 		if (playerChampionsPos > 0) {
-			opportunities += (20 - playerChampionsPos) / 5;
+			opportunities += (21 - playerChampionsPos) / 5;
 			currentSeason.awardPoints += Math.max(0, 11 - playerChampionsPos) / 10;
 		}
 
@@ -677,7 +684,7 @@ function App() {
 				if (team1.name === player.team.name || team2.name === player.team.name) {
 					playerOpp = `: ${team1.name === player.team.name ? team2.name : team1.name}`;
 
-					opportunities += Math.round(Math.random() * 100) / 100;
+					opportunities++;
 					currentSeason.awardPoints += 0.6; // Máximo 1.0 + 0.6 x 4 = 3.4
 					player.fame += 3; // Champions Máximo 3 x 4 = 12
 
@@ -760,7 +767,7 @@ function App() {
 			group.table.findIndex((team) => team.name === player.team.name) + 1;
 
 		if (playerEuropaPosition > 0) {
-			opportunities += (20 - playerEuropaPosition) / 5;
+			opportunities += (21 - playerEuropaPosition) / 5;
 		}
 
 		europaLeagueDescription.push(
@@ -807,7 +814,7 @@ function App() {
 					) {
 						// Incrementar a fase do jogador e, se vencer o torneio, adicionar à sua lista de realizações
 						playerPhase++;
-						opportunities += Math.round(Math.random() * 100) / 100;
+						opportunities++;
 						if (playerPhase >= TournamentPath.length - 1) {
 							player.europa.push(`${year} (${player.team.name})`);
 						}
@@ -949,7 +956,7 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							opportunities += Math.round(Math.random() * 100) / 100;
+							opportunities++;
 							currentSeason.awardPoints += 0.6; // Máximo 0.4 x 4 = 2.4
 							player.fame += 3; // Copa Máximo 3 x 4 = 12
 						}
@@ -1093,7 +1100,7 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							opportunities += Math.round(Math.random() * 100) / 100;
+							opportunities++;
 							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 = 2.4
 							player.fame += 4; // Copa América Máximo 4 x 3 = 12
 						}
@@ -1242,7 +1249,7 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							opportunities += Math.round(Math.random() * 100) / 100;
+							opportunities++;
 							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 = 2.4
 							player.fame += 4; // Copa África Máximo 4 x 3 = 12
 						}
@@ -1390,7 +1397,7 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							opportunities += Math.round(Math.random() * 100) / 100;
+							opportunities++;
 							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 = 2.4
 							player.fame += 4; // Copa Ásia Máximo 4 x 3 = 12
 						}
@@ -1640,7 +1647,7 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedWorldCup) {
-							opportunities += Math.round(Math.random() * 100) / 100;
+							opportunities++;
 							currentSeason.awardPoints += 0.5; // Máximo 0.5 x 5 = 2.5
 							player.fame += 3; // Máximo 3 x 5 = 15
 						}
@@ -1773,11 +1780,16 @@ function App() {
 			player.positionInClub.goalsMultiplier *
 				performanceMultiplier *
 				opportunities *
-				(0.5 + player.potential * 0.1)
+				(player.potential * 0.1) *
+				(1 + (Math.random() - Math.random()) / 5)
 		);
 
 		currentSeason.assists = Math.floor(
-			player.positionInClub.assistsMultiplier * performanceMultiplier * opportunities
+			player.positionInClub.assistsMultiplier *
+				performanceMultiplier *
+				opportunities *
+				(0.5 + player.potential * 0.1) *
+				(1 + (Math.random() - Math.random()) / 2)
 		);
 
 		if (currentSeason.goals < 0) currentSeason.goals = 0;
@@ -1834,12 +1846,12 @@ function App() {
 		if (awardScore >= 19) {
 			//POTS D'or
 			player.playerOfTheSeason.push(`${year} (${player.team.name})`);
-			player.fame += 50;
+			player.fame += 100;
 			position = 1;
 			currentSeason.titles.push([`Jogador da Temporada: 1º lugar`]);
 		} else if (awardScore >= 10) {
 			let pts = Math.floor(awardScore - 10);
-			player.fame += pts * 2;
+			player.fame += pts * 4;
 			position = 10 - pts;
 			currentSeason.titles.push([`Jogador da Temporada: ${position}º lugar`]);
 		}
@@ -2687,7 +2699,7 @@ function App() {
 
 		const fameMultiplier = (100 + fame) / 200;
 
-		const potentialMultiplier = (potential * potential) / 10;
+		const potentialMultiplier = (potential * potential) / 20;
 
 		const transferValue =
 			baseValue *
