@@ -69,6 +69,7 @@ function App() {
 		team: null,
 		wage: null,
 		starting: null,
+		subbed: null,
 		titles: null,
 		goals: null,
 		assists: null,
@@ -360,16 +361,24 @@ function App() {
 		let r = (Math.random() - Math.random()) * 10;
 		let starting =
 			Math.floor(
-				(100 -
-					player.team.power * 4 -
-					0.8 * (player.positionInClub.peak - player.age) ** 2 +
-					r +
-					player.performance * 10) /
-					2 +
-					player.potential * 4
+				((player.performance / 5 + 1) *
+					(100 -
+						player.team.power * 4 +
+						player.potential * 4 -
+						(player.positionInClub.peak - player.age) ** 2 +
+						r)) /
+					2
 			) * 2;
 		if (starting > 100) starting = 100;
 		else if (starting < 0) starting = 0;
+
+		let remaining = 100 - starting;
+
+		let subbed =
+			Math.floor((player.positionInClub.subRate * (player.performance / 2 + 1) * remaining) / 2) *
+			2;
+		if (subbed > remaining) subbed = remaining;
+		else if (subbed < 0) subbed = 0;
 
 		//set season start
 		let newSeason = {
@@ -386,6 +395,7 @@ function App() {
 			nation: DeepClone(player.nation),
 			wage: player.wage,
 			starting: starting,
+			subbed: subbed,
 			titles: [],
 			goals: 0,
 			assists: 0,
@@ -838,9 +848,10 @@ function App() {
 		if (year % 4 === 0) {
 			currentSeason.awardPoints -= 2.0;
 			let playedContinental =
+				currentSeason.starting > 0 &&
 				player.team.power >=
-				player.nation.power -
-					(currentSeason.starting / 100 + currentSeason.performance + player.potential / 10);
+					player.nation.power -
+						(currentSeason.starting / 100 + currentSeason.performance + player.potential / 10);
 
 			// EUROCOPA
 			phase = 0;
@@ -1513,9 +1524,10 @@ function App() {
 
 			//was called by the manager
 			let playedWorldCup =
+				currentSeason.starting > 0 &&
 				player.team.power >=
-				player.nation.power -
-					(currentSeason.starting / 100 + currentSeason.performance + player.potential / 10);
+					player.nation.power -
+						(currentSeason.starting / 100 + currentSeason.performance + player.potential / 10);
 
 			//create four pots to the group draw
 			let pots = Array.from({ length: 4 }, (_, potID) =>
@@ -1751,7 +1763,7 @@ function App() {
 			setWorldCupHistoryHosts(newWorldCupHistoryHosts);
 		}
 
-		let performanceMultiplier = (20 + currentSeason.starting) / 100.0;
+		let performanceMultiplier = (currentSeason.starting + currentSeason.subbed / 2) / 100.0;
 		performanceMultiplier *=
 			1.0 +
 			Math.sign(currentSeason.performance) *

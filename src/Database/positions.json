@@ -6,7 +6,8 @@
 		"assistsMultiplier": 0.25,
 		"value": 1,
 		"related": ["SA", "PE", "PD"],
-		"peak": 28
+		"peak": 28,
+		"subRate": 0.2
 	},
 	{
 		"title": "Segundo Atacante",
@@ -15,7 +16,8 @@
 		"assistsMultiplier": 0.35,
 		"value": 1,
 		"related": ["CA", "MA", "PE", "PD"],
-		"peak": 30
+		"peak": 30,
+		"subRate": 0.4
 	},
 	{
 		"title": "Ponta Esquerda",
@@ -24,7 +26,8 @@
 		"assistsMultiplier": 0.45,
 		"value": 1,
 		"related": ["SA", "CA", "PD", "ME"],
-		"peak": 28
+		"peak": 28,
+		"subRate": 0.6
 	},
 	{
 		"title": "Ponta Direita",
@@ -33,7 +36,8 @@
 		"assistsMultiplier": 0.45,
 		"value": 1,
 		"related": ["SA", "CA", "PE", "MD"],
-		"peak": 28
+		"peak": 28,
+		"subRate": 0.6
 	},
 	{
 		"title": "Meia-Atacante",
@@ -42,7 +46,8 @@
 		"assistsMultiplier": 0.75,
 		"value": 1,
 		"related": ["SA", "MC", "ME", "MD"],
-		"peak": 30
+		"peak": 30,
+		"subRate": 0.5
 	},
 	{
 		"title": "Meia Esquerda",
@@ -51,7 +56,8 @@
 		"assistsMultiplier": 0.5,
 		"value": 0.8,
 		"related": ["MA", "MC", "PE", "LE"],
-		"peak": 28
+		"peak": 28,
+		"subRate": 0.5
 	},
 	{
 		"title": "Meia Central",
@@ -60,7 +66,8 @@
 		"assistsMultiplier": 0.5,
 		"value": 0.8,
 		"related": ["MA", "ME", "MD", "VO"],
-		"peak": 30
+		"peak": 30,
+		"subRate": 0.6
 	},
 	{
 		"title": "Meia Direita",
@@ -69,7 +76,8 @@
 		"assistsMultiplier": 0.5,
 		"value": 0.8,
 		"related": ["MA", "MC", "PD", "LD"],
-		"peak": 28
+		"peak": 28,
+		"subRate": 0.5
 	},
 	{
 		"title": "Volante",
@@ -78,7 +86,8 @@
 		"assistsMultiplier": 0.4,
 		"value": 0.8,
 		"related": ["MC", "ZC", "LE", "LD"],
-		"peak": 30
+		"peak": 30,
+		"subRate": 0.4
 	},
 	{
 		"title": "Lateral Esquerdo",
@@ -87,7 +96,8 @@
 		"assistsMultiplier": 0.35,
 		"value": 0.6,
 		"related": ["LD", "ME", "VO", "ZC"],
-		"peak": 28
+		"peak": 28,
+		"subRate": 0.4
 	},
 	{
 		"title": "Lateral Direito",
@@ -96,7 +106,8 @@
 		"assistsMultiplier": 0.35,
 		"value": 0.6,
 		"related": ["LE", "MD", "VO", "ZC"],
-		"peak": 28
+		"peak": 28,
+		"subRate": 0.4
 	},
 	{
 		"title": "Zagueiro Central",
@@ -105,7 +116,8 @@
 		"assistsMultiplier": 0.15,
 		"value": 0.6,
 		"related": ["VO", "LE", "LD"],
-		"peak": 30
+		"peak": 30,
+		"subRate": 0.2
 	},
 	{
 		"title": "Goleiro",
@@ -114,6 +126,7 @@
 		"assistsMultiplier": 0.1,
 		"value": 0.6,
 		"related": [],
-		"peak": 30
+		"peak": 30,
+		"subRate": 0.05
 	}
 ]

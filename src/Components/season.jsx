@@ -41,7 +41,6 @@ const Season = (props) => {
 							style={{
 								width: "auto",
 								height: "20px",
-								backgroundColor: "var(--color-medium)",
 								borderRadius: "10px",
 							}}>
 							<div
@@ -71,7 +70,7 @@ const Season = (props) => {
 										transform: "translateY(-50%)", // Centraliza verticalmente
 										color:
 											season.performance.toFixed(2) >= 0
-												? "var(--color-dark)"
+												? "var(--color-medium)"
 												: "var(--color-contrast)",
 									}}>
 									{season.performance.toFixed(2) > 0 ? "+" : ""}
@@ -81,35 +80,64 @@ const Season = (props) => {
 						</div>
 					</div>
 					<div>
-						<p>Titular:</p>
+						<p>
+							<span style={{ color: "var(--color-contrast)" }}>■</span> Titular &nbsp;
+							<span style={{ color: "var(--color-medium)" }}>■</span> Substituto &nbsp;
+						</p>
 						<div
 							style={{
-								width: "auto",
+								width: "100%",
 								height: "20px",
-								backgroundColor: "var(--color-medium)",
 								borderRadius: "10px",
+								display: "flex", // Allows side-by-side bars
+								overflow: "hidden",
 							}}>
+							{/* Starting Games Segment */}
 							<div
 								style={{
 									width: `${season.starting}%`,
 									height: "20px",
 									backgroundColor: "var(--color-contrast)",
-									borderRadius: "10px",
+									borderRadius: season.subbed ? "10px 0 0 10px" : "10px", // Round only if there's a second segment
 									position: "relative",
 								}}>
 								<span
 									style={{
 										position: "absolute",
-										top: "50%", // Centraliza verticalmente
-										left: "50%", // Centraliza horizontalmente
-										transform: "translate(-50%, -50%)", // Centraliza completamente
+										top: "50%",
+										left: "50%",
+										transform: "translate(-50%, -50%)",
 										color: "var(--color-dark)",
 									}}>
 									{season.starting}%
 								</span>
 							</div>
+
+							{/* Subbed In Games Segment */}
+							{season.subbed > 0 && (
+								<div
+									style={{
+										width: `${season.subbed}%`,
+										height: "20px",
+										backgroundColor: "var(--color-medium)",
+										borderRadius: "0 10px 10px 0", // Round only if there's a second segment
+										position: "relative",
+									}}>
+									<span
+										style={{
+											position: "absolute",
+											top: "50%",
+											left: "50%",
+											transform: "translate(-50%, -50%)",
+											color: "var(--color-dark)",
+										}}>
+										{season.subbed}%
+									</span>
+								</div>
+							)}
 						</div>
 					</div>
+
 					<div className="double-column">
 						<div>{season.goals} gols</div>
 						<div>{season.assists} assistências</div>
