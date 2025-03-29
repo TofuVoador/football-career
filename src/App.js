@@ -365,7 +365,7 @@ function App() {
 					(100 -
 						player.team.power * 4 +
 						player.potential * 4 -
-						(player.positionInClub.peak - player.age) ** 2 +
+						0.8 * (player.positionInClub.peak - player.age) ** 2 +
 						r)) /
 					2
 			) * 2;
