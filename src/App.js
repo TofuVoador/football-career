@@ -838,8 +838,9 @@ function App() {
 		if (year % 4 === 0) {
 			currentSeason.awardPoints -= 2.0;
 			let playedContinental =
-				currentSeason.starting >= 50 &&
-				player.team.power >= player.nation.power - (2 + currentSeason.performance);
+				player.team.power >=
+				player.nation.power -
+					(currentSeason.starting / 100 + currentSeason.performance + player.potential / 10);
 
 			// EUROCOPA
 			phase = 0;
@@ -1512,8 +1513,9 @@ function App() {
 
 			//was called by the manager
 			let playedWorldCup =
-				currentSeason.starting >= 50 &&
-				player.team.power >= player.nation.power - (2 + currentSeason.performance);
+				player.team.power >=
+				player.nation.power -
+					(currentSeason.starting / 100 + currentSeason.performance + player.potential / 10);
 
 			//create four pots to the group draw
 			let pots = Array.from({ length: 4 }, (_, potID) =>
