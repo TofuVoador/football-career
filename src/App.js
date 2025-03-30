@@ -1771,17 +1771,14 @@ function App() {
 		}
 
 		let performanceMultiplier = (currentSeason.starting + currentSeason.subbed / 2) / 100.0;
-		performanceMultiplier *=
-			1.0 +
-			Math.sign(currentSeason.performance) *
-				(currentSeason.performance * currentSeason.performance);
+		performanceMultiplier *= 1.0 + currentSeason.performance / 2;
 
 		currentSeason.goals = Math.floor(
 			player.positionInClub.goalsMultiplier *
 				performanceMultiplier *
 				opportunities *
-				(player.potential * 0.1) *
-				(1 + (Math.random() - Math.random()) / 5)
+				(0.5 + player.potential * 0.1) *
+				(1 + (Math.random() - Math.random()) / 4)
 		);
 
 		currentSeason.assists = Math.floor(
@@ -1789,7 +1786,7 @@ function App() {
 				performanceMultiplier *
 				opportunities *
 				(0.5 + player.potential * 0.1) *
-				(1 + (Math.random() - Math.random()) / 2)
+				(1 + (Math.random() - Math.random()) / 4)
 		);
 
 		if (currentSeason.goals < 0) currentSeason.goals = 0;
@@ -1833,7 +1830,7 @@ function App() {
 		}
 
 		let goldenBootsGoals = 35 + RandomNumber(0, 5);
-		goldenBootsGoals += year % 4 === 2 ? 5 : 0;
+		goldenBootsGoals += year % 4 === 2 || year % 4 === 0 ? 5 : 0;
 
 		if (goldenBootsGoals <= currentSeason.goals) {
 			//Golden Shoes
@@ -1851,7 +1848,7 @@ function App() {
 			currentSeason.titles.push([`Jogador da Temporada: 1º lugar`]);
 		} else if (awardScore >= 10) {
 			let pts = Math.floor(awardScore - 10);
-			player.fame += pts * 4;
+			player.fame += pts * 2;
 			position = 10 - pts;
 			currentSeason.titles.push([`Jogador da Temporada: ${position}º lugar`]);
 		}
@@ -2691,20 +2688,20 @@ function App() {
 	function GetTransferValue(performance, positionMultiplier, age, clubPower, fame, potential) {
 		const baseValue = 1000000;
 
-		const performanceMultiplier = 1.0 + performance * 0.1;
+		const performanceMultiplier = 1 + performance / 5; //0.8 at -1 to 1.2 at +1
 
-		const ageFactor = Math.max(0.5, 20.0 - 1.5 * (age - 24));
+		const ageFactor = Math.max(1, 10.0 - 0.08 * (24 - age) ** 2); //2.88 at 18, 10 at 24, 2 at 34
 
-		const clubMultiplier = clubPower / 5;
+		const clubMultiplier = 0.5 + clubPower / 10; //0.7 at 2 to 1.5 at 10
 
-		const fameMultiplier = (100 + fame) / 200;
+		const fameMultiplier = Math.max(fame, 100) / 200; //1 at 200 to 5 at 1000
 
-		const potentialMultiplier = (potential * potential) / 20;
+		const potentialMultiplier = potential; //1 to 10
 
 		const transferValue =
+			positionMultiplier *
 			baseValue *
 			performanceMultiplier *
-			positionMultiplier *
 			ageFactor *
 			clubMultiplier *
 			fameMultiplier *
