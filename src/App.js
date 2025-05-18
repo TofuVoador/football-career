@@ -94,7 +94,6 @@ function App() {
 		totalAssists: 0,
 		leagueTitles: [],
 		nationalCup: [],
-		europa: [],
 		champions: [],
 		continentalChampionship: [],
 		worldCup: [],
@@ -102,7 +101,6 @@ function App() {
 		playerOfTheSeason: [],
 		championsQualification: false,
 		lastLeaguePosition: 0,
-		europaQualification: false,
 		fame: 0,
 		marketValue: 1,
 	});
@@ -125,7 +123,6 @@ function App() {
 	const [renew, setRenew] = useState({ value: 0, duration: 0, addition: null, position: null });
 
 	function ChooseNation() {
-		console.log(player.potential);
 		const continentDropdown = document.getElementById("continent-dropdown");
 		const nationDropdown = document.getElementById("nation-dropdown");
 
@@ -187,17 +184,42 @@ function App() {
 
 		let newTeams = UpdateTeamsStats(20.0).newTeams;
 
-		let leagueResults = leagues.map((league) => {
+		let leagueResults = newTeams.map((league) => {
+			const result = GetLeaguePosition(shuffleArray(league.highestLeague.teams));
+
+			const table = result.table;
+
+			const rebaixados = table.slice(-league.demotions);
+			const promovidos = league.lowerLeague.teams
+				.sort((a, b) => {
+					return b.power - a.power - Math.random();
+				})
+				.slice(0, league.demotions);
+
+			const rebaixadosNomes = rebaixados.map((t) => t.name);
+			const promovidosNomes = promovidos.map((t) => t.name);
+
+			// Realiza o rebaixamento
+			league.highestLeague.teams = league.highestLeague.teams
+				.filter((team) => !rebaixadosNomes.includes(team.name))
+				.concat(promovidos);
+
+			// Realiza a promoção inversa
+			league.lowerLeague.teams = league.lowerLeague.teams
+				.filter((team) => !promovidosNomes.includes(team.name))
+				.concat(rebaixados);
+
 			let leagueResult = {
-				name: league.name,
+				country: league.country,
 				championsSpots: league.championsSpots,
-				europaSpots: league.europaSpots,
-				result: GetLeaguePosition(shuffleArray(league.teams)),
+				result: result,
 			};
+
 			return leagueResult;
 		});
 
-		setLastLeagueResults(leagueResults); // Update league results
+		setLastLeagueResults(leagueResults);
+		// Update league results
 		setTransfers(GetInitTeams(selectedPosition.value, newTeams, player, player.nation)); // Use selectedPosition
 	}
 
@@ -245,23 +267,17 @@ function App() {
 			let lp = 99; // Inicializa o valor padrão de "lp"
 
 			let newLeagueResults =
-				lastLeagueResults.find((league) => league.name === player.team.league) || [];
+				lastLeagueResults.find((league) => league.country === player.team.country) || [];
 			lp = newLeagueResults.result.table.findIndex((team) => team.name === player.team.name) + 1;
 
 			// Verifica se o jogador se classificou no ano passado
-			if (lp <= newLeagueResults.championsSpots) {
-				// Para os campeões
-				player.championsQualification = true;
-				player.europaQualification = false;
-				player.lastLeaguePosition = lp;
-			} else if (lp <= newLeagueResults.championsSpots + newLeagueResults.europaSpots) {
-				// Para a Liga Europa
-				player.championsQualification = false;
-				player.europaQualification = true;
-			} else {
+			if (lp <= 0 || lp > newLeagueResults.championsSpots) {
 				// Não foi classificado
 				player.championsQualification = false;
-				player.europaQualification = false;
+			} else {
+				// Para os campeões
+				player.championsQualification = true;
+				player.lastLeaguePosition = lp;
 			}
 
 			setRenew({ value: 0, duration: 0, addition: null, position: null });
@@ -283,7 +299,9 @@ function App() {
 
 		let allTeams = [];
 		for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
-			allTeams = allTeams.concat([...newTeams[leagueID].teams]);
+			allTeams = allTeams
+				.concat([...newTeams[leagueID].highestLeague.teams])
+				.concat([...newTeams[leagueID].lowerLeague.teams]);
 		}
 		allTeams = allTeams.concat([...extrateams]);
 		allTeams.sort((a, b) => {
@@ -439,30 +457,53 @@ function App() {
 
 		//national tournaments
 		let leagueResults = leagues.map((league) => {
+			const result = GetLeaguePosition(shuffleArray(league.highestLeague.teams));
+			const table = result.table;
+
+			const rebaixados = table.slice(-league.demotions);
+			const promovidos = league.lowerLeague.teams
+				.sort((a, b) => {
+					return b.power - a.power - Math.random(); // pequeno fator de aleatoriedade
+				})
+				.slice(0, league.demotions);
+
+			const rebaixadosNomes = rebaixados.map((t) => t.name);
+			const promovidosNomes = promovidos.map((t) => t.name);
+
 			let leagueResult = {
-				name: league.name,
+				leagueName: league.highestLeague.name,
+				country: league.country,
 				championsSpots: league.championsSpots,
-				europaSpots: league.europaSpots,
-				result: GetLeaguePosition(shuffleArray(league.teams)),
+				result: result,
+				// Guardamos aqui para rebaixar/promover depois
+				_pendingRebaixamento: {
+					rebaixados,
+					promovidos,
+					rebaixadosNomes,
+					promovidosNomes,
+				},
+				_reference: league, // guardamos a referência pra mexer depois
 			};
+
 			console.log(
-				league.name +
+				league.highestLeague.name +
 					": " +
 					leagueResult.result.table[0].name +
 					" (" +
 					leagueResult.result.table[0].power +
 					")"
 			);
+
 			return leagueResult;
 		});
 
-		let playerLeagueResult = leagueResults.find((league) => league.name === player.team.league);
+		let playerLeagueResult = leagueResults.find((league) => league.country === player.team.country);
 
 		//top eight from each league
 		let leaguesTopEight = [];
 		for (let l = 0; l < leagueResults.length; l++) {
-			let topEight = `${leagueResults[l].name}`;
-			for (let p = 0; p < 8; p++) {
+			let topEight = `${leagueResults[l].leagueName}`;
+			for (let p = 0; p < leagueResults[l].result.table.length; p++) {
 				topEight += `--> ${p + 1}º: ${leagueResults[l].result.table[p].name}`;
 			}
 			leaguesTopEight.push(topEight);
@@ -487,23 +528,21 @@ function App() {
 
 		let nationalCupDescription = [];
 		let end = false;
-		let phase = 2;
-		let playerPhase = 2;
+		let phase = 1;
+		let playerPhase = 1;
 
-		let league = leagues.find((league) => league.name === player.team.league);
+		let league = leagues.find((league) => league.country === player.team.country);
 
 		//get opponents for national cup
-		let pot3 = DeepClone([...league.teams]);
-		pot3 = pot3.sort((a, b) => b.power - a.power - Math.random());
-		let pot1 = pot3.splice(0, pot3.length / 4);
-		let pot2 = pot3.splice(0, pot3.length / 3);
+		let pot2 = DeepClone([...league.highestLeague.teams].concat([...league.lowerLeague.teams]));
+		pot2 = pot2.sort((a, b) => b.power - a.power - Math.random());
+		let pot1 = pot2.splice(0, pot2.length / 2);
 
 		//embaralhar
 		shuffleArray(pot1);
 		shuffleArray(pot2);
-		shuffleArray(pot3);
 
-		let classifToNationalCup = pot1.concat(pot2, pot3);
+		let classifToNationalCup = pot1.concat(pot2);
 
 		while (!end) {
 			let newOpponentsLeft = [];
@@ -525,7 +564,6 @@ function App() {
 					playerOpp = `: ${team1.name === player.team.name ? team2.name : team1.name}`;
 
 					opportunities++;
-					currentSeason.awardPoints += 0.6; // Máximo 0.6 x 4 = 2.4
 					player.fame += 1; // Copa Nacional Máximo 1 x 4 = 4
 
 					// Verificando se o jogador ganhou o jogo
@@ -533,6 +571,7 @@ function App() {
 						(game.result && team1.name === player.team.name) ||
 						(!game.result && team2.name === player.team.name)
 					) {
+						currentSeason.awardPoints += 0.6; // Máximo 0.6 x 4 = 2.4
 						// Incrementando a fase do jogador e concedendo pontos e prêmios adicionais
 						playerPhase++;
 						if (playerPhase >= TournamentPath.length - 1) {
@@ -579,14 +618,17 @@ function App() {
 
 		// Obter os principais times de cada liga
 		for (let leagueID = 0; leagueID < leagues.length; leagueID++) {
-			let league = DeepClone([...leagues[leagueID].teams]);
+			let league = DeepClone([...leagues[leagueID].highestLeague.teams]);
 
 			let leagueTableNames = lastLeagueResults[leagueID].result.table.map((team) => team.name);
 			let leagueQualifiedNames = leagueTableNames.splice(
 				0,
 				lastLeagueResults[leagueID].championsSpots
 			);
+
 			let leagueQualified = league.filter((team) => leagueQualifiedNames.includes(team.name));
+
+			console.log(leagueQualified);
 
 			for (let teamID = 0; teamID < lastLeagueResults[leagueID].championsSpots; teamID++) {
 				qualifiedToChampions.push(leagueQualified[teamID]);
@@ -594,7 +636,9 @@ function App() {
 		}
 
 		// Adicionar as equipes extras aos times qualificados
-		qualifiedToChampions = qualifiedToChampions.concat(extrateams.slice(0, 12));
+		qualifiedToChampions = qualifiedToChampions.concat(extrateams.slice(0, 8));
+
+		console.log(qualifiedToChampions)
 
 		// Obter a posição dos campeões em um grupo específico
 		let championsGroup = GetChampionsPosition(
@@ -735,121 +779,6 @@ function App() {
 			: "";
 		currentSeason.titles.push(
 			[`Champions League${playerChampionsResult}`].concat(championsDescription)
-		);
-
-		//europa league
-		phase = 0;
-		playerPhase = 0;
-		let europaLeagueDescription = [];
-
-		let qualified = [];
-
-		for (let leagueID = 0; leagueID < leagues.length; leagueID++) {
-			let league = DeepClone([...leagues[leagueID].teams]);
-
-			let leagueTableNames = lastLeagueResults[leagueID].result.table.map((team) => team.name);
-			let leagueQualifiedNames = leagueTableNames.splice(
-				lastLeagueResults[leagueID].championsSpots,
-				lastLeagueResults[leagueID].europaSpots
-			);
-			let leagueQualified = league.filter((team) => leagueQualifiedNames.includes(team.name));
-
-			for (let teamID = 0; teamID < lastLeagueResults[leagueID].europaSpots; teamID++) {
-				qualified.push(leagueQualified[teamID]);
-			}
-		}
-
-		qualified = qualified.concat(extrateams.slice(12, extrateams.length));
-
-		let group = GetEuropaPosition(qualified, player.europaQualification ? player.team : null);
-
-		const playerEuropaPosition =
-			group.table.findIndex((team) => team.name === player.team.name) + 1;
-
-		if (playerEuropaPosition > 0) {
-			opportunities += (21 - playerEuropaPosition) / 5;
-		}
-
-		europaLeagueDescription.push(
-			`${TournamentPath[playerPhase]}${
-				playerEuropaPosition > 0 ? `: ${playerEuropaPosition}º lugar` : ""
-			}${group.desc}`
-		);
-
-		let classif = DeepClone([...group.table]).splice(0, 16);
-
-		if (classif.some((t) => t.name === player.team.name)) {
-			playerPhase += 2;
-		}
-
-		phase += 2;
-		end = false;
-		// Loop principal para simular os jogos do torneio até o final
-		while (!end) {
-			// Limpar variáveis ​​para armazenar informações dos jogos
-			let games = "";
-			let playerOpp = "";
-			let newClassif = [];
-
-			// Loop pelos jogos do torneio atual
-			for (let matchID = 0; matchID < classif.length / 2; matchID++) {
-				// Selecionar os dois times para o jogo atual
-				let team1 = classif[matchID];
-				let team2 = classif[classif.length - (matchID + 1)];
-
-				// Obter o resultado do jogo
-				let game = GetKnockoutResult(
-					team1,
-					team2,
-					phase >= TournamentPath.length - 2 ? false : true
-				);
-
-				// Verificar se o jogador está envolvido no jogo atual
-				if (team1.name === player.team.name || team2.name === player.team.name) {
-					playerOpp = `: ${team1.name === player.team.name ? team2.name : team1.name}`;
-					// Verificar se o jogador ganhou o jogo
-					if (
-						(game.result && team1.name === player.team.name) ||
-						(!game.result && team2.name === player.team.name)
-					) {
-						// Incrementar a fase do jogador e, se vencer o torneio, adicionar à sua lista de realizações
-						playerPhase++;
-						opportunities++;
-						if (playerPhase >= TournamentPath.length - 1) {
-							player.europa.push(`${year} (${player.team.name})`);
-						}
-					}
-				}
-
-				// Adicionar o resultado do jogo ao histórico geral
-				games += `--> ${game.game}`;
-
-				// Adicionar os vencedores do jogo à nova classificação
-				if (game.result) {
-					newClassif.push(team1);
-				} else {
-					newClassif.push(team2);
-				}
-			}
-
-			// Construir a descrição da fase do torneio
-			europaLeagueDescription.push(`${TournamentPath[phase]}${playerOpp}${games}`);
-
-			// Avançar para a próxima fase e atualizar a classificação
-			phase++;
-			classif = newClassif;
-
-			// Verificar se o torneio chegou ao fim
-			if (phase >= TournamentPath.length - 1) {
-				end = true;
-				console.log("Europa League: " + newClassif[0].name + " (" + newClassif[0].power + ")");
-			}
-		}
-
-		let playerEuropaResult = player.europaQualification ? `: ${TournamentPath[playerPhase]}` : "";
-
-		currentSeason.titles.push(
-			[`Europa League${playerEuropaResult}`].concat(europaLeagueDescription)
 		);
 
 		if (year % 4 === 0) {
@@ -1812,8 +1741,8 @@ function App() {
 			Math.round(
 				(currentSeason.awardPoints +
 					currentSeason.performance * 2 +
-					Math.min(currentSeason.starting / 10, 8) +
-					player.potential / 5) *
+					Math.min(currentSeason.starting / 10, 9) +
+					player.potential / 10) *
 					100
 			) / 100;
 
@@ -1858,17 +1787,28 @@ function App() {
 		player.fame += currentSeason.goals / 5.0;
 		player.fame += currentSeason.assists / 5.0;
 
+		leagueResults.forEach((leagueResult) => {
+			const league = leagueResult._reference;
+			const { rebaixados, promovidos, rebaixadosNomes, promovidosNomes } =
+				leagueResult._pendingRebaixamento;
+
+			// Realiza o rebaixamento
+			league.highestLeague.teams = league.highestLeague.teams
+				.filter((team) => !rebaixadosNomes.includes(team.name))
+				.concat(promovidos);
+
+			// Realiza a promoção inversa
+			league.lowerLeague.teams = league.lowerLeague.teams
+				.filter((team) => !promovidosNomes.includes(team.name))
+				.concat(rebaixados);
+		});
+
 		//setup next season
 		if (playerPosition <= league.championsSpots) {
 			player.championsQualification = true;
-			player.europaQualification = false;
 			player.lastLeaguePosition = playerPosition;
-		} else if (playerPosition <= league.championsSpots + league.europaSpots) {
-			player.championsQualification = false;
-			player.europaQualification = true;
 		} else {
 			player.championsQualification = false;
-			player.europaQualification = false;
 		}
 
 		if (player.fame < 0) player.fame = 0;
@@ -2080,71 +2020,6 @@ function App() {
 		const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
 		const distance = R * c; // Distância em quilômetros
 		return distance;
-	}
-
-	function GetEuropaPosition(teams, playerTeam = null) {
-		let desc = "";
-		let newTeams = DeepClone(teams);
-		//sort by power
-		newTeams.sort((a, b) => {
-			return b.power - a.power - Math.random();
-		});
-
-		let points = new Array(newTeams.length).fill(0);
-
-		for (let round = 1; round <= 6; round++) {
-			let newOrderTeams = [];
-			let newOrderPoints = [];
-			for (let i = 0; i < newTeams.length / 2; i++) {
-				let home = i;
-				let away = i + newTeams.length / 2;
-
-				let game = GetMatch(newTeams[home], newTeams[away]);
-
-				if (game[0] > game[1]) {
-					points[home] += 300;
-				} else if (game[1] > game[0]) {
-					points[away] += 300;
-				} else {
-					points[away] += 100;
-					points[home] += 100;
-				}
-
-				points[home] += game[0];
-				points[away] += game[1];
-
-				if (
-					playerTeam &&
-					(playerTeam.name === newTeams[home].name || playerTeam.name === newTeams[away].name)
-				) {
-					desc += `-->${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}`;
-				}
-
-				newOrderTeams.push(newTeams[home]);
-				newOrderTeams.push(newTeams[away]);
-				newOrderPoints.push(points[home]);
-				newOrderPoints.push(points[away]);
-			}
-
-			newTeams = newOrderTeams;
-			points = newOrderPoints;
-		}
-
-		let table = [...newTeams];
-
-		table.sort((a, b) => {
-			return points[table.indexOf(b)] - points[table.indexOf(a)];
-		});
-
-		desc += `--> Tabela`;
-		for (let count = 0; count < 8; count++) {
-			desc += `-> ${count + 1}º: ${table[count].name}`;
-		}
-
-		return {
-			table: table,
-			desc: desc,
-		};
 	}
 
 	function GetChampionsPosition(teams, playerTeam = null) {
@@ -2479,7 +2354,7 @@ function App() {
 
 	function GetNewTeams(currentPlayer) {
 		let allTeams = leagues.reduce((acumulador, liga) => {
-			return acumulador.concat(liga.teams);
+			return acumulador.concat(liga.highestLeague.teams);
 		}, []);
 
 		allTeams.sort((a, b) => {
@@ -2563,7 +2438,7 @@ function App() {
 	function GetInitTeams(posValue, newTeams, currentPlayer, country) {
 		// Step 1: Aggregate all teams
 		let allTeams = newTeams.reduce((acumulador, liga) => {
-			return acumulador.concat(liga.teams);
+			return acumulador.concat(liga.highestLeague.teams);
 		}, []);
 
 		// Step 2: Sort teams
@@ -2578,7 +2453,7 @@ function App() {
 		if (country) {
 			let countryLeague = newTeams.find((league) => league.country == country.name);
 			if (countryLeague) {
-				let availableTeams = allTeams.filter((team) => countryLeague.teams.includes(team));
+				let availableTeams = allTeams.filter((team) => countryLeague.highestLeague.teams.includes(team));
 				if (availableTeams.length > 0) {
 					let selectedHome = availableTeams[Math.floor(Math.random() * availableTeams.length)];
 					selectedTeams.push(selectedHome);
@@ -2723,15 +2598,15 @@ function App() {
 
 		for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
 			let last = Math.random();
-			let teamIndices = Array.from(
-				{ length: newTeams[leagueID].teams.length },
-				(_, index) => index
-			);
-			teamIndices = shuffleArray(teamIndices);
 
-			for (let i = 0; i < newTeams[leagueID].teams.length; i++) {
-				let teamID = teamIndices[i];
-				let team = newTeams[leagueID].teams[teamID];
+			// Liga principal
+			let topTeams = newTeams[leagueID].highestLeague.teams;
+			let topTeamIndices = Array.from({ length: topTeams.length }, (_, i) => i);
+			topTeamIndices = shuffleArray(topTeamIndices);
+
+			for (let i = 0; i < topTeams.length; i++) {
+				let teamID = topTeamIndices[i];
+				let team = topTeams[teamID];
 
 				let current = Math.random();
 				let change = Math.round(limit * (last - current)) / 100.0;
@@ -2752,9 +2627,37 @@ function App() {
 				}
 			}
 
-			newTeams[leagueID].teams.sort((a, b) => {
-				return b.power - a.power;
-			});
+			topTeams.sort((a, b) => b.power - a.power);
+
+			// Liga secundária
+			let lowerTeams = newTeams[leagueID].lowerLeague.teams;
+			let lowerTeamIndices = Array.from({ length: lowerTeams.length }, (_, i) => i);
+			lowerTeamIndices = shuffleArray(lowerTeamIndices);
+
+			for (let i = 0; i < lowerTeams.length; i++) {
+				let teamID = lowerTeamIndices[i];
+				let team = lowerTeams[teamID];
+
+				let current = Math.random();
+				let change = Math.round(limit * (last - current)) / 100.0;
+				last = current;
+
+				let newPower = team.power + change;
+				let originalPower = team.power;
+				team.power = Math.round(100.0 * newPower) / 100;
+
+				if (team.power > 10) team.power = 10;
+				else if (team.power < 2) team.power = 2;
+
+				let powerChange = team.power - originalPower;
+				if (powerChange > 0) {
+					gains.push({ team: team.name, change: powerChange });
+				} else if (powerChange < 0) {
+					losses.push({ team: team.name, change: powerChange });
+				}
+			}
+
+			lowerTeams.sort((a, b) => b.power - a.power);
 		}
 
 		gains.sort((a, b) => b.change - a.change);
@@ -3101,14 +3004,6 @@ function App() {
 								<div>
 									{player.champions.map((ch) => (
 										<p key={ch}>{ch}</p>
-									))}
-								</div>
-							</details>
-							<details>
-								<summary>Europa League: {player.europa.length}</summary>
-								<div>
-									{player.europa.map((el) => (
-										<p key={el}>{el}</p>
 									))}
 								</div>
 							</details>

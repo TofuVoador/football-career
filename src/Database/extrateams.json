@@ -78,45 +78,5 @@
 		"name": "Rapid Vienna",
 		"league": "Austrian Bundesliga",
 		"power": 6.4
-	},
-	{
-		"name": "Dynamo Moscow",
-		"league": "Russian PL",
-		"power": 6.2
-	},
-	{
-		"name": "Midtjylland",
-		"league": "Danish Superliga",
-		"power": 6.2
-	},
-	{
-		"name": "PAOK",
-		"league": "Greek Super League",
-		"power": 6.2
-	},
-	{
-		"name": "Rosenborg",
-		"league": "Eliteserien",
-		"power": 6.2
-	},
-	{
-		"name": "Aberdeen",
-		"league": "Scottish Premiership",
-		"power": 6.0
-	},
-	{
-		"name": "Spartak Moscou",
-		"league": "Russian PL",
-		"power": 6.0
-	},
-	{
-		"name": "Trabzonspor",
-		"league": "Süper Lig",
-		"power": 6.0
-	},
-	{
-		"name": "Zorya Luhansk",
-		"league": "Ukrainian PL",
-		"power": 6.0
 	}
 ]
