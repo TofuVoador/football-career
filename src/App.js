@@ -779,7 +779,10 @@ function App() {
 		if (year % 4 === 0) {
 			currentSeason.awardPoints -= 2.0;
 			let playedContinental =
-				player.team.power + currentSeason.starting / 100 + currentSeason.performance >=
+				player.team.power +
+					currentSeason.starting / 100 +
+					currentSeason.performance +
+					player.fame / 1000 >=
 				player.nation.power;
 
 			// EUROCOPA
@@ -1453,7 +1456,10 @@ function App() {
 
 			//was called by the manager
 			let playedWorldCup =
-				player.team.power + currentSeason.starting / 100 + currentSeason.performance >=
+				player.team.power +
+					currentSeason.starting / 100 +
+					currentSeason.performance +
+					player.fame / 1000 >=
 				player.nation.power;
 
 			//create four pots to the group draw
