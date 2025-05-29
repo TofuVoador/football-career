@@ -377,14 +377,12 @@ function App() {
 
 		//giving the performance, set how many games did they were the starter player
 		let r = Math.random() * 10;
-		let starting =
-			Math.floor(
-				(player.performance / 5 + 1) *
-					(1 /
-						(1 / 100 +
-							(player.team.power * (player.positionInClub.peak + 2 - player.age) ** 2) / 10000) +
-						r)
-			) * 2;
+		let starting = Math.floor(
+			100 /
+				(1 + (player.team.power * Math.pow(player.positionInClub.peak + 2 - player.age, 2)) / 300) +
+				player.performance * 10 +
+				r
+		);
 		if (starting > 100) starting = 100;
 		else if (starting < 0) starting = 0;
 
@@ -395,8 +393,7 @@ function App() {
 				(player.positionInClub.subRate *
 					(1 + player.performance / 5) *
 					(1 + player.fame / 1000) *
-					remaining +
-					r) /
+					remaining) /
 					2
 			) * 2;
 		if (subbed > remaining) subbed = remaining;
@@ -2549,7 +2546,7 @@ function App() {
 
 		const performanceMultiplier = 1.5 + performance / 2; //1.0 at -1 to 2.0 at +1
 
-		const ageFactor = Math.max(1, 1.0 + 1.0 / (1 / 9 + 0.01 * (peak - 4 - age) ** 2)); //2.3 at 18, 10 at 4 years from peak, 2 at 34
+		const ageFactor = Math.max(1, 10.0 / (1.0 + (4 * (peak - 2 - age) ** 2) / 100)); //2.8 at 18, 10 at 26, 2.8 at 34
 
 		const clubMultiplier = 1.0 + clubPower / 10; //1.2 at 2 to 2.0 at 10
 
