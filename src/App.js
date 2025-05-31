@@ -1639,28 +1639,7 @@ function App() {
 			let countriesHosts = newWorldCupHistoryHosts.flatMap((wc) => wc.hosts);
 			let furthestYear = Math.max(...newWorldCupHistoryHosts.map((wc) => wc.year));
 
-			let currentWorldCup = newWorldCupHistoryHosts.find((wc) => wc.year === furthestYear);
-			let lastWorldCup = newWorldCupHistoryHosts.find((wc) => wc.year === furthestYear - 4);
-
-			let currentMainHost = allNations.find((n) => n.name === (currentWorldCup?.hosts[0] || ""));
-			let lastMainHost = allNations.find((n) => n.name === (lastWorldCup?.hosts[0] || ""));
-
-			let validTeams = allNations.filter((team) => {
-				const distance = calculateDistance(
-					currentMainHost?.latitude || 0,
-					currentMainHost?.longitude || 0,
-					team.latitude,
-					team.longitude
-				);
-				const distance2 = calculateDistance(
-					lastMainHost?.latitude || 0,
-					lastMainHost?.longitude || 0,
-					team.latitude,
-					team.longitude
-				);
-
-				return !countriesHosts.includes(team.name) && distance >= 5000 && distance2 >= 2500;
-			});
+			let validTeams = allNations.filter((team) => !countriesHosts.includes(team.name));
 
 			let chosenHosts = [];
 
