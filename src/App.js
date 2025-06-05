@@ -378,8 +378,7 @@ function App() {
 		//giving the performance, set how many games did they were the starter player
 		let r = Math.random() * 10;
 		let starting = Math.floor(
-			100 /
-				(1 + (player.team.power * Math.pow(player.positionInClub.peak + 2 - player.age, 2)) / 300) +
+			100 / (1 + (player.team.power * Math.pow(player.positionInClub.peak - player.age, 2)) / 400) +
 				player.performance * 10 +
 				r
 		);
