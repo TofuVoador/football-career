@@ -31,7 +31,6 @@ const Season = (props) => {
 						</div>
 						<div>
 							<p>${FormatarNumero(season.marketValue)}</p>
-							<p>${FormatarNumero(season.wage)}/ano</p>
 						</div>
 					</div>
 					<div>

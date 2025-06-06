@@ -7,7 +7,7 @@ import Nations from "./Database/nations.json";
 import Positions from "./Database/positions.json";
 import ChartComponent from "./Components/chartComponent";
 import Season from "./Components/season";
-import { RandomNumber, DeepClone, FormatarNumero, shuffleArray } from "./Utils";
+import { RandomNumber, DeepClone, shuffleArray } from "./Utils";
 
 const StarPath = [
 	"Esquecido", //0
@@ -67,7 +67,6 @@ function App() {
 		age: null,
 		positionInClub: null,
 		team: null,
-		wage: null,
 		starting: null,
 		subbed: null,
 		titles: null,
@@ -87,7 +86,6 @@ function App() {
 		contractTeam: null,
 		position: null,
 		positionInClub: null,
-		wage: 1,
 		performance: 0,
 		totalGoals: 0,
 		totalAssists: 0,
@@ -119,7 +117,7 @@ function App() {
 	const initPos = shuffleArray(DeepClone(Positions));
 	const [initNation, setInitNation] = useState(GetNewNation());
 
-	const [renew, setRenew] = useState({ value: 0, duration: 0, addition: null, position: null });
+	const [renew, setRenew] = useState({ duration: 0, addition: null, position: null });
 
 	function ChooseNation() {
 		const continentDropdown = document.getElementById("continent-dropdown");
@@ -236,18 +234,16 @@ function App() {
 		newHistory = newHistory.filter((item) => year - item.year <= 8);
 
 		if (newTeam !== null) {
+			console.log(newTeam);
 			// Se houver mudança de time
-			newHistory.push({ team: newTeam.team.name, year: year + newTeam.contract.duration });
+			newHistory.push({ team: newTeam.team.name, year: year + newTeam.duration });
 
 			// Verifica se o jogador foi emprestado para o novo time
 			if (newTeam.loan) {
 				// Atualiza os detalhes do contrato do jogador se ele estiver emprestado
 				player.contractTeam = {
 					team: player.team,
-					contract: {
-						value: newTeam.contract.value,
-						duration: newContract - newTeam.contract.duration,
-					},
+					contractDuration: newContract - newTeam.duration,
 					transferValue: newTeam.transferValue,
 					position: player.positionInClub.abbreviation,
 					loan: false,
@@ -256,9 +252,8 @@ function App() {
 
 			newGeneralPerformance = [];
 			player.team = newTeam.team;
-			newContract = newTeam.contract.duration;
+			newContract = newTeam.duration;
 			player.marketValue = newTeam.transferValue;
-			player.wage = newTeam.contract.value;
 			player.positionInClub = Positions.find(
 				(position) => position.abbreviation === newTeam.position
 			);
@@ -283,7 +278,6 @@ function App() {
 		} else if (newContract <= 0 || renew.addition != null) {
 			// Renovação do contrato
 			newContract = renew.duration + renew.addition; // Nova duração do contrato
-			player.wage = renew.value; // Novo valor do contrato
 			player.positionInClub = Positions.find(
 				(position) => position.abbreviation === renew.position
 			);
@@ -411,7 +405,6 @@ function App() {
 			positionInClub: player.positionInClub,
 			team: DeepClone(player.team),
 			nation: DeepClone(player.nation),
-			wage: player.wage,
 			starting: starting,
 			subbed: subbed,
 			titles: [],
@@ -1806,8 +1799,7 @@ function App() {
 				}
 
 				newRenew = {
-					value: player.contractTeam.contract.value,
-					duration: player.contractTeam.contract.duration,
+					duration: player.contractTeam.contractDuration,
 					addition: null,
 					position: newPosition,
 				};
@@ -1831,31 +1823,11 @@ function App() {
 			player.age < 35
 		) {
 			document.getElementById("decision-transfer1").style.display = "flex";
-			if (newTransfers[0].contract.value < player.wage)
-				newTransfers[0].contract.value = player.wage;
-
-			document.getElementById("decision-transfer2").style.display = "flex";
-			if (newTransfers[1].contract.value < player.wage)
-				newTransfers[1].contract.value = player.wage;
-
-			document.getElementById("decision-transfer3").style.display = "flex";
-			if (newTransfers[2].contract.value < player.wage)
-				newTransfers[2].contract.value = player.wage;
 
 			let contractAddition = 0;
 			if (contract <= 3) contractAddition = RandomNumber(1, 3);
 
-			let newWage = GetWage(
-				player.performance,
-				player.positionInClub.value,
-				player.age,
-				player.team.power,
-				player.fame
-			);
-			if (newWage < player.wage) newWage = player.wage;
-
 			newRenew = {
-				value: newWage,
 				duration: contract - 1,
 				addition: contractAddition,
 				position: player.positionInClub.abbreviation,
@@ -1879,8 +1851,7 @@ function App() {
 				//proposal 1
 				document.getElementById("decision-transfer1").style.display = "flex";
 				newTransfers[0].loan = true;
-				newTransfers[0].contract.duration = RandomNumber(1, 2);
-				newTransfers[0].contract.value = player.wage;
+				newTransfers[0].contractDuration = RandomNumber(1, 2);
 			}
 
 			if (newTransfers[1].team.power > player.team.power) {
@@ -1889,8 +1860,7 @@ function App() {
 				//proposal 2
 				document.getElementById("decision-transfer2").style.display = "flex";
 				newTransfers[1].loan = true;
-				newTransfers[1].contract.duration = RandomNumber(1, 2);
-				newTransfers[1].contract.value = player.wage;
+				newTransfers[1].contractDuration = RandomNumber(1, 2);
 			}
 
 			if (newTransfers[2].team.power > player.team.power) {
@@ -1899,8 +1869,7 @@ function App() {
 				//proposal 3
 				document.getElementById("decision-transfer3").style.display = "flex";
 				newTransfers[2].loan = true;
-				newTransfers[2].contract.duration = RandomNumber(1, 2);
-				newTransfers[2].contract.value = player.wage;
+				newTransfers[2].contractDuration = RandomNumber(1, 2);
 			}
 
 			//cant stay
@@ -1928,14 +1897,6 @@ function App() {
 					document.getElementById("decision-stay").style.display = "flex";
 					let contractDuration = RandomNumber(1, 2);
 
-					let contractValue = GetWage(
-						player.performance,
-						player.positionInClub.value,
-						player.age,
-						player.team.power,
-						player.fame
-					);
-
 					// 20% chance to switch position
 					let newPosition;
 					if (player.position.abbreviation !== "GO" && Math.random() < 0.2) {
@@ -1946,7 +1907,6 @@ function App() {
 					}
 
 					newRenew = {
-						value: contractValue,
 						duration: contractDuration,
 						addition: null,
 						position: newPosition,
@@ -2352,17 +2312,6 @@ function App() {
 				contractDuration += currentPlayer.age <= 32 ? RandomNumber(1, 2) : 0;
 				contractDuration += currentPlayer.age <= 24 ? RandomNumber(1, 2) : 0;
 
-				let contractValue = GetWage(
-					currentPlayer.performance,
-					Positions.find((pos) => pos.abbreviation == newPosition).value,
-					currentPlayer.age,
-					team.power,
-					currentPlayer.fame
-				);
-				let contract = {
-					value: contractValue,
-					duration: contractDuration,
-				};
 				let transferValue = GetTransferValue(
 					currentPlayer.performance,
 					currentPlayer.position.value,
@@ -2374,7 +2323,7 @@ function App() {
 
 				contracts.push({
 					team: team,
-					contract: contract,
+					duration: contractDuration,
 					transferValue: transferValue,
 					loan: false,
 					position: newPosition,
@@ -2439,15 +2388,6 @@ function App() {
 			// Contract duration
 			const contractDuration = RandomNumber(2, 8);
 
-			// Contract wage
-			const contractValue = GetWage(
-				currentPlayer.performance,
-				posValue,
-				currentPlayer.age,
-				team.power,
-				currentPlayer.fame
-			);
-
 			// Transfer value
 			const transferValue = Math.round(
 				posValue *
@@ -2464,10 +2404,7 @@ function App() {
 			// Return structured contract
 			return {
 				team: team,
-				contract: {
-					value: contractValue,
-					duration: contractDuration,
-				},
+				duration: contractDuration,
 				transferValue: transferValue,
 				loan: false,
 				position: newPosition,
@@ -2486,28 +2423,6 @@ function App() {
 		allNat = shuffleArray(allNat);
 
 		return allNat;
-	}
-
-	function GetWage(performance, positionMultiplier, age, teamPower, fame) {
-		const baseWage = 10000;
-
-		const performanceMultiplier = 1.0 + performance * 0.2;
-
-		const ageFactor = 22.0 - Math.abs(age - 28);
-
-		const clubMultiplier = teamPower / 5;
-
-		const fameMultiplier = (100 + fame) / 50;
-
-		const wage =
-			baseWage *
-			performanceMultiplier *
-			positionMultiplier *
-			ageFactor *
-			clubMultiplier *
-			fameMultiplier;
-
-		return Math.round(wage);
 	}
 
 	function GetTransferValue(performance, positionMultiplier, age, peak, clubPower, fame) {
@@ -2773,12 +2688,9 @@ function App() {
 						id="decision-stay"
 						style={{ display: "none" }}
 						onClick={() => ChooseTeam()}>
-						<p>
-							{player.team === null ? "null" : player.team.name} (
-							{player.team === null ? "null" : (player.team.power / 2).toFixed(2)})
-						</p>
+						<p>{player.team === null ? "null" : player.team.name}</p>
 						<div className="contract-info">
-							<div>${FormatarNumero(renew.value)} 💰</div>
+							<div>{player.team === null ? "null" : (player.team.power / 2).toFixed(2)} ⭐</div>
 							<div>
 								{renew.duration}
 								{renew.addition != null && renew.addition > 0 ? ` + ${renew.addition}` : ""} 🕗
@@ -2793,12 +2705,10 @@ function App() {
 						{transfers[0] ? (
 							<>
 								{transfers[0].loan ? <div>Empréstimo</div> : ""}
-								<p>
-									{transfers[0].team.name} ({(transfers[0].team.power / 2).toFixed(2)})
-								</p>
+								<p>{transfers[0].team.name}</p>
 								<div className="contract-info">
-									<div>${FormatarNumero(transfers[0].contract.value)} 💰</div>
-									<div>{transfers[0].contract.duration} 🕗</div>
+									<div>{(transfers[0].team.power / 2).toFixed(2)} ⭐</div>
+									<div>{transfers[0].duration} 🕗</div>
 									<div>{transfers[0].position} 👕</div>
 								</div>
 							</>
@@ -2813,12 +2723,10 @@ function App() {
 						{transfers[1] ? (
 							<>
 								{transfers[1].loan ? <div>Empréstimo</div> : ""}
-								<p>
-									{transfers[1].team.name} ({(transfers[1].team.power / 2).toFixed(2)})
-								</p>
+								<p>{transfers[1].team.name}</p>
 								<div className="contract-info">
-									<div>${FormatarNumero(transfers[1].contract.value)} 💰</div>
-									<div>{transfers[1].contract.duration} 🕗</div>
+									<div>{(transfers[1].team.power / 2).toFixed(2)} ⭐</div>
+									<div>{transfers[1].duration} 🕗</div>
 									<div>{transfers[1].position} 👕</div>
 								</div>
 							</>
@@ -2833,12 +2741,10 @@ function App() {
 						{transfers[2] ? (
 							<>
 								{transfers[2].loan ? <div>Empréstimo</div> : ""}
-								<p>
-									{transfers[2].team.name} ({(transfers[2].team.power / 2).toFixed(2)})
-								</p>
+								<p>{transfers[2].team.name}</p>
 								<div className="contract-info">
-									<div>${FormatarNumero(transfers[2].contract.value)} 💰</div>
-									<div>{transfers[2].contract.duration} 🕗</div>
+									<div>{(transfers[2].team.power / 2).toFixed(2)} ⭐</div>
+									<div>{transfers[2].duration} 🕗</div>
 									<div>{transfers[2].position} 👕</div>
 								</div>
 							</>
