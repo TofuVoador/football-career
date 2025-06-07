@@ -235,7 +235,6 @@ function App() {
 		newHistory = newHistory.filter((item) => year - item.year <= 8);
 
 		if (newTeam !== null) {
-			console.log(newTeam);
 			// Se houver mudança de time
 			newHistory.push({ team: newTeam.team.name, year: year + newTeam.duration });
 
@@ -2293,8 +2292,6 @@ function App() {
 		}
 
 		player.baseValue = Math.floor(player.baseValue * (1.0 + currentPlayer.performance / 4));
-
-		console.log(player.baseValue);
 
 		let contracts = [];
 
