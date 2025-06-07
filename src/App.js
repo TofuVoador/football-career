@@ -2388,16 +2388,13 @@ function App() {
 			const duration = RandomNumber(2, 8);
 
 			// Transfer value
-			const transferValue = Math.round(
-				posValue *
-					GetTransferValue(
-						currentPlayer.performance,
-						currentPlayer.position.value,
-						currentPlayer.age,
-						currentPlayer.position.peak,
-						team.power,
-						currentPlayer.fame
-					)
+			const transferValue = GetTransferValue(
+				currentPlayer.performance,
+				currentPlayer.position.value,
+				currentPlayer.age,
+				currentPlayer.position.peak,
+				team.power,
+				currentPlayer.fame
 			);
 
 			// Return structured contract
@@ -2427,9 +2424,9 @@ function App() {
 	function GetTransferValue(performance, positionMultiplier, age, peak, clubPower, fame) {
 		const performanceMultiplier = 1.5 + performance / 2; //1.0 at -1 to 2.0 at +1
 
-		const ageFactor = Math.max(1, 10.0 - Math.abs(peak - 4 - age) * 0.6); //6.4 at 18, 10 at 24, 6.4 at 30, 2.8 at 36
+		const ageFactor = Math.max(1, 8.0 - Math.abs(peak - 4 - age) * 0.5); //5 at 18, 8 at 24, 5 at 30, 2 at 36
 
-		const clubMultiplier = 1.0 + (clubPower * clubPower) / 50; //1.5 at 7.5 to 3.0 at 10
+		const clubMultiplier = 1.0 + clubPower / 10; //1.2 at 2 to 2.0 at 10
 
 		const fameMultiplier = Math.max(fame, 100) / ((age - 10) * 10); //1 at 100 and 20y, 2.5 at 500 and 30y, 3.2 at 800 and 35y, 4.0 at 1000 and 35y
 
