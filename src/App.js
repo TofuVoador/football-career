@@ -384,7 +384,7 @@ function App() {
 		let subbed =
 			Math.floor(
 				(player.positionInClub.subRate *
-					(1 + player.performance / 5) *
+					Math.exp(player.performance * 0.2) *
 					(1 + player.fame / 1000) *
 					remaining) /
 					2
@@ -1665,20 +1665,20 @@ function App() {
 		}
 
 		let performanceMultiplier = (currentSeason.starting + currentSeason.subbed / 2) / 100.0;
-		performanceMultiplier *= 1.0 + currentSeason.performance / 2;
+		performanceMultiplier *= Math.exp(currentSeason.performance * 0.5);
 
 		currentSeason.goals = Math.floor(
 			player.positionInClub.goalsMultiplier *
 				performanceMultiplier *
 				opportunities *
-				(1 + (Math.random() - Math.random()) / 4)
+				Math.exp((Math.random() - Math.random()) * 0.2)
 		);
 
 		currentSeason.assists = Math.floor(
 			player.positionInClub.assistsMultiplier *
 				performanceMultiplier *
 				opportunities *
-				(1 + (Math.random() - Math.random()) / 4)
+				Math.exp((Math.random() - Math.random()) * 0.2)
 		);
 
 		if (currentSeason.goals < 0) currentSeason.goals = 0;
@@ -2291,7 +2291,7 @@ function App() {
 			allTeams = allTeams.filter((t) => t.name !== team.name);
 		}
 
-		player.baseValue = Math.floor(player.baseValue * (1.0 + currentPlayer.performance / 4));
+		player.baseValue = Math.floor(player.baseValue * Math.exp(currentSeason.performance * 0.1));
 
 		let contracts = [];
 
@@ -2427,11 +2427,13 @@ function App() {
 	function GetTransferValue(performance, positionMultiplier, age, peak, clubPower, fame) {
 		const performanceMultiplier = 1.5 + performance / 2; //1.0 at -1 to 2.0 at +1
 
-		const ageFactor = Math.max(1, 10.0 / (1.0 + (4 * (peak - 4 - age) ** 2) / 100)); //4 at 18, 10 at 24, 4 at 30
+		const ageFactor = Math.max(1, 10.0 - Math.abs(peak - 4 - age) * 0.6); //6.4 at 18, 10 at 24, 6.4 at 30, 2.8 at 36
 
-		const clubMultiplier = 1.0 + clubPower / 10; //1.2 at 2 to 2.0 at 10
+		const clubMultiplier = 1.0 + (clubPower * clubPower) / 50; //1.5 at 7.5 to 3.0 at 10
 
-		const fameMultiplier = Math.max(fame, 50) / ((age - 10) * 5); //1 at 100 to 10 at 1000
+		const fameMultiplier = Math.max(fame, 100) / ((age - 10) * 10); //1 at 100 and 20y, 2.5 at 500 and 30y, 3.2 at 800 and 35y, 4.0 at 1000 and 35y
+
+		console.log(player.baseValue, performanceMultiplier, ageFactor, clubMultiplier, fameMultiplier);
 
 		const transferValue =
 			positionMultiplier *
