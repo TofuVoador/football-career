@@ -100,6 +100,7 @@ function App() {
 		lastLeaguePosition: 0,
 		fame: 0,
 		marketValue: 1,
+		baseValue: 1000000,
 	});
 
 	const [lastLeagueResults, setLastLeagueResults] = useState([]);
@@ -243,7 +244,7 @@ function App() {
 				// Atualiza os detalhes do contrato do jogador se ele estiver emprestado
 				player.contractTeam = {
 					team: player.team,
-					contractDuration: newContract - newTeam.duration,
+					duration: newContract - newTeam.duration,
 					transferValue: newTeam.transferValue,
 					position: player.positionInClub.abbreviation,
 					loan: false,
@@ -506,10 +507,7 @@ function App() {
 		);
 		player.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0); //max = 10
 
-		opportunities +=
-			playerPosition > 0
-				? playerLeagueResult.result.table.length - playerPosition
-				: RandomNumber(1, playerLeagueResult.result.table.length / 2);
+		opportunities += playerPosition > 0 ? 16 - playerPosition : RandomNumber(1, 5);
 
 		//if fist place, then won trophy
 		if (playerPosition === 1) {
@@ -1799,7 +1797,7 @@ function App() {
 				}
 
 				newRenew = {
-					duration: player.contractTeam.contractDuration,
+					duration: player.contractTeam.duration,
 					addition: null,
 					position: newPosition,
 				};
@@ -1851,7 +1849,7 @@ function App() {
 				//proposal 1
 				document.getElementById("decision-transfer1").style.display = "flex";
 				newTransfers[0].loan = true;
-				newTransfers[0].contractDuration = RandomNumber(1, 2);
+				newTransfers[0].duration = RandomNumber(1, 2);
 			}
 
 			if (newTransfers[1].team.power > player.team.power) {
@@ -1860,7 +1858,7 @@ function App() {
 				//proposal 2
 				document.getElementById("decision-transfer2").style.display = "flex";
 				newTransfers[1].loan = true;
-				newTransfers[1].contractDuration = RandomNumber(1, 2);
+				newTransfers[1].duration = RandomNumber(1, 2);
 			}
 
 			if (newTransfers[2].team.power > player.team.power) {
@@ -1869,7 +1867,7 @@ function App() {
 				//proposal 3
 				document.getElementById("decision-transfer3").style.display = "flex";
 				newTransfers[2].loan = true;
-				newTransfers[2].contractDuration = RandomNumber(1, 2);
+				newTransfers[2].duration = RandomNumber(1, 2);
 			}
 
 			//cant stay
@@ -1895,7 +1893,7 @@ function App() {
 				} else {
 					//can stay
 					document.getElementById("decision-stay").style.display = "flex";
-					let contractDuration = RandomNumber(1, 2);
+					let duration = RandomNumber(1, 2);
 
 					// 20% chance to switch position
 					let newPosition;
@@ -1907,7 +1905,7 @@ function App() {
 					}
 
 					newRenew = {
-						duration: contractDuration,
+						duration: duration,
 						addition: null,
 						position: newPosition,
 					};
@@ -2294,6 +2292,10 @@ function App() {
 			allTeams = allTeams.filter((t) => t.name !== team.name);
 		}
 
+		player.baseValue = Math.floor(player.baseValue * (1.0 + currentPlayer.performance / 4));
+
+		console.log(player.baseValue);
+
 		let contracts = [];
 
 		for (let index = 0; index < 3; index++) {
@@ -2308,9 +2310,9 @@ function App() {
 					newPosition = currentPlayer.position.abbreviation;
 				}
 
-				let contractDuration = RandomNumber(1, 4);
-				contractDuration += currentPlayer.age <= 32 ? RandomNumber(1, 2) : 0;
-				contractDuration += currentPlayer.age <= 24 ? RandomNumber(1, 2) : 0;
+				let duration = RandomNumber(1, 4);
+				duration += currentPlayer.age <= 32 ? RandomNumber(1, 2) : 0;
+				duration += currentPlayer.age <= 24 ? RandomNumber(1, 2) : 0;
 
 				let transferValue = GetTransferValue(
 					currentPlayer.performance,
@@ -2323,7 +2325,7 @@ function App() {
 
 				contracts.push({
 					team: team,
-					duration: contractDuration,
+					duration: duration,
 					transferValue: transferValue,
 					loan: false,
 					position: newPosition,
@@ -2386,7 +2388,7 @@ function App() {
 			}
 
 			// Contract duration
-			const contractDuration = RandomNumber(2, 8);
+			const duration = RandomNumber(2, 8);
 
 			// Transfer value
 			const transferValue = Math.round(
@@ -2404,7 +2406,7 @@ function App() {
 			// Return structured contract
 			return {
 				team: team,
-				duration: contractDuration,
+				duration: duration,
 				transferValue: transferValue,
 				loan: false,
 				position: newPosition,
@@ -2426,19 +2428,17 @@ function App() {
 	}
 
 	function GetTransferValue(performance, positionMultiplier, age, peak, clubPower, fame) {
-		const baseValue = 1000000;
-
 		const performanceMultiplier = 1.5 + performance / 2; //1.0 at -1 to 2.0 at +1
 
-		const ageFactor = Math.max(1, 10.0 / (1.0 + (4 * (peak - 2 - age) ** 2) / 100)); //2.8 at 18, 10 at 26, 2.8 at 34
+		const ageFactor = Math.max(1, 10.0 / (1.0 + (4 * (peak - 4 - age) ** 2) / 100)); //4 at 18, 10 at 24, 4 at 30
 
 		const clubMultiplier = 1.0 + clubPower / 10; //1.2 at 2 to 2.0 at 10
 
-		const fameMultiplier = Math.max(fame, 100) / 100; //1 at 100 to 10 at 1000
+		const fameMultiplier = Math.max(fame, 50) / ((age - 10) * 5); //1 at 100 to 10 at 1000
 
 		const transferValue =
 			positionMultiplier *
-			baseValue *
+			player.baseValue *
 			performanceMultiplier *
 			ageFactor *
 			clubMultiplier *

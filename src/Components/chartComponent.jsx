@@ -88,12 +88,6 @@ const ChartComponent = ({ data }) => {
 						backgroundColor: "rgba(154, 225, 157, 1)", // Set background color
 						borderColor: "rgba(154, 225, 157, 1)", // Set border color
 					},
-					{
-						label: "Salário (M)",
-						data: data.map((item) => Math.floor(item.wage / 100000) / 10), // y-axis data
-						backgroundColor: "rgba(83, 122, 90, 1)", // Set background color
-						borderColor: "rgba(83, 122, 90, 1)", // Set border color
-					},
 				],
 			},
 			options: chartOptions,
