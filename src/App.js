@@ -2430,8 +2430,6 @@ function App() {
 
 		const fameMultiplier = Math.max(fame, 100) / ((age - 10) * 10); //1 at 100 and 20y, 2.5 at 500 and 30y, 3.2 at 800 and 35y, 4.0 at 1000 and 35y
 
-		console.log(player.baseValue, performanceMultiplier, ageFactor, clubMultiplier, fameMultiplier);
-
 		const transferValue =
 			positionMultiplier *
 			player.baseValue *
