@@ -2003,7 +2003,7 @@ function App() {
 		});
 
 		desc += `--> Tabela`;
-		for (let count = 0; count < table.length; count++) {
+		for (let count = 0; count < 24; count++) {
 			desc += `-> ${count + 1}º: ${table[count].name}`;
 		}
 
