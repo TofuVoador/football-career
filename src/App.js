@@ -486,13 +486,13 @@ function App() {
 		let playerLeagueResult = leagueResults.find((league) => league.country === player.team.country);
 
 		//top eight from each league
-		let leaguesTopEight = [];
+		let leaguesTable = [];
 		for (let l = 0; l < leagueResults.length; l++) {
-			let topEight = `${leagueResults[l].leagueName}`;
+			let table = `${leagueResults[l].leagueName}`;
 			for (let p = 0; p < leagueResults[l].result.table.length; p++) {
-				topEight += `--> ${p + 1}º: ${leagueResults[l].result.table[p].name}`;
+				table += `--> ${p + 1}º: ${leagueResults[l].result.table[p].name}`;
 			}
-			leaguesTopEight.push(topEight);
+			leaguesTable.push(table);
 		}
 
 		const playerPosition =
@@ -502,7 +502,7 @@ function App() {
 			((playerLeagueResult.championsSpots / 4.0) * (7 - playerPosition)) / 2.0
 		); //max = 3.0
 		currentSeason.titles.push(
-			[`Liga${playerPosition > 0 ? `: ${playerPosition}º lugar` : ""}`].concat(leaguesTopEight)
+			[`Liga${playerPosition > 0 ? `: ${playerPosition}º lugar` : ""}`].concat(leaguesTable)
 		);
 		player.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0); //max = 10
 
@@ -2002,9 +2002,11 @@ function App() {
 			return points[table.indexOf(b)] - points[table.indexOf(a)];
 		});
 
-		desc += `--> Tabela`;
-		for (let count = 0; count < 24; count++) {
+		desc += `--> Top 8`;
+		for (let count = 0; count < table.length; count++) {
 			desc += `-> ${count + 1}º: ${table[count].name}`;
+			if(count == 7) desc += "--> Playoffs"
+			else if(count == 23) desc += "--> Eliminados"
 		}
 
 		return {
