@@ -218,7 +218,7 @@ function App() {
 
 		setLastLeagueResults(leagueResults);
 		// Update league results
-		setTransfers(GetInitTeams(selectedPosition.value, newTeams, player, player.nation)); // Use selectedPosition
+		setTransfers(GetInitTeams(selectedPosition.value, newTeams, player)); // Use selectedPosition
 	}
 
 	function ChooseTeam(newTeam = null) {
@@ -2335,7 +2335,7 @@ function App() {
 		return contracts;
 	}
 
-	function GetInitTeams(posValue, newTeams, currentPlayer, country) {
+	function GetInitTeams(posValue, newTeams, currentPlayer) {
 		// Step 1: Aggregate all teams
 		let allTeams = newTeams.reduce((acumulador, liga) => {
 			return acumulador.concat(liga.highestLeague.teams);
@@ -2349,20 +2349,6 @@ function App() {
 
 		// Step 4: Select 3 unique random teams
 		const selectedTeams = [];
-
-		if (country) {
-			let countryLeague = newTeams.find((league) => league.country == country.name);
-			if (countryLeague) {
-				let availableTeams = allTeams.filter((team) =>
-					countryLeague.highestLeague.teams.includes(team)
-				);
-				if (availableTeams.length > 0) {
-					let selectedHome = availableTeams[Math.floor(Math.random() * availableTeams.length)];
-					selectedTeams.push(selectedHome);
-					allTeams = allTeams.filter((team) => team.name != selectedHome.name);
-				}
-			}
-		}
 
 		const usedIndices = new Set();
 		while (selectedTeams.length < 3) {
