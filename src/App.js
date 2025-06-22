@@ -218,7 +218,7 @@ function App() {
 
 		setLastLeagueResults(leagueResults);
 		// Update league results
-		setTransfers(GetInitTeams(selectedPosition.value, newTeams, player)); // Use selectedPosition
+		setTransfers(GetInitTeams(newTeams, player)); // Use selectedPosition
 	}
 
 	function ChooseTeam(newTeam = null) {
@@ -2335,7 +2335,7 @@ function App() {
 		return contracts;
 	}
 
-	function GetInitTeams(posValue, newTeams, currentPlayer) {
+	function GetInitTeams(newTeams, currentPlayer) {
 		// Step 1: Aggregate all teams
 		let allTeams = newTeams.reduce((acumulador, liga) => {
 			return acumulador.concat(liga.highestLeague.teams);
