@@ -1932,68 +1932,111 @@ function App() {
 		setSeasons(newSeasons);
 	}
 
-	function GetChampionsPosition(teams, playerTeam = null) {
-		let desc = "";
-		let newTeams = DeepClone(teams);
-		//sort by power
-		newTeams.sort((a, b) => {
+	function DrawMatches(teams) {
+		let errorCount = 0;
+
+		teams.sort((a, b) => {
 			return b.power - a.power;
 		});
 
-		let pot1 = newTeams.splice(0, 9);
-		let pot2 = newTeams.splice(0, 9);
-		let pot3 = newTeams.splice(0, 9);
-		let pot4 = newTeams.splice(0, 9);
+		let pots = [shuffleArray(teams.splice(0, 9))];
+		pots.push(shuffleArray(teams.splice(0, 9)));
+		pots.push(shuffleArray(teams.splice(0, 9)));
+		pots.push(shuffleArray(teams.splice(0, 9)));
 
-		pot1 = shuffleArray(pot1);
-		pot2 = shuffleArray(pot2);
-		pot3 = shuffleArray(pot3);
-		pot4 = shuffleArray(pot4);
+		let matchesCount = Array.from({ length: pots.length }, () =>
+			Array.from({ length: 9 }, () => Array(4).fill(0))
+		);
 
-		newTeams = pot1.concat(pot2, pot3, pot4);
+		let matches = [];
 
+		for (let potIndex = 0; potIndex < 4; potIndex++) {
+			for (let teamIndex = 0; teamIndex < 9; teamIndex++) {
+				let team = pots[potIndex][teamIndex];
+
+				for (let oppPotIndex = 0; oppPotIndex <= potIndex; oppPotIndex++) {
+					if (matchesCount[potIndex][teamIndex][oppPotIndex] >= 2) continue;
+
+					let oppIndex1 = Math.floor(Math.random() * pots[oppPotIndex].length);
+
+					while (
+						pots[oppPotIndex][oppIndex1].name == team.name ||
+						matchesCount[oppPotIndex][oppIndex1][potIndex] >= 2 ||
+						(matchesCount[oppPotIndex][oppIndex1][potIndex] >= 1 &&
+							matchesCount[potIndex][teamIndex][oppPotIndex] >= 1 &&
+							matchesCount[oppPotIndex].find((a) => a[potIndex] == 0))
+					) {
+						oppIndex1 = (oppIndex1 + 1) % pots[oppPotIndex].length;
+						errorCount++;
+						if (errorCount >= 1000) {
+							throw new Error("Não foi possível sortear");
+						}
+					}
+
+					matches.push([team.name, pots[oppPotIndex][oppIndex1].name]);
+					matchesCount[potIndex][teamIndex][oppPotIndex] += 1;
+					matchesCount[oppPotIndex][oppIndex1][potIndex] += 1;
+
+					if (matchesCount[potIndex][teamIndex][oppPotIndex] >= 2) continue;
+
+					let oppIndex2 = Math.floor(Math.random() * pots[oppPotIndex].length);
+					while (
+						oppIndex1 == oppIndex2 ||
+						pots[oppPotIndex][oppIndex2].name == team.name ||
+						matchesCount[oppPotIndex][oppIndex2][potIndex] >= 2 ||
+						(matchesCount[oppPotIndex][oppIndex2][potIndex] >= 1 &&
+							matchesCount[potIndex][teamIndex][oppPotIndex] >= 1 &&
+							matchesCount[oppPotIndex].find((a) => a[potIndex] == 0))
+					) {
+						oppIndex2 = (oppIndex2 + 1) % pots[oppPotIndex].length;
+						errorCount++;
+						if (errorCount >= 1000) {
+							throw new Error("Não foi possível sortear");
+						}
+					}
+
+					matches.push([pots[oppPotIndex][oppIndex2].name, team.name]);
+					matchesCount[potIndex][teamIndex][oppPotIndex] += 1;
+					matchesCount[oppPotIndex][oppIndex2][potIndex] += 1;
+				}
+			}
+		}
+
+		return matches;
+	}
+
+	function GetChampionsPosition(teams, playerTeam = null) {
+		let desc = "";
+		let newTeams = DeepClone(teams);
+		let matches = DrawMatches(teams);
 		let points = new Array(newTeams.length).fill(0);
 
-		for (let round = 1; round <= 8; round++) {
-			let newOrderTeams = Array(newTeams.length).fill(null);
-			let newOrderPoints = Array(newTeams.length).fill(0);
-			for (let i = 0; i < newTeams.length - 1; i += 2) {
-				let home = i;
-				let away = i + 1;
+		for (let matchID = 0; matchID < matches.length; matchID++) {
+			let homeID = newTeams.findIndex((t) => t.name == matches[matchID][0]);
+			let awayID = newTeams.findIndex((t) => t.name == matches[matchID][1]);
 
-				let game = GetMatch(newTeams[home], newTeams[away]);
+			let home = newTeams[homeID];
+			let away = newTeams[awayID];
 
-				if (game[0] > game[1]) {
-					points[home] += 3000;
-				} else if (game[1] > game[0]) {
-					points[away] += 3000;
-				} else {
-					points[away] += 1000;
-					points[home] += 1000;
-				}
+			let game = GetMatch(home, away);
 
-				if (
-					playerTeam &&
-					(playerTeam.name === newTeams[home].name || playerTeam.name === newTeams[away].name)
-				) {
-					desc += `-->${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}`;
-				}
+			console.log(`${home.name} ${game[0]} x ${game[1]} ${away.name}`);
 
-				points[home] += game[0];
-				points[away] += game[1];
-
-				newOrderTeams[((i * 2) % newTeams.length) + Math.floor((2 * i) / newTeams.length)] =
-					newTeams[home];
-				newOrderTeams[(((i + 1) * 2) % newTeams.length) + Math.floor((2 * i) / newTeams.length)] =
-					newTeams[away];
-				newOrderPoints[((i * 2) % newTeams.length) + Math.floor((2 * i) / newTeams.length)] =
-					points[home];
-				newOrderPoints[(((i + 1) * 2) % newTeams.length) + Math.floor((2 * i) / newTeams.length)] =
-					points[away];
+			if (game[0] > game[1]) {
+				points[homeID] += 3000;
+			} else if (game[1] > game[0]) {
+				points[awayID] += 3000;
+			} else {
+				points[awayID] += 1000;
+				points[homeID] += 1000;
 			}
 
-			newTeams = newOrderTeams;
-			points = newOrderPoints;
+			if (playerTeam && (playerTeam.name === home.name || playerTeam.name === away.name)) {
+				desc += `-->${home.name} ${game[0]} x ${game[1]} ${away.name}`;
+			}
+
+			points[home] += game[0];
+			points[away] += game[1];
 		}
 
 		let table = [...newTeams];
@@ -2005,8 +2048,8 @@ function App() {
 		desc += `--> Top 8`;
 		for (let count = 0; count < table.length; count++) {
 			desc += `-> ${count + 1}º: ${table[count].name}`;
-			if(count == 7) desc += "--> Playoffs"
-			else if(count == 23) desc += "--> Eliminados"
+			if (count == 7) desc += "--> Playoffs";
+			else if (count == 23) desc += "--> Eliminados";
 		}
 
 		return {
