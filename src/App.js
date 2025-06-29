@@ -185,7 +185,7 @@ function App() {
 		let leagueResults = newTeams.map((league) => {
 			const result = GetLeaguePosition(shuffleArray(league.highestLeague.teams));
 
-			const table = result.table;
+			const table = result.sortedTeams;
 
 			const rebaixados = table.slice(-league.demotions);
 			const promovidos = league.lowerLeague.teams
@@ -210,7 +210,7 @@ function App() {
 			let leagueResult = {
 				country: league.country,
 				championsSpots: league.championsSpots,
-				result: result,
+				table: table,
 			};
 
 			return leagueResult;
@@ -262,7 +262,7 @@ function App() {
 
 			let newLeagueResults =
 				lastLeagueResults.find((league) => league.country === player.team.country) || [];
-			lp = newLeagueResults.result.table.findIndex((team) => team.name === player.team.name) + 1;
+			lp = newLeagueResults.table.findIndex((team) => team.name === player.team.name) + 1;
 
 			// Verifica se o jogador se classificou no ano passado
 			if (lp <= 0 || lp > newLeagueResults.championsSpots) {
@@ -444,7 +444,7 @@ function App() {
 		//national tournaments
 		let leagueResults = leagues.map((league) => {
 			const result = GetLeaguePosition(shuffleArray(league.highestLeague.teams));
-			const table = result.table;
+			const table = result.sortedTeams;
 
 			const rebaixados = table.slice(-league.demotions);
 			const promovidos = league.lowerLeague.teams
@@ -460,7 +460,8 @@ function App() {
 				leagueName: league.highestLeague.name,
 				country: league.country,
 				championsSpots: league.championsSpots,
-				result: result,
+				table: table,
+				desc: result.desc,
 				// Guardamos aqui para rebaixar/promover depois
 				_pendingRebaixamento: {
 					rebaixados,
@@ -474,9 +475,9 @@ function App() {
 			console.log(
 				league.highestLeague.name +
 					": " +
-					leagueResult.result.table[0].name +
+					leagueResult.table[0].name +
 					" (" +
-					leagueResult.result.table[0].power +
+					leagueResult.table[0].power +
 					")"
 			);
 
@@ -485,18 +486,13 @@ function App() {
 
 		let playerLeagueResult = leagueResults.find((league) => league.country === player.team.country);
 
-		//top eight from each league
 		let leaguesTable = [];
 		for (let l = 0; l < leagueResults.length; l++) {
-			let table = `${leagueResults[l].leagueName}`;
-			for (let p = 0; p < leagueResults[l].result.table.length; p++) {
-				table += `--> ${p + 1}º: ${leagueResults[l].result.table[p].name}`;
-			}
-			leaguesTable.push(table);
+			leaguesTable.push(`${leagueResults[l].leagueName}${leagueResults[l].desc}`);
 		}
 
 		const playerPosition =
-			playerLeagueResult.result.table.findIndex((team) => team.name === player.team.name) + 1;
+			playerLeagueResult.table.findIndex((team) => team.name === player.team.name) + 1;
 		currentSeason.awardPoints += Math.max(
 			0,
 			((playerLeagueResult.championsSpots / 4.0) * (7 - playerPosition)) / 2.0
@@ -608,7 +604,7 @@ function App() {
 		for (let leagueID = 0; leagueID < leagues.length; leagueID++) {
 			let league = DeepClone([...leagues[leagueID].highestLeague.teams]);
 
-			let leagueTableNames = lastLeagueResults[leagueID].result.table.map((team) => team.name);
+			let leagueTableNames = lastLeagueResults[leagueID].table.map((team) => team.name);
 			let leagueQualifiedNames = leagueTableNames.splice(
 				0,
 				lastLeagueResults[leagueID].championsSpots
@@ -647,6 +643,15 @@ function App() {
 
 		// Obter as equipes classificadas para os playoffs e limitar para 24 equipes
 		let playoffsClassif = DeepClone([...championsGroup.table]).splice(0, 24);
+
+		//Sortear confrontos
+		for (let index = 0; index < playoffsClassif.length; index += 2) {
+			if (Math.random() < 0.5) {
+				let temp = playoffsClassif[index];
+				playoffsClassif[index] = playoffsClassif[index + 1];
+				playoffsClassif[index + 1] = temp;
+			}
+		}
 
 		// Avançar para a próxima fase
 		phase++;
@@ -2009,161 +2014,262 @@ function App() {
 		let desc = "";
 		let newTeams = DeepClone(teams);
 		let matches = DrawMatches(teams);
-		let points = new Array(newTeams.length).fill(0);
 
-		for (let matchID = 0; matchID < matches.length; matchID++) {
-			let homeID = newTeams.findIndex((t) => t.name == matches[matchID][0]);
-			let awayID = newTeams.findIndex((t) => t.name == matches[matchID][1]);
-
-			let home = newTeams[homeID];
-			let away = newTeams[awayID];
-
-			let game = GetMatch(home, away);
-
-			console.log(`${home.name} ${game[0]} x ${game[1]} ${away.name}`);
-
-			if (game[0] > game[1]) {
-				points[homeID] += 3000;
-			} else if (game[1] > game[0]) {
-				points[awayID] += 3000;
-			} else {
-				points[awayID] += 1000;
-				points[homeID] += 1000;
-			}
-
-			if (playerTeam && (playerTeam.name === home.name || playerTeam.name === away.name)) {
-				desc += `-->${home.name} ${game[0]} x ${game[1]} ${away.name}`;
-			}
-
-			points[home] += game[0];
-			points[away] += game[1];
+		// Inicializa o objeto de classificação
+		let standings = {};
+		for (let team of newTeams) {
+			standings[team.name] = {
+				team: team,
+				points: 0,
+				goalsFor: 0,
+				goalsAgainst: 0,
+			};
 		}
 
-		let table = [...newTeams];
+		// Processa cada partida
+		for (let match of matches) {
+			let [homeName, awayName] = match;
+			let home = standings[homeName];
+			let away = standings[awayName];
 
-		table.sort((a, b) => {
-			return points[table.indexOf(b)] - points[table.indexOf(a)];
+			// Simula o resultado da partida
+			let result = GetMatch(home.team, away.team);
+			let homeGoals = result[0];
+			let awayGoals = result[1];
+
+			// Atualiza estatísticas
+			home.goalsFor += homeGoals;
+			home.goalsAgainst += awayGoals;
+			away.goalsFor += awayGoals;
+			away.goalsAgainst += awayGoals;
+
+			// Atribui pontos
+			if (homeGoals > awayGoals) {
+				home.points += 3;
+			} else if (awayGoals > homeGoals) {
+				away.points += 3;
+			} else {
+				home.points += 1;
+				away.points += 1;
+			}
+
+			// Registra partidas do time do jogador
+			if (playerTeam && (playerTeam.name === homeName || playerTeam.name === awayName)) {
+				desc += `-->${homeName} ${homeGoals} x ${awayGoals} ${awayName}`;
+			}
+		}
+
+		// Converte para array e ordena
+		let sortedStandings = Object.values(standings).sort((a, b) => {
+			// Critério 1: Pontos
+			if (b.points !== a.points) return b.points - a.points;
+
+			// Critério 2: Saldo de gols
+			let goalDiffA = a.goalsFor - a.goalsAgainst;
+			let goalDiffB = b.goalsFor - b.goalsAgainst;
+			if (goalDiffB !== goalDiffA) return goalDiffB - goalDiffA;
+
+			// Critério 3: Gols marcados
+			if (b.goalsFor !== a.goalsFor) return b.goalsFor - a.goalsFor;
+
+			// Critério 4: Confronto direto (não implementado)
+			return 0;
 		});
 
-		desc += `--> Top 8`;
-		for (let count = 0; count < table.length; count++) {
-			desc += `-> ${count + 1}º: ${table[count].name}`;
-			if (count == 7) desc += "--> Playoffs";
-			else if (count == 23) desc += "--> Eliminados";
+		// Gera tabela final
+		let finalTable = sortedStandings.map((item) => item.team);
+
+		// Constrói descrição
+		desc += "--> Top 8";
+		for (let i = 0; i < finalTable.length; i++) {
+			desc += `-> ${i + 1}º: ${finalTable[i].name} (${sortedStandings[i].points} pts)`;
+			if (i === 7) desc += "--> Playoffs";
+			else if (i === 23) desc += "--> Eliminados";
 		}
 
 		return {
-			table: table,
+			table: finalTable,
 			desc: desc,
 		};
 	}
 
-	function GetLeaguePosition(teams, playerTeam = null) {
-		let desc = "";
+	function GetLeaguePosition(teams) {
 		let newTeams = DeepClone(teams);
-		let points = new Array(newTeams.length).fill(0);
 
+		// Objeto para armazenar estatísticas de cada time
+		const teamStats = {};
+		newTeams.forEach((team) => {
+			teamStats[team.name] = {
+				points: 0,
+				goalsFor: 0,
+				goalsAgainst: 0,
+				goalDifference: 0,
+			};
+		});
+
+		// Processar todos os jogos
 		for (let home = 0; home < newTeams.length; home++) {
 			for (let away = 0; away < newTeams.length; away++) {
-				if (newTeams[home] !== newTeams[away]) {
-					let game = GetMatch(newTeams[home], newTeams[away]);
+				if (home === away) continue; // Ignorar jogos do mesmo time
 
-					if (game[0] > game[1]) {
-						points[home] += 3000;
-					} else if (game[1] > game[0]) {
-						points[away] += 3000;
-					} else {
-						points[away] += 1000;
-						points[home] += 1000;
-					}
+				const homeTeam = newTeams[home];
+				const awayTeam = newTeams[away];
+				const match = GetMatch(homeTeam, awayTeam);
+				const [homeGoals, awayGoals] = match;
 
-					if (
-						playerTeam &&
-						(playerTeam.name === newTeams[home].name || playerTeam.name === newTeams[away].name)
-					) {
-						desc += `-->${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}`;
-					}
+				// Atualizar estatísticas
+				teamStats[homeTeam.name].goalsFor += homeGoals;
+				teamStats[homeTeam.name].goalsAgainst += awayGoals;
+				teamStats[awayTeam.name].goalsFor += awayGoals;
+				teamStats[awayTeam.name].goalsAgainst += homeGoals;
 
-					points[home] += game[0];
-					points[away] += game[1];
+				// Atribuir pontos
+				if (homeGoals > awayGoals) {
+					teamStats[homeTeam.name].points += 3;
+				} else if (awayGoals > homeGoals) {
+					teamStats[awayTeam.name].points += 3;
+				} else {
+					teamStats[homeTeam.name].points += 1;
+					teamStats[awayTeam.name].points += 1;
 				}
 			}
 		}
 
-		let table = [...newTeams];
-
-		table.sort((a, b) => {
-			return points[table.indexOf(b)] - points[table.indexOf(a)];
+		// Calcular saldo de gols
+		Object.keys(teamStats).forEach((teamName) => {
+			teamStats[teamName].goalDifference =
+				teamStats[teamName].goalsFor - teamStats[teamName].goalsAgainst;
 		});
 
-		desc += `--> Tabela`;
-		for (let count = 0; count < table.length; count++) {
-			desc += `-> ${count + 1}º: ${table[count].name}`;
+		// Ordenar times usando critérios múltiplos
+		const sortedTeams = [...newTeams].sort((a, b) => {
+			const statsA = teamStats[a.name];
+			const statsB = teamStats[b.name];
+
+			// 1. Pontos
+			if (statsB.points !== statsA.points) {
+				return statsB.points - statsA.points;
+			}
+
+			// 2. Saldo de Gols
+			if (statsB.goalDifference !== statsA.goalDifference) {
+				return statsB.goalDifference - statsA.goalDifference;
+			}
+
+			// 3. Gols Marcados
+			if (statsB.goalsFor !== statsA.goalsFor) {
+				return statsB.goalsFor - statsA.goalsFor;
+			}
+
+			// 4. Ordem Alfabética (desempate final)
+			return a.name.localeCompare(b.name);
+		});
+
+		// Constrói descrição
+		let desc = "";
+		for (let i = 0; i < sortedTeams.length; i++) {
+			desc += `--> ${i + 1}º: ${sortedTeams[i].name} (${
+				teamStats[sortedTeams[i].name].points
+			} pts)`;
 		}
 
-		return {
-			table: table,
-			desc: desc,
-		};
+		return { sortedTeams, desc };
 	}
 
 	function GetWorldCupPosition(teams, playerTeam = null) {
 		let desc = "";
 		let newTeams = DeepClone([...teams]);
-		let points = new Array(teams.length).fill(0);
 
-		// Iterate over each team
-		for (let round = 1; round < newTeams.length; round++) {
-			let newOrder = [];
-			let newPointsOrder = [];
-			for (let matchID = 0; matchID < newTeams.length / 2; matchID++) {
-				// Start from home + 1 to avoid playing against itself and avoid duplicated matches
-				let home = matchID;
-				let away = newTeams.length - (matchID + 1);
-
-				let game = GetMatch(newTeams[home], newTeams[away]);
-
-				if (
-					playerTeam &&
-					(playerTeam.name === newTeams[home].name || playerTeam.name === newTeams[away].name)
-				) {
-					desc += `-->${newTeams[home].name} ${game[0]} x ${game[1]} ${newTeams[away].name}`;
-				}
-
-				if (game[0] > game[1]) {
-					points[home] += 3000;
-				} else if (game[1] > game[0]) {
-					points[away] += 3000;
-				} else {
-					points[away] += 1000;
-					points[home] += 1000;
-				}
-
-				points[home] += game[0];
-				points[away] += game[1];
-
-				newOrder.push(newTeams[home]);
-				newOrder.push(newTeams[away]);
-				newPointsOrder.push(points[home]);
-				newPointsOrder.push(points[away]);
-			}
-
-			newTeams = newOrder;
-			points = newPointsOrder;
+		// Inicializa o objeto de classificação
+		let standings = {};
+		for (let team of teams) {
+			standings[team.name] = {
+				team: team,
+				points: 0,
+				goalsFor: 0,
+				goalsAgainst: 0,
+				goalDifference: 0,
+			};
 		}
 
-		let table = [...newTeams];
+		// Simula todas as rodadas do torneio
+		for (let round = 1; round < newTeams.length; round++) {
+			let rotatedTeams = [...newTeams];
 
-		table.sort((a, b) => {
-			return points[table.indexOf(b)] - points[table.indexOf(a)];
-		});
-		points.sort((a, b) => {
-			return points[b] - points[a];
+			// Rotaciona os times para nova rodada (método round-robin)
+			let last = rotatedTeams.pop();
+			rotatedTeams.splice(1, 0, last);
+
+			// Joga os jogos da rodada
+			for (let matchID = 0; matchID < rotatedTeams.length / 2; matchID++) {
+				let homeIdx = matchID;
+				let awayIdx = rotatedTeams.length - (matchID + 1);
+
+				let homeTeam = rotatedTeams[homeIdx];
+				let awayTeam = rotatedTeams[awayIdx];
+
+				// Obtém resultado da partida
+				let result = GetMatch(homeTeam, awayTeam);
+				let homeGoals = result[0];
+				let awayGoals = result[1];
+
+				// Atualiza estatísticas
+				standings[homeTeam.name].goalsFor += homeGoals;
+				standings[homeTeam.name].goalsAgainst += awayGoals;
+				standings[awayTeam.name].goalsFor += awayGoals;
+				standings[awayTeam.name].goalsAgainst += homeGoals;
+
+				// Calcula saldo de gols
+				standings[homeTeam.name].goalDifference =
+					standings[homeTeam.name].goalsFor - standings[homeTeam.name].goalsAgainst;
+				standings[awayTeam.name].goalDifference =
+					standings[awayTeam.name].goalsFor - standings[awayTeam.name].goalsAgainst;
+
+				// Atribui pontos (3-vitória, 1-empate)
+				if (homeGoals > awayGoals) {
+					standings[homeTeam.name].points += 3;
+				} else if (awayGoals > homeGoals) {
+					standings[awayTeam.name].points += 3;
+				} else {
+					standings[homeTeam.name].points += 1;
+					standings[awayTeam.name].points += 1;
+				}
+
+				// Registra partidas do time do jogador
+				if (
+					playerTeam &&
+					(playerTeam.name === homeTeam.name || playerTeam.name === awayTeam.name)
+				) {
+					desc += `-->${homeTeam.name} ${homeGoals} x ${awayGoals} ${awayTeam.name}`;
+				}
+			}
+
+			newTeams = rotatedTeams;
+		}
+
+		// Converte para array e ordena
+		let sortedStandings = Object.values(standings).sort((a, b) => {
+			// 1º Critério: Pontos
+			if (b.points !== a.points) return b.points - a.points;
+
+			// 2º Critério: Saldo de Gols
+			if (b.goalDifference !== a.goalDifference) return b.goalDifference - a.goalDifference;
+
+			// 3º Critério: Gols Marcados
+			if (b.goalsFor !== a.goalsFor) return b.goalsFor - a.goalsFor;
+
+			// 4º Critério: Confronto Direto (não implementado)
+			return 0;
 		});
 
-		desc += `--> Tabela`;
-		for (let count = 0; count < table.length; count++) {
-			desc += `-> ${count + 1}º: ${table[count].name}`;
+		// Gera tabela final
+		let table = sortedStandings.map((item) => item.team);
+		let points = sortedStandings.map((item) => item.points);
+
+		// Constrói descrição
+		desc += "--> Tabela";
+		for (let i = 0; i < table.length; i++) {
+			desc += `-> ${i + 1}º: ${table[i].name} (${sortedStandings[i].points} pts)`;
 		}
 
 		return {
