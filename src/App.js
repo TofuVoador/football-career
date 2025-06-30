@@ -803,6 +803,7 @@ function App() {
 				}
 			}
 
+			let desc = "";
 			let firstPlaces = [];
 			let secondPlaces = [];
 			let thirdPlaces = [];
@@ -813,17 +814,19 @@ function App() {
 				// Obter a posição do jogador no grupo atual
 				let thisGroup = GetWorldCupPosition(
 					europeanGroups[groupID],
-					europeanGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null
+					europeanGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null,
+					groupID
 				);
 				const playerPosition =
 					thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
 
 				// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
+				
 				if (playerPosition > 0) {
-					europeanDescription.push(
-						`${TournamentPath[phase]}: ${playerPosition}º lugar${thisGroup.desc}`
-					);
+					desc = `: ${playerPosition}º lugar${thisGroup.playerMatches}${desc}`
 				}
+
+				desc += `${thisGroup.desc}`
 
 				// Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
 				firstPlaces.push(thisGroup.table[0]);
@@ -832,8 +835,9 @@ function App() {
 				thirdPlacesPoints.push(thisGroup.points[2]);
 			}
 
-			if (player.nation.continent !== "UEFA" || !nationEuroClassif)
-				europeanDescription.push("Grupos-->Sem Dados");
+			europeanDescription.push(
+				`Grupos${desc}`
+			);
 
 			thirdPlaces.sort((a, b) => {
 				return (
@@ -958,6 +962,7 @@ function App() {
 			}
 
 			// Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
+			desc = "";
 			firstPlaces = [];
 			secondPlaces = [];
 
@@ -966,25 +971,27 @@ function App() {
 				// Obter a posição do jogador no grupo atual
 				let thisGroup = GetWorldCupPosition(
 					americanGroups[groupID],
-					americanGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null
+					americanGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null,
+					groupID,
 				);
 				const playerPosition =
 					thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
 
 				// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
 				if (playerPosition > 0) {
-					americanDescription.push(
-						`${TournamentPath[phase]}: ${playerPosition}º lugar${thisGroup.desc}`
-					);
+					desc = `: ${playerPosition}º lugar${thisGroup.playerMatches}${desc}`;
 				}
+
+				desc += `${thisGroup.desc}`
 
 				// Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
 				firstPlaces.push(thisGroup.table[0]);
 				secondPlaces.push(thisGroup.table[1]);
 			}
 
-			if (player.nation.continent !== "CONCACAF" && player.nation.continent !== "CONMEBOL")
-				americanDescription.push("Grupos-->Sem Dados");
+			americanDescription.push(
+				`Grupos${desc}`
+			);
 
 			// Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
 			classif = firstPlaces.concat(secondPlaces);
@@ -1098,6 +1105,7 @@ function App() {
 			}
 
 			// Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
+			desc = "";
 			firstPlaces = [];
 			secondPlaces = [];
 			thirdPlaces = [];
@@ -1108,17 +1116,18 @@ function App() {
 				// Obter a posição do jogador no grupo atual
 				let thisGroup = GetWorldCupPosition(
 					africanGroups[groupID],
-					africanGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null
+					africanGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null,
+					groupID
 				);
 				const playerPosition =
 					thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
 
 				// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
 				if (playerPosition > 0) {
-					africanDescription.push(
-						`${TournamentPath[phase]}: ${playerPosition}º lugar${thisGroup.desc}`
-					);
+					desc = `: ${playerPosition}º lugar${thisGroup.playerMatches}${desc}`;
 				}
+
+				desc += `${thisGroup.desc}`
 
 				// Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
 				firstPlaces.push(thisGroup.table[0]);
@@ -1127,7 +1136,9 @@ function App() {
 				thirdPlacesPoints.push(thisGroup.points[2]);
 			}
 
-			if (player.nation.continent !== "CAF") africanDescription.push("Grupos-->Sem Dados");
+			africanDescription.push(
+				`Grupos${desc}`
+			);
 
 			thirdPlaces.sort((a, b) => {
 				return (
@@ -1246,6 +1257,7 @@ function App() {
 			}
 
 			// Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
+			desc = ""
 			firstPlaces = [];
 			secondPlaces = [];
 			thirdPlaces = [];
@@ -1256,17 +1268,18 @@ function App() {
 				// Obter a posição do jogador no grupo atual
 				let thisGroup = GetWorldCupPosition(
 					asianGroups[groupID],
-					asianGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null
+					asianGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null,
+					groupID
 				);
 				const playerPosition =
 					thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
 
 				// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
 				if (playerPosition > 0) {
-					asianDescription.push(
-						`${TournamentPath[phase]}: ${playerPosition}º lugar${thisGroup.desc}`
-					);
+					desc = `: ${playerPosition}º lugar${thisGroup.playerMatches}${desc}`;
 				}
+
+				desc += `${thisGroup.desc}`
 
 				// Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
 				firstPlaces.push(thisGroup.table[0]);
@@ -1275,7 +1288,9 @@ function App() {
 				thirdPlacesPoints.push(thisGroup.points[2]);
 			}
 
-			if (player.nation.continent !== "AFC") asianDescription.push("Grupos-->Sem Dados");
+			asianDescription.push(
+				`Grupos${desc}`
+			);
 
 			thirdPlaces.sort((a, b) => {
 				return (
@@ -1446,8 +1461,6 @@ function App() {
 			// Verificar se a nação do novo jogador está entre as nações qualificadas para a Copa do Mundo
 			let classifToWorldCup = allClassifNations.some((t) => t.name === player.nation.name);
 
-			if (!classifToWorldCup) worldCupDescription.push("Grupos-->Sem Dados");
-
 			//was called by the manager
 			let playedWorldCup =
 				player.team.power +
@@ -1458,44 +1471,13 @@ function App() {
 
 			let groups = DrawWorldGroups(allClassifNations, hostsAreFirst.length);
 
-			// Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
-			let firstPlaces = [];
-			let secondPlaces = [];
-			let thirdPlaces = [];
-			let thirdPlacesPoints = [];
+			let results = GetWorldCupResults(groups)
 
-			// Loop através de todos os grupos
-			for (let groupID = 0; groupID < groups.length; groupID++) {
-				// Obter a posição do jogador no grupo atual
-				let thisGroup = GetWorldCupPosition(
-					groups[groupID],
-					groups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null
-				);
-				const playerPosition =
-					thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
-
-				// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
-				if (playerPosition > 0) {
-					worldCupDescription.push(
-						`${TournamentPath[phase]}: ${playerPosition}º lugar${thisGroup.desc}`
-					);
-				}
-
-				// Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
-				firstPlaces.push(thisGroup.table[0]);
-				secondPlaces.push(thisGroup.table[1]);
-				thirdPlaces.push(thisGroup.table[2]);
-				thirdPlacesPoints.push(thisGroup.points[2]);
-			}
-
-			thirdPlaces.sort((a, b) => {
-				return (
-					thirdPlacesPoints[thirdPlaces.indexOf(b)] - thirdPlacesPoints[thirdPlaces.indexOf(a)]
-				);
-			});
+			worldCupDescription.push(`Grupos${results.desc}`);
 
 			// Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
-			let classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 8));
+			let classif = results.classif;
+
 			phase++;
 
 			// Verificar se o jogador avançou para a próxima fase
@@ -1982,11 +1964,11 @@ function App() {
 			//pot 0
 			if (GroupID < hostsQtd) {
 				groups[GroupID].push(pots[0][0]);
-				pots[0] = pots[0].filter((n) => pots[0][0] !== n);
+				pots[0] = pots[0].filter((n) => pots[0][0].name !== n.name);
 			} else {
 				let randomIndex = RandomNumber(0, pots[0].length - 1);
 				groups[GroupID].push(pots[0][randomIndex]);
-				pots[0] = pots[0].filter((n) => pots[0][randomIndex] !== n);
+				pots[0] = pots[0].filter((n) => pots[0][randomIndex].name !== n.name);
 			}
 
 			//pot 1
@@ -1994,9 +1976,38 @@ function App() {
 				(n) =>
 					!groups[GroupID].some((opp) => opp.continent === n.continent && opp.continent != "UEFA")
 			);
+			if (pot1validNations.length <= 0) {
+				let found = false;
+				for (let indexRetro = GroupID - 1; indexRetro >= 0; indexRetro--) {
+					//verifica se algum país restante do pots[2] possui um valor de .continent que não está no groups[indexRetro]
+					let retroValidNations = pots[1].filter(
+						(n) => !groups[indexRetro].some((t) => t.continent == n.continent)
+					);
+
+					if (retroValidNations.length > 0) {
+						//verifica se o país da posição 2 do groups[indexRetro] possui um valor de .continent que não está no groups[GroupID]
+						let canFit = !groups[GroupID].some(
+							(n) => groups[indexRetro][1].continent == n.continent
+						);
+
+						//se der certo, fazer a troca. se não continue para o grupo anterior.
+						if (canFit) {
+							let r = RandomNumber(0, retroValidNations.length - 1);
+							pot1validNations = [groups[indexRetro][1]];
+							groups[indexRetro][1] = retroValidNations[r];
+							found = true;
+							break;
+						}
+					}
+				}
+
+				if (!found) {
+					pot1validNations = pots[1];
+				}
+			}
 			let pot1randomIndex = RandomNumber(0, pot1validNations.length - 1);
 			groups[GroupID].push(pot1validNations[pot1randomIndex]);
-			pots[1] = pots[1].filter((n) => pot1validNations[pot1randomIndex] !== n);
+			pots[1] = pots[1].filter((n) => pot1validNations[pot1randomIndex].name !== n.name);
 
 			//pot 2
 			let uefaCount = groups[GroupID].filter((t) => t.continent === "UEFA").length;
@@ -2043,7 +2054,7 @@ function App() {
 			}
 			let pot2randomIndex = RandomNumber(0, pot2validNations.length - 1);
 			groups[GroupID].push(pot2validNations[pot2randomIndex]);
-			pots[2] = pots[2].filter((n) => pot2validNations[pot2randomIndex] !== n);
+			pots[2] = pots[2].filter((n) => pot2validNations[pot2randomIndex].name !== n.name);
 
 			//pot 3
 			uefaCount = groups[GroupID].filter((t) => t.continent === "UEFA").length;
@@ -2085,12 +2096,12 @@ function App() {
 				}
 
 				if (!found) {
-					pot2validNations = pots[2];
+					pot3validNations = pots[3];
 				}
 			}
 			let pot3randomIndex = RandomNumber(0, pot3validNations.length - 1);
 			groups[GroupID].push(pot3validNations[pot3randomIndex]);
-			pots[3] = pots[3].filter((n) => pot3validNations[pot3randomIndex] !== n);
+			pots[3] = pots[3].filter((n) => pot3validNations[pot3randomIndex].name !== n.name);		
 		}
 
 		return groups;
@@ -2262,8 +2273,56 @@ function App() {
 		return { sortedTeams, desc };
 	}
 
-	function GetWorldCupPosition(teams, playerTeam = null) {
+	function GetWorldCupResults(groups) {
+		// Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
 		let desc = "";
+		let firstPlaces = [];
+		let secondPlaces = [];
+		let thirdPlaces = [];
+		let thirdPlacesPoints = [];
+
+		// Loop através de todos os grupos
+		for (let groupID = 0; groupID < groups.length; groupID++) {
+			// Obter a posição do jogador no grupo atual
+			let thisGroup = GetWorldCupPosition(
+				groups[groupID],
+				groups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null,
+				groupID
+			);
+			const playerPosition =
+				thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
+
+			// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
+			if (playerPosition > 0) {
+				desc = `: ${playerPosition}º lugar${thisGroup.playerMatches}${desc}`
+			}
+
+			desc += `${thisGroup.desc}`
+
+			// Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
+			firstPlaces.push(thisGroup.table[0]);
+			secondPlaces.push(thisGroup.table[1]);
+			thirdPlaces.push(thisGroup.table[2]);
+			thirdPlacesPoints.push(thisGroup.points[2]);
+		}
+
+		thirdPlaces.sort((a, b) => {
+			return (
+				thirdPlacesPoints[thirdPlaces.indexOf(b)] - thirdPlacesPoints[thirdPlaces.indexOf(a)]
+			);
+		});
+
+		let classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 8))
+
+		return {
+			classif,
+			desc
+		}
+	}
+
+	function GetWorldCupPosition(teams, playerTeam = null, groupID) {
+		let groupNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
+		let playerMatches = "";
 		let newTeams = DeepClone([...teams]);
 
 		// Inicializa o objeto de classificação
@@ -2326,7 +2385,7 @@ function App() {
 					playerTeam &&
 					(playerTeam.name === homeTeam.name || playerTeam.name === awayTeam.name)
 				) {
-					desc += `-->${homeTeam.name} ${homeGoals} x ${awayGoals} ${awayTeam.name}`;
+					playerMatches += `-->${homeTeam.name} ${homeGoals} x ${awayGoals} ${awayTeam.name}`;
 				}
 			}
 
@@ -2353,13 +2412,14 @@ function App() {
 		let points = sortedStandings.map((item) => item.points);
 
 		// Constrói descrição
-		desc += "--> Tabela";
+		let desc = "--> Grupo " + groupNames[groupID];
 		for (let i = 0; i < table.length; i++) {
 			desc += `-> ${i + 1}º: ${table[i].name} (${sortedStandings[i].points} pts)`;
 		}
 
 		return {
 			table: table,
+			playerMatches: playerMatches,
 			desc: desc,
 			points: points,
 		};
