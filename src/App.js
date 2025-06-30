@@ -1438,7 +1438,7 @@ function App() {
 
 			// Ordenar todas as nações qualificadas para a Copa do Mundo por poder
 			allClassifNations.sort((a, b) => {
-				return b.power - a.power - Math.random();
+				return b.power - a.power;
 			});
 
 			allClassifNations = hostsAreFirst.concat(allClassifNations);
@@ -1456,45 +1456,7 @@ function App() {
 					player.fame / 1000 >=
 				player.nation.power;
 
-			//create four pots to the group draw
-			let pots = Array.from({ length: 4 }, (_, potID) =>
-				allClassifNations.slice(potID * 12, (potID + 1) * 12)
-			);
-
-			let groups = [[], [], [], [], [], [], [], [], [], [], [], []];
-
-			for (let potID = 0; potID < pots.length; potID++) {
-				for (let GroupID = 0; GroupID < 12; GroupID++) {
-					let validNations = pots[potID].filter(
-						(n) => !groups[GroupID].some((opp) => opp.continent === n.continent)
-					);
-
-					if (validNations.length > 0) {
-						let randomIndex = RandomNumber(0, validNations.length - 1);
-						groups[GroupID].push(validNations[randomIndex]);
-
-						pots[potID] = pots[potID].filter((n) => validNations[randomIndex] !== n);
-					} else {
-						//if there is no other nation available, try repeating Europe
-						validNations = pots[potID].filter((n) => n.continent === "UEFA");
-						if (validNations.length > 0) {
-							let randomIndex = RandomNumber(0, validNations.length - 1);
-							groups[GroupID].push(validNations[randomIndex]);
-							pots[potID] = pots[potID].filter((n) => validNations[randomIndex] !== n);
-						} else {
-							validNations = pots[potID];
-							if (validNations.length > 0) {
-								let randomIndex = RandomNumber(0, validNations.length - 1);
-								groups[GroupID].push(validNations[randomIndex]);
-								pots[potID] = pots[potID].filter((n) => validNations[randomIndex] !== n);
-							} else {
-								//if can't make a group
-								throw new Error("Não foi possível gerar o grupo para a copa", groups);
-							}
-						}
-					}
-				}
-			}
+			let groups = DrawWorldGroups(allClassifNations, hostsAreFirst.length);
 
 			// Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
 			let firstPlaces = [];
@@ -2008,6 +1970,130 @@ function App() {
 		}
 
 		return matches;
+	}
+
+	function DrawWorldGroups(teams, hostsQtd) {
+		//create four pots to the group draw
+		let pots = Array.from({ length: 4 }, (_, potID) => teams.slice(potID * 12, (potID + 1) * 12));
+
+		let groups = [[], [], [], [], [], [], [], [], [], [], [], []];
+
+		for (let GroupID = 0; GroupID < 12; GroupID++) {
+			//pot 0
+			if (GroupID < hostsQtd) {
+				groups[GroupID].push(pots[0][0]);
+				pots[0] = pots[0].filter((n) => pots[0][0] !== n);
+			} else {
+				let randomIndex = RandomNumber(0, pots[0].length - 1);
+				groups[GroupID].push(pots[0][randomIndex]);
+				pots[0] = pots[0].filter((n) => pots[0][randomIndex] !== n);
+			}
+
+			//pot 1
+			let pot1validNations = pots[1].filter(
+				(n) =>
+					!groups[GroupID].some((opp) => opp.continent === n.continent && opp.continent != "UEFA")
+			);
+			let pot1randomIndex = RandomNumber(0, pot1validNations.length - 1);
+			groups[GroupID].push(pot1validNations[pot1randomIndex]);
+			pots[1] = pots[1].filter((n) => pot1validNations[pot1randomIndex] !== n);
+
+			//pot 2
+			let uefaCount = groups[GroupID].filter((t) => t.continent === "UEFA").length;
+			let pot2validNations = pots[2].filter((n) => {
+				if (n.continent === "UEFA") {
+					// Permite no máximo 2 times da UEFA
+					return uefaCount < 2;
+				} else {
+					// Para outros continentes: não permite duplicatas
+					return !groups[GroupID].some((opp) => opp.continent === n.continent);
+				}
+			});
+			if (uefaCount <= 0 && pots[2].some((t) => t.continent === "UEFA")) {
+				pot2validNations = pots[2].filter((n) => n.continent === "UEFA");
+			}
+			if (pot2validNations.length <= 0) {
+				let found = false;
+				for (let indexRetro = GroupID - 1; indexRetro >= 0; indexRetro--) {
+					//verifica se algum país restante do pots[2] possui um valor de .continent que não está no groups[indexRetro]
+					let retroValidNations = pots[2].filter(
+						(n) => !groups[indexRetro].some((t) => t.continent == n.continent)
+					);
+
+					if (retroValidNations.length > 0) {
+						//verifica se o país da posição 2 do groups[indexRetro] possui um valor de .continent que não está no groups[GroupID]
+						let canFit = !groups[GroupID].some(
+							(n) => groups[indexRetro][2].continent == n.continent
+						);
+
+						//se der certo, fazer a troca. se não continue para o grupo anterior.
+						if (canFit) {
+							let r = RandomNumber(0, retroValidNations.length - 1);
+							pot2validNations = [groups[indexRetro][2]];
+							groups[indexRetro][2] = retroValidNations[r];
+							found = true;
+							break;
+						}
+					}
+				}
+
+				if (!found) {
+					pot2validNations = pots[2];
+				}
+			}
+			let pot2randomIndex = RandomNumber(0, pot2validNations.length - 1);
+			groups[GroupID].push(pot2validNations[pot2randomIndex]);
+			pots[2] = pots[2].filter((n) => pot2validNations[pot2randomIndex] !== n);
+
+			//pot 3
+			uefaCount = groups[GroupID].filter((t) => t.continent === "UEFA").length;
+			let pot3validNations = pots[3].filter((n) => {
+				if (n.continent === "UEFA") {
+					// Permite no máximo 2 times da UEFA
+					return uefaCount < 2;
+				} else {
+					// Para outros continentes: não permite duplicatas
+					return !groups[GroupID].some((opp) => opp.continent === n.continent);
+				}
+			});
+			if (uefaCount <= 1 && pots[3].some((t) => t.continent === "UEFA")) {
+				pot3validNations = pots[3].filter((n) => n.continent === "UEFA");
+			}
+			if (pot3validNations.length <= 0) {
+				let found = false;
+				for (let indexRetro = GroupID - 1; indexRetro >= 0; indexRetro--) {
+					//verifica se algum país restante do pots[3] possui um valor de .continent que não está no groups[indexRetro]
+					let retroValidNations = pots[3].filter(
+						(n) => !groups[indexRetro].some((t) => t.continent == n.continent)
+					);
+
+					if (retroValidNations.length > 0) {
+						//verifica se o país da posição 3 do groups[indexRetro] possui um valor de .continent que não está no groups[GroupID]
+						let canFit = !groups[GroupID].some(
+							(n) => groups[indexRetro][3].continent == n.continent
+						);
+
+						//se der certo, fazer a troca. se não continue para o grupo anterior.
+						if (canFit) {
+							let r = RandomNumber(0, retroValidNations.length - 1);
+							pot3validNations = [groups[indexRetro][3]];
+							groups[indexRetro][3] = retroValidNations[r];
+							found = true;
+							break;
+						}
+					}
+				}
+
+				if (!found) {
+					pot2validNations = pots[2];
+				}
+			}
+			let pot3randomIndex = RandomNumber(0, pot3validNations.length - 1);
+			groups[GroupID].push(pot3validNations[pot3randomIndex]);
+			pots[3] = pots[3].filter((n) => pot3validNations[pot3randomIndex] !== n);
+		}
+
+		return groups;
 	}
 
 	function GetChampionsPosition(teams, playerTeam = null) {
