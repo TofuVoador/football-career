@@ -2331,10 +2331,10 @@ function App() {
 		const setMapping = ["T1", "T2", "T1", "T2", "T2", "T1", "T2", "T1", "T1", "T2", "T1", "T2"];
 		const subsetsMapping = ["S1", "S2", "S2", "S1", "S1", "S2"];
 		const allocationPriority = {
-			"T1-S1": { "main": [1, 6], "sub": [2, 5], "exchange": [3, 4] },
-			"T1-S2": { "main": [2, 5], "sub": [1, 6], "exchange": [0, 7] },
-			"T2-S1": { "main": [0, 7], "sub": [3, 4], "exchange": [2, 5] },
-			"T2-S2": { "main": [3, 4], "sub": [0, 7], "exchange": [1, 6] },
+			"T1-S1": { "main": [1, 6], "sub": [3, 4], "exchange": [2, 5] },
+			"T1-S2": { "main": [3, 4], "sub": [1, 6], "exchange": [0, 7] },
+			"T2-S1": { "main": [0, 7], "sub": [2, 5], "exchange": [3, 4] },
+			"T2-S2": { "main": [2, 5], "sub": [0, 7], "exchange": [1, 6] },
 		};
 		const secondPlaceSwapMap = {
 			0: 3, 1: 2, 2: 1, 3: 0,
