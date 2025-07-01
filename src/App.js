@@ -1979,13 +1979,13 @@ function App() {
 			if (pot1validNations.length <= 0) {
 				let found = false;
 				for (let indexRetro = GroupID - 1; indexRetro >= 0; indexRetro--) {
-					//verifica se algum país restante do pots[2] possui um valor de .continent que não está no groups[indexRetro]
+					//verifica se algum país restante do pots[1] possui um valor de .continent que não está no groups[indexRetro]
 					let retroValidNations = pots[1].filter(
 						(n) => !groups[indexRetro].some((t) => t.continent == n.continent)
 					);
 
 					if (retroValidNations.length > 0) {
-						//verifica se o país da posição 2 do groups[indexRetro] possui um valor de .continent que não está no groups[GroupID]
+						//verifica se o país da posição 1 do groups[indexRetro] possui um valor de .continent que não está no groups[GroupID]
 						let canFit = !groups[GroupID].some(
 							(n) => groups[indexRetro][1].continent == n.continent
 						);
@@ -2306,18 +2306,129 @@ function App() {
 			thirdPlacesPoints.push(thisGroup.points[2]);
 		}
 
-		thirdPlaces.sort((a, b) => {
-			return (
-				thirdPlacesPoints[thirdPlaces.indexOf(b)] - thirdPlacesPoints[thirdPlaces.indexOf(a)]
-			);
-		});
+		//Pega os índices dos 8 maiores pontuadores
+		let top8Indices = [...thirdPlacesPoints]
+			.map((points, index) => ({ points, index }))
+			.sort((a, b) => b.points - a.points)
+			.slice(0, 8)
+			.map(item => item.index);
 
-		let classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 8))
+		// Passo 2: Cria novo array com 12 posições
+		let filteredThirdPlaces = thirdPlaces.map((place, index) =>
+			top8Indices.includes(index) ? place : null // ou undefined
+		);
+
+		// Agora você pode passar esse array com buracos para o mapeamento
+		let classif = worldCupDrawTest(firstPlaces, secondPlaces, filteredThirdPlaces);
 
 		return {
 			classif,
 			desc
 		}
+	}
+
+	function worldCupDrawTest(firstPlaces, secondPlaces, thirdPlaces) {
+		const setMapping = ["T1", "T2", "T1", "T2", "T2", "T1", "T2", "T1", "T1", "T2", "T1", "T2"];
+		const subsetsMapping = ["S1", "S2", "S2", "S1", "S1", "S2"];
+		const allocationPriority = {
+			"T1-S1": { "main": [1, 6], "sub": [2, 5], "exchange": [3, 4] },
+			"T1-S2": { "main": [2, 5], "sub": [1, 6], "exchange": [0, 7] },
+			"T2-S1": { "main": [0, 7], "sub": [3, 4], "exchange": [2, 5] },
+			"T2-S2": { "main": [3, 4], "sub": [0, 7], "exchange": [1, 6] },
+		};
+		const secondPlaceSwapMap = {
+			0: 3, 1: 2, 2: 1, 3: 0,
+			4: 7, 5: 6, 6: 5, 7: 4,
+			8:11, 9:10, 10:9, 11:8,
+		};
+		let sets = { T1: [], T2: [] };
+		let thirdDraw = new Array(8).fill(null)
+
+		function setHandler(set, setKey) {
+			let subsets = { S1: [], S2: [] };
+			set.forEach((place, i) => {
+				if(!place) return;
+				const group = subsetsMapping[i];
+				if(!subsets[group]) subsets[group] = [];
+				subsets[group].push(place);
+			})
+
+			if(subsets.S1.length <= subsets.S2.length) {
+				subsetHandler(subsets.S1, `${setKey}-S1`)
+				subsetHandler(subsets.S2, `${setKey}-S2`)
+			} else {
+				subsetHandler(subsets.S2, `${setKey}-S2`)
+				subsetHandler(subsets.S1, `${setKey}-S1`)
+			}
+		}
+
+		function subsetHandler(subset, subsetKey) {
+			const priorities = allocationPriority[subsetKey];
+			for(let teamIndex = 0; teamIndex < subset.length; teamIndex++) {
+				console.log(subset[teamIndex], priorities)
+				let alocated = false
+				const mainPriorities = priorities['main']
+				for(let i = 0; i < 2; i++) {
+					if(!thirdDraw[mainPriorities[i]]) {
+						thirdDraw[mainPriorities[i]] = subset[teamIndex]
+						alocated = true;
+						break;
+					}
+				}
+				if(alocated) continue;
+				const subPriorities = priorities['sub']
+				for(let i = 0; i < 2; i++) {
+					if(!thirdDraw[subPriorities[i]]) {
+						thirdDraw[subPriorities[i]] = subset[teamIndex]
+						alocated = true;
+						break;
+					}
+				}
+				if(alocated) continue;
+				const exchangePriorities = priorities['exchange'];
+				for (let i = 0; i < 2; i++) {
+					const drawIndex = exchangePriorities[i];
+					if (!thirdDraw[drawIndex]) {
+						thirdDraw[drawIndex] = subset[teamIndex];
+						alocated = true;
+
+						// Índice do time original no array de 12 terceiros colocados
+						const originalIndex = thirdPlaces.indexOf(subset[teamIndex]);
+						const swapIndex = secondPlaceSwapMap[originalIndex];
+
+						if (swapIndex !== undefined) {
+							const temp = secondPlaces[originalIndex];
+							secondPlaces[originalIndex] = secondPlaces[swapIndex];
+							secondPlaces[swapIndex] = temp;
+						}
+
+						break;
+					}
+				}
+			}
+		}
+
+		thirdPlaces.forEach((place, i) => {
+			const group = setMapping[i];
+			if (!sets[group]) sets[group] = [];
+			sets[group].push(place);
+		});
+
+		if(sets.T1.filter((n) => n).length <= sets.T2.filter((n) => n).length) {
+			setHandler(sets.T1, "T1")
+			setHandler(sets.T2, "T2")
+		} else {
+			setHandler(sets.T2, "T2")
+			setHandler(sets.T1, "T1")
+		}
+
+		for(let i = 0; i < secondPlaces.length; i += 2) {
+			let temp = secondPlaces[i];
+			secondPlaces[i] = secondPlaces[i+1];
+			secondPlaces[i+1] = temp;
+		}
+
+		return firstPlaces.concat(secondPlaces, thirdDraw)
 	}
 
 	function GetWorldCupPosition(teams, playerTeam = null, groupID) {
