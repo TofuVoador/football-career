@@ -803,50 +803,14 @@ function App() {
 				}
 			}
 
-			let desc = "";
-			let firstPlaces = [];
-			let secondPlaces = [];
-			let thirdPlaces = [];
-			let thirdPlacesPoints = [];
+			let eurocopaResults = GetEurocopaResults(europeanGroups)
 
-			// Loop através de todos os grupos
-			for (let groupID = 0; groupID < europeanGroups.length; groupID++) {
-				// Obter a posição do jogador no grupo atual
-				let thisGroup = GetWorldCupPosition(
-					europeanGroups[groupID],
-					europeanGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null,
-					groupID
-				);
-				const playerPosition =
-					thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
-
-				// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
-				
-				if (playerPosition > 0) {
-					desc = `: ${playerPosition}º lugar${thisGroup.playerMatches}${desc}`
-				}
-
-				desc += `${thisGroup.desc}`
-
-				// Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
-				firstPlaces.push(thisGroup.table[0]);
-				secondPlaces.push(thisGroup.table[1]);
-				thirdPlaces.push(thisGroup.table[2]);
-				thirdPlacesPoints.push(thisGroup.points[2]);
-			}
-
+			let classif = eurocopaResults.classif;
+			
 			europeanDescription.push(
-				`Grupos${desc}`
+				`Grupos${eurocopaResults.desc}`
 			);
 
-			thirdPlaces.sort((a, b) => {
-				return (
-					thirdPlacesPoints[thirdPlaces.indexOf(b)] - thirdPlacesPoints[thirdPlaces.indexOf(a)]
-				);
-			});
-
-			// Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
-			let classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 4));
 			phase += 2;
 
 			if (classif.some((t) => t.name === player.nation.name)) {
@@ -962,9 +926,9 @@ function App() {
 			}
 
 			// Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
-			desc = "";
-			firstPlaces = [];
-			secondPlaces = [];
+			let desc = "";
+			let firstPlaces = [];
+			let secondPlaces = [];
 
 			// Loop através de todos os grupos
 			for (let groupID = 0; groupID < americanGroups.length; groupID++) {
@@ -1108,8 +1072,8 @@ function App() {
 			desc = "";
 			firstPlaces = [];
 			secondPlaces = [];
-			thirdPlaces = [];
-			thirdPlacesPoints = [];
+			let thirdPlaces = [];
+			let thirdPlacesPoints = [];
 
 			// Loop através de todos os grupos
 			for (let groupID = 0; groupID < africanGroups.length; groupID++) {
@@ -2273,6 +2237,122 @@ function App() {
 		return { sortedTeams, desc };
 	}
 
+	function GetEurocopaResults(groups) {
+		let desc = "";
+		let firstPlaces = [];
+		let secondPlaces = [];
+		let thirdPlaces = [];
+		let thirdPlacesPoints = [];
+
+		// Loop através de todos os grupos
+		for (let groupID = 0; groupID < groups.length; groupID++) {
+			let thisGroup = GetWorldCupPosition(
+				groups[groupID],
+				groups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null,
+				groupID
+			);
+			const playerPosition =
+				thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
+
+			if (playerPosition > 0) {
+				desc = `: ${playerPosition}º lugar${thisGroup.playerMatches}${desc}`
+			}
+
+			desc += `${thisGroup.desc}`
+
+			firstPlaces.push(thisGroup.table[0]);
+			secondPlaces.push(thisGroup.table[1]);
+			thirdPlaces.push(thisGroup.table[2]);
+			thirdPlacesPoints.push(thisGroup.points[2]);
+		}
+
+		// Identifica os 4 terceiros colocados com maior pontuação
+		let top4Indices = [...thirdPlacesPoints]
+			.map((points, index) => ({ points, index }))
+			.sort((a, b) => b.points - a.points)
+			.slice(0, 4)
+			.map(item => item.index);
+
+		// Mantém a ordem e posição original, mas filtra os 4 melhores terceiros
+		let filteredThirdPlaces = thirdPlaces.map((place, index) =>
+			top4Indices.includes(index) ? place : null
+		);
+
+		// Substitua esta chamada por 'euroCupDraw' quando for implementado
+		let classif = euroCupDraw(firstPlaces, secondPlaces, filteredThirdPlaces);
+
+		return {
+			classif,
+			desc
+		}
+	}
+
+	function euroCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
+		const validPositionsByGroup = {
+			A: [1, 0],
+			B: [0, 1],
+			C: [0, 2],
+			D: [1, 3],
+			E: [2, 3],
+			F: [3, 2],
+		};
+
+		// Índices dos grupos para cada terceiro colocado no array original de 6 grupos
+		const groupLabels = ["A", "B", "C", "D", "E", "F"];
+
+		// Inicializa o array de terceiros colocados no chaveamento com null
+		let thirdDraw = new Array(4).fill(null);
+
+		// Associa cada terceiro sobrevivente com seu grupo original e posições permitidas
+		let survivingThirds = thirdPlaces
+			.map((team, index) => {
+				if (team === null) return null;
+				const group = groupLabels[index];
+				return {
+					team,
+					positions: validPositionsByGroup[group],
+				};
+			})
+			.filter(Boolean);
+
+		while (survivingThirds.length > 0) {
+			// Conta frequência das posições disponíveis
+			const positionFrequency = [0, 0, 0, 0];
+
+			for (const third of survivingThirds) {
+				for (const pos of third.positions) {
+					positionFrequency[pos]++;
+				}
+			}
+
+			// Encontra a posição menos frequente (entre as possíveis)
+			let minFrequency = Infinity;
+			let chosenPosition = null;
+
+			for (let i = 0; i < 4; i++) {
+				if (thirdDraw[i] !== null) continue; // já ocupada
+				if (positionFrequency[i] < minFrequency && positionFrequency[i] > 0) {
+					minFrequency = positionFrequency[i];
+					chosenPosition = i;
+				}
+			}
+
+			if (chosenPosition === null) break; // segurança contra loop infinito
+
+			// Escolhe um time que possa ir para essa posição
+			const index = survivingThirds.findIndex((third) =>
+				third.positions.includes(chosenPosition)
+			);
+
+			if (index !== -1) {
+				const [third] = survivingThirds.splice(index, 1);
+				thirdDraw[chosenPosition] = third.team;
+			}
+		}
+
+		return firstPlaces.concat(secondPlaces, thirdDraw);
+	}
+
 	function GetWorldCupResults(groups) {
 		// Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
 		let desc = "";
@@ -2313,13 +2393,11 @@ function App() {
 			.slice(0, 8)
 			.map(item => item.index);
 
-		// Passo 2: Cria novo array com 12 posições
 		let filteredThirdPlaces = thirdPlaces.map((place, index) =>
 			top8Indices.includes(index) ? place : null // ou undefined
 		);
 
-		// Agora você pode passar esse array com buracos para o mapeamento
-		let classif = worldCupDrawTest(firstPlaces, secondPlaces, filteredThirdPlaces);
+		let classif = worldCupDraw(firstPlaces, secondPlaces, filteredThirdPlaces);
 
 		return {
 			classif,
@@ -2327,14 +2405,14 @@ function App() {
 		}
 	}
 
-	function worldCupDrawTest(firstPlaces, secondPlaces, thirdPlaces) {
-		const setMapping = ["T1", "T2", "T1", "T2", "T2", "T1", "T2", "T1", "T1", "T2", "T1", "T2"];
+	function worldCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
+		const setMapping = ["T1", "T2", "T2", "T1", "T1", "T2", "T2", "T1", "T1", "T2", "T1", "T2"];
 		const subsetsMapping = ["S1", "S2", "S2", "S1", "S1", "S2"];
 		const allocationPriority = {
-			"T1-S1": { "main": [1, 6], "sub": [3, 4], "exchange": [2, 5] },
-			"T1-S2": { "main": [3, 4], "sub": [1, 6], "exchange": [0, 7] },
-			"T2-S1": { "main": [0, 7], "sub": [2, 5], "exchange": [3, 4] },
-			"T2-S2": { "main": [2, 5], "sub": [0, 7], "exchange": [1, 6] },
+			"T1-S1": { "main": [1, 6, 3, 4], "exchange": [2, 5] },
+			"T1-S2": { "main": [3, 4, 1, 6], "exchange": [0, 7] },
+			"T2-S1": { "main": [0, 7, 2, 5], "exchange": [3, 4] },
+			"T2-S2": { "main": [2, 5, 0, 7], "exchange": [1, 6] },
 		};
 		const secondPlaceSwapMap = {
 			0: 3, 1: 2, 2: 1, 3: 0,
@@ -2344,7 +2422,7 @@ function App() {
 		let sets = { T1: [], T2: [] };
 		let thirdDraw = new Array(8).fill(null)
 
-		function setHandler(set, setKey) {
+		function setHandler(set, setKey, isSecond = false) {
 			let subsets = { S1: [], S2: [] };
 			set.forEach((place, i) => {
 				if(!place) return;
@@ -2354,21 +2432,33 @@ function App() {
 			})
 
 			if(subsets.S1.length <= subsets.S2.length) {
-				subsetHandler(subsets.S1, `${setKey}-S1`)
-				subsetHandler(subsets.S2, `${setKey}-S2`)
+				subsetHandler(subsets.S1, `${setKey}-S1`, isSecond)
+				subsetHandler(subsets.S2, `${setKey}-S2`, isSecond)
 			} else {
-				subsetHandler(subsets.S2, `${setKey}-S2`)
-				subsetHandler(subsets.S1, `${setKey}-S1`)
+				subsetHandler(subsets.S2, `${setKey}-S2`, isSecond)
+				subsetHandler(subsets.S1, `${setKey}-S1`, isSecond)
 			}
 		}
 
-		function subsetHandler(subset, subsetKey) {
+		function subsetHandler(subset, subsetKey, isSecond = false) {
 			const priorities = allocationPriority[subsetKey];
-			for(let teamIndex = 0; teamIndex < subset.length; teamIndex++) {
-				console.log(subset[teamIndex], priorities)
+			const exchangePriorities = priorities['exchange'];
+			const mainPriorities = priorities['main']
+			for(let teamIndex = 0; teamIndex < subset.length; teamIndex++) {		
 				let alocated = false
-				const mainPriorities = priorities['main']
-				for(let i = 0; i < 2; i++) {
+				if(isSecond) {
+					if(thirdDraw[exchangePriorities[0]] == null) {
+						console.log("Achado não é roubado: " + exchangePriorities[0] + " - " + subset[teamIndex].name)
+						thirdDraw[exchangePriorities[0]] = subset[teamIndex]
+						alocated = true;
+					} else if(thirdDraw[exchangePriorities[1]] == null) {
+						console.log("Achado não é roubado: " + exchangePriorities[1] + " - " + subset[teamIndex].name)
+						thirdDraw[exchangePriorities[1]] = subset[teamIndex]
+						alocated = true;
+					}
+				}
+				if(alocated) continue
+				for(let i = 0; i < mainPriorities.length; i++) {
 					if(!thirdDraw[mainPriorities[i]]) {
 						thirdDraw[mainPriorities[i]] = subset[teamIndex]
 						alocated = true;
@@ -2376,16 +2466,6 @@ function App() {
 					}
 				}
 				if(alocated) continue;
-				const subPriorities = priorities['sub']
-				for(let i = 0; i < 2; i++) {
-					if(!thirdDraw[subPriorities[i]]) {
-						thirdDraw[subPriorities[i]] = subset[teamIndex]
-						alocated = true;
-						break;
-					}
-				}
-				if(alocated) continue;
-				const exchangePriorities = priorities['exchange'];
 				for (let i = 0; i < 2; i++) {
 					const drawIndex = exchangePriorities[i];
 					if (!thirdDraw[drawIndex]) {
@@ -2415,11 +2495,11 @@ function App() {
 		});
 
 		if(sets.T1.filter((n) => n).length <= sets.T2.filter((n) => n).length) {
-			setHandler(sets.T1, "T1")
-			setHandler(sets.T2, "T2")
+			setHandler(sets.T1, "T1",)
+			setHandler(sets.T2, "T2", true)
 		} else {
 			setHandler(sets.T2, "T2")
-			setHandler(sets.T1, "T1")
+			setHandler(sets.T1, "T1", true)
 		}
 
 		for(let i = 0; i < secondPlaces.length; i += 2) {
