@@ -803,7 +803,7 @@ function App() {
 				}
 			}
 
-			let eurocopaResults = GetEurocopaResults(europeanGroups)
+			let eurocopaResults = GetTournamentResults(europeanGroups, 4, euroCupDraw)
 
 			let classif = eurocopaResults.classif;
 			
@@ -925,40 +925,14 @@ function App() {
 				}
 			}
 
-			// Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
-			let desc = "";
-			let firstPlaces = [];
-			let secondPlaces = [];
+			let americanResults = GetTournamentResults(americanGroups, 0, americanCupDraw)
 
-			// Loop através de todos os grupos
-			for (let groupID = 0; groupID < americanGroups.length; groupID++) {
-				// Obter a posição do jogador no grupo atual
-				let thisGroup = GetWorldCupPosition(
-					americanGroups[groupID],
-					americanGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null,
-					groupID,
-				);
-				const playerPosition =
-					thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
-
-				// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
-				if (playerPosition > 0) {
-					desc = `: ${playerPosition}º lugar${thisGroup.playerMatches}${desc}`;
-				}
-
-				desc += `${thisGroup.desc}`
-
-				// Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
-				firstPlaces.push(thisGroup.table[0]);
-				secondPlaces.push(thisGroup.table[1]);
-			}
+			classif = americanResults.classif
 
 			americanDescription.push(
-				`Grupos${desc}`
+				`Grupos${americanResults.desc}`
 			);
 
-			// Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
-			classif = firstPlaces.concat(secondPlaces);
 			phase += 3;
 			if (classif.some((t) => t.name === player.nation.name)) {
 				playerPhase += 3;
@@ -1068,50 +1042,15 @@ function App() {
 				}
 			}
 
-			// Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
-			desc = "";
-			firstPlaces = [];
-			secondPlaces = [];
-			let thirdPlaces = [];
-			let thirdPlacesPoints = [];
-
-			// Loop através de todos os grupos
-			for (let groupID = 0; groupID < africanGroups.length; groupID++) {
-				// Obter a posição do jogador no grupo atual
-				let thisGroup = GetWorldCupPosition(
-					africanGroups[groupID],
-					africanGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null,
-					groupID
-				);
-				const playerPosition =
-					thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
-
-				// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
-				if (playerPosition > 0) {
-					desc = `: ${playerPosition}º lugar${thisGroup.playerMatches}${desc}`;
-				}
-
-				desc += `${thisGroup.desc}`
-
-				// Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
-				firstPlaces.push(thisGroup.table[0]);
-				secondPlaces.push(thisGroup.table[1]);
-				thirdPlaces.push(thisGroup.table[2]);
-				thirdPlacesPoints.push(thisGroup.points[2]);
-			}
-
-			africanDescription.push(
-				`Grupos${desc}`
-			);
-
-			thirdPlaces.sort((a, b) => {
-				return (
-					thirdPlacesPoints[thirdPlaces.indexOf(b)] - thirdPlacesPoints[thirdPlaces.indexOf(a)]
-				);
-			});
+			let results = GetTournamentResults(africanGroups, 2, africanAsianCupDraw)
 
 			// Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
-			classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 2));
+			classif = results.classif;
+			
+			africanDescription.push(
+				`Grupos${results.desc}`
+			);
+
 			phase += 3;
 			if (classif.some((t) => t.name === player.nation.name)) {
 				playerPhase += 3;
@@ -1220,50 +1159,14 @@ function App() {
 				}
 			}
 
-			// Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
-			desc = ""
-			firstPlaces = [];
-			secondPlaces = [];
-			thirdPlaces = [];
-			thirdPlacesPoints = [];
+			let asianResults = GetTournamentResults(asianGroups, 2, africanAsianCupDraw)
 
-			// Loop através de todos os grupos
-			for (let groupID = 0; groupID < asianGroups.length; groupID++) {
-				// Obter a posição do jogador no grupo atual
-				let thisGroup = GetWorldCupPosition(
-					asianGroups[groupID],
-					asianGroups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null,
-					groupID
-				);
-				const playerPosition =
-					thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
-
-				// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
-				if (playerPosition > 0) {
-					desc = `: ${playerPosition}º lugar${thisGroup.playerMatches}${desc}`;
-				}
-
-				desc += `${thisGroup.desc}`
-
-				// Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
-				firstPlaces.push(thisGroup.table[0]);
-				secondPlaces.push(thisGroup.table[1]);
-				thirdPlaces.push(thisGroup.table[2]);
-				thirdPlacesPoints.push(thisGroup.points[2]);
-			}
+			classif = asianResults.classif;
 
 			asianDescription.push(
-				`Grupos${desc}`
+				`Grupos${asianResults.desc}`
 			);
 
-			thirdPlaces.sort((a, b) => {
-				return (
-					thirdPlacesPoints[thirdPlaces.indexOf(b)] - thirdPlacesPoints[thirdPlaces.indexOf(a)]
-				);
-			});
-
-			// Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
-			classif = firstPlaces.concat(secondPlaces, thirdPlaces.slice(0, 2));
 			phase += 3;
 			if (classif.some((t) => t.name === player.nation.name)) {
 				playerPhase += 3;
@@ -1435,7 +1338,7 @@ function App() {
 
 			let groups = DrawWorldGroups(allClassifNations, hostsAreFirst.length);
 
-			let results = GetWorldCupResults(groups)
+			let results = GetTournamentResults(groups, 8, worldCupDraw)
 
 			worldCupDescription.push(`Grupos${results.desc}`);
 
@@ -2237,28 +2140,28 @@ function App() {
 		return { sortedTeams, desc };
 	}
 
-	function GetEurocopaResults(groups) {
+	function GetTournamentResults(groups, topThirdCount, drawFunction) {
 		let desc = "";
 		let firstPlaces = [];
 		let secondPlaces = [];
 		let thirdPlaces = [];
 		let thirdPlacesPoints = [];
 
-		// Loop através de todos os grupos
 		for (let groupID = 0; groupID < groups.length; groupID++) {
 			let thisGroup = GetWorldCupPosition(
 				groups[groupID],
 				groups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null,
 				groupID
 			);
+
 			const playerPosition =
 				thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
 
 			if (playerPosition > 0) {
-				desc = `: ${playerPosition}º lugar${thisGroup.playerMatches}${desc}`
+				desc = `: ${playerPosition}º lugar${thisGroup.playerMatches}${desc}`;
 			}
 
-			desc += `${thisGroup.desc}`
+			desc += `${thisGroup.desc}`;
 
 			firstPlaces.push(thisGroup.table[0]);
 			secondPlaces.push(thisGroup.table[1]);
@@ -2266,25 +2169,22 @@ function App() {
 			thirdPlacesPoints.push(thisGroup.points[2]);
 		}
 
-		// Identifica os 4 terceiros colocados com maior pontuação
-		let top4Indices = [...thirdPlacesPoints]
+		let topThirdIndices = [...thirdPlacesPoints]
 			.map((points, index) => ({ points, index }))
 			.sort((a, b) => b.points - a.points)
-			.slice(0, 4)
+			.slice(0, topThirdCount)
 			.map(item => item.index);
 
-		// Mantém a ordem e posição original, mas filtra os 4 melhores terceiros
 		let filteredThirdPlaces = thirdPlaces.map((place, index) =>
-			top4Indices.includes(index) ? place : null
+			topThirdIndices.includes(index) ? place : null
 		);
 
-		// Substitua esta chamada por 'euroCupDraw' quando for implementado
-		let classif = euroCupDraw(firstPlaces, secondPlaces, filteredThirdPlaces);
+		let classif = drawFunction(firstPlaces, secondPlaces, filteredThirdPlaces);
 
 		return {
 			classif,
 			desc
-		}
+		};
 	}
 
 	function euroCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
@@ -2353,56 +2253,41 @@ function App() {
 		return firstPlaces.concat(secondPlaces, thirdDraw);
 	}
 
-	function GetWorldCupResults(groups) {
-		// Listas para armazenar os primeiros, segundos e terceiros colocados de cada grupo
-		let desc = "";
-		let firstPlaces = [];
-		let secondPlaces = [];
-		let thirdPlaces = [];
-		let thirdPlacesPoints = [];
+	function americanCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
+		let secTemp = secondPlaces[0]
+		secondPlaces[0] = secondPlaces[1];
+		secondPlaces[1] = secTemp;
+		secTemp = secondPlaces[2]
+		secondPlaces[2] = secondPlaces[3];
+		secondPlaces[3] = secTemp;
+		return firstPlaces.concat(secondPlaces)
+	}
 
-		// Loop através de todos os grupos
-		for (let groupID = 0; groupID < groups.length; groupID++) {
-			// Obter a posição do jogador no grupo atual
-			let thisGroup = GetWorldCupPosition(
-				groups[groupID],
-				groups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null,
-				groupID
-			);
-			const playerPosition =
-				thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
+	function africanAsianCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
+		let thirdDraw = []
 
-			// Se o jogador estiver entre os primeiros colocados do grupo, atualizar informações
-			if (playerPosition > 0) {
-				desc = `: ${playerPosition}º lugar${thisGroup.playerMatches}${desc}`
-			}
-
-			desc += `${thisGroup.desc}`
-
-			// Adicionar os primeiros, segundos e terceiros colocados do grupo às listas correspondentes
-			firstPlaces.push(thisGroup.table[0]);
-			secondPlaces.push(thisGroup.table[1]);
-			thirdPlaces.push(thisGroup.table[2]);
-			thirdPlacesPoints.push(thisGroup.points[2]);
+		//a
+		if(thirdPlaces[0]){
+			thirdDraw.push(thirdPlaces[0])
 		}
-
-		//Pega os índices dos 8 maiores pontuadores
-		let top8Indices = [...thirdPlacesPoints]
-			.map((points, index) => ({ points, index }))
-			.sort((a, b) => b.points - a.points)
-			.slice(0, 8)
-			.map(item => item.index);
-
-		let filteredThirdPlaces = thirdPlaces.map((place, index) =>
-			top8Indices.includes(index) ? place : null // ou undefined
-		);
-
-		let classif = worldCupDraw(firstPlaces, secondPlaces, filteredThirdPlaces);
-
-		return {
-			classif,
-			desc
+		//b
+		if(thirdPlaces[1]){
+			thirdDraw.push(thirdPlaces[1])
 		}
+		//c
+		if(!thirdDraw[0]) {
+			thirdDraw[0] = thirdPlaces[2]
+		} else if(!thirdDraw[1]) {
+			thirdDraw[1] = thirdPlaces[2]
+		}
+		
+		console.log(thirdDraw)
+
+		let secTemp = secondPlaces[0]
+		secondPlaces[0] = secondPlaces[2];
+		secondPlaces[2] = secTemp;
+
+		return firstPlaces.concat(secondPlaces, thirdDraw)
 	}
 
 	function worldCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
