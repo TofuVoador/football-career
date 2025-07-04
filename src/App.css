@@ -52,13 +52,14 @@ section {
 	color: var(--color-contrast);
 }
 
-.choices a,
+.choices button,
 .choices select {
 	margin-bottom: 1rem;
 	padding: 1rem;
 	color: var(--color-contrast);
 	background-color: var(--color-medium);
 	border-radius: 1rem;
+	border: 1px solid var(--color-contrast);
 	width: 100%;
 	display: flex;
 	flex-direction: column;
@@ -70,7 +71,7 @@ section {
 	margin-top: 1rem;
 }
 
-.choices a:hover {
+.choices button:hover {
 	background-color: var(--color-light);
 	cursor: pointer;
 }
@@ -140,4 +141,17 @@ section {
 	gap: 0.5rem;
 	width: 100%;
 	border-radius: 1rem;
+}
+
+.stats-div-div details summary {
+	padding: 0 0.5rem;
+	border-radius: 1rem;
+}
+
+.stats-div-div details div {
+	padding-left: 1rem;
+}
+
+.stats-div-div details summary:hover {
+	background-color: var(--color-medium);
 }

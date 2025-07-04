@@ -79,7 +79,7 @@ function App() {
 		marketValue: null,
 	});
 
-	const [player, setPlayer] = useState({
+	const [player] = useState({
 		age: 17,
 		nation: null,
 		team: null,
@@ -114,9 +114,6 @@ function App() {
 	const [generalPerformance, setGeneralPerformance] = useState([]);
 
 	const [transfers, setTransfers] = useState([]);
-
-	const initPos = shuffleArray(DeepClone(Positions));
-	const [initNation, setInitNation] = useState(GetNewNation());
 
 	const [renew, setRenew] = useState({ duration: 0, addition: null, position: null });
 
@@ -288,7 +285,7 @@ function App() {
 		//change teams power on each season
 		let updatedTeams = UpdateTeamsStats(40.0);
 		let newTeams = updatedTeams.newTeams;
-		let newExtraTeams = UpdateExtraTeamsStats();
+		UpdateExtraTeamsStats();
 
 		let allTeams = [];
 		for (let leagueID = 0; leagueID < newTeams.length; leagueID++) {
@@ -362,12 +359,6 @@ function App() {
 		//set performance over team
 		newGeneralPerformance.push(player.performance);
 		if (newGeneralPerformance.length > 3) newGeneralPerformance.shift();
-
-		let med = 0;
-		for (let i = 0; i < newGeneralPerformance.length; i++) {
-			med += newGeneralPerformance[i];
-		}
-		med /= newGeneralPerformance.length;
 
 		//giving the performance, set how many games did they were the starter player
 		let r = Math.random() * 10;
@@ -502,7 +493,7 @@ function App() {
 		);
 		player.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0); //max = 10
 
-		opportunities += playerPosition > 0 ? 16 - playerPosition : RandomNumber(1, 5);
+		opportunities += playerPosition > 0 ? playerLeagueResult.table.length - playerPosition : RandomNumber(1, 5);
 
 		//if fist place, then won trophy
 		if (playerPosition === 1) {
@@ -523,8 +514,8 @@ function App() {
 		let pot1 = pot2.splice(0, pot2.length / 2);
 
 		//embaralhar
-		shuffleArray(pot1);
-		shuffleArray(pot2);
+		pot1 = shuffleArray(pot1);
+		pot2 = shuffleArray(pot2);
 
 		let classifToNationalCup = pot1.concat(pot2);
 
@@ -630,7 +621,7 @@ function App() {
 			championsGroup.table.findIndex((team) => team.name === player.team.name) + 1;
 
 		if (playerChampionsPos > 0) {
-			opportunities += (21 - playerChampionsPos) / 5;
+			opportunities += Math.max(0, (25 - playerChampionsPos) / 6);
 			currentSeason.awardPoints += Math.max(0, 11 - playerChampionsPos) / 10;
 		}
 
@@ -1483,6 +1474,8 @@ function App() {
 		let performanceMultiplier = (currentSeason.starting + currentSeason.subbed / 2) / 100.0;
 		performanceMultiplier *= Math.exp(currentSeason.performance * 0.5);
 
+		console.log(opportunities)
+
 		currentSeason.goals = Math.floor(
 			player.positionInClub.goalsMultiplier *
 				performanceMultiplier *
@@ -1776,11 +1769,11 @@ function App() {
 					let oppIndex1 = Math.floor(Math.random() * pots[oppPotIndex].length);
 
 					while (
-						pots[oppPotIndex][oppIndex1].name == team.name ||
+						pots[oppPotIndex][oppIndex1].name === team.name ||
 						matchesCount[oppPotIndex][oppIndex1][potIndex] >= 2 ||
 						(matchesCount[oppPotIndex][oppIndex1][potIndex] >= 1 &&
 							matchesCount[potIndex][teamIndex][oppPotIndex] >= 1 &&
-							matchesCount[oppPotIndex].find((a) => a[potIndex] == 0))
+							matchesCount[oppPotIndex].find((a) => a[potIndex] === 0))
 					) {
 						oppIndex1 = (oppIndex1 + 1) % pots[oppPotIndex].length;
 						errorCount++;
@@ -1797,12 +1790,12 @@ function App() {
 
 					let oppIndex2 = Math.floor(Math.random() * pots[oppPotIndex].length);
 					while (
-						oppIndex1 == oppIndex2 ||
-						pots[oppPotIndex][oppIndex2].name == team.name ||
+						oppIndex1 === oppIndex2 ||
+						pots[oppPotIndex][oppIndex2].name === team.name ||
 						matchesCount[oppPotIndex][oppIndex2][potIndex] >= 2 ||
 						(matchesCount[oppPotIndex][oppIndex2][potIndex] >= 1 &&
 							matchesCount[potIndex][teamIndex][oppPotIndex] >= 1 &&
-							matchesCount[oppPotIndex].find((a) => a[potIndex] == 0))
+							matchesCount[oppPotIndex].find((a) => a[potIndex] === 0))
 					) {
 						oppIndex2 = (oppIndex2 + 1) % pots[oppPotIndex].length;
 						errorCount++;
@@ -1841,20 +1834,20 @@ function App() {
 			//pot 1
 			let pot1validNations = pots[1].filter(
 				(n) =>
-					!groups[GroupID].some((opp) => opp.continent === n.continent && opp.continent != "UEFA")
+					!groups[GroupID].some((opp) => opp.continent === n.continent && opp.continent !== "UEFA")
 			);
 			if (pot1validNations.length <= 0) {
 				let found = false;
 				for (let indexRetro = GroupID - 1; indexRetro >= 0; indexRetro--) {
 					//verifica se algum país restante do pots[1] possui um valor de .continent que não está no groups[indexRetro]
 					let retroValidNations = pots[1].filter(
-						(n) => !groups[indexRetro].some((t) => t.continent == n.continent)
+						(n) => !groups[indexRetro].some((t) => t.continent === n.continent)
 					);
 
 					if (retroValidNations.length > 0) {
 						//verifica se o país da posição 1 do groups[indexRetro] possui um valor de .continent que não está no groups[GroupID]
 						let canFit = !groups[GroupID].some(
-							(n) => groups[indexRetro][1].continent == n.continent
+							(n) => groups[indexRetro][1].continent === n.continent
 						);
 
 						//se der certo, fazer a troca. se não continue para o grupo anterior.
@@ -1895,13 +1888,13 @@ function App() {
 				for (let indexRetro = GroupID - 1; indexRetro >= 0; indexRetro--) {
 					//verifica se algum país restante do pots[2] possui um valor de .continent que não está no groups[indexRetro]
 					let retroValidNations = pots[2].filter(
-						(n) => !groups[indexRetro].some((t) => t.continent == n.continent)
+						(n) => !groups[indexRetro].some((t) => t.continent === n.continent)
 					);
 
 					if (retroValidNations.length > 0) {
 						//verifica se o país da posição 2 do groups[indexRetro] possui um valor de .continent que não está no groups[GroupID]
 						let canFit = !groups[GroupID].some(
-							(n) => groups[indexRetro][2].continent == n.continent
+							(n) => groups[indexRetro][2].continent === n.continent
 						);
 
 						//se der certo, fazer a troca. se não continue para o grupo anterior.
@@ -1942,13 +1935,13 @@ function App() {
 				for (let indexRetro = GroupID - 1; indexRetro >= 0; indexRetro--) {
 					//verifica se algum país restante do pots[3] possui um valor de .continent que não está no groups[indexRetro]
 					let retroValidNations = pots[3].filter(
-						(n) => !groups[indexRetro].some((t) => t.continent == n.continent)
+						(n) => !groups[indexRetro].some((t) => t.continent === n.continent)
 					);
 
 					if (retroValidNations.length > 0) {
 						//verifica se o país da posição 3 do groups[indexRetro] possui um valor de .continent que não está no groups[GroupID]
 						let canFit = !groups[GroupID].some(
-							(n) => groups[indexRetro][3].continent == n.continent
+							(n) => groups[indexRetro][3].continent === n.continent
 						);
 
 						//se der certo, fazer a troca. se não continue para o grupo anterior.
@@ -2280,8 +2273,6 @@ function App() {
 		} else if(!thirdDraw[1]) {
 			thirdDraw[1] = thirdPlaces[2]
 		}
-		
-		console.log(thirdDraw)
 
 		let secTemp = secondPlaces[0]
 		secondPlaces[0] = secondPlaces[2];
@@ -2333,11 +2324,9 @@ function App() {
 				let alocated = false
 				if(isSecond) {
 					if(thirdDraw[exchangePriorities[0]] == null) {
-						console.log("Achado não é roubado: " + exchangePriorities[0] + " - " + subset[teamIndex].name)
 						thirdDraw[exchangePriorities[0]] = subset[teamIndex]
 						alocated = true;
 					} else if(thirdDraw[exchangePriorities[1]] == null) {
-						console.log("Achado não é roubado: " + exchangePriorities[1] + " - " + subset[teamIndex].name)
 						thirdDraw[exchangePriorities[1]] = subset[teamIndex]
 						alocated = true;
 					}
@@ -2654,7 +2643,10 @@ function App() {
 		for (let i = 0; i < 3; i++) {
 			let teamID = RandomNumber(0, allTeams.length - 1);
 
-			while (history.some((t) => t.team === allTeams[teamID].name)) {
+			const isDuplicate = (teamName) =>
+				history.some((t) => t.team === teamName);
+
+			while (isDuplicate(allTeams[teamID].name)) {
 				teamID = RandomNumber(0, allTeams.length - 1);
 			}
 
@@ -2767,17 +2759,6 @@ function App() {
 		});
 
 		return updatedContracts;
-	}
-
-	function GetNewNation() {
-		let newNat = DeepClone(Nations);
-		let allNat = [];
-		for (let i = 0; i < newNat.length; i++) {
-			allNat = allNat.concat(newNat[i].teams);
-		}
-		allNat = shuffleArray(allNat);
-
-		return allNat;
 	}
 
 	function GetTransferValue(performance, positionMultiplier, age, peak, clubPower, fame) {
@@ -3006,11 +2987,11 @@ function App() {
 					<select id="nation-dropdown">
 						<option value="">Selecione uma Nação</option>
 					</select>
-					<a
+					<button
 						className="confirm-button"
 						onClick={() => ChooseNation()}>
 						Confirmar
-					</a>
+					</button>
 				</section>
 				<section
 					className="choices"
@@ -3026,17 +3007,17 @@ function App() {
 							</option>
 						))}
 					</select>
-					<a
+					<button
 						className="confirm-button"
 						onClick={() => ChoosePos()}>
 						Confirmar
-					</a>
+					</button>
 				</section>
 				<section
 					className="choices"
 					id="team-choice"
 					style={{ display: "none" }}>
-					<a
+					<button
 						className="d-stay contract"
 						id="decision-stay"
 						style={{ display: "none" }}
@@ -3050,8 +3031,8 @@ function App() {
 							</div>
 							<div>{renew.position} 👕</div>
 						</div>
-					</a>
-					<a
+					</button>
+					<button
 						className="d-alert contract"
 						id="decision-transfer1"
 						onClick={() => ChooseTeam(transfers[0])}>
@@ -3068,8 +3049,8 @@ function App() {
 						) : (
 							<p>null</p>
 						)}
-					</a>
-					<a
+					</button>
+					<button
 						className="d-alert contract"
 						id="decision-transfer2"
 						onClick={() => ChooseTeam(transfers[1])}>
@@ -3086,8 +3067,8 @@ function App() {
 						) : (
 							<p>null</p>
 						)}
-					</a>
-					<a
+					</button>
+					<button
 						className="d-alert contract"
 						id="decision-transfer3"
 						onClick={() => ChooseTeam(transfers[2])}>
@@ -3104,24 +3085,24 @@ function App() {
 						) : (
 							<p>null</p>
 						)}
-					</a>
-					<a
+					</button>
+					<button
 						className="d-alert"
 						id="retire"
 						style={{ display: "none" }}
 						onClick={() => Retire()}>
 						Aposentar-se
-					</a>
+					</button>
 				</section>
 				<section
 					className="choices"
 					id="continue"
 					style={{ display: "none" }}>
-					<a
+					<button
 						className="d-stay"
 						onClick={() => Continue()}>
 						Simular ({contract} {contract > 1 ? "anos restantes" : "ano restante"})
-					</a>
+					</button>
 				</section>
 				<section
 					className="chart"
