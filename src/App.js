@@ -483,20 +483,22 @@ function App() {
 		}
 
 		const playerPosition =
-			playerLeagueResult.table.findIndex((team) => team.name === player.team.name) + 1;
+			playerLeagueResult.table.findIndex((team) => team.name === player.team.name);
 		currentSeason.awardPoints += Math.max(
 			0,
-			((playerLeagueResult.championsSpots / 4.0) * (7 - playerPosition)) / 2.0
+			((playerLeagueResult.championsSpots / 4.0) * (6 - playerPosition)) / 2.0
 		); //max = 3.0
 		currentSeason.titles.push(
-			[`Liga${playerPosition > 0 ? `: ${playerPosition}º lugar` : ""}`].concat(leaguesTable)
+			[`Liga${playerPosition >= 0 ? `: ${playerPosition + 1}º lugar` : ""}`].concat(leaguesTable)
 		);
-		player.fame += Math.floor((playerLeagueResult.championsSpots * (6 - playerPosition)) / 2.0); //max = 10
+		player.fame += Math.floor((playerLeagueResult.championsSpots * (5 - playerPosition)) / 2.0); //max = 10
 
-		opportunities += playerPosition > 0 ? playerLeagueResult.table.length - playerPosition : RandomNumber(1, 5);
+		opportunities += playerPosition >= 0 ? playerLeagueResult.table.length / (1 + playerPosition / 5) : RandomNumber(1, 5);
+
+		console.log(opportunities)
 
 		//if fist place, then won trophy
-		if (playerPosition === 1) {
+		if (playerPosition === 0) {
 			player.leagueTitles.push(`${year} (${player.team.name})`);
 			triplice++;
 		}
@@ -618,17 +620,18 @@ function App() {
 		);
 
 		const playerChampionsPos =
-			championsGroup.table.findIndex((team) => team.name === player.team.name) + 1;
+			championsGroup.table.findIndex((team) => team.name === player.team.name);
 
-		if (playerChampionsPos > 0) {
-			opportunities += Math.max(0, (25 - playerChampionsPos) / 6);
+		if (playerChampionsPos >= 0) {
+			opportunities += Math.max(0, 4 / (1 + playerChampionsPos / 4));
+			console.log(opportunities)
 			currentSeason.awardPoints += Math.max(0, 11 - playerChampionsPos) / 10;
 		}
 
 		// Construir a descrição da fase do torneio
 		championsDescription.push(
 			`${TournamentPath[playerPhase]}${
-				playerChampionsPos > 0 ? `: ${playerChampionsPos}º lugar` : ""
+				playerChampionsPos >= 0 ? `: ${playerChampionsPos + 1}º lugar` : ""
 			}${championsGroup.desc}`
 		);
 
@@ -1474,8 +1477,6 @@ function App() {
 		let performanceMultiplier = (currentSeason.starting + currentSeason.subbed / 2) / 100.0;
 		performanceMultiplier *= Math.exp(currentSeason.performance * 0.5);
 
-		console.log(opportunities)
-
 		currentSeason.goals = Math.floor(
 			player.positionInClub.goalsMultiplier *
 				performanceMultiplier *
@@ -1527,8 +1528,8 @@ function App() {
 			currentSeason.titles.push(["Luva de Ouro"]);
 		}
 
-		let goldenBootsGoals = 35 + RandomNumber(0, 5);
-		goldenBootsGoals += year % 4 === 2 || year % 4 === 0 ? 5 : 0;
+		let goldenBootsGoals = 34 + RandomNumber(0, 4);
+		goldenBootsGoals += year % 4 === 2 || year % 4 === 0 ? 4 : 0;
 
 		if (goldenBootsGoals <= currentSeason.goals) {
 			//Golden Shoes
@@ -2148,10 +2149,10 @@ function App() {
 			);
 
 			const playerPosition =
-				thisGroup.table.findIndex((team) => team.name === player.nation.name) + 1;
+				thisGroup.table.findIndex((team) => team.name === player.nation.name);
 
-			if (playerPosition > 0) {
-				desc = `: ${playerPosition}º lugar${thisGroup.playerMatches}${desc}`;
+			if (playerPosition >= 0) {
+				desc = `: ${playerPosition + 1}º lugar${thisGroup.playerMatches}${desc}`;
 			}
 
 			desc += `${thisGroup.desc}`;
