@@ -115,6 +115,8 @@ function App() {
 
 	const [transfers, setTransfers] = useState([]);
 
+	const [uefaWinners, setUefaWinners] = useState([]);
+
 	const [renew, setRenew] = useState({ duration: 0, addition: null, position: null });
 
 	function ChooseNation() {
@@ -293,7 +295,6 @@ function App() {
 				.concat([...newTeams[leagueID].highestLeague.teams])
 				.concat([...newTeams[leagueID].lowerLeague.teams]);
 		}
-		allTeams = allTeams.concat([...extrateams]);
 		allTeams.sort((a, b) => {
 			return b.power - a.power;
 		});
@@ -495,8 +496,6 @@ function App() {
 
 		opportunities += playerPosition >= 0 ? playerLeagueResult.table.length / (1 + playerPosition / 5) : RandomNumber(1, 5);
 
-		console.log(opportunities)
-
 		//if fist place, then won trophy
 		if (playerPosition === 0) {
 			player.leagueTitles.push(`${year} (${player.team.name})`);
@@ -611,7 +610,7 @@ function App() {
 		}
 
 		// Adicionar as equipes extras aos times qualificados
-		qualifiedToChampions = qualifiedToChampions.concat(extrateams.slice(0, 8));
+		qualifiedToChampions = qualifiedToChampions.concat(extrateams.find((conf) => conf.name === "UEFA").teams.slice(0, 8));
 
 		// Obter a posição dos campeões em um grupo específico
 		let championsGroup = GetChampionsPosition(
@@ -624,7 +623,6 @@ function App() {
 
 		if (playerChampionsPos >= 0) {
 			opportunities += Math.max(0, 4 / (1 + playerChampionsPos / 4));
-			console.log(opportunities)
 			currentSeason.awardPoints += Math.max(0, 11 - playerChampionsPos) / 10;
 		}
 
@@ -753,6 +751,7 @@ function App() {
 			// Verificar se o torneio chegou ao fim
 			if (phase >= TournamentPath.length - 1) {
 				console.log("Champions League: " + newClassif[0].name + " (" + newClassif[0].power + ")");
+				uefaWinners.push(newClassif[0])
 				end = true;
 			}
 		}
@@ -763,6 +762,62 @@ function App() {
 		currentSeason.titles.push(
 			[`Champions League${playerChampionsResult}`].concat(championsDescription)
 		);
+
+		if (year % 4 === 1) {
+			let afcConf = extrateams.filter((c) => c.name === "AFC")[0];
+			let afcClubs = afcConf.teams.sort((a,b) => a.power > b.power + Math.random());
+			let clubWC_afc = afcClubs.slice(0, afcConf.clubWorldCupSpots)
+
+			let cafConf = extrateams.filter((c) => c.name === "CAF")[0];
+			let cafClubs = cafConf.teams.sort((a,b) => a.power > b.power + Math.random());
+			let clubWC_caf = cafClubs.slice(0, cafConf.clubWorldCupSpots)
+
+			let concacafConf = extrateams.filter((c) => c.name === "CONCACAF")[0];
+			let concacafClubs = concacafConf.teams.sort((a,b) => a.power > b.power + Math.random());
+			let clubWC_concacaf = concacafClubs.slice(0, concacafConf.clubWorldCupSpots)
+
+			let clubWC_conmebol = []
+			let conmebolConf = extrateams.filter((c) => c.name === "CONMEBOL")[0];
+			let conmebolClubs = conmebolConf.teams.sort((a, b) => b.power - a.power - Math.random());
+			let conmebolIndex = 0;
+			while(clubWC_conmebol.length < conmebolConf.clubWorldCupSpots) {
+				let club = conmebolClubs[conmebolIndex]
+				if(clubWC_conmebol.filter((c) => c.country === club.country).length < 4) clubWC_conmebol.push(club);
+				conmebolIndex++;
+				if(conmebolIndex >= conmebolClubs.length) throw new Error("Não deu")
+			}
+
+			let clubWC_uefa = [];
+			for(let i = 0; i < 4; i++) {
+				if(clubWC_uefa.filter((t) => t.name === uefaWinners[i].name).length > 0) continue;
+				let league = leagues.filter((l) => l.country === uefaWinners[i].country)[0];
+				let team = league.highestLeague.teams.filter((t) => t.name === uefaWinners[i].name)[0] 
+				if(!team) team = league.lowerLeague.teams.filter((t) => t.name === uefaWinners[i].name)[0] 
+				if(!team) throw new Error(uefaWinners[i], league);
+				clubWC_uefa.push(team)
+			}
+			setUefaWinners([])
+			let uefaIndex = 0;
+			let uefaConf = extrateams.filter((c) => c.name === "UEFA")[0];
+			let uefaClubs = [];
+			for (let leagueID = 0; leagueID < leagues.length; leagueID++) {
+				uefaClubs = uefaClubs.concat([...leagues[leagueID].highestLeague.teams])
+			}
+			uefaClubs = uefaClubs.concat([...extrateams]);
+			uefaClubs.sort((a, b) => {
+				return b.power - a.power;
+			});
+			console.log(JSON.parse(JSON.stringify(uefaClubs)))
+			while(clubWC_uefa.length < uefaConf.clubWorldCupSpots) {
+				let club = uefaClubs[uefaIndex]
+				console.log(club);
+				if(clubWC_uefa.filter((c) => c.country === club.country).length < 2 && clubWC_uefa.filter((c) => c.name === club.name)) clubWC_uefa.push(club);
+				uefaIndex++;
+				if(uefaIndex >= uefaClubs.length) throw new Error("Não deu")
+			}
+
+			console.log(clubWC_afc, clubWC_caf, clubWC_concacaf, clubWC_conmebol, clubWC_uefa)
+		}
 
 		if (year % 4 === 0) {
 			currentSeason.awardPoints -= 2.0;
@@ -2869,27 +2924,29 @@ function App() {
 
 	function UpdateExtraTeamsStats() {
 		let newTeams = DeepClone([...extrateams]);
-		let last = Math.random();
-		let teamIndices = Array.from({ length: newTeams.length }, (_, index) => index);
-		teamIndices = shuffleArray(teamIndices);
+		for(let confID = 0; confID < extrateams.length; confID++) {
+			let last = Math.random();
+			let teamIndices = Array.from({ length: newTeams[confID].teams.length }, (_, index) => index);
+			teamIndices = shuffleArray(teamIndices);
 
-		for (let i = 0; i < newTeams.length; i++) {
-			let teamID = teamIndices[i];
+			for (let i = 0; i < newTeams[confID].teams.length; i++) {
+				let teamID = teamIndices[i];
 
-			let current = Math.random();
-			let change = Math.round(20.0 * (last - current)) / 100.0;
-			last = current;
+				let current = Math.random();
+				let change = Math.round(20.0 * (last - current)) / 100.0;
+				last = current;
 
-			let newPower = newTeams[teamID].power + change;
-			newTeams[teamID].power = Math.round(100.0 * newPower) / 100.0;
+				let newPower = newTeams[confID].teams[teamID].power + change;
+				newTeams[confID].teams[teamID].power = Math.round(100.0 * newPower) / 100.0;
 
-			if (newTeams[teamID].power > 10) newTeams[teamID].power = 10;
-			else if (newTeams[teamID].power < 2) newTeams[teamID].power = 2;
+				if (newTeams[confID].teams[teamID].power > 10) newTeams[confID].teams[teamID].power = 10;
+				else if (newTeams[confID].teams[teamID].power < 2) newTeams[confID].teams[teamID].power = 2;
+			}
+
+			newTeams[confID].teams.sort((a, b) => {
+				return b.power - a.power;
+			});
 		}
-
-		newTeams.sort((a, b) => {
-			return b.power - a.power;
-		});
 		setExtraTeams(newTeams);
 		return newTeams;
 	}

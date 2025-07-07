@@ -7,76 +7,88 @@
 				"name": "Arábia Saudita",
 				"continent": "AFC",
 				"power": 4.5,
-				"borders": ["Egito", "Jordânia"]
+				"borders": ["Egito", "Jordânia"],
+				"can_host": true
 			},
 			{
 				"name": "Austrália",
 				"continent": "AFC",
 				"power": 6.7,
-				"borders": []
+				"borders": [],
+				"can_host": true
 			},
 			{
 				"name": "Catar",
 				"continent": "AFC",
 				"power": 5.0,
-				"borders": ["Arábia Saudita", "Emirados Árabes Unidos"]
+				"borders": ["Arábia Saudita", "Emirados Árabes Unidos"],
+				"can_host": true
 			},
 			{
 				"name": "China",
 				"continent": "AFC",
 				"power": 4.0,
-				"borders": ["Coreia do Sul", "Japão"]
+				"borders": ["Coreia do Sul", "Japão"],
+				"can_host": true
 			},
 			{
 				"name": "Coreia do Sul",
 				"continent": "AFC",
 				"power": 7.1,
-				"borders": ["China", "Japão"]
+				"borders": ["China", "Japão"],
+				"can_host": true
 			},
 			{
 				"name": "Emirados Árabes Unidos",
 				"continent": "AFC",
 				"power": 4.3,
-				"borders": ["Arábia Saudita", "Omã", "Catar"]
+				"borders": ["Arábia Saudita", "Omã", "Catar"],
+				"can_host": false
 			},
 			{
 				"name": "Irã",
 				"continent": "AFC",
 				"power": 7.7,
-				"borders": ["Iraque"]
+				"borders": ["Iraque"],
+				"can_host": true
 			},
 			{
 				"name": "Iraque",
 				"continent": "AFC",
 				"power": 4.6,
-				"borders": ["Arábia Saudita", "Irã"]
+				"borders": ["Arábia Saudita", "Irã"],
+				"can_host": false
 			},
 			{
 				"name": "Japão",
 				"continent": "AFC",
 				"power": 8.3,
-				"borders": ["China", "Coreia do Sul"]
+				"borders": ["China", "Coreia do Sul"],
+				"can_host": true
 			},
 			{
 				"name": "Jordânia",
 				"continent": "AFC",
 				"power": 4.2,
-				"borders": ["Arábia Saudita", "Egito"]
+				"borders": ["Arábia Saudita", "Egito"],
+				"can_host": false
 			},
 			{
 				"name": "Omã",
 				"continent": "AFC",
 				"power": 4.0,
-				"borders": ["Emirados Árabes Unidos"]
+				"borders": ["Emirados Árabes Unidos"],
+				"can_host": false
 			},
 			{
 				"name": "Uzbequistão",
 				"continent": "AFC",
 				"power": 4.4,
-				"borders": []
+				"borders": [],
+				"can_host": false
 			}
 		]
-	},
+		},
 	{
 		"name": "CAF",
 		"worldCupSpots": 8,
@@ -85,78 +97,90 @@
 				"name": "África do Sul",
 				"continent": "CAF",
 				"power": 4.6,
-				"borders": []
+				"borders": [],
+				"can_host": true
 			},
 			{
 				"name": "Argélia",
 				"continent": "CAF",
 				"power": 5.9,
-				"borders": ["Tunísia", "Marrocos", "Espanha"]
+				"borders": ["Tunísia", "Marrocos", "Espanha"],
+				"can_host": true
 			},
 			{
 				"name": "Camarões",
 				"continent": "CAF",
 				"power": 5.1,
-				"borders": ["Nigéria"]
+				"borders": ["Nigéria"],
+				"can_host": false
 			},
 			{
 				"name": "Costa do Marfim",
 				"continent": "CAF",
 				"power": 5.2,
-				"borders": ["Gana", "Mali"]
+				"borders": ["Gana", "Mali"],
+				"can_host": false
 			},
 			{
 				"name": "Egito",
 				"continent": "CAF",
 				"power": 6.6,
-				"borders": ["Jordânia"]
+				"borders": ["Jordânia"],
+				"can_host": true
 			},
 			{
 				"name": "Gana",
 				"continent": "CAF",
 				"power": 4.1,
-				"borders": ["Costa do Marfim"]
+				"borders": ["Costa do Marfim"],
+				"can_host": false
 			},
 			{
 				"name": "Mali",
-				"continent": "CAF",
 				"latitude": 12.86,
 				"longitude": -5.91,
+				"continent": "CAF",
 				"power": 4.7,
-				"borders": ["Costa do Marfim", "Senegal"]
+				"borders": ["Costa do Marfim", "Senegal"],
+				"can_host": false
 			},
 			{
 				"name": "Marrocos",
 				"continent": "CAF",
 				"power": 8.1,
-				"borders": ["Argélia", "Espanha"]
+				"borders": ["Argélia", "Espanha"],
+				"can_host": true
 			},
 			{
 				"name": "Nigéria",
 				"continent": "CAF",
 				"power": 5.4,
-				"borders": ["Camarões"]
+				"borders": ["Camarões"],
+				"can_host": false
 			},
 			{
 				"name": "RD do Congo",
 				"continent": "CAF",
 				"power": 4.4,
-				"borders": []
+				"borders": [],
+				"can_host": false
 			},
 			{
 				"name": "Senegal",
 				"continent": "CAF",
 				"power": 7.8,
-				"borders": ["Mali"]
+				"borders": ["Mali"],
+				"can_host": true
 			},
 			{
 				"name": "Tunísia",
 				"continent": "CAF",
 				"power": 4.9,
-				"borders": ["Argélia", "Itália"]
+				"borders": ["Argélia", "Itália"],
+				"can_host": true
 			}
 		]
-	},
+		},
 	{
 		"name": "CONCACAF",
 		"worldCupSpots": 4,
@@ -165,37 +189,43 @@
 				"name": "Canadá",
 				"continent": "CONCACAF",
 				"power": 6.2,
-				"borders": ["Estados Unidos"]
+				"borders": ["Estados Unidos"],
+				"can_host": true
 			},
 			{
 				"name": "Costa Rica",
 				"continent": "CONCACAF",
 				"power": 4.8,
-				"borders": ["Panamá"]
-			},
+				"borders": ["Panamá"],
+				"can_host": false
+				},
 			{
 				"name": "Estados Unidos",
 				"continent": "CONCACAF",
 				"power": 8.0,
-				"borders": ["Canadá", "México"]
+				"borders": ["Canadá", "México"],
+				"can_host": true
 			},
 			{
 				"name": "Jamaica",
 				"continent": "CONCACAF",
 				"power": 4.3,
-				"borders": []
+				"borders": [],
+				"can_host": false
 			},
 			{
 				"name": "México",
 				"continent": "CONCACAF",
 				"power": 7.5,
-				"borders": ["Estados Unidos"]
+				"borders": ["Estados Unidos"],
+				"can_host": true
 			},
 			{
 				"name": "Panamá",
 				"continent": "CONCACAF",
 				"power": 5.7,
-				"borders": ["Costa Rica", "Colômbia"]
+				"borders": ["Costa Rica", "Colômbia"],
+				"can_host": false
 			}
 		]
 	},
@@ -207,13 +237,15 @@
 				"name": "Argentina",
 				"continent": "CONMEBOL",
 				"power": 9.3,
-				"borders": ["Chile", "Bolívia", "Paraguai", "Brasil"]
+				"borders": ["Chile", "Bolívia", "Paraguai", "Brasil"],
+				"can_host": true
 			},
 			{
 				"name": "Bolívia",
 				"continent": "CONMEBOL",
 				"power": 4.1,
-				"borders": ["Argentina", "Chile", "Paraguai", "Brasil", "Peru"]
+				"borders": ["Argentina", "Chile", "Paraguai", "Brasil", "Peru"],
+				"can_host": false
 			},
 			{
 				"name": "Brasil",
@@ -228,49 +260,57 @@
 					"Paraguai",
 					"Peru",
 					"Venezuela"
-				]
+				],
+				"can_host": true
 			},
 			{
 				"name": "Chile",
 				"continent": "CONMEBOL",
 				"power": 4.9,
-				"borders": ["Argentina", "Bolívia"]
+				"borders": ["Argentina", "Bolívia"],
+				"can_host": true
 			},
 			{
 				"name": "Colômbia",
 				"continent": "CONMEBOL",
 				"power": 8.2,
-				"borders": ["Venezuela", "Brasil", "Peru", "Equador"]
+				"borders": ["Venezuela", "Brasil", "Peru", "Equador"],
+				"can_host": true
 			},
 			{
 				"name": "Equador",
 				"continent": "CONMEBOL",
 				"power": 7.3,
-				"borders": ["Colômbia", "Peru"]
+				"borders": ["Colômbia", "Peru"],
+				"can_host": false
 			},
 			{
 				"name": "Paraguai",
 				"continent": "CONMEBOL",
 				"power": 4.7,
-				"borders": ["Argentina", "Bolívia", "Brasil"]
+				"borders": ["Argentina", "Bolívia", "Brasil"],
+				"can_host": false
 			},
 			{
 				"name": "Peru",
 				"continent": "CONMEBOL",
 				"power": 6.4,
-				"borders": ["Colômbia", "Brasil", "Bolívia", "Chile", "Equador"]
+				"borders": ["Colômbia", "Brasil", "Bolívia", "Chile", "Equador"],
+				"can_host": false
 			},
 			{
 				"name": "Uruguai",
 				"continent": "CONMEBOL",
 				"power": 8.5,
-				"borders": ["Argentina", "Brasil"]
+				"borders": ["Argentina", "Brasil"],
+				"can_host": true
 			},
 			{
 				"name": "Venezuela",
 				"continent": "CONMEBOL",
 				"power": 5.0,
-				"borders": ["Colômbia", "Brasil", "Guyana"]
+				"borders": ["Colômbia", "Brasil", "Guyana"],
+				"can_host": false
 			}
 		]
 	},
@@ -282,7 +322,8 @@
 				"name": "Albania",
 				"continent": "UEFA",
 				"power": 4.2,
-				"borders": ["Grécia"]
+				"borders": ["Grécia"],
+				"can_host": false
 			},
 			{
 				"name": "Alemanha",
@@ -297,163 +338,190 @@
 					"França",
 					"Bélgica",
 					"Países Baixos"
-				]
+				],
+				"can_host": true
 			},
 			{
 				"name": "Áustria",
 				"continent": "UEFA",
 				"power": 7.4,
-				"borders": ["Alemanha", "República Tcheca", "Eslováquia", "Hungria", "Eslovênia", "Itália"]
+				"borders": ["Alemanha", "República Tcheca", "Eslováquia", "Hungria", "Eslovênia", "Itália"],
+				"can_host": false
 			},
 			{
 				"name": "Bélgica",
 				"continent": "UEFA",
 				"power": 8.6,
-				"borders": ["França", "Países Baixos", "Alemanha", "Inglaterra"]
+				"borders": ["França", "Países Baixos", "Alemanha", "Inglaterra"],
+				"can_host": true
 			},
 			{
 				"name": "Croácia",
 				"continent": "UEFA",
 				"power": 8.4,
-				"borders": ["Eslovênia", "Hungria", "Sérvia"]
+				"borders": ["Eslovênia", "Hungria", "Sérvia"],
+				"can_host": false
 			},
 			{
 				"name": "Dinamarca",
 				"continent": "UEFA",
 				"power": 7.6,
-				"borders": ["Alemanha", "Suécia", "Noruega"]
+				"borders": ["Alemanha", "Suécia", "Noruega"],
+				"can_host": true
 			},
 			{
 				"name": "Escócia",
 				"continent": "UEFA",
 				"power": 5.5,
-				"borders": ["Inglaterra"]
+				"borders": ["Inglaterra"],
+				"can_host": false
 			},
 			{
 				"name": "Eslováquia",
 				"continent": "UEFA",
 				"power": 5.3,
-				"borders": ["República Tcheca", "Polônia", "Ucrânia", "Hungria", "Áustria"]
+				"borders": ["República Tcheca", "Polônia", "Ucrânia", "Hungria", "Áustria"],
+				"can_host": false
 			},
 			{
 				"name": "Eslovênia",
 				"continent": "UEFA",
 				"power": 4.8,
-				"borders": ["Áustria", "Itália", "Croácia", "Hungria"]
+				"borders": ["Áustria", "Itália", "Croácia", "Hungria"],
+				"can_host": false
 			},
 			{
 				"name": "Espanha",
 				"continent": "UEFA",
 				"power": 9.5,
-				"borders": ["França", "Portugal"]
+				"borders": ["França", "Portugal"],
+				"can_host": true
 			},
 			{
 				"name": "França",
 				"continent": "UEFA",
 				"power": 9.4,
-				"borders": ["Bélgica", "Alemanha", "Suíça", "Itália", "Espanha", "Inglaterra"]
+				"borders": ["Bélgica", "Alemanha", "Suíça", "Itália", "Espanha", "Inglaterra"],
+				"can_host": true
 			},
 			{
 				"name": "Grécia",
 				"continent": "UEFA",
 				"power": 5.8,
-				"borders": ["Albânia", "Turquia"]
+				"borders": ["Albânia", "Turquia"],
+				"can_host": false
 			},
 			{
 				"name": "Hungria",
 				"continent": "UEFA",
 				"power": 7.0,
-				"borders": ["Áustria", "Eslováquia", "Ucrânia", "Romênia", "Sérvia", "Croácia", "Eslovênia"]
+				"borders": ["Áustria", "Eslováquia", "Ucrânia", "Romênia", "Sérvia", "Croácia", "Eslovênia"],
+				"can_host": false
 			},
 			{
 				"name": "Inglaterra",
 				"continent": "UEFA",
 				"power": 9.2,
-				"borders": ["Escócia", "País de Gales", "Irlanda", "França", "Bélgica", "Países Baixos"]
+				"borders": ["Escócia", "País de Gales", "Irlanda", "França", "Bélgica", "Países Baixos"],
+				"can_host": true
 			},
 			{
 				"name": "Irlanda",
 				"continent": "UEFA",
 				"power": 4.5,
-				"borders": ["Inglaterra", "País de Gales"]
+				"borders": ["Inglaterra", "País de Gales"],
+				"can_host": false
 			},
 			{
 				"name": "Itália",
 				"continent": "UEFA",
 				"power": 8.7,
-				"borders": ["França", "Suíça", "Áustria", "Eslovênia", "Tunísia", "Croácia"]
+				"borders": ["França", "Suíça", "Áustria", "Eslovênia", "Tunísia", "Croácia"],
+				"can_host": true
 			},
 			{
 				"name": "Noruega",
 				"continent": "UEFA",
 				"power": 5.1,
-				"borders": ["Suécia", "Dinamarca"]
+				"borders": ["Suécia", "Dinamarca"],
+				"can_host": false
 			},
 			{
 				"name": "País de Gales",
 				"continent": "UEFA",
 				"power": 6.1,
-				"borders": ["Inglaterra", "Irlanda"]
+				"borders": ["Inglaterra", "Irlanda"],
+				"can_host": false
 			},
 			{
 				"name": "Países Baixos",
 				"continent": "UEFA",
 				"power": 8.8,
-				"borders": ["Bélgica", "Alemanha", "Inglaterra"]
+				"borders": ["Bélgica", "Alemanha", "Inglaterra"],
+				"can_host": true
 			},
 			{
 				"name": "Polônia",
 				"continent": "UEFA",
 				"power": 6.3,
-				"borders": ["Alemanha", "República Tcheca", "Eslováquia", "Ucrânia"]
+				"borders": ["Alemanha", "República Tcheca", "Eslováquia", "Ucrânia"],
+				"can_host": false
 			},
 			{
 				"name": "Portugal",
 				"continent": "UEFA",
 				"power": 8.9,
-				"borders": ["Espanha"]
+				"borders": ["Espanha"],
+				"can_host": true
 			},
 			{
 				"name": "República Tcheca",
 				"continent": "UEFA",
 				"power": 5.6,
-				"borders": ["Alemanha", "Polônia", "Eslováquia", "Áustria"]
+				"borders": ["Alemanha", "Polônia", "Eslováquia", "Áustria"],
+				"can_host": false
 			},
 			{
 				"name": "Romênia",
 				"continent": "UEFA",
 				"power": 6.0,
-				"borders": ["Ucrânia", "Sérvia", "Hungria"]
+				"borders": ["Ucrânia", "Sérvia", "Hungria"],
+				"can_host": false
 			},
 			{
 				"name": "Sérvia",
 				"continent": "UEFA",
 				"power": 6.5,
-				"borders": ["Hungria", "Romênia"]
+				"borders": ["Hungria", "Romênia"],
+				"can_host": false
 			},
 			{
 				"name": "Suécia",
 				"continent": "UEFA",
 				"power": 6.8,
-				"borders": ["Noruega", "Dinamarca"]
+				"borders": ["Noruega", "Dinamarca"],
+				"can_host": true
 			},
 			{
 				"name": "Suíça",
 				"continent": "UEFA",
 				"power": 7.9,
-				"borders": ["França", "Alemanha", "Áustria", "Itália"]
+				"borders": ["França", "Alemanha", "Áustria", "Itália"],
+				"can_host": true
 			},
 			{
 				"name": "Turquia",
 				"continent": "UEFA",
 				"power": 6.9,
-				"borders": ["Grécia"]
+				"borders": ["Grécia"],
+				"can_host": true
 			},
 			{
 				"name": "Ucrânia",
 				"continent": "UEFA",
 				"power": 7.2,
-				"borders": ["Polônia", "República Tcheca", "Eslováquia", "Hungria", "Romênia"]
+				"borders": ["Polônia", "República Tcheca", "Eslováquia", "Hungria", "Romênia"],
+				"can_host": false
 			}
 		]
 	}
