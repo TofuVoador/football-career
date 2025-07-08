@@ -69,6 +69,13 @@
 		]
 	},
 	{
+		"name": "OFC",
+		"worldCupSpots": 1,
+		"teams": [
+			{"name":"Auckland City","country":"Nova Zelândia","power": 3.0}
+		]
+	},
+	{
 		"name": "UEFA",
 		"clubWorldCupSpots": 12,
 		"teams": [

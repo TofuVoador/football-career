@@ -787,6 +787,8 @@ function App() {
 				if(conmebolIndex >= conmebolClubs.length) throw new Error("Não deu")
 			}
 
+			let clubWC_ofc = extrateams.filter((c) => c.name === "OFC")[0].teams[0];
+
 			let clubWC_uefa = [];
 			for(let i = 0; i < 4; i++) {
 				if(clubWC_uefa.filter((t) => t.name === uefaWinners[i].name).length > 0) continue;
@@ -803,20 +805,90 @@ function App() {
 			for (let leagueID = 0; leagueID < leagues.length; leagueID++) {
 				uefaClubs = uefaClubs.concat([...leagues[leagueID].highestLeague.teams])
 			}
-			uefaClubs = uefaClubs.concat([...extrateams]);
 			uefaClubs.sort((a, b) => {
 				return b.power - a.power;
 			});
-			console.log(JSON.parse(JSON.stringify(uefaClubs)))
+			console.log(JSON.parse(JSON.stringify(clubWC_uefa)))
 			while(clubWC_uefa.length < uefaConf.clubWorldCupSpots) {
-				let club = uefaClubs[uefaIndex]
-				console.log(club);
-				if(clubWC_uefa.filter((c) => c.country === club.country).length < 2 && clubWC_uefa.filter((c) => c.name === club.name)) clubWC_uefa.push(club);
-				uefaIndex++;
 				if(uefaIndex >= uefaClubs.length) throw new Error("Não deu")
+				let club = uefaClubs[uefaIndex]
+				console.log(club) 
+				console.log(clubWC_uefa.filter((c) => c.country === club.country).length < 2, !clubWC_uefa.some((c) => c.name === club.name));
+				if(clubWC_uefa.filter((c) => c.country === club.country).length < 2 && !clubWC_uefa.some((c) => c.name === club.name)) clubWC_uefa.push(club);
+				uefaIndex++;
+			}
+			clubWC_uefa.sort((a, b) => b.power - a.power - Math.random());
+
+			let host = null;
+			let hostCountry = worldCupHistoryHosts.find((h) => h.year === year+1).hosts[0];
+			let country = null;
+			for (const conf of nations) {
+				for (const team of conf.teams) {
+					if (team.name === hostCountry) {
+						country = team
+					}
+				}
+			}
+			if(!country) throw new Error(hostCountry);
+			
+			if(country.continent === "UEFA"){
+				console.log(JSON.parse(JSON.stringify(clubWC_uefa)))
+				let league = leagues.filter((l) => l.country === country.name)[0].highestLeague;
+				let index = 0;
+				while(!host) {
+					if(index >= league.teams.length) throw new Error(league)
+					let candidate = league.teams[index];
+				console.log(candidate)
+				console.log(!clubWC_uefa.some((c) => c.name === candidate.name))
+					if(!clubWC_uefa.some((c) => c.name === candidate.name)) host = candidate
+					index++;
+				}
+			} else {
+				let league = extrateams.filter((l) => l.name === country.continent)[0];
+				let validTeams = league.teams.filter((t) => t.country === country.name);
+				let candidate = validTeams[0];
+				switch(country.continent) {
+					case "AFC":
+						if(clubWC_afc.some((c) => c.name === candidate.name)) {
+							host = afcClubs.slice(afcConf.clubWorldCupSpots, 1)
+						} else {
+							host = candidate
+						}
+						break;
+					case "CAF":
+						if(clubWC_caf.some((c) => c.name === candidate.name)) {
+							host = cafClubs.slice(cafConf.clubWorldCupSpots, 1)
+						} else {
+							host = candidate
+						}
+						break;
+					case "CONCACAF":
+						if(clubWC_concacaf.some((c) => c.name === candidate.name)) {
+							host = concacafClubs.slice(concacafConf.clubWorldCupSpots, 1)
+						} else {
+							host = candidate
+						}
+						break;
+					case "CONMEBOL":
+						if(clubWC_conmebol.some((c) => c.name === candidate.name)) {
+							host = conmebolClubs.slice(conmebolConf.clubWorldCupSpots, 1)
+						} else {
+							host = candidate
+						}
+						break;
+					case "OFC":
+						throw new Error("Not implemented")
+					default: 
+						throw new Error("Deu Ruim")
+				}
 			}
 
-			console.log(clubWC_afc, clubWC_caf, clubWC_concacaf, clubWC_conmebol, clubWC_uefa)
+			let pot1 = clubWC_uefa.splice(0, 4).concat(clubWC_conmebol.splice(0, 4))
+			let pot2 = clubWC_uefa;
+			let pot3 = clubWC_conmebol.concat(clubWC_afc.splice(0, 2), clubWC_caf.splice(0, 2), clubWC_concacaf.splice(0, 2))
+			let pot4 = clubWC_afc.concat(clubWC_caf, clubWC_concacaf, [host, clubWC_ofc])
+
+			console.log(pot1, pot2, pot3, pot4)
 		}
 
 		if (year % 4 === 0) {
