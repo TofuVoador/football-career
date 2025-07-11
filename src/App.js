@@ -360,7 +360,7 @@ function App() {
 
 		//set performance over team
 		newGeneralPerformance.push(player.performance);
-		if (newGeneralPerformance.length > 3) newGeneralPerformance.shift();
+		if (newGeneralPerformance.length > 4) newGeneralPerformance.shift();
 
 		//giving the performance, set how many games did they were the starter player
 		let r = Math.random() * 10;
@@ -426,12 +426,6 @@ function App() {
 		let opportunities = 0;
 		currentSeason.awardPoints = 0;
 
-		let med = 0;
-		for (let i = 0; i < generalPerformance.length; i++) {
-			med += generalPerformance[i];
-		}
-		med /= generalPerformance.length;
-
 		let triplice = 0;
 
 		//national tournaments
@@ -495,7 +489,7 @@ function App() {
 		);
 		player.fame += Math.floor((playerLeagueResult.championsSpots * (5 - playerPosition)) / 2.0); //max = 10
 
-		opportunities += playerPosition >= 0 ? playerLeagueResult.table.length / (1 + playerPosition / 5) : RandomNumber(1, 5);
+		opportunities += playerPosition >= 0 ? playerLeagueResult.table.length / (1 + playerPosition / 5) : RandomNumber(1, 5); //max = 20 at 1, 10 at 5
 
 		//if fist place, then won trophy
 		if (playerPosition === 0) {
@@ -540,8 +534,8 @@ function App() {
 				if (team1.name === player.team.name || team2.name === player.team.name) {
 					playerOpp = `: ${team1.name === player.team.name ? team2.name : team1.name}`;
 
-					opportunities++;
-					player.fame += 1; // Copa Nacional Máximo 1 x 4 = 4
+					opportunities++; //Max 1 x 4
+					player.fame += 2; // Copa Nacional Máximo 2 x 4 = 8
 
 					// Verificando se o jogador ganhou o jogo
 					if (
@@ -555,7 +549,7 @@ function App() {
 							// Se o jogador venceu o torneio, conceder prêmios adicionais
 							player.nationalCup.push(`${year} (${player.team.name})`);
 							currentSeason.awardPoints += 0.6; // Máximo 0.6 x 4 + 0.6 = 3.0
-							player.fame += 6; // Copa Nacional Máximo 1 x 4 + 6 = 10
+							player.fame += 2; // Copa Nacional Máximo 2 x 4 + 2 = 10
 							triplice++;
 						}
 					}
@@ -623,8 +617,8 @@ function App() {
 			championsGroup.table.findIndex((team) => team.name === player.team.name);
 
 		if (playerChampionsPos >= 0) {
-			opportunities += Math.max(0, 4 / (1 + playerChampionsPos / 4));
-			currentSeason.awardPoints += Math.max(0, 11 - playerChampionsPos) / 10;
+			opportunities += Math.max(0, 4 / (1 + playerChampionsPos / 4)); //max 4 at 1, 2 at 4
+			currentSeason.awardPoints += Math.max(0, 10 - playerChampionsPos) / 10; //max 1 at 0, 0 at 10
 		}
 
 		// Construir a descrição da fase do torneio
@@ -710,9 +704,9 @@ function App() {
 				if (team1.name === player.team.name || team2.name === player.team.name) {
 					playerOpp = `: ${team1.name === player.team.name ? team2.name : team1.name}`;
 
-					opportunities++;
+					opportunities++; //max 1 x 4
 					currentSeason.awardPoints += 0.6; // Máximo 1.0 + 0.6 x 4 = 3.4
-					player.fame += 3; // Champions Máximo 3 x 4 = 12
+					player.fame += 4; // Champions Máximo 4 x 4 = 16
 
 					// Verificar se o jogador ganhou o jogo
 					if (
@@ -724,7 +718,7 @@ function App() {
 						if (playerPhase >= TournamentPath.length - 1) {
 							// Se o jogador vencer o torneio, conceder prêmios adicionais
 							player.champions.push(`${year} (${player.team.name})`);
-							player.fame += 8; // Máximo 3 x 4 + 8 = 20
+							player.fame += 4; // Máximo 4 x 4 + 4 = 20
 							currentSeason.awardPoints += 0.6; // Máximo 1.0 + 0.6 x 4 + 0.6 = 4.0
 							triplice++;
 						}
@@ -765,6 +759,7 @@ function App() {
 		);
 
 		if (year % 4 === 1) {
+			currentSeason.awardPoints -= 1.0;
 			let phase = 0
 			let playerPhase = 0;
 
@@ -1023,7 +1018,7 @@ function App() {
 
 			let clubWorldCupDescription = [];
 
-			let results = GetTournamentResults(groups, 8, clubWorlcCupDraw)
+			let results = GetTournamentResults(groups, 8, clubWorlcCupDraw, player.team)
 
 			clubWorldCupDescription.push(`Grupos${results.desc}`);
 
@@ -1062,9 +1057,9 @@ function App() {
 
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.team.name || team2.name === player.team.name) {
-						opportunities++;
-						currentSeason.awardPoints += 0.5; // Máximo 0.5 x 5 = 2.5
-						player.fame += 3; // Máximo 3 x 5 = 15
+						opportunities++; //max 1 x 4
+						currentSeason.awardPoints += 0.6; // Máximo 0.6 x 4 - 1.0 = 1.4
+						player.fame += 4; // Máximo 4 x 4 = 16
 
 						// Verificar se o jogador ganhou o jogo
 						if (
@@ -1074,8 +1069,8 @@ function App() {
 							playerPhase++;
 							if (playerPhase >= TournamentPath.length - 1) {
 								player.clubWorldCup.push(`${year} (${player.team.name})`);
-								currentSeason.awardPoints += 0.5; // Máximo 0.5 x 5 + 0.5 = 3.0
-								player.fame += 15; // Máximo 4 x 5 + 20 = 30
+								currentSeason.awardPoints += 0.6; // Máximo 0.6 x 4 + 0.6 - 1.0 = 2.0
+								player.fame += 4; // Máximo 4 x 4 + 4 = 20
 							}
 						}
 					}
@@ -1101,18 +1096,18 @@ function App() {
 				// Verificar se o torneio chegou ao fim
 				if (phase >= TournamentPath.length - 1) {
 					end = true;
-					console.log("Copa do Mundo de Clubes: " + newClassif[0].name + " (" + newClassif[0].power + ")");
+					console.log("Mundial de Clubes: " + newClassif[0].name + " (" + newClassif[0].power + ")");
 				}
 			}
 
 			let playerWorldCupDesc = "";
 			if(playedClubWC) playerWorldCupDesc += `: ${TournamentPath[playerPhase]}`
 
-			currentSeason.titles.push([`Copa do Mundo de Clubes${playerWorldCupDesc}`].concat(clubWorldCupDescription));
+			currentSeason.titles.push([`Mundial de Clubes${playerWorldCupDesc}`].concat(clubWorldCupDescription));
 		}
 
 		if (year % 4 === 0) {
-			currentSeason.awardPoints -= 2.0;
+			currentSeason.awardPoints -= 1.0;
 			let playedContinental =
 				player.team.power +
 					currentSeason.starting / 100 +
@@ -1144,7 +1139,7 @@ function App() {
 				}
 			}
 
-			let eurocopaResults = GetTournamentResults(europeanGroups, 4, euroCupDraw)
+			let eurocopaResults = GetTournamentResults(europeanGroups, 4, euroCupDraw, player.nation)
 
 			let classif = eurocopaResults.classif;
 			
@@ -1184,9 +1179,9 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							opportunities++;
-							currentSeason.awardPoints += 0.6; // Máximo 0.4 x 4 = 2.4
-							player.fame += 3; // Copa Máximo 3 x 4 = 12
+							opportunities++; //max 1 x 4
+							currentSeason.awardPoints += 0.6; // Máximo 0.4 x 4 - 1.0 = 1.4
+							player.fame += 4; // Copa Máximo 4 x 4 = 16
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1199,8 +1194,8 @@ function App() {
 							if (playedContinental) {
 								if (playerPhase >= TournamentPath.length - 1) {
 									player.continentalChampionship.push(`${year}`);
-									currentSeason.awardPoints += 0.6; // Máximo 0.6 x 4 + 0.6 = 3.0
-									player.fame += 8; // Máximo 3 x 4 + 8 = 20
+									currentSeason.awardPoints += 0.6; // Máximo 0.6 x 4 + 0.6 - 1.0 = 2.0
+									player.fame += 4; // Máximo 4 x 4 + 4 = 20
 								}
 							}
 						}
@@ -1266,7 +1261,7 @@ function App() {
 				}
 			}
 
-			let americanResults = GetTournamentResults(americanGroups, 0, americanCupDraw)
+			let americanResults = GetTournamentResults(americanGroups, 0, americanCupDraw, player.nation)
 
 			classif = americanResults.classif
 
@@ -1305,9 +1300,9 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							opportunities++;
-							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 = 2.4
-							player.fame += 4; // Copa América Máximo 4 x 3 = 12
+							opportunities++; //max 1 x 3
+							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 - 1.0 = 1.4
+							player.fame += 5; // Copa América Máximo 5 x 3 = 15
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1320,8 +1315,8 @@ function App() {
 							if (playedContinental) {
 								if (playerPhase >= TournamentPath.length - 1) {
 									player.continentalChampionship.push(`${year}`);
-									currentSeason.awardPoints += 0.6; // Máximo 0.8 x 3 + 0.6 = 3.0
-									player.fame += 8; // Máximo 4 x 3 + 8 = 20
+									currentSeason.awardPoints += 0.6; // Máximo 0.8 x 3 + 0.6 - 1.0 = 2.0
+									player.fame += 5; // Máximo 5 x 3 + 5 = 20
 								}
 							}
 						}
@@ -1383,7 +1378,7 @@ function App() {
 				}
 			}
 
-			let results = GetTournamentResults(africanGroups, 2, africanAsianCupDraw)
+			let results = GetTournamentResults(africanGroups, 2, africanAsianCupDraw, player.nation)
 
 			// Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
 			classif = results.classif;
@@ -1423,9 +1418,9 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							opportunities++;
-							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 = 2.4
-							player.fame += 4; // Copa África Máximo 4 x 3 = 12
+							opportunities++; //max 1 x 3
+							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 - 1.0 = 1.4
+							player.fame += 5; // Copa África Máximo 5 x 3 = 15
 						}
 						// Verificar se o jogador ganhou o jogo
 						if (
@@ -1437,8 +1432,8 @@ function App() {
 							if (playedContinental) {
 								if (playerPhase >= TournamentPath.length - 1) {
 									player.continentalChampionship.push(`${year}`);
-									currentSeason.awardPoints += 0.6; // Máximo 0.8 x 3 + 0.6 = 3.0
-									player.fame += 8; // Máximo 4 x 3 + 8 = 20
+									currentSeason.awardPoints += 0.6; // Máximo 0.8 x 3 + 0.6 - 1.0 = 2.0
+									player.fame += 5; // Máximo 5 x 3 + 5 = 20
 								}
 							}
 						}
@@ -1500,7 +1495,7 @@ function App() {
 				}
 			}
 
-			let asianResults = GetTournamentResults(asianGroups, 2, africanAsianCupDraw)
+			let asianResults = GetTournamentResults(asianGroups, 2, africanAsianCupDraw, player.nation)
 
 			classif = asianResults.classif;
 
@@ -1539,9 +1534,9 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedContinental) {
-							opportunities++;
-							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 = 2.4
-							player.fame += 4; // Copa Ásia Máximo 4 x 3 = 12
+							opportunities++; //max 1 x 3
+							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 - 1.0 = 1.4
+							player.fame += 5; // Copa Ásia Máximo 5 x 3 = 15
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1554,8 +1549,8 @@ function App() {
 							if (playedContinental) {
 								if (playerPhase >= TournamentPath.length - 1) {
 									player.continentalChampionship.push(`${year}`);
-									currentSeason.awardPoints += 0.6; // Máximo 0.8 x 3 + 0.6 = 3.0
-									player.fame += 8; // Máximo 4 x 3 + 8 = 20
+									currentSeason.awardPoints += 0.6; // Máximo 0.8 x 3 + 0.6 - 1.0 = 2.0
+									player.fame += 5; // Máximo 5 x 3 + 5 = 20
 								}
 							}
 						}
@@ -1599,7 +1594,7 @@ function App() {
 
 		//World Cup
 		if (year % 4 === 2) {
-			currentSeason.awardPoints -= 2.0;
+			currentSeason.awardPoints -= 1.0;
 			phase = 0;
 			playerPhase = 0;
 			let worldCupDescription = [];
@@ -1679,7 +1674,7 @@ function App() {
 
 			let groups = DrawWorldGroups(allClassifNations, hostsAreFirst.length);
 
-			let results = GetTournamentResults(groups, 8, worldCupDraw)
+			let results = GetTournamentResults(groups, 8, worldCupDraw, player.nation)
 
 			worldCupDescription.push(`Grupos${results.desc}`);
 
@@ -1719,9 +1714,9 @@ function App() {
 					// Verificar se o jogador está envolvido no jogo atual
 					if (team1.name === player.nation.name || team2.name === player.nation.name) {
 						if (playedWorldCup) {
-							opportunities++;
-							currentSeason.awardPoints += 0.5; // Máximo 0.5 x 5 = 2.5
-							player.fame += 3; // Máximo 3 x 5 = 15
+							opportunities++; //max 1 x 5
+							currentSeason.awardPoints += 0.5; // Máximo 0.5 x 5 - 1.0 = 1.5
+							player.fame += 5; // Máximo 5 x 5 = 25
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1734,8 +1729,8 @@ function App() {
 							if (playedWorldCup) {
 								if (playerPhase >= TournamentPath.length - 1) {
 									player.worldCup.push(`${year}`);
-									currentSeason.awardPoints += 0.5; // Máximo 0.5 x 5 + 0.5 = 3.0
-									player.fame += 15; // Máximo 4 x 5 + 20 = 30
+									currentSeason.awardPoints += 0.5; // Máximo 0.5 x 5 + 0.5 - 1.0 = 2.0
+									player.fame += 5; // Máximo 3 x 5 + 15 = 30
 								}
 							}
 						}
@@ -1866,30 +1861,29 @@ function App() {
 		console.log("Award Points: " + Math.round(awardScore * 10) / 10 + "/20.0");
 		if (
 			player.position.title === "Goleiro" &&
-			awardScore >= 15 + Math.random() * 3 &&
+			awardScore >= 14 + Math.random() * 4 &&
 			currentSeason.performance >= 0.0
 		) {
 			//Golden Gloves
-			player.awards.push(`Luvas de Ouro ${year} (${player.team.name})`);
+			player.awards.push(`Goleiro da Temporada ${year} (${player.team.name})`);
 			player.fame += 30;
-			currentSeason.titles.push(["Luva de Ouro"]);
+			currentSeason.titles.push(["Goleiro da Temporada"]);
 		}
 
-		let goldenBootsGoals = 34 + RandomNumber(0, 4);
-		goldenBootsGoals += year % 4 === 2 || year % 4 === 0 ? 4 : 0;
+		let goldenBootsGoals = 35 + RandomNumber(0, 5);
 
 		if (goldenBootsGoals <= currentSeason.goals) {
 			//Golden Shoes
-			player.awards.push(`Chuteiras de Ouro ${year} (${player.team.name})`);
+			player.awards.push(`Artilheiro ${year} (${player.team.name})`);
 			player.fame += 30;
-			currentSeason.titles.push(["Chuteira de Ouro"]);
+			currentSeason.titles.push(["Artilheiro"]);
 		}
 
 		let position = -1;
 		if (awardScore >= 19) {
-			//POTS D'or
+			//POTS
 			player.playerOfTheSeason.push(`${year} (${player.team.name})`);
-			player.fame += 100;
+			player.fame += 50;
 			position = 1;
 			currentSeason.titles.push([`Jogador da Temporada: 1º lugar`]);
 		} else if (awardScore >= 10) {
@@ -1931,6 +1925,12 @@ function App() {
 		if (player.fame < 0) player.fame = 0;
 
 		currentSeason.fame = player.fame;
+
+		let med = 0;
+		for (let i = 0; i < generalPerformance.length; i++) {
+			med += generalPerformance[i];
+		}
+		med /= generalPerformance.length;
 
 		//trasnfer window
 		let newTransfers = GetNewTeams(player);
@@ -2481,7 +2481,7 @@ function App() {
 		return { sortedTeams, desc };
 	}
 
-	function GetTournamentResults(groups, topThirdCount, drawFunction) {
+	function GetTournamentResults(groups, topThirdCount, drawFunction, playerTeam) {
 		let desc = "";
 		let firstPlaces = [];
 		let secondPlaces = [];
@@ -2491,12 +2491,12 @@ function App() {
 		for (let groupID = 0; groupID < groups.length; groupID++) {
 			let thisGroup = GetWorldCupPosition(
 				groups[groupID],
-				groups[groupID].some((t) => t.name === player.nation.name) ? player.nation : null,
+				groups[groupID].some((t) => t.name === playerTeam.name) ? playerTeam : null,
 				groupID
 			);
 
 			const playerPosition =
-				thisGroup.table.findIndex((team) => team.name === player.nation.name);
+				thisGroup.table.findIndex((team) => team.name === playerTeam.name);
 
 			if (playerPosition >= 0) {
 				desc = `: ${playerPosition + 1}º lugar${thisGroup.playerMatches}${desc}`;
