@@ -535,7 +535,7 @@ function App() {
 					playerOpp = `: ${team1.name === player.team.name ? team2.name : team1.name}`;
 
 					opportunities++; //Max 1 x 4
-					player.fame += 2; // Copa Nacional Máximo 2 x 4 = 8
+					player.fame += 1; // Copa Nacional Máximo 1 x 4 = 4
 
 					// Verificando se o jogador ganhou o jogo
 					if (
@@ -549,7 +549,7 @@ function App() {
 							// Se o jogador venceu o torneio, conceder prêmios adicionais
 							player.nationalCup.push(`${year} (${player.team.name})`);
 							currentSeason.awardPoints += 0.6; // Máximo 0.6 x 4 + 0.6 = 3.0
-							player.fame += 2; // Copa Nacional Máximo 2 x 4 + 2 = 10
+							player.fame += 6; // Copa Nacional Máximo 1 x 4 + 6 = 10
 							triplice++;
 						}
 					}
@@ -706,7 +706,7 @@ function App() {
 
 					opportunities++; //max 1 x 4
 					currentSeason.awardPoints += 0.6; // Máximo 1.0 + 0.6 x 4 = 3.4
-					player.fame += 4; // Champions Máximo 4 x 4 = 16
+					player.fame += 3; // Champions Máximo 3 x 4 = 12
 
 					// Verificar se o jogador ganhou o jogo
 					if (
@@ -718,7 +718,7 @@ function App() {
 						if (playerPhase >= TournamentPath.length - 1) {
 							// Se o jogador vencer o torneio, conceder prêmios adicionais
 							player.champions.push(`${year} (${player.team.name})`);
-							player.fame += 4; // Máximo 4 x 4 + 4 = 20
+							player.fame += 8; // Máximo 3 x 4 + 8 = 20
 							currentSeason.awardPoints += 0.6; // Máximo 1.0 + 0.6 x 4 + 0.6 = 4.0
 							triplice++;
 						}
@@ -1059,7 +1059,7 @@ function App() {
 					if (team1.name === player.team.name || team2.name === player.team.name) {
 						opportunities++; //max 1 x 4
 						currentSeason.awardPoints += 0.6; // Máximo 0.6 x 4 - 1.0 = 1.4
-						player.fame += 4; // Máximo 4 x 4 = 16
+						player.fame += 3; // Máximo 3 x 4 = 12
 
 						// Verificar se o jogador ganhou o jogo
 						if (
@@ -1070,7 +1070,7 @@ function App() {
 							if (playerPhase >= TournamentPath.length - 1) {
 								player.clubWorldCup.push(`${year} (${player.team.name})`);
 								currentSeason.awardPoints += 0.6; // Máximo 0.6 x 4 + 0.6 - 1.0 = 2.0
-								player.fame += 4; // Máximo 4 x 4 + 4 = 20
+								player.fame += 8; // Máximo 3 x 4 + 8 = 20
 							}
 						}
 					}
@@ -1181,7 +1181,7 @@ function App() {
 						if (playedContinental) {
 							opportunities++; //max 1 x 4
 							currentSeason.awardPoints += 0.6; // Máximo 0.4 x 4 - 1.0 = 1.4
-							player.fame += 4; // Copa Máximo 4 x 4 = 16
+							player.fame += 3; // Copa Máximo 3 x 4 = 12
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1195,7 +1195,7 @@ function App() {
 								if (playerPhase >= TournamentPath.length - 1) {
 									player.continentalChampionship.push(`${year}`);
 									currentSeason.awardPoints += 0.6; // Máximo 0.6 x 4 + 0.6 - 1.0 = 2.0
-									player.fame += 4; // Máximo 4 x 4 + 4 = 20
+									player.fame += 8; // Máximo 3 x 4 + 9 = 20
 								}
 							}
 						}
@@ -1302,7 +1302,7 @@ function App() {
 						if (playedContinental) {
 							opportunities++; //max 1 x 3
 							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 - 1.0 = 1.4
-							player.fame += 5; // Copa América Máximo 5 x 3 = 15
+							player.fame += 4; // Copa América Máximo 4 x 3 = 12
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1316,7 +1316,7 @@ function App() {
 								if (playerPhase >= TournamentPath.length - 1) {
 									player.continentalChampionship.push(`${year}`);
 									currentSeason.awardPoints += 0.6; // Máximo 0.8 x 3 + 0.6 - 1.0 = 2.0
-									player.fame += 5; // Máximo 5 x 3 + 5 = 20
+									player.fame += 8; // Máximo 4 x 3 + 8 = 20
 								}
 							}
 						}
@@ -1420,7 +1420,7 @@ function App() {
 						if (playedContinental) {
 							opportunities++; //max 1 x 3
 							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 - 1.0 = 1.4
-							player.fame += 5; // Copa África Máximo 5 x 3 = 15
+							player.fame += 4; // Copa África Máximo 4 x 3 = 12
 						}
 						// Verificar se o jogador ganhou o jogo
 						if (
@@ -1433,7 +1433,7 @@ function App() {
 								if (playerPhase >= TournamentPath.length - 1) {
 									player.continentalChampionship.push(`${year}`);
 									currentSeason.awardPoints += 0.6; // Máximo 0.8 x 3 + 0.6 - 1.0 = 2.0
-									player.fame += 5; // Máximo 5 x 3 + 5 = 20
+									player.fame += 8; // Máximo 4 x 3 + 8 = 20
 								}
 							}
 						}
@@ -1536,7 +1536,7 @@ function App() {
 						if (playedContinental) {
 							opportunities++; //max 1 x 3
 							currentSeason.awardPoints += 0.8; // Máximo 0.8 x 3 - 1.0 = 1.4
-							player.fame += 5; // Copa Ásia Máximo 5 x 3 = 15
+							player.fame += 4; // Copa Ásia Máximo 4 x 3 = 12
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1550,7 +1550,7 @@ function App() {
 								if (playerPhase >= TournamentPath.length - 1) {
 									player.continentalChampionship.push(`${year}`);
 									currentSeason.awardPoints += 0.6; // Máximo 0.8 x 3 + 0.6 - 1.0 = 2.0
-									player.fame += 5; // Máximo 5 x 3 + 5 = 20
+									player.fame += 8; // Máximo 4 x 3 + 8 = 20
 								}
 							}
 						}
@@ -1716,7 +1716,7 @@ function App() {
 						if (playedWorldCup) {
 							opportunities++; //max 1 x 5
 							currentSeason.awardPoints += 0.5; // Máximo 0.5 x 5 - 1.0 = 1.5
-							player.fame += 5; // Máximo 5 x 5 = 25
+							player.fame += 3; // Máximo 3 x 5 = 15
 						}
 
 						// Verificar se o jogador ganhou o jogo
@@ -1730,7 +1730,7 @@ function App() {
 								if (playerPhase >= TournamentPath.length - 1) {
 									player.worldCup.push(`${year}`);
 									currentSeason.awardPoints += 0.5; // Máximo 0.5 x 5 + 0.5 - 1.0 = 2.0
-									player.fame += 5; // Máximo 3 x 5 + 15 = 30
+									player.fame += 5; // Máximo 3 x 5 + 5 = 20
 								}
 							}
 						}
