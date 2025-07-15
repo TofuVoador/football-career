@@ -2773,11 +2773,7 @@ function App() {
 	}
 
 	function clubWorlcCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
-		for(let i = 0; i < secondPlaces.lenght; i += 2) {
-			let temp = secondPlaces[i];
-			secondPlaces[i] = secondPlaces[i+1];
-			secondPlaces[i+1] = temp;
-		}
+		secondPlaces = customReverse(secondPlaces)
 		return firstPlaces.concat(secondPlaces);
 	}
 
