@@ -2595,12 +2595,8 @@ function App() {
 	}
 
 	function americanCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
-		let secTemp = secondPlaces[0]
-		secondPlaces[0] = secondPlaces[1];
-		secondPlaces[1] = secTemp;
-		secTemp = secondPlaces[2]
-		secondPlaces[2] = secondPlaces[3];
-		secondPlaces[3] = secTemp;
+		secondPlaces = customReverse(secondPlaces)
+		console.log(secondPlaces)
 		return firstPlaces.concat(secondPlaces)
 	}
 
@@ -2734,12 +2730,24 @@ function App() {
 	}
 
 	function clubWorlcCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
-		for(let i = 0; i < secondPlaces.lenght; i += 2) {
-			let temp = secondPlaces[i];
-			secondPlaces[i] = secondPlaces[i+1];
-			secondPlaces[i+1] = temp;
-		}
+		secondPlaces = customReverse(secondPlaces)
 		return firstPlaces.concat(secondPlaces);
+	}
+
+	function customReverse(arr) {
+		const chunkSize = 2;
+		let chunks = [];
+
+		// Step 1: Divide into chunks
+		for (let i = 0; i < arr.length; i += chunkSize) {
+			chunks.push(arr.slice(i, i + chunkSize));
+		}
+
+		// Step 2: Reverse the chunks
+		chunks.reverse();
+
+		// Step 3: Flatten the array
+		return chunks.flat();
 	}
 
 	function GetWorldCupPosition(teams, playerTeam = null, groupID) {
