@@ -478,8 +478,9 @@ function App() {
 			leaguesTable.push(`${leagueResults[l].leagueName}${leagueResults[l].desc}`);
 		}
 
-		const playerPosition =
-			playerLeagueResult.table.findIndex((team) => team.name === player.team.name);
+		const playerPosition = playerLeagueResult.table.findIndex(
+			(team) => team.name === player.team.name
+		);
 		currentSeason.awardPoints += Math.max(
 			0,
 			((playerLeagueResult.championsSpots / 4.0) * (6 - playerPosition)) / 2.0
@@ -489,7 +490,10 @@ function App() {
 		);
 		player.fame += Math.floor((playerLeagueResult.championsSpots * (5 - playerPosition)) / 2.0); //max = 10
 
-		opportunities += playerPosition >= 0 ? playerLeagueResult.table.length / (1 + playerPosition / 5) : RandomNumber(1, 5); //max = 20 at 1, 10 at 5
+		opportunities +=
+			playerPosition >= 0
+				? playerLeagueResult.table.length / (1 + playerPosition / 5)
+				: RandomNumber(1, 5); //max = 20 at 1, 10 at 5
 
 		//if fist place, then won trophy
 		if (playerPosition === 0) {
@@ -605,7 +609,9 @@ function App() {
 		}
 
 		// Adicionar as equipes extras aos times qualificados
-		qualifiedToChampions = qualifiedToChampions.concat(extrateams.find((conf) => conf.name === "UEFA").teams.slice(0, 8));
+		qualifiedToChampions = qualifiedToChampions.concat(
+			extrateams.find((conf) => conf.name === "UEFA").teams.slice(0, 8)
+		);
 
 		// Obter a posição dos campeões em um grupo específico
 		let championsGroup = GetChampionsPosition(
@@ -613,8 +619,9 @@ function App() {
 			player.championsQualification ? player.team : null
 		);
 
-		const playerChampionsPos =
-			championsGroup.table.findIndex((team) => team.name === player.team.name);
+		const playerChampionsPos = championsGroup.table.findIndex(
+			(team) => team.name === player.team.name
+		);
 
 		if (playerChampionsPos >= 0) {
 			opportunities += Math.max(0, 4 / (1 + playerChampionsPos / 4)); //max 4 at 1, 2 at 4
@@ -746,7 +753,7 @@ function App() {
 			// Verificar se o torneio chegou ao fim
 			if (phase >= TournamentPath.length - 1) {
 				console.log("Champions League: " + newClassif[0].name + " (" + newClassif[0].power + ")");
-				uefaWinners.push(newClassif[0])
+				uefaWinners.push(newClassif[0]);
 				end = true;
 			}
 		}
@@ -760,106 +767,112 @@ function App() {
 
 		if (year % 4 === 1) {
 			currentSeason.awardPoints -= 1.0;
-			let phase = 0
+			let phase = 0;
 			let playerPhase = 0;
 
 			let afcConf = DeepClone(extrateams.filter((c) => c.name === "AFC")[0]);
-			let afcClubs = afcConf.teams.sort((a,b) => a.power > b.power + Math.random());
-			let clubWC_afc = afcClubs.splice(0, afcConf.clubWorldCupSpots)
+			let afcClubs = afcConf.teams.sort((a, b) => a.power > b.power + Math.random());
+			let clubWC_afc = afcClubs.splice(0, afcConf.clubWorldCupSpots);
 
 			let cafConf = DeepClone(extrateams.filter((c) => c.name === "CAF")[0]);
-			let cafClubs = cafConf.teams.sort((a,b) => a.power > b.power + Math.random());
-			let clubWC_caf = cafClubs.splice(0, cafConf.clubWorldCupSpots)
+			let cafClubs = cafConf.teams.sort((a, b) => a.power > b.power + Math.random());
+			let clubWC_caf = cafClubs.splice(0, cafConf.clubWorldCupSpots);
 
 			let concacafConf = DeepClone(extrateams.filter((c) => c.name === "CONCACAF")[0]);
-			let concacafClubs = concacafConf.teams.sort((a,b) => a.power > b.power + Math.random());
-			let clubWC_concacaf = concacafClubs.splice(0, concacafConf.clubWorldCupSpots)
+			let concacafClubs = concacafConf.teams.sort((a, b) => a.power > b.power + Math.random());
+			let clubWC_concacaf = concacafClubs.splice(0, concacafConf.clubWorldCupSpots);
 
-			let clubWC_conmebol = []
+			let clubWC_conmebol = [];
 			let conmebolConf = DeepClone(extrateams.filter((c) => c.name === "CONMEBOL")[0]);
 			let conmebolClubs = conmebolConf.teams.sort((a, b) => b.power - a.power - Math.random());
 			let conmebolIndex = 0;
-			while(clubWC_conmebol.length < conmebolConf.clubWorldCupSpots) {
-				let club = conmebolClubs[conmebolIndex]
-				if(clubWC_conmebol.filter((c) => c.country === club.country).length < 4) clubWC_conmebol.push(club);
+			while (clubWC_conmebol.length < conmebolConf.clubWorldCupSpots) {
+				let club = conmebolClubs[conmebolIndex];
+				if (clubWC_conmebol.filter((c) => c.country === club.country).length < 4)
+					clubWC_conmebol.push(club);
 				conmebolIndex++;
-				if(conmebolIndex >= conmebolClubs.length) throw new Error("Não deu")
+				if (conmebolIndex >= conmebolClubs.length) throw new Error("Não deu");
 			}
 
 			let clubWC_ofc = DeepClone(extrateams.filter((c) => c.name === "OFC")[0].teams[0]);
 
 			let clubWC_uefa = [];
-			for(let i = 0; i < 4; i++) {
-				if(clubWC_uefa.filter((t) => t.name === uefaWinners[i].name).length > 0) continue;
+			for (let i = 0; i < 4; i++) {
+				if (clubWC_uefa.filter((t) => t.name === uefaWinners[i].name).length > 0) continue;
 				let league = leagues.filter((l) => l.country === uefaWinners[i].country)[0];
 				let team = null;
-				if(!league) {
-					league = extrateams.filter((l) => l.name === "UEFA")[0].teams
-					team = league.filter((t) => t.name === uefaWinners[i].name)[0] 
+				if (!league) {
+					league = extrateams.filter((l) => l.name === "UEFA")[0].teams;
+					team = league.filter((t) => t.name === uefaWinners[i].name)[0];
 				} else {
-					team = league.highestLeague.teams.filter((t) => t.name === uefaWinners[i].name)[0] 
-					if(!team) team = league.lowerLeague.teams.filter((t) => t.name === uefaWinners[i].name)[0] 
+					team = league.highestLeague.teams.filter((t) => t.name === uefaWinners[i].name)[0];
+					if (!team)
+						team = league.lowerLeague.teams.filter((t) => t.name === uefaWinners[i].name)[0];
 				}
-				if(!team) throw new Error(uefaWinners[i], league);
-				
-				clubWC_uefa.push(team)
+				if (!team) throw new Error(uefaWinners[i], league);
+
+				clubWC_uefa.push(team);
 			}
-			setUefaWinners([])
+			setUefaWinners([]);
 			let uefaIndex = 0;
 			let uefaConf = DeepClone(extrateams.filter((c) => c.name === "UEFA")[0]);
 			let uefaClubs = [];
 			for (let leagueID = 0; leagueID < leagues.length; leagueID++) {
-				uefaClubs = uefaClubs.concat([...leagues[leagueID].highestLeague.teams])
+				uefaClubs = uefaClubs.concat([...leagues[leagueID].highestLeague.teams]);
 			}
 			uefaClubs.sort((a, b) => {
 				return b.power - a.power;
 			});
-			while(clubWC_uefa.length < uefaConf.clubWorldCupSpots) {
-				if(uefaIndex >= uefaClubs.length) throw new Error("Não deu")
-				let club = uefaClubs[uefaIndex]
-				if(clubWC_uefa.filter((c) => c.country === club.country).length < 2 && !clubWC_uefa.some((c) => c.name === club.name)) clubWC_uefa.push(club);
+			while (clubWC_uefa.length < uefaConf.clubWorldCupSpots) {
+				if (uefaIndex >= uefaClubs.length) throw new Error("Não deu");
+				let club = uefaClubs[uefaIndex];
+				if (
+					clubWC_uefa.filter((c) => c.country === club.country).length < 2 &&
+					!clubWC_uefa.some((c) => c.name === club.name)
+				)
+					clubWC_uefa.push(club);
 				uefaIndex++;
 			}
 			clubWC_uefa.sort((a, b) => b.power - a.power);
 
 			let extra = null;
-			let hostCountry = worldCupHistoryHosts.find((h) => h.year === year+1).hosts[0];
+			let hostCountry = worldCupHistoryHosts.find((h) => h.year === year + 1).hosts[0];
 			let country = null;
 			for (const conf of nations) {
 				for (const team of conf.teams) {
 					if (team.name === hostCountry) {
-						country = team
+						country = team;
 					}
 				}
 			}
-			if(!country) throw new Error(hostCountry);
-			
-			if(country.continent === "UEFA" || country.continent === "OFC"){
-				if(clubWC_uefa.some((c) => c.country === hostCountry) || country.continent === "OFC") {
+			if (!country) throw new Error(hostCountry);
+
+			if (country.continent === "UEFA" || country.continent === "OFC") {
+				if (clubWC_uefa.some((c) => c.country === hostCountry) || country.continent === "OFC") {
 					let candidates = [];
-					candidates.push(afcClubs[0], cafClubs[0], concacafClubs[0], conmebolClubs[0])
+					candidates.push(afcClubs[0], cafClubs[0], concacafClubs[0], conmebolClubs[0]);
 					candidates = shuffleArray(candidates);
 					extra = candidates[0];
 				} else {
 					let league = leagues.filter((l) => l.country === country.name);
-					if(league.length > 0) {
-						league = league[0].highestLeague.teams
+					if (league.length > 0) {
+						league = league[0].highestLeague.teams;
 					} else {
 						let extraLeague = DeepClone(extrateams.filter((l) => l.name === country.continent)[0]);
 						league = extraLeague.teams.filter((t) => t.country === country.name);
-					}	
-					league.sort((a, b) => b.power - a.power - Math.random())
-					extra = league[0]
+					}
+					league.sort((a, b) => b.power - a.power - Math.random());
+					extra = league[0];
 				}
 			} else {
 				let league = DeepClone(extrateams.filter((l) => l.name === country.continent)[0]);
 				let validTeams = league.teams.filter((t) => t.country === country.name);
 				extra = validTeams[0];
-				switch(country.continent) {
+				switch (country.continent) {
 					case "AFC":
 						let duplicated_afc = clubWC_afc.filter((c) => c.name === extra.name);
-						if(duplicated_afc.length > 0) {
-							//remove duplicated from 
+						if (duplicated_afc.length > 0) {
+							//remove duplicated from
 							clubWC_afc = clubWC_afc.filter((c) => c.name !== extra.name);
 							//push next into
 							clubWC_afc.push(afcClubs[0]);
@@ -867,75 +880,71 @@ function App() {
 						break;
 					case "CAF":
 						let duplicated_caf = clubWC_caf.filter((c) => c.name === extra.name);
-						if(duplicated_caf.length > 0) {
+						if (duplicated_caf.length > 0) {
 							//remove duplicated from
 							clubWC_caf = clubWC_caf.filter((c) => c.name !== extra.name);
-							//push next into 
+							//push next into
 							clubWC_caf.push(cafClubs[0]);
 						}
 						break;
 					case "CONCACAF":
 						let duplicated_concacaf = clubWC_concacaf.filter((c) => c.name === extra.name);
-						if(duplicated_concacaf.length > 0) {
-							//remove duplicated from 
+						if (duplicated_concacaf.length > 0) {
+							//remove duplicated from
 							clubWC_concacaf = clubWC_concacaf.filter((c) => c.name !== extra.name);
-							//push next into 
+							//push next into
 							clubWC_concacaf.push(concacafClubs[0]);
 						}
 						break;
 					case "CONMEBOL":
 						let duplicated_conmebol = clubWC_conmebol.filter((c) => c.name === extra.name);
-						if(duplicated_conmebol.length > 0) {
+						if (duplicated_conmebol.length > 0) {
 							//remove duplicated from
 							clubWC_conmebol = clubWC_conmebol.filter((c) => c.name !== extra.name);
 							//push them into
 							clubWC_conmebol.push(conmebolClubs[0]);
 						}
 						break;
-					default: 
-						throw new Error("Deu Ruim")
+					default:
+						throw new Error("Deu Ruim");
 				}
 			}
 
-			let groups = [[],[],[],[],[],[],[],[]]
+			let groups = [[], [], [], [], [], [], [], []];
 			let pot1 = {
 				UEFA: shuffleArray(clubWC_uefa.splice(0, 4)),
-				CONMEBOL: shuffleArray(clubWC_conmebol.splice(0, 4))
-			}
+				CONMEBOL: shuffleArray(clubWC_conmebol.splice(0, 4)),
+			};
 			let pot2 = {
-				UEFA: shuffleArray(clubWC_uefa)
-			}
+				UEFA: shuffleArray(clubWC_uefa),
+			};
 			let pot3 = {
 				CONMEBOL: shuffleArray(clubWC_conmebol),
 				AFC: shuffleArray(clubWC_afc.splice(0, 2)),
 				CAF: shuffleArray(clubWC_caf.splice(0, 2)),
-				CONCACAF: shuffleArray(clubWC_concacaf.splice(0, 2))
-			}
+				CONCACAF: shuffleArray(clubWC_concacaf.splice(0, 2)),
+			};
 			let pot4 = {
 				AFC: shuffleArray(clubWC_afc),
 				CAF: shuffleArray(clubWC_caf),
 				CONCACAF: shuffleArray(clubWC_concacaf),
 				OFC: [clubWC_ofc],
 				CONMEBOL: [],
-				UEFA: []
-			}
-			pot4[country.continent].push(extra)
+				UEFA: [],
+			};
+			pot4[country.continent].push(extra);
 
-			const playedClubWC = [pot1, pot2, pot3, pot4].some(pot =>
-				Object.values(pot).some(conf =>
-					conf.some(club =>
-						club.name === player.team.name
-					)
-				)
+			const playedClubWC = [pot1, pot2, pot3, pot4].some((pot) =>
+				Object.values(pot).some((conf) => conf.some((club) => club.name === player.team.name))
 			);
-			
+
 			function isValidColumn(confArray) {
 				const count = {};
 				for (const conf of confArray) {
 					count[conf] = (count[conf] || 0) + 1;
 				}
 				for (const conf in count) {
-					if (conf === 'UEFA') {
+					if (conf === "UEFA") {
 						if (count[conf] > 2) return false;
 					} else {
 						if (count[conf] > 1) return false;
@@ -944,24 +953,56 @@ function App() {
 				return true;
 			}
 
-			let pot1positions = shuffleArray(["UEFA", "CONMEBOL", "UEFA", "CONMEBOL", "UEFA", "CONMEBOL", "UEFA", "CONMEBOL"]);
-			let pot2positions = shuffleArray(["UEFA", "UEFA", "UEFA", "UEFA", "UEFA", "UEFA", "UEFA", "UEFA"]);
-			let pot3positions = shuffleArray(["CONMEBOL", "CONMEBOL", "AFC", "AFC", "CAF", "CAF", "CONCACAF", "CONCACAF"]);
-			let pot4positions = shuffleArray(["OFC", country.continent, "AFC", "AFC", "CAF", "CAF", "CONCACAF", "CONCACAF"]);
+			let pot1positions = shuffleArray([
+				"UEFA",
+				"CONMEBOL",
+				"UEFA",
+				"CONMEBOL",
+				"UEFA",
+				"CONMEBOL",
+				"UEFA",
+				"CONMEBOL",
+			]);
+			let pot2positions = shuffleArray([
+				"UEFA",
+				"UEFA",
+				"UEFA",
+				"UEFA",
+				"UEFA",
+				"UEFA",
+				"UEFA",
+				"UEFA",
+			]);
+			let pot3positions = shuffleArray([
+				"CONMEBOL",
+				"CONMEBOL",
+				"AFC",
+				"AFC",
+				"CAF",
+				"CAF",
+				"CONCACAF",
+				"CONCACAF",
+			]);
+			let pot4positions = shuffleArray([
+				"OFC",
+				country.continent,
+				"AFC",
+				"AFC",
+				"CAF",
+				"CAF",
+				"CONCACAF",
+				"CONCACAF",
+			]);
 
 			let tentativas = 0;
 			let valid = false;
 			while (!valid) {
-				if(tentativas > 100) throw new Error("Deu RUIM")
+				if (tentativas > 100) throw new Error("Deu RUIM");
 				tentativas++;
 				pot3positions = shuffleArray(pot3positions);
 				valid = true;
 				for (let x = 0; x < 8; x++) {
-					const col = [
-						pot1positions[x],
-						pot2positions[x],
-						pot3positions[x]
-					];
+					const col = [pot1positions[x], pot2positions[x], pot3positions[x]];
 					if (!isValidColumn(col)) {
 						valid = false;
 						break;
@@ -970,55 +1011,53 @@ function App() {
 			}
 			valid = false;
 			while (!valid) {
-				if(tentativas > 100) throw new Error("Deu RUIM")
+				if (tentativas > 100) throw new Error("Deu RUIM");
 				tentativas++;
 				pot4positions = shuffleArray(pot4positions);
 
 				valid = true;
 				for (let x = 0; x < 8; x++) {
-					const col = [
-						pot1positions[x],
-						pot2positions[x],
-						pot3positions[x],
-						pot4positions[x]
-					];
+					const col = [pot1positions[x], pot2positions[x], pot3positions[x], pot4positions[x]];
 					if (!isValidColumn(col)) {
 						valid = false;
 						break;
 					}
 				}
 			}
-			
-			for(let i = 0; i < 8; i++) {
+
+			for (let i = 0; i < 8; i++) {
 				let pot1club = pot1[pot1positions[i]].shift();
-				groups[i].push(pot1club)
+				groups[i].push(pot1club);
 
 				let index = 0;
 				let pot2club = pot2.UEFA[index];
 				while (pot1club.country === pot2club.country) {
 					index++;
-					if(index >= pot2.UEFA.length) break;
+					if (index >= pot2.UEFA.length) break;
 					pot2club = pot2.UEFA[index];
 				}
 				while (pot1club.country === pot2club.country) {
 					index--;
-					if(groups[index][0].country !== pot2.UEFA[0].country && groups[index][1].country !== pot2.UEFA[0].country) {
+					if (
+						groups[index][0].country !== pot2.UEFA[0].country &&
+						groups[index][1].country !== pot2.UEFA[0].country
+					) {
 						pot2.UEFA.push(groups[index][1]);
 						pot2club = groups[index][1];
 						groups[index][1] = pot2.UEFA.shift();
 					}
 				}
 
-				pot2.UEFA = pot2.UEFA.filter((c) => c.name !== pot2club.name)
-				groups[i].push(pot2club)
+				pot2.UEFA = pot2.UEFA.filter((c) => c.name !== pot2club.name);
+				groups[i].push(pot2club);
 
-				groups[i].push(pot3[pot3positions[i]].shift())
-				groups[i].push(pot4[pot4positions[i]].shift())
+				groups[i].push(pot3[pot3positions[i]].shift());
+				groups[i].push(pot4[pot4positions[i]].shift());
 			}
 
 			let clubWorldCupDescription = [];
 
-			let results = GetTournamentResults(groups, 8, clubWorlcCupDraw, player.team)
+			let results = GetTournamentResults(groups, 8, clubWorlcCupDraw, player.team);
 
 			clubWorldCupDescription.push(`Grupos${results.desc}`);
 
@@ -1029,7 +1068,7 @@ function App() {
 
 			// Verificar se o jogador avançou para a próxima fase
 			if (classif.some((t) => t.name === player.team.name)) {
-				playerPhase += 2
+				playerPhase += 2;
 			}
 
 			// Variável para indicar o fim do loop
@@ -1096,14 +1135,18 @@ function App() {
 				// Verificar se o torneio chegou ao fim
 				if (phase >= TournamentPath.length - 1) {
 					end = true;
-					console.log("Mundial de Clubes: " + newClassif[0].name + " (" + newClassif[0].power + ")");
+					console.log(
+						"Mundial de Clubes: " + newClassif[0].name + " (" + newClassif[0].power + ")"
+					);
 				}
 			}
 
 			let playerWorldCupDesc = "";
-			if(playedClubWC) playerWorldCupDesc += `: ${TournamentPath[playerPhase]}`
+			if (playedClubWC) playerWorldCupDesc += `: ${TournamentPath[playerPhase]}`;
 
-			currentSeason.titles.push([`Mundial de Clubes${playerWorldCupDesc}`].concat(clubWorldCupDescription));
+			currentSeason.titles.push(
+				[`Mundial de Clubes${playerWorldCupDesc}`].concat(clubWorldCupDescription)
+			);
 		}
 
 		if (year % 4 === 0) {
@@ -1139,13 +1182,11 @@ function App() {
 				}
 			}
 
-			let eurocopaResults = GetTournamentResults(europeanGroups, 4, euroCupDraw, player.nation)
+			let eurocopaResults = GetTournamentResults(europeanGroups, 4, euroCupDraw, player.nation);
 
 			let classif = eurocopaResults.classif;
-			
-			europeanDescription.push(
-				`Grupos${eurocopaResults.desc}`
-			);
+
+			europeanDescription.push(`Grupos${eurocopaResults.desc}`);
 
 			phase += 2;
 
@@ -1261,13 +1302,11 @@ function App() {
 				}
 			}
 
-			let americanResults = GetTournamentResults(americanGroups, 0, americanCupDraw, player.nation)
+			let americanResults = GetTournamentResults(americanGroups, 0, americanCupDraw, player.nation);
 
-			classif = americanResults.classif
+			classif = americanResults.classif;
 
-			americanDescription.push(
-				`Grupos${americanResults.desc}`
-			);
+			americanDescription.push(`Grupos${americanResults.desc}`);
 
 			phase += 3;
 			if (classif.some((t) => t.name === player.nation.name)) {
@@ -1378,14 +1417,12 @@ function App() {
 				}
 			}
 
-			let results = GetTournamentResults(africanGroups, 2, africanAsianCupDraw, player.nation)
+			let results = GetTournamentResults(africanGroups, 2, africanAsianCupDraw, player.nation);
 
 			// Combinar os primeiros, segundos e terceiros colocados de todos os grupos e os oito primeiros terceiros colocados
 			classif = results.classif;
-			
-			africanDescription.push(
-				`Grupos${results.desc}`
-			);
+
+			africanDescription.push(`Grupos${results.desc}`);
 
 			phase += 3;
 			if (classif.some((t) => t.name === player.nation.name)) {
@@ -1495,13 +1532,11 @@ function App() {
 				}
 			}
 
-			let asianResults = GetTournamentResults(asianGroups, 2, africanAsianCupDraw, player.nation)
+			let asianResults = GetTournamentResults(asianGroups, 2, africanAsianCupDraw, player.nation);
 
 			classif = asianResults.classif;
 
-			asianDescription.push(
-				`Grupos${asianResults.desc}`
-			);
+			asianDescription.push(`Grupos${asianResults.desc}`);
 
 			phase += 3;
 			if (classif.some((t) => t.name === player.nation.name)) {
@@ -1674,7 +1709,7 @@ function App() {
 
 			let groups = DrawWorldGroups(allClassifNations, hostsAreFirst.length);
 
-			let results = GetTournamentResults(groups, 8, worldCupDraw, player.nation)
+			let results = GetTournamentResults(groups, 8, worldCupDraw, player.nation);
 
 			worldCupDescription.push(`Grupos${results.desc}`);
 
@@ -1780,7 +1815,9 @@ function App() {
 			let countriesHosts = newWorldCupHistoryHosts.flatMap((wc) => wc.hosts);
 			let furthestYear = Math.max(...newWorldCupHistoryHosts.map((wc) => wc.year));
 
-			let validTeams = allNations.filter((team) => !countriesHosts.includes(team.name) && team.can_host);
+			let validTeams = allNations.filter(
+				(team) => !countriesHosts.includes(team.name) && team.can_host
+			);
 
 			let chosenHosts = [];
 
@@ -2309,7 +2346,7 @@ function App() {
 			}
 			let pot3randomIndex = RandomNumber(0, pot3validNations.length - 1);
 			groups[GroupID].push(pot3validNations[pot3randomIndex]);
-			pots[3] = pots[3].filter((n) => pot3validNations[pot3randomIndex].name !== n.name);		
+			pots[3] = pots[3].filter((n) => pot3validNations[pot3randomIndex].name !== n.name);
 		}
 
 		return groups;
@@ -2495,8 +2532,7 @@ function App() {
 				groupID
 			);
 
-			const playerPosition =
-				thisGroup.table.findIndex((team) => team.name === playerTeam.name);
+			const playerPosition = thisGroup.table.findIndex((team) => team.name === playerTeam.name);
 
 			if (playerPosition >= 0) {
 				desc = `: ${playerPosition + 1}º lugar${thisGroup.playerMatches}${desc}`;
@@ -2514,7 +2550,7 @@ function App() {
 			.map((points, index) => ({ points, index }))
 			.sort((a, b) => b.points - a.points)
 			.slice(0, topThirdCount)
-			.map(item => item.index);
+			.map((item) => item.index);
 
 		let filteredThirdPlaces = thirdPlaces.map((place, index) =>
 			topThirdIndices.includes(index) ? place : null
@@ -2524,7 +2560,7 @@ function App() {
 
 		return {
 			classif,
-			desc
+			desc,
 		};
 	}
 
@@ -2581,9 +2617,7 @@ function App() {
 			if (chosenPosition === null) break; // segurança contra loop infinito
 
 			// Escolhe um time que possa ir para essa posição
-			const index = survivingThirds.findIndex((third) =>
-				third.positions.includes(chosenPosition)
-			);
+			const index = survivingThirds.findIndex((third) => third.positions.includes(chosenPosition));
 
 			if (index !== -1) {
 				const [third] = survivingThirds.splice(index, 1);
@@ -2601,89 +2635,98 @@ function App() {
 	}
 
 	function africanAsianCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
-		let thirdDraw = []
+		let thirdDraw = [];
 
 		//a
-		if(thirdPlaces[0]){
-			thirdDraw.push(thirdPlaces[0])
+		if (thirdPlaces[0]) {
+			thirdDraw.push(thirdPlaces[0]);
 		}
 		//b
-		if(thirdPlaces[1]){
-			thirdDraw.push(thirdPlaces[1])
+		if (thirdPlaces[1]) {
+			thirdDraw.push(thirdPlaces[1]);
 		}
 		//c
-		if(!thirdDraw[0]) {
-			thirdDraw[0] = thirdPlaces[2]
-		} else if(!thirdDraw[1]) {
-			thirdDraw[1] = thirdPlaces[2]
+		if (!thirdDraw[0]) {
+			thirdDraw[0] = thirdPlaces[2];
+		} else if (!thirdDraw[1]) {
+			thirdDraw[1] = thirdPlaces[2];
 		}
 
-		let secTemp = secondPlaces[0]
+		let secTemp = secondPlaces[0];
 		secondPlaces[0] = secondPlaces[2];
 		secondPlaces[2] = secTemp;
 
-		return firstPlaces.concat(secondPlaces, thirdDraw)
+		return firstPlaces.concat(secondPlaces, thirdDraw);
 	}
 
 	function worldCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
 		const setMapping = ["T1", "T2", "T2", "T1", "T1", "T2", "T2", "T1", "T1", "T2", "T1", "T2"];
 		const subsetsMapping = ["S1", "S2", "S2", "S1", "S1", "S2"];
 		const allocationPriority = {
-			"T1-S1": { "main": [1, 6, 3, 4], "exchange": [2, 5] },
-			"T1-S2": { "main": [3, 4, 1, 6], "exchange": [0, 7] },
-			"T2-S1": { "main": [0, 7, 2, 5], "exchange": [3, 4] },
-			"T2-S2": { "main": [2, 5, 0, 7], "exchange": [1, 6] },
+			"T1-S1": { main: [1, 6, 3, 4], exchange: [2, 5] },
+			"T1-S2": { main: [3, 4, 1, 6], exchange: [0, 7] },
+			"T2-S1": { main: [0, 7, 2, 5], exchange: [3, 4] },
+			"T2-S2": { main: [2, 5, 0, 7], exchange: [1, 6] },
 		};
 		const secondPlaceSwapMap = {
-			0: 3, 1: 2, 2: 1, 3: 0,
-			4: 7, 5: 6, 6: 5, 7: 4,
-			8:11, 9:10, 10:9, 11:8,
+			0: 3,
+			1: 2,
+			2: 1,
+			3: 0,
+			4: 7,
+			5: 6,
+			6: 5,
+			7: 4,
+			8: 11,
+			9: 10,
+			10: 9,
+			11: 8,
 		};
 		let sets = { T1: [], T2: [] };
-		let thirdDraw = new Array(8).fill(null)
+		let thirdDraw = new Array(8).fill(null);
 
 		function setHandler(set, setKey, isSecond = false) {
 			let subsets = { S1: [], S2: [] };
 			set.forEach((place, i) => {
-				if(!place) return;
+				if (!place) return;
 				const group = subsetsMapping[i];
-				if(!subsets[group]) subsets[group] = [];
+				if (!subsets[group]) subsets[group] = [];
 				subsets[group].push(place);
-			})
+			});
 
-			if(subsets.S1.length <= subsets.S2.length) {
-				subsetHandler(subsets.S1, `${setKey}-S1`, isSecond)
-				subsetHandler(subsets.S2, `${setKey}-S2`, isSecond)
+			if (subsets.S1.length <= subsets.S2.length) {
+				subsetHandler(subsets.S1, `${setKey}-S1`, isSecond);
+				subsetHandler(subsets.S2, `${setKey}-S2`, isSecond);
 			} else {
-				subsetHandler(subsets.S2, `${setKey}-S2`, isSecond)
-				subsetHandler(subsets.S1, `${setKey}-S1`, isSecond)
+				subsetHandler(subsets.S2, `${setKey}-S2`, isSecond);
+				subsetHandler(subsets.S1, `${setKey}-S1`, isSecond);
 			}
 		}
 
 		function subsetHandler(subset, subsetKey, isSecond = false) {
 			const priorities = allocationPriority[subsetKey];
-			const exchangePriorities = priorities['exchange'];
-			const mainPriorities = priorities['main']
-			for(let teamIndex = 0; teamIndex < subset.length; teamIndex++) {		
-				let alocated = false
-				if(isSecond) {
-					if(thirdDraw[exchangePriorities[0]] == null) {
-						thirdDraw[exchangePriorities[0]] = subset[teamIndex]
+			const exchangePriorities = priorities["exchange"];
+			const mainPriorities = priorities["main"];
+			for (let teamIndex = 0; teamIndex < subset.length; teamIndex++) {
+				let alocated = false;
+				if (isSecond) {
+					if (thirdDraw[exchangePriorities[0]] == null) {
+						thirdDraw[exchangePriorities[0]] = subset[teamIndex];
 						alocated = true;
-					} else if(thirdDraw[exchangePriorities[1]] == null) {
-						thirdDraw[exchangePriorities[1]] = subset[teamIndex]
+					} else if (thirdDraw[exchangePriorities[1]] == null) {
+						thirdDraw[exchangePriorities[1]] = subset[teamIndex];
 						alocated = true;
 					}
 				}
-				if(alocated) continue
-				for(let i = 0; i < mainPriorities.length; i++) {
-					if(!thirdDraw[mainPriorities[i]]) {
-						thirdDraw[mainPriorities[i]] = subset[teamIndex]
+				if (alocated) continue;
+				for (let i = 0; i < mainPriorities.length; i++) {
+					if (!thirdDraw[mainPriorities[i]]) {
+						thirdDraw[mainPriorities[i]] = subset[teamIndex];
 						alocated = true;
 						break;
 					}
 				}
-				if(alocated) continue;
+				if (alocated) continue;
 				for (let i = 0; i < 2; i++) {
 					const drawIndex = exchangePriorities[i];
 					if (!thirdDraw[drawIndex]) {
@@ -2712,25 +2755,29 @@ function App() {
 			sets[group].push(place);
 		});
 
-		if(sets.T1.filter((n) => n).length <= sets.T2.filter((n) => n).length) {
-			setHandler(sets.T1, "T1",)
-			setHandler(sets.T2, "T2", true)
+		if (sets.T1.filter((n) => n).length <= sets.T2.filter((n) => n).length) {
+			setHandler(sets.T1, "T1");
+			setHandler(sets.T2, "T2", true);
 		} else {
-			setHandler(sets.T2, "T2")
-			setHandler(sets.T1, "T1", true)
+			setHandler(sets.T2, "T2");
+			setHandler(sets.T1, "T1", true);
 		}
 
-		for(let i = 0; i < secondPlaces.length; i += 2) {
+		for (let i = 0; i < secondPlaces.length; i += 2) {
+			let temp = secondPlaces[i];
+			secondPlaces[i] = secondPlaces[i + 1];
+			secondPlaces[i + 1] = temp;
+		}
+
+		return firstPlaces.concat(secondPlaces, thirdDraw);
+	}
+
+	function clubWorlcCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
+		for(let i = 0; i < secondPlaces.lenght; i += 2) {
 			let temp = secondPlaces[i];
 			secondPlaces[i] = secondPlaces[i+1];
 			secondPlaces[i+1] = temp;
 		}
-
-		return firstPlaces.concat(secondPlaces, thirdDraw)
-	}
-
-	function clubWorlcCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
-		secondPlaces = customReverse(secondPlaces)
 		return firstPlaces.concat(secondPlaces);
 	}
 
@@ -2751,7 +2798,7 @@ function App() {
 	}
 
 	function GetWorldCupPosition(teams, playerTeam = null, groupID) {
-		let groupNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"]
+		let groupNames = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L"];
 		let playerMatches = "";
 		let newTeams = DeepClone([...teams]);
 
@@ -3008,8 +3055,7 @@ function App() {
 		for (let i = 0; i < 3; i++) {
 			let teamID = RandomNumber(0, allTeams.length - 1);
 
-			const isDuplicate = (teamName) =>
-				history.some((t) => t.team === teamName);
+			const isDuplicate = (teamName) => history.some((t) => t.team === teamName);
 
 			while (isDuplicate(allTeams[teamID].name)) {
 				teamID = RandomNumber(0, allTeams.length - 1);
@@ -3233,7 +3279,7 @@ function App() {
 
 	function UpdateExtraTeamsStats() {
 		let newTeams = DeepClone([...extrateams]);
-		for(let confID = 0; confID < extrateams.length; confID++) {
+		for (let confID = 0; confID < extrateams.length; confID++) {
 			let last = Math.random();
 			let teamIndices = Array.from({ length: newTeams[confID].teams.length }, (_, index) => index);
 			teamIndices = shuffleArray(teamIndices);
@@ -3562,7 +3608,7 @@ function App() {
 								</div>
 							</details>
 							<details>
-								<summary>Copa do Mundo de Clubes: {player.clubWorldCup.length}</summary>
+								<summary>Mundial de Clubes: {player.clubWorldCup.length}</summary>
 								<div>
 									{player.clubWorldCup.map((cwc) => (
 										<p key={cwc}>{cwc}</p>
