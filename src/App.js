@@ -2630,7 +2630,6 @@ function App() {
 
 	function americanCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
 		secondPlaces = customReverse(secondPlaces)
-		console.log(secondPlaces)
 		return firstPlaces.concat(secondPlaces)
 	}
 
@@ -2704,12 +2703,10 @@ function App() {
 		}
 
 		function subsetHandler(subset, subsetKey, isSecond = false) {
-			console.log(subset)
 			const priorities = allocationPriority[subsetKey];
 			const exchangePriorities = priorities["exchange"];
 			const mainPriorities = priorities["main"];
 			for (let teamIndex = 0; teamIndex < subset.length; teamIndex++) {
-				console.log(subset[teamIndex])
 				let alocated = false;
 				if (isSecond) {
 					if (thirdDraw[exchangePriorities[0]] == null) {
@@ -2729,8 +2726,6 @@ function App() {
 					}
 				}
 				if (alocated) continue;
-				
-				console.warn(subset[teamIndex].name + ": Não tem espaço onde eu queria!")
 				for (let i = 0; i < 2; i++) {
 					const drawIndex = exchangePriorities[i];
 					if (!thirdDraw[drawIndex]) {
@@ -2745,16 +2740,12 @@ function App() {
 							const temp = secondPlaces[originalIndex];
 							secondPlaces[originalIndex] = secondPlaces[swapIndex];
 							secondPlaces[swapIndex] = temp;
-
-							console.log(thirdDraw[drawIndex], secondPlaces[originalIndex], secondPlaces[swapIndex])
 						}
 
 						break;
 					}
 				}
 			}
-
-			console.log(JSON.parse(JSON.stringify(thirdDraw)))
 		}
 
 		thirdPlaces.forEach((place, i) => {
@@ -2772,8 +2763,6 @@ function App() {
 		}
 
 		secondPlaces = customReverse(secondPlaces)
-
-		console.log(firstPlaces, secondPlaces, thirdDraw)
 
 		return firstPlaces.concat(secondPlaces, thirdDraw);
 	}
