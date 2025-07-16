@@ -2660,13 +2660,13 @@ function App() {
 	}
 
 	function worldCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
-		const setMapping = ["T1", "T2", "T2", "T1", "T1", "T2", "T2", "T1", "T1", "T2", "T1", "T2"];
+		const setMapping = ["T1", "T1", "T2", "T2", "T2", "T2", "T1", "T1", "T1", "T1", "T2", "T2"];
 		const subsetsMapping = ["S1", "S2", "S2", "S1", "S1", "S2"];
 		const allocationPriority = {
-			"T1-S1": { main: [1, 6, 3, 4], exchange: [2, 5] },
-			"T1-S2": { main: [3, 4, 1, 6], exchange: [0, 7] },
-			"T2-S1": { main: [0, 7, 2, 5], exchange: [3, 4] },
-			"T2-S2": { main: [2, 5, 0, 7], exchange: [1, 6] },
+			"T1-S1": { main: [2, 5, 3, 4], exchange: [1, 6] },
+			"T1-S2": { main: [3, 4, 2, 5], exchange: [0, 7] },
+			"T2-S1": { main: [0, 7, 1, 6], exchange: [3, 4] },
+			"T2-S2": { main: [1, 6, 0, 7], exchange: [2, 5] },
 		};
 		const secondPlaceSwapMap = {
 			0: 3,
@@ -2704,10 +2704,12 @@ function App() {
 		}
 
 		function subsetHandler(subset, subsetKey, isSecond = false) {
+			console.log(subset)
 			const priorities = allocationPriority[subsetKey];
 			const exchangePriorities = priorities["exchange"];
 			const mainPriorities = priorities["main"];
 			for (let teamIndex = 0; teamIndex < subset.length; teamIndex++) {
+				console.log(subset[teamIndex])
 				let alocated = false;
 				if (isSecond) {
 					if (thirdDraw[exchangePriorities[0]] == null) {
@@ -2727,6 +2729,8 @@ function App() {
 					}
 				}
 				if (alocated) continue;
+				
+				console.warn(subset[teamIndex].name + ": Não tem espaço onde eu queria!")
 				for (let i = 0; i < 2; i++) {
 					const drawIndex = exchangePriorities[i];
 					if (!thirdDraw[drawIndex]) {
@@ -2741,12 +2745,16 @@ function App() {
 							const temp = secondPlaces[originalIndex];
 							secondPlaces[originalIndex] = secondPlaces[swapIndex];
 							secondPlaces[swapIndex] = temp;
+
+							console.log(thirdDraw[drawIndex], secondPlaces[originalIndex], secondPlaces[swapIndex])
 						}
 
 						break;
 					}
 				}
 			}
+
+			console.log(JSON.parse(JSON.stringify(thirdDraw)))
 		}
 
 		thirdPlaces.forEach((place, i) => {
@@ -2763,11 +2771,9 @@ function App() {
 			setHandler(sets.T1, "T1", true);
 		}
 
-		for (let i = 0; i < secondPlaces.length; i += 2) {
-			let temp = secondPlaces[i];
-			secondPlaces[i] = secondPlaces[i + 1];
-			secondPlaces[i + 1] = temp;
-		}
+		secondPlaces = customReverse(secondPlaces)
+
+		console.log(firstPlaces, secondPlaces, thirdDraw)
 
 		return firstPlaces.concat(secondPlaces, thirdDraw);
 	}
