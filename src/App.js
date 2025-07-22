@@ -1000,21 +1000,7 @@ function App() {
 				if (tentativas > 100) throw new Error("Deu RUIM");
 				tentativas++;
 				pot3positions = shuffleArray(pot3positions);
-				valid = true;
-				for (let x = 0; x < 8; x++) {
-					const col = [pot1positions[x], pot2positions[x], pot3positions[x]];
-					if (!isValidColumn(col)) {
-						valid = false;
-						break;
-					}
-				}
-			}
-			valid = false;
-			while (!valid) {
-				if (tentativas > 100) throw new Error("Deu RUIM");
-				tentativas++;
 				pot4positions = shuffleArray(pot4positions);
-
 				valid = true;
 				for (let x = 0; x < 8; x++) {
 					const col = [pot1positions[x], pot2positions[x], pot3positions[x], pot4positions[x]];
