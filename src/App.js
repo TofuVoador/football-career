@@ -833,7 +833,6 @@ function App() {
 					clubWC_uefa.push(club);
 				uefaIndex++;
 			}
-			clubWC_uefa.sort((a, b) => b.power - a.power);
 
 			let extra = null;
 			let hostCountry = worldCupHistoryHosts.find((h) => h.year === year + 1).hosts[0];
@@ -847,13 +846,10 @@ function App() {
 			}
 			if (!country) throw new Error(hostCountry);
 
-			if (country.continent === "UEFA" || country.continent === "OFC") {
-				if (clubWC_uefa.some((c) => c.country === hostCountry) || country.continent === "OFC") {
-					let candidates = [];
-					candidates.push(afcClubs[0], cafClubs[0], concacafClubs[0], conmebolClubs[0]);
-					candidates = shuffleArray(candidates);
-					extra = candidates[0];
-				} else {
+			let extraContinent = country.continent;
+
+			if (country.continent === "UEFA") {
+				if (!clubWC_uefa.some((c) => c.country === hostCountry)) {
 					let league = leagues.filter((l) => l.country === country.name);
 					if (league.length > 0) {
 						league = league[0].highestLeague.teams;
@@ -862,8 +858,19 @@ function App() {
 						league = extraLeague.teams.filter((t) => t.country === country.name);
 					}
 					league.sort((a, b) => b.power - a.power - Math.random());
-					extra = league[0];
+					clubWC_uefa.pop();
+					clubWC_uefa.push(league[0]);
 				}
+				let candidates = {
+					AFC: afcClubs[0],
+					CAF: cafClubs[0],
+					CONCACAF: concacafClubs[0],
+					CONMEBOL: conmebolClubs[0],
+				};
+				let pots = ["AFC", "CAF", "CONCACAF", "CONMEBOL"];
+				pots = shuffleArray(pots);
+				extraContinent = pots[0];
+				extra = candidates[extraContinent];
 			} else {
 				let league = DeepClone(extrateams.filter((l) => l.name === country.continent)[0]);
 				let validTeams = league.teams.filter((t) => t.country === country.name);
@@ -909,8 +916,9 @@ function App() {
 						throw new Error("Deu Ruim");
 				}
 			}
+			clubWC_uefa.sort((a, b) => b.power - a.power);
+			clubWC_conmebol.sort((a, b) => b.power - a.power);
 
-			let groups = [[], [], [], [], [], [], [], []];
 			let pot1 = {
 				UEFA: shuffleArray(clubWC_uefa.splice(0, 4)),
 				CONMEBOL: shuffleArray(clubWC_conmebol.splice(0, 4)),
@@ -932,87 +940,75 @@ function App() {
 				CONMEBOL: [],
 				UEFA: [],
 			};
-			pot4[country.continent].push(extra);
+			pot4[extraContinent].push(extra);
 
 			const playedClubWC = [pot1, pot2, pot3, pot4].some((pot) =>
 				Object.values(pot).some((conf) => conf.some((club) => club.name === player.team.name))
 			);
 
-			function isValidColumn(confArray) {
-				const count = {};
-				for (const conf of confArray) {
-					count[conf] = (count[conf] || 0) + 1;
-				}
-				for (const conf in count) {
-					if (conf === "UEFA") {
-						if (count[conf] > 2) return false;
-					} else {
-						if (count[conf] > 1) return false;
-					}
-				}
-				return true;
-			}
+			let resultado = montarGrupos(
+				shuffleArray([
+					"UEFA",
+					"CONMEBOL",
+					"UEFA",
+					"CONMEBOL",
+					"UEFA",
+					"CONMEBOL",
+					"UEFA",
+					"CONMEBOL",
+				]),
+				shuffleArray(["CONMEBOL", "CONMEBOL", "AFC", "AFC", "CAF", "CAF", "CONCACAF", "CONCACAF"]),
+				shuffleArray(["OFC", extraContinent, "AFC", "AFC", "CAF", "CAF", "CONCACAF", "CONCACAF"])
+			);
 
-			let pot1positions = shuffleArray([
-				"UEFA",
-				"CONMEBOL",
-				"UEFA",
-				"CONMEBOL",
-				"UEFA",
-				"CONMEBOL",
-				"UEFA",
-				"CONMEBOL",
-			]);
-			let pot2positions = shuffleArray([
-				"UEFA",
-				"UEFA",
-				"UEFA",
-				"UEFA",
-				"UEFA",
-				"UEFA",
-				"UEFA",
-				"UEFA",
-			]);
-			let pot3positions = shuffleArray([
-				"CONMEBOL",
-				"CONMEBOL",
-				"AFC",
-				"AFC",
-				"CAF",
-				"CAF",
-				"CONCACAF",
-				"CONCACAF",
-			]);
-			let pot4positions = shuffleArray([
-				"OFC",
-				country.continent,
-				"AFC",
-				"AFC",
-				"CAF",
-				"CAF",
-				"CONCACAF",
-				"CONCACAF",
-			]);
+			function montarGrupos(pot1, pot3, pot4) {
+				const usadosPot3 = Array(pot3.length).fill(false);
+				const usadosPot4 = Array(pot4.length).fill(false);
+				const grupos = [];
 
-			let tentativas = 0;
-			let valid = false;
-			while (!valid) {
-				if (tentativas > 100) throw new Error("Deu RUIM");
-				tentativas++;
-				pot3positions = shuffleArray(pot3positions);
-				pot4positions = shuffleArray(pot4positions);
-				valid = true;
-				for (let x = 0; x < 8; x++) {
-					const col = [pot1positions[x], pot2positions[x], pot3positions[x], pot4positions[x]];
-					if (!isValidColumn(col)) {
-						valid = false;
-						break;
+				function tentar(pos) {
+					if (pos === pot1.length) return true; // Terminou tudo com sucesso
+
+					const continente1 = pot1[pos];
+
+					for (let i = 0; i < pot3.length; i++) {
+						if (usadosPot3[i]) continue;
+						const continente3 = pot3[i];
+						if (continente3 === continente1) continue;
+
+						for (let j = 0; j < pot4.length; j++) {
+							if (usadosPot4[j]) continue;
+							const continente4 = pot4[j];
+							if (continente4 === continente1 || continente4 === continente3) continue;
+
+							// Esse trio é válido
+							usadosPot3[i] = true;
+							usadosPot4[j] = true;
+							grupos.push([continente1, continente3, continente4]);
+
+							if (tentar(pos + 1)) return true;
+
+							// Backtrack
+							usadosPot3[i] = false;
+							usadosPot4[j] = false;
+							grupos.pop();
+						}
 					}
+
+					// Nenhuma combinação válida encontrada nessa posição
+					return false;
+				}
+
+				if (tentar(0)) {
+					return grupos;
+				} else {
+					return null; // Não deu certo
 				}
 			}
 
+			let groups = [[], [], [], [], [], [], [], []];
 			for (let i = 0; i < 8; i++) {
-				let pot1club = pot1[pot1positions[i]].shift();
+				let pot1club = pot1[resultado[i][0]].shift();
 				groups[i].push(pot1club);
 
 				let index = 0;
@@ -1037,8 +1033,8 @@ function App() {
 				pot2.UEFA = pot2.UEFA.filter((c) => c.name !== pot2club.name);
 				groups[i].push(pot2club);
 
-				groups[i].push(pot3[pot3positions[i]].shift());
-				groups[i].push(pot4[pot4positions[i]].shift());
+				groups[i].push(pot3[resultado[i][1]].shift());
+				groups[i].push(pot4[resultado[i][2]].shift());
 			}
 
 			let clubWorldCupDescription = [];
