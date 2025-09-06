@@ -88,7 +88,7 @@
 				"can_host": false
 			}
 		]
-		},
+	},
 	{
 		"name": "CAF",
 		"worldCupSpots": 8,
@@ -124,7 +124,7 @@
 			{
 				"name": "Egito",
 				"continent": "CAF",
-				"power": 6.3,
+				"power": 6.2,
 				"borders": ["Jordânia"],
 				"can_host": true
 			},
@@ -198,7 +198,7 @@
 				"power": 5.5,
 				"borders": ["Panamá"],
 				"can_host": false
-				},
+			},
 			{
 				"name": "Estados Unidos",
 				"continent": "CONCACAF",
@@ -216,7 +216,7 @@
 			{
 				"name": "México",
 				"continent": "CONCACAF",
-				"power":  8.3,
+				"power": 8.3,
 				"borders": ["Estados Unidos"],
 				"can_host": true
 			},
@@ -415,7 +415,15 @@
 				"name": "Hungria",
 				"continent": "UEFA",
 				"power": 5.9,
-				"borders": ["Áustria", "Eslováquia", "Ucrânia", "Romênia", "Sérvia", "Croácia", "Eslovênia"],
+				"borders": [
+					"Áustria",
+					"Eslováquia",
+					"Ucrânia",
+					"Romênia",
+					"Sérvia",
+					"Croácia",
+					"Eslovênia"
+				],
 				"can_host": false
 			},
 			{
@@ -491,7 +499,7 @@
 			{
 				"name": "Sérvia",
 				"continent": "UEFA",
-				"power": 6.2,
+				"power": 6.3,
 				"borders": ["Hungria", "Romênia"],
 				"can_host": false
 			},
