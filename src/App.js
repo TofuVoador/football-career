@@ -253,7 +253,15 @@ function App() {
 			newGeneralPerformance = [];
 			player.team = newTeam.team;
 			newContract = newTeam.duration;
-			player.marketValue = newTeam.transferValue;
+			console.log(JSON.parse(JSON.stringify(player)));
+			player.marketValue = GetTransferValue(
+				player.performance,
+				player.position.value,
+				player.age,
+				player.position.peak,
+				newTeam.power,
+				player.fame
+			);
 			player.positionInClub = Positions.find(
 				(position) => position.abbreviation === newTeam.position
 			);
@@ -344,16 +352,14 @@ function App() {
 		player.team = allTeams.find((t) => t.name === player.team.name); //find player's team by name and update
 		player.nation = allNations.find((n) => n.name === player.nation.name); //find player's nation by name and update
 
-		// Filtra os valores de transferValue que são números
-		const transferValues = transfers.map((transfer) => transfer?.transferValue);
-		const validTransferValues = transferValues.filter(
-			(value) => typeof value === "number" && !isNaN(value)
+		player.marketValue = GetTransferValue(
+			player.performance,
+			player.position.value,
+			player.age,
+			player.position.peak,
+			player.team.power,
+			player.fame
 		);
-
-		if (validTransferValues.length > 0) {
-			// Calcula o maior valor de transferValue
-			player.marketValue = Math.max(...validTransferValues);
-		}
 
 		//calcule the player's performance
 		player.performance = Math.round(100.0 * (Math.random() - Math.random())) / 100.0;
@@ -2611,8 +2617,8 @@ function App() {
 	}
 
 	function americanCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
-		secondPlaces = customReverse(secondPlaces)
-		return firstPlaces.concat(secondPlaces)
+		secondPlaces = customReverse(secondPlaces);
+		return firstPlaces.concat(secondPlaces);
 	}
 
 	function africanAsianCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
@@ -2744,13 +2750,13 @@ function App() {
 			setHandler(sets.T1, "T1", true);
 		}
 
-		secondPlaces = customReverse(secondPlaces)
+		secondPlaces = customReverse(secondPlaces);
 
 		return firstPlaces.concat(secondPlaces, thirdDraw);
 	}
 
 	function clubWorlcCupDraw(firstPlaces, secondPlaces, thirdPlaces) {
-		secondPlaces = customReverse(secondPlaces)
+		secondPlaces = customReverse(secondPlaces);
 		return firstPlaces.concat(secondPlaces);
 	}
 
@@ -3054,22 +3060,11 @@ function App() {
 				}
 
 				let duration = RandomNumber(1, 4);
-				duration += currentPlayer.age <= 32 ? RandomNumber(1, 2) : 0;
-				duration += currentPlayer.age <= 24 ? RandomNumber(1, 2) : 0;
-
-				let transferValue = GetTransferValue(
-					currentPlayer.performance,
-					currentPlayer.position.value,
-					currentPlayer.age,
-					currentPlayer.position.peak,
-					team.power,
-					currentPlayer.fame
-				);
+				duration += currentPlayer.age <= 28 ? RandomNumber(1, 2) : 0;
 
 				contracts.push({
 					team: team,
 					duration: duration,
-					transferValue: transferValue,
 					loan: false,
 					position: newPosition,
 				});
@@ -3119,21 +3114,10 @@ function App() {
 			// Contract duration
 			const duration = RandomNumber(2, 8);
 
-			// Transfer value
-			const transferValue = GetTransferValue(
-				currentPlayer.performance,
-				currentPlayer.position.value,
-				currentPlayer.age,
-				currentPlayer.position.peak,
-				team.power,
-				currentPlayer.fame
-			);
-
 			// Return structured contract
 			return {
 				team: team,
 				duration: duration,
-				transferValue: transferValue,
 				loan: false,
 				position: newPosition,
 			};
@@ -3147,7 +3131,7 @@ function App() {
 
 		const ageFactor = Math.max(1, 8.0 - Math.abs(peak - 4 - age) * 0.5); //5 at 18, 8 at 24, 5 at 30, 2 at 36
 
-		const clubMultiplier = 1.0 + clubPower / 10; //1.2 at 2 to 2.0 at 10
+		const clubMultiplier = clubPower / 5; //0.4 at 2 to 2.0 at 10
 
 		const fameMultiplier = Math.max(fame, 100) / ((age - 10) * 10); //1 at 100 and 20y, 2.5 at 500 and 30y, 3.2 at 800 and 35y, 4.0 at 1000 and 35y
 
