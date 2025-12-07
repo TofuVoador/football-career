@@ -3112,7 +3112,7 @@ function App() {
 			}
 
 			// Contract duration
-			const duration = RandomNumber(2, 8);
+			const duration = RandomNumber(2, 6);
 
 			// Return structured contract
 			return {
